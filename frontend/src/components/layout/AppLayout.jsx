@@ -1,0 +1,59 @@
+import React from "react";
+import { Outlet, useLocation, NavLink } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import Sidebar from "./Sidebar";
+import BottomTabBar from "./BottomTabBar";
+import Logo from "../Logo";
+import NotificationBell from "../NotificationBell";
+
+function MobileHeader() {
+  const { user } = useAuth();
+  const [avatarError, setAvatarError] = React.useState(false);
+  return (
+    <header className="md:hidden sticky top-0 z-30 bg-brand-50/90 backdrop-blur border-b border-line">
+      <div className="flex items-center justify-between px-4 h-14">
+        <NavLink to="/dashboard"><Logo size={32} /></NavLink>
+        <div className="flex items-center gap-2">
+          <div data-testid="mobile-bell">
+            <NotificationBell />
+          </div>
+          <NavLink to="/profile">
+            {user?.picture && !avatarError ? (
+              <img
+                src={user.picture}
+                alt=""
+                className="w-8 h-8 rounded-full object-cover border-2 border-white"
+                onError={() => setAvatarError(true)}
+              />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-brand text-white flex items-center justify-center text-xs font-bold">
+                {(user?.name || "U").slice(0, 1).toUpperCase()}
+              </div>
+            )}
+          </NavLink>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+export default function AppLayout() {
+  const location = useLocation();
+  const isOnboarding = location.pathname.startsWith("/onboarding");
+  const isChat = location.pathname.startsWith("/ai-chat");
+  return (
+    <div className="min-h-screen bg-brand-50">
+      <div className="flex">
+        <Sidebar />
+        <main className="flex-1 min-h-screen pb-24 md:pb-0 relative">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(520px_240px_at_14%_0%,rgba(124,114,239,0.13),transparent_55%),radial-gradient(480px_220px_at_100%_8%,rgba(37,99,235,0.1),transparent_55%)]" />
+          {!isOnboarding && !isChat && <MobileHeader />}
+          <div className="relative">
+            <Outlet />
+          </div>
+        </main>
+      </div>
+      {!isOnboarding && !isChat && <BottomTabBar />}
+    </div>
+  );
+}
