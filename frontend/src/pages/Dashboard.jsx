@@ -280,62 +280,60 @@ export default function Dashboard() {
       </div>
 
       {loadingCareers ? (
-        <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        <div className="mt-2.5 flex gap-2.5 sm:gap-4 overflow-hidden -mx-4 px-4 sm:mx-0 sm:px-0">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="surface-gradient rounded-2xl sm:rounded-3xl border border-line p-4 sm:p-5">
-              <div className="w-11 h-11 rounded-2xl skeleton-shimmer" />
-              <div className="h-5 w-2/3 rounded mt-3 skeleton-shimmer" />
-              <div className="h-4 w-full rounded mt-2 skeleton-shimmer" />
-              <div className="h-14 w-full rounded mt-3 skeleton-shimmer" />
+            <div key={i} className="surface-gradient rounded-2xl border border-line p-3 sm:p-5 min-w-[200px] sm:min-w-[280px] shrink-0">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl skeleton-shimmer shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <div className="h-4 w-3/4 rounded skeleton-shimmer" />
+                  <div className="h-3 w-1/2 rounded mt-1.5 skeleton-shimmer" />
+                </div>
+              </div>
+              <div className="h-3 w-full rounded mt-2.5 skeleton-shimmer" />
+              <div className="h-8 w-full rounded-lg mt-2 skeleton-shimmer" />
             </div>
           ))}
         </div>
       ) : (
-        <div className={careerAnalysis ? "mt-3 flex gap-3 sm:gap-4 overflow-x-auto pb-2 snap-x no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0" : "mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"}>
+        <div className="mt-2.5 flex gap-2.5 sm:gap-4 overflow-x-auto pb-2 snap-x no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
           {displayCareers.map((c) => {
             const Ic = getIcon(c.icon) || Briefcase;
             return (
               <Link
                 to={`/careers/${c.slug}`}
                 key={c.career_id || c.slug}
-                className={careerAnalysis ? "surface-gradient rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-line elevated-card hover:shadow-md transition min-w-[260px] sm:min-w-[340px] snap-start shrink-0" : "surface-gradient rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-line elevated-card hover:shadow-md transition"}
+                className="surface-gradient rounded-2xl p-3 sm:p-4 border border-line elevated-card hover:shadow-md transition min-w-[200px] sm:min-w-[280px] max-w-[220px] sm:max-w-[320px] snap-start shrink-0"
                 data-testid={`dashboard-career-card-${c.slug}`}
               >
-                <div className="flex items-start justify-between">
-                  <div
-                    className="w-11 h-11 rounded-2xl flex items-center justify-center"
-                    style={{ background: (c.iconColor || "#5B4FE9") + "25", color: c.iconColor || "#5B4FE9" }}
-                  >
-                    <Ic size={20} />
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div
+                      className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                      style={{ background: (c.iconColor || "#5B4FE9") + "20", color: c.iconColor || "#5B4FE9" }}
+                    >
+                      <Ic size={17} />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-heading font-bold text-[13px] sm:text-sm text-ink leading-tight truncate">{c.title}</p>
+                      <span className="inline-block px-1.5 py-px rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold mt-0.5">
+                        {c.matchPercent}%
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="mt-3 flex items-start justify-between gap-2">
-                  <p className="font-heading font-bold text-base text-ink leading-tight">{c.title}</p>
-                  <span className="shrink-0 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">
-                    {c.matchPercent}%
-                  </span>
-                </div>
-                <div className="flex gap-1.5 mt-2 flex-wrap">
-                  {(c.matchTags?.length ? c.matchTags : c.tags || []).slice(0, 3).map((t) => (
-                    <span key={t} className="px-2 py-0.5 rounded-full bg-brand-50 text-brand text-[11px] font-semibold">
+                <div className="flex gap-1 mt-2 flex-wrap">
+                  {(c.matchTags?.length ? c.matchTags : c.tags || []).slice(0, 2).map((t) => (
+                    <span key={t} className="px-1.5 py-px rounded-full bg-brand-50 text-brand text-[10px] font-semibold">
                       {t}
                     </span>
                   ))}
                 </div>
-                {c.matchReasons?.length > 0 && <p className="text-[11px] text-emerald-700 mt-2 line-clamp-1 font-medium">✓ {c.matchReasons[0]}</p>}
-                <div className="grid grid-cols-2 gap-2 mt-3 text-xs">
-                  <div className="bg-brand-50 rounded-xl p-2">
-                    <p className="text-muted2">Avg Salary</p>
-                    <p className="font-bold text-ink">
-                      ₹{c.avgSalary?.min}–{c.avgSalary?.max} LPA
-                    </p>
-                  </div>
-                  <div className="bg-brand-50 rounded-xl p-2">
-                    <p className="text-muted2">Growth (5Y)</p>
-                    <p className="font-bold text-ink">
-                      {c.jobGrowth5Y}% <span className="text-emerald-600">{c.demand}</span>
-                    </p>
-                  </div>
+                {c.matchReasons?.length > 0 && <p className="text-[10px] text-emerald-700 mt-1.5 line-clamp-1 font-medium">✓ {c.matchReasons[0]}</p>}
+                <div className="flex items-center gap-2 mt-2 text-[10px] sm:text-xs text-muted2">
+                  <span className="font-semibold text-ink">₹{c.avgSalary?.min}–{c.avgSalary?.max}L</span>
+                  <span>·</span>
+                  <span>{c.jobGrowth5Y}% <span className="text-emerald-600 font-semibold">{c.demand}</span></span>
                 </div>
               </Link>
             );
@@ -345,52 +343,61 @@ export default function Dashboard() {
 
       {careerAnalysis && additionalCareers.length > 0 && (
         <div className="mt-5 sm:mt-6" data-testid="dashboard-additional-careers">
-          <h2 className="font-heading font-bold text-base sm:text-xl text-ink">More Career Matches</h2>
-          <div className="mt-2.5 sm:mt-3 space-y-2.5 sm:space-y-3">
-            {additionalCareers.map((c) => (
-              <Link
-                to={`/careers/${c.slug}`}
-                key={c.slug}
-                className="bg-white border border-line rounded-xl sm:rounded-2xl p-3 sm:p-4 flex items-center justify-between gap-3 sm:gap-4 hover:bg-brand-50 transition"
-                data-testid={`dashboard-additional-career-${c.slug}`}
-              >
-                <div className="min-w-0">
-                  <p className="font-heading font-bold text-sm sm:text-base text-ink truncate">{c.title}</p>
-                  <div className="flex flex-wrap gap-1.5 mt-1">
-                    {(c.matchTags || c.tags || []).slice(0, 3).map((t) => (
-                      <span key={t} className="px-2 py-0.5 rounded-full bg-brand-50 text-brand text-[11px] font-semibold">
+          <h2 className="font-heading font-bold text-sm sm:text-xl text-ink">More Career Matches</h2>
+          <div className="mt-2 sm:mt-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
+            {additionalCareers.map((c) => {
+              const Ic = getIcon(c.icon) || Briefcase;
+              return (
+                <Link
+                  to={`/careers/${c.slug}`}
+                  key={c.slug}
+                  className="bg-white border border-line rounded-xl p-2.5 sm:p-3.5 hover:bg-brand-50 transition flex flex-col"
+                  data-testid={`dashboard-additional-career-${c.slug}`}
+                >
+                  <div className="flex items-center justify-between gap-1">
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                      style={{ background: (c.iconColor || "#5B4FE9") + "18", color: c.iconColor || "#5B4FE9" }}
+                    >
+                      <Ic size={15} />
+                    </div>
+                    <span className="px-1.5 py-px rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold">
+                      {c.matchPercent}%
+                    </span>
+                  </div>
+                  <p className="font-heading font-bold text-xs sm:text-sm text-ink mt-1.5 leading-tight line-clamp-2">{c.title}</p>
+                  <div className="flex flex-wrap gap-1 mt-1.5">
+                    {(c.matchTags || c.tags || []).slice(0, 2).map((t) => (
+                      <span key={t} className="px-1.5 py-px rounded-full bg-brand-50 text-brand text-[9px] sm:text-[10px] font-semibold">
                         {t}
                       </span>
                     ))}
                   </div>
-                  <p className="text-xs text-muted2 mt-1">
-                    ₹{c.avgSalary?.min}–{c.avgSalary?.max} LPA · {c.demand || "High"} demand
+                  <p className="text-[10px] text-muted2 mt-auto pt-1.5">
+                    ₹{c.avgSalary?.min}–{c.avgSalary?.max}L · {c.demand || "High"}
                   </p>
-                </div>
-                <span className="shrink-0 px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-bold">
-                  {c.matchPercent}%
-                </span>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}
 
-      <div className="mt-5 sm:mt-7 glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-7" data-testid="dashboard-roadmap-card">
+      <div className="mt-4 sm:mt-7 glass-card rounded-2xl sm:rounded-3xl p-3 sm:p-7" data-testid="dashboard-roadmap-card">
         <div className="flex items-center justify-between gap-2">
-          <h2 className="font-heading font-bold text-base sm:text-xl text-ink">Career Requirements Snapshot</h2>
-          <Link to="/roadmap" className="text-xs sm:text-sm font-semibold text-brand whitespace-nowrap">
-            View details →
+          <h2 className="font-heading font-bold text-sm sm:text-xl text-ink">Requirements Snapshot</h2>
+          <Link to="/roadmap" className="text-[11px] sm:text-sm font-semibold text-brand whitespace-nowrap">
+            Details →
           </Link>
         </div>
-        <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+        <div className="mt-2.5 sm:mt-4 grid grid-cols-2 gap-2 sm:gap-3">
           {REQUIREMENT_SECTIONS.map((section) => (
-            <div key={section.title} className="bg-white border border-line rounded-xl sm:rounded-2xl p-3 sm:p-4">
-              <p className="text-xs sm:text-sm font-bold text-ink">{section.title}</p>
+            <div key={section.title} className="bg-white border border-line rounded-lg sm:rounded-2xl p-2 sm:p-4">
+              <p className="text-[11px] sm:text-sm font-bold text-ink leading-tight">{section.title}</p>
               {section.points.map((point) => (
-                <p key={point} className="text-xs text-muted2 mt-1 flex items-start gap-1.5">
-                  <CheckCircle2 size={12} className="text-brand mt-0.5 shrink-0" />
-                  <span className="min-w-0">{point}</span>
+                <p key={point} className="text-[10px] sm:text-xs text-muted2 mt-0.5 sm:mt-1 flex items-start gap-1">
+                  <CheckCircle2 size={10} className="text-brand mt-0.5 shrink-0 sm:w-3 sm:h-3" />
+                  <span className="min-w-0 line-clamp-2">{point}</span>
                 </p>
               ))}
             </div>

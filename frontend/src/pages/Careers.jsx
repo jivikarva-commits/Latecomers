@@ -11,54 +11,52 @@ const CareerRow = ({ c, match, saved, onSave, onOpen, isAiMatch }) => {
   return (
     <div
       onClick={() => onOpen(c.slug)}
-      className={`surface-gradient rounded-3xl border p-4 sm:p-5 flex items-center justify-between hover:shadow-soft transition cursor-pointer ${
+      className={`surface-gradient rounded-xl sm:rounded-2xl border p-2.5 sm:p-4 flex flex-col hover:shadow-soft transition cursor-pointer ${
         isAiMatch ? "border-brand-200" : "border-line"
       }`}
       data-testid={`career-row-${c.slug}`}
     >
-      <div className="flex items-center gap-4 flex-1">
+      <div className="flex items-start justify-between gap-1.5">
         <div
-          className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
-          style={{ background: (c.iconColor || "#5B4FE9") + "25", color: c.iconColor || "#5B4FE9" }}
+          className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0"
+          style={{ background: (c.iconColor || "#5B4FE9") + "20", color: c.iconColor || "#5B4FE9" }}
         >
-          <Ic size={22} />
+          <Ic size={18} />
         </div>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="font-heading font-bold text-base text-ink truncate">{c.title}</h3>
-            <span
-              className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                isAiMatch
-                  ? "bg-emerald-100 text-emerald-700"
-                  : "bg-brand-50 text-brand"
-              }`}
-            >
-              {isAiMatch ? "✨ " : ""}{match}% Match
-            </span>
-          </div>
-          <div className="flex gap-1.5 mt-1 flex-wrap">
-            {(c.tags || []).slice(0, 3).map((t) => (
-              <span key={t} className="px-2 py-0.5 rounded-full bg-brand-50 text-brand text-[11px] font-semibold">
-                {t}
-              </span>
-            ))}
-          </div>
-          <p className="text-xs text-muted2 mt-1">
-            Avg ₹{c.avgSalary?.min}–{c.avgSalary?.max} LPA · Growth {c.jobGrowth5Y}% ·{" "}
-            <span className="text-emerald-600 font-semibold">{c.demand}</span>
-          </p>
+        <div className="flex items-center gap-1">
+          <span
+            className={`inline-block px-1.5 py-px rounded-full text-[10px] font-bold ${
+              isAiMatch
+                ? "bg-emerald-100 text-emerald-700"
+                : "bg-brand-50 text-brand"
+            }`}
+          >
+            {match}%
+          </span>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onSave(c);
+            }}
+            className={`p-1 rounded-full shrink-0 ${saved ? "text-brand" : "text-muted2"}`}
+            data-testid={`save-career-${c.slug}`}
+          >
+            <Bookmark size={14} fill={saved ? "#5B4FE9" : "none"} />
+          </button>
         </div>
       </div>
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onSave(c);
-        }}
-        className={`p-2 rounded-full shrink-0 ${saved ? "text-brand" : "text-muted2"}`}
-        data-testid={`save-career-${c.slug}`}
-      >
-        <Bookmark size={20} fill={saved ? "#5B4FE9" : "none"} />
-      </button>
+      <h3 className="font-heading font-bold text-xs sm:text-sm text-ink mt-1.5 leading-tight line-clamp-2">{c.title}</h3>
+      <div className="flex gap-1 mt-1.5 flex-wrap">
+        {(c.tags || []).slice(0, 2).map((t) => (
+          <span key={t} className="px-1.5 py-px rounded-full bg-brand-50 text-brand text-[9px] sm:text-[10px] font-semibold">
+            {t}
+          </span>
+        ))}
+      </div>
+      <p className="text-[10px] sm:text-xs text-muted2 mt-auto pt-1.5">
+        Avg ₹{c.avgSalary?.min}–{c.avgSalary?.max} LPA · Growth {c.jobGrowth5Y}% ·{" "}
+        <span className="text-emerald-600 font-semibold">{c.demand}</span>
+      </p>
     </div>
   );
 };
@@ -139,33 +137,33 @@ export default function Careers() {
   const restCareers = sortedCareers.slice(topCareers.length);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto" data-testid="careers-page">
-      <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-ink">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto overflow-x-hidden w-full min-w-0" data-testid="careers-page">
+      <h1 className="font-heading font-extrabold text-xl sm:text-3xl text-ink">
         Top Career Recommendations
       </h1>
-      <p className="text-muted2 mt-1 text-sm">
+      <p className="text-muted2 mt-0.5 sm:mt-1 text-xs sm:text-sm">
         {hasAiMatches
           ? "Personalized by AI based on your quiz answers"
           : "Explore popular careers across all fields"}
       </p>
 
       {/* Top / AI-matched section */}
-      <div className="mt-5 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-50 text-brand text-xs font-bold">
+      <div className="mt-4 sm:mt-5 inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-brand-50 text-brand text-[11px] sm:text-xs font-bold">
         {hasAiMatches ? (
-          <><Sparkles size={12} /> Your AI-Matched Careers</>
+          <><Sparkles size={11} /> Your AI-Matched Careers</>
         ) : (
           <>⭐ Top Recommendations</>
         )}
       </div>
 
-      <div className="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="mt-2.5 sm:mt-3 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
         {loading &&
           [1, 2, 3].map((i) => (
-            <div key={i} className="surface-gradient rounded-3xl border border-line p-5">
-              <div className="w-12 h-12 rounded-2xl skeleton-shimmer" />
-              <div className="h-5 w-2/3 rounded mt-3 skeleton-shimmer" />
-              <div className="h-4 w-full rounded mt-2 skeleton-shimmer" />
-              <div className="h-16 w-full rounded mt-3 skeleton-shimmer" />
+            <div key={i} className="surface-gradient rounded-xl sm:rounded-2xl border border-line p-2.5 sm:p-4">
+              <div className="w-9 h-9 rounded-xl skeleton-shimmer" />
+              <div className="h-4 w-3/4 rounded mt-2 skeleton-shimmer" />
+              <div className="h-3 w-full rounded mt-1.5 skeleton-shimmer" />
+              <div className="h-8 w-full rounded mt-2 skeleton-shimmer" />
             </div>
           ))}
 
@@ -177,55 +175,45 @@ export default function Careers() {
             <Link
               key={c.career_id}
               to={`/careers/${c.slug}`}
-              className={`surface-gradient rounded-3xl border p-5 hover:shadow-soft transition ${
+              className={`surface-gradient rounded-xl sm:rounded-2xl border p-2.5 sm:p-4 hover:shadow-soft transition flex flex-col ${
                 hasAiMatches ? "border-brand-200" : "border-line"
               }`}
               data-testid={`top-career-${c.slug}`}
             >
-              <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between gap-1">
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center"
-                  style={{ background: (c.iconColor || "#5B4FE9") + "25", color: c.iconColor || "#5B4FE9" }}
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ background: (c.iconColor || "#5B4FE9") + "20", color: c.iconColor || "#5B4FE9" }}
                 >
-                  <Ic size={22} />
+                  <Ic size={17} />
                 </div>
-                <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-bold">
-                  {hasAiMatches ? "✨ " : ""}{match}% Match
+                <span className="inline-block px-1.5 py-px rounded-full bg-emerald-100 text-emerald-700 text-[10px] sm:text-[11px] font-bold whitespace-nowrap">
+                  {hasAiMatches ? "✨ " : ""}{match}%
                 </span>
               </div>
 
-              <h3 className="font-heading font-bold text-lg text-ink mt-3">{c.title}</h3>
+              <h3 className="font-heading font-bold text-xs sm:text-base text-ink mt-2 leading-tight line-clamp-2">{c.title}</h3>
 
-              {/* AI match tags OR career tags */}
-              <div className="flex gap-1.5 mt-2 flex-wrap">
-                {(aiMatch?.tags?.length ? aiMatch.tags : c.tags || []).slice(0, 3).map((t) => (
-                  <span key={t} className="px-2 py-0.5 rounded-full bg-brand-50 text-brand text-[11px] font-semibold">
+              <div className="flex gap-1 mt-1.5 flex-wrap">
+                {(aiMatch?.tags?.length ? aiMatch.tags : c.tags || []).slice(0, 2).map((t) => (
+                  <span key={t} className="px-1.5 py-px rounded-full bg-brand-50 text-brand text-[9px] sm:text-[10px] font-semibold">
                     {t}
                   </span>
                 ))}
               </div>
 
-              {/* AI reason or description */}
               {aiMatch?.reasons?.[0] ? (
-                <p className="text-xs text-emerald-700 mt-2 line-clamp-1 font-medium">
+                <p className="text-[10px] sm:text-xs text-emerald-700 mt-1.5 line-clamp-1 font-medium">
                   ✓ {aiMatch.reasons[0]}
                 </p>
               ) : (
-                <p className="text-xs text-muted2 mt-2 line-clamp-2">{c.description}</p>
+                <p className="text-[10px] sm:text-xs text-muted2 mt-1.5 line-clamp-2">{c.description}</p>
               )}
 
-              <div className="grid grid-cols-2 gap-2 mt-3 text-xs">
-                <div className="bg-brand-50 rounded-xl p-2">
-                  <p className="text-muted2">Avg Salary</p>
-                  <p className="font-bold text-ink">₹{c.avgSalary?.min} – {c.avgSalary?.max} LPA</p>
-                </div>
-                <div className="bg-brand-50 rounded-xl p-2">
-                  <p className="text-muted2">Growth (5Y)</p>
-                  <p className="font-bold text-ink">
-                    {c.jobGrowth5Y}%{" "}
-                    <span className="text-emerald-600">{c.demand}</span>
-                  </p>
-                </div>
+              <div className="flex items-center gap-1.5 mt-auto pt-2 text-[10px] sm:text-xs text-muted2">
+                <span className="font-semibold text-ink">₹{c.avgSalary?.min}–{c.avgSalary?.max}L</span>
+                <span>·</span>
+                <span>{c.jobGrowth5Y}% <span className="text-emerald-600">{c.demand}</span></span>
               </div>
             </Link>
           );
@@ -233,29 +221,29 @@ export default function Careers() {
       </div>
 
       {/* Rest of careers */}
-      <h2 className="font-heading font-bold text-lg text-ink mt-8 mb-3">
+      <h2 className="font-heading font-bold text-sm sm:text-lg text-ink mt-6 sm:mt-8 mb-2 sm:mb-3">
         {hasAiMatches ? "Explore More Careers" : "All Careers"}
       </h2>
-      <div className="flex items-center gap-2 mb-4">
+      <div className="flex items-center gap-2 mb-3 sm:mb-4">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted2" />
+          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted2" />
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search careers, skills or roles..."
             data-testid="careers-search-input"
-            className="w-full bg-white border border-line rounded-full pl-10 pr-4 py-2.5 text-sm placeholder:text-muted2"
+            className="w-full bg-white border border-line rounded-full pl-9 pr-3 py-2 sm:py-2.5 text-xs sm:text-sm placeholder:text-muted2"
           />
         </div>
         <button
-          className="p-2.5 rounded-full bg-white border border-line text-brand"
+          className="p-2 sm:p-2.5 rounded-full bg-white border border-line text-brand"
           data-testid="careers-filter-button"
         >
-          <Filter size={16} />
+          <Filter size={15} />
         </button>
       </div>
 
-      <div className="space-y-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
         {!loading && restCareers.map((c, idx) => (
           <CareerRow
             key={c.career_id}
@@ -268,9 +256,9 @@ export default function Careers() {
           />
         ))}
         {!loading && allCareers.length === 0 && (
-          <div className="bg-white border border-line rounded-3xl p-5 text-center">
-            <p className="font-semibold text-ink">No careers found for this search.</p>
-            <p className="text-sm text-muted2 mt-1">Try a broader keyword.</p>
+          <div className="col-span-full bg-white border border-line rounded-2xl p-4 sm:p-5 text-center">
+            <p className="font-semibold text-ink text-sm">No careers found for this search.</p>
+            <p className="text-xs sm:text-sm text-muted2 mt-1">Try a broader keyword.</p>
             {q.trim() && (
               <button
                 onClick={onGenerateCareer}
