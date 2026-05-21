@@ -1,22 +1,39 @@
 import React, { useEffect, useMemo, useState, lazy, Suspense } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FileText, Mic, Building2, GraduationCap, Sparkles, CheckCircle2, RotateCcw, Briefcase } from "lucide-react";
+import { FileText, Mic, Building2, GraduationCap, Sparkles, CheckCircle2, RotateCcw, Briefcase, Search, BookOpen, ClipboardCheck, Trophy } from "lucide-react";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import NotificationBell from "../components/NotificationBell";
 
-// Lazy load heavy recharts library
+// Lazy load heavy recharts library — with percentage labels on each axis
 const LazyRadarChart = lazy(() =>
   import("recharts").then((mod) => ({
-    default: ({ data, hasRealData, chartKey }) => (
-      <mod.ResponsiveContainer width="100%" height="100%">
-        <mod.RadarChart key={chartKey} data={data} cx="50%" cy="50%" outerRadius="70%">
-          <mod.PolarGrid stroke="#E8E4FF" />
-          <mod.PolarAngleAxis dataKey="metric" tick={{ fill: "#64748B", fontSize: 10, fontWeight: 600 }} />
-          <mod.Radar name="You" dataKey="value" stroke="#5B4FE9" fill="#5B4FE9" fillOpacity={hasRealData ? 0.35 : 0.08} />
-        </mod.RadarChart>
-      </mod.ResponsiveContainer>
-    ),
+    default: ({ data, hasRealData, chartKey }) => {
+      const renderTick = ({ payload, x, y, textAnchor }) => {
+        const item = data.find((d) => d.metric === payload.value);
+        return (
+          <g>
+            <text x={x} y={y} textAnchor={textAnchor} fill="#64748B" fontSize={10} fontWeight={600}>
+              {payload.value}
+            </text>
+            {hasRealData && item?.value > 0 && (
+              <text x={x} y={y + 13} textAnchor={textAnchor} fill="#5B4FE9" fontSize={10} fontWeight={700}>
+                {item.value}%
+              </text>
+            )}
+          </g>
+        );
+      };
+      return (
+        <mod.ResponsiveContainer width="100%" height="100%">
+          <mod.RadarChart key={chartKey} data={data} cx="50%" cy="50%" outerRadius="65%">
+            <mod.PolarGrid stroke="#E8E4FF" />
+            <mod.PolarAngleAxis dataKey="metric" tick={renderTick} />
+            <mod.Radar name="You" dataKey="value" stroke="#5B4FE9" fill="#5B4FE9" fillOpacity={hasRealData ? 0.35 : 0.08} />
+          </mod.RadarChart>
+        </mod.ResponsiveContainer>
+      );
+    },
   }))
 );
 
@@ -44,23 +61,11 @@ function getTimeGreeting() {
   return "Good evening";
 }
 
-const REQUIREMENT_SECTIONS = [
-  {
-    title: "Core Skills Required",
-    points: ["Technical and domain fundamentals", "Practical communication and problem solving"],
-  },
-  {
-    title: "Portfolio Requirements",
-    points: ["2-4 projects with measurable outcomes", "Resume-ready proof of your capabilities"],
-  },
-  {
-    title: "Job Readiness Checklist",
-    points: ["Interview preparation and role-specific practice", "Certifications employers value"],
-  },
-  {
-    title: "How to Apply & Get Hired",
-    points: ["Target companies and role strategy", "Applications, referrals, and follow-up plan"],
-  },
+const ROADMAP_STEPS = [
+  { n: 1, icon: Search, label: "Explore", desc: "Discover careers that match you", color: "#5B4FE9" },
+  { n: 2, icon: BookOpen, label: "Learn", desc: "Build the right skills & knowledge", color: "#3B82F6" },
+  { n: 3, icon: ClipboardCheck, label: "Prepare", desc: "Get ready with practice & guidance", color: "#F97316" },
+  { n: 4, icon: Trophy, label: "Achieve", desc: "Apply, crack & achieve your goals", color: "#22C55E" },
 ];
 
 export default function Dashboard() {
@@ -196,77 +201,56 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-4 sm:mt-6 glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 items-center" data-testid="career-match-card">
-        <div className="flex flex-col gap-2">
-          <p className="text-xs font-semibold text-muted2 uppercase tracking-wider">Career Match Score</p>
-          {hasRealData ? (
-            <>
-              <div className="flex items-end gap-2 sm:gap-3">
-                <p className="font-heading font-extrabold text-4xl sm:text-5xl text-brand leading-none">
-                  {overall}
-                  <span className="text-2xl sm:text-3xl">%</span>
-                </p>
+      <div className="mt-3 sm:mt-5 glass-card rounded-2xl sm:rounded-3xl p-3 sm:p-5" data-testid="career-match-card">
+        <p className="text-[10px] sm:text-xs font-semibold text-muted2 uppercase tracking-wider mb-2">Your Career Match Score</p>
+        <div className="grid grid-cols-[1fr_1fr] sm:grid-cols-2 gap-2 sm:gap-4 items-center">
+          <div className="flex flex-col gap-1">
+            {hasRealData ? (
+              <>
+                <div className="flex items-end gap-1.5 sm:gap-2">
+                  <p className="font-heading font-extrabold text-3xl sm:text-5xl text-brand leading-none">
+                    {overall}<span className="text-xl sm:text-3xl">%</span>
+                  </p>
+                </div>
                 {scoreBadge && (
-                  <span className={`mb-1 px-3 py-1 rounded-full text-xs font-semibold ${scoreBadge.cls}`}>
+                  <span className={`px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold w-fit ${scoreBadge.cls}`}>
                     {scoreBadge.label}
                   </span>
                 )}
-              </div>
-              <div className="flex flex-wrap gap-1.5 mt-1">
-                {[
-                  { k: "Skills", v: cmScore?.skills },
-                  { k: "Interests", v: cmScore?.interests },
-                  { k: "Goals", v: cmScore?.goals },
-                  { k: "Values", v: cmScore?.values },
-                  { k: "Personality", v: cmScore?.personality },
-                ]
-                  .filter(({ v }) => v != null)
-                  .map(({ k, v }) => (
-                    <span key={k} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-brand-50 text-brand text-[11px] font-semibold">
-                      {k} {v}%
-                    </span>
-                  ))}
-              </div>
-              {(careerAnalysis?.summary || user?.profile?.summary) && (
-                <p className="text-xs text-muted2 mt-1 line-clamp-2 leading-relaxed">
-                  {careerAnalysis?.summary || user.profile.summary}
+                {(careerAnalysis?.summary || user?.profile?.summary) && (
+                  <p className="text-[10px] sm:text-xs text-muted2 mt-0.5 line-clamp-2 leading-snug">
+                    {careerAnalysis?.summary || user.profile.summary}
+                  </p>
+                )}
+                <Link to="/careers" className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-brand mt-0.5 w-fit" data-testid="view-full-analysis-link">
+                  View full analysis →
+                </Link>
+              </>
+            ) : (
+              <>
+                <p className="font-heading font-extrabold text-3xl sm:text-5xl text-brand/30 leading-none">
+                  —<span className="text-xl sm:text-3xl">%</span>
                 </p>
-              )}
-              <Link to="/careers" className="inline-flex items-center gap-1 text-xs font-semibold text-brand mt-1 w-fit" data-testid="view-full-analysis-link">
-                View full analysis →
-              </Link>
-              <button
-                onClick={retakeQuiz}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-muted2 hover:text-brand w-fit"
-                data-testid="retake-quiz-button"
-              >
-                <RotateCcw size={13} /> Retake Quiz
-              </button>
-            </>
-          ) : (
-            <>
-              <p className="font-heading font-extrabold text-4xl sm:text-5xl text-brand/30 leading-none">
-                —<span className="text-2xl sm:text-3xl">%</span>
-              </p>
-              <p className="text-xs sm:text-sm text-muted2 mt-1">Complete the career quiz to see your personalized match score.</p>
-              <button
-                onClick={() => navigate("/onboarding")}
-                className="mt-2 inline-flex items-center gap-2 bg-brand text-white font-semibold px-4 py-2.5 rounded-full text-sm shadow-brand w-fit"
-              >
-                <Sparkles size={14} /> Take Career Quiz
-              </button>
-            </>
-          )}
-        </div>
+                <p className="text-[10px] sm:text-sm text-muted2 mt-0.5">Complete the career quiz to see your score.</p>
+                <button
+                  onClick={() => navigate("/onboarding")}
+                  className="mt-1.5 inline-flex items-center gap-1.5 bg-brand text-white font-semibold px-3 py-2 rounded-full text-xs sm:text-sm shadow-brand w-fit"
+                >
+                  <Sparkles size={13} /> Take Quiz
+                </button>
+              </>
+            )}
+          </div>
 
-        <div className="h-44 sm:h-56 w-full max-w-full min-w-0 overflow-hidden">
-          <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><div className="w-8 h-8 border-3 border-brand-200 border-t-brand rounded-full animate-spin" /></div>}>
-            <LazyRadarChart
-              data={radar}
-              hasRealData={hasRealData}
-              chartKey={`${overall ?? "na"}-${user?.updated_at || "fresh"}`}
-            />
-          </Suspense>
+          <div className="h-36 sm:h-48 w-full max-w-full min-w-0 overflow-hidden">
+            <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><div className="w-6 h-6 border-2 border-brand-200 border-t-brand rounded-full animate-spin" /></div>}>
+              <LazyRadarChart
+                data={radar}
+                hasRealData={hasRealData}
+                chartKey={`${overall ?? "na"}-${user?.updated_at || "fresh"}`}
+              />
+            </Suspense>
+          </div>
         </div>
       </div>
 
@@ -383,25 +367,35 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div className="mt-4 sm:mt-7 glass-card rounded-2xl sm:rounded-3xl p-3 sm:p-7" data-testid="dashboard-roadmap-card">
+      <div className="mt-4 sm:mt-7 glass-card rounded-2xl sm:rounded-3xl p-3 sm:p-6" data-testid="dashboard-roadmap-card">
         <div className="flex items-center justify-between gap-2">
-          <h2 className="font-heading font-bold text-sm sm:text-xl text-ink">Requirements Snapshot</h2>
+          <h2 className="font-heading font-bold text-sm sm:text-xl text-ink">Your Personalized Roadmap</h2>
           <Link to="/roadmap" className="text-[11px] sm:text-sm font-semibold text-brand whitespace-nowrap">
-            Details →
+            View roadmap →
           </Link>
         </div>
-        <div className="mt-2.5 sm:mt-4 grid grid-cols-2 gap-2 sm:gap-3">
-          {REQUIREMENT_SECTIONS.map((section) => (
-            <div key={section.title} className="bg-white border border-line rounded-lg sm:rounded-2xl p-2 sm:p-4">
-              <p className="text-[11px] sm:text-sm font-bold text-ink leading-tight">{section.title}</p>
-              {section.points.map((point) => (
-                <p key={point} className="text-[10px] sm:text-xs text-muted2 mt-0.5 sm:mt-1 flex items-start gap-1">
-                  <CheckCircle2 size={10} className="text-brand mt-0.5 shrink-0 sm:w-3 sm:h-3" />
-                  <span className="min-w-0 line-clamp-2">{point}</span>
+        <div className="mt-3 sm:mt-5 grid grid-cols-4 gap-1 sm:gap-3 relative">
+          {/* Connector line */}
+          <div className="absolute top-[18px] sm:top-[22px] left-[12.5%] right-[12.5%] h-0.5 bg-brand-100 z-0" />
+          {ROADMAP_STEPS.map((step) => {
+            const isCompleted = step.n === 1 && hasRealData;
+            return (
+              <div key={step.n} className="flex flex-col items-center text-center relative z-10">
+                <div
+                  className={`w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center ${
+                    isCompleted ? "bg-brand text-white" : "bg-white border-2 border-brand-100 text-muted2"
+                  }`}
+                >
+                  {isCompleted ? <CheckCircle2 size={18} /> : <step.icon size={16} className="sm:w-[18px] sm:h-[18px]" />}
+                </div>
+                <p className="text-[10px] sm:text-xs font-bold mt-1.5" style={{ color: step.color }}>
+                  Step {step.n}
                 </p>
-              ))}
-            </div>
-          ))}
+                <p className="font-heading font-bold text-[11px] sm:text-sm text-ink leading-tight">{step.label}</p>
+                <p className="text-[9px] sm:text-[11px] text-muted2 mt-0.5 leading-tight hidden sm:block">{step.desc}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
 

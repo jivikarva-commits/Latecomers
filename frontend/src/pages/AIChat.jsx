@@ -285,18 +285,18 @@ export default function AIChat() {
   return (
     <div className="h-[100dvh] md:h-screen p-0 md:p-4 lg:p-6" data-testid="ai-chat-page">
       <div className="h-full max-w-5xl mx-auto glass-card md:rounded-3xl md:overflow-hidden flex flex-col">
-        <div className="bg-white/95 border-b border-line px-4 py-3 flex items-center gap-3">
-          <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-ink" data-testid="chat-back-button">
-            <ArrowLeft size={20} />
+        <div className="bg-white/95 border-b border-line px-3 sm:px-4 py-2.5 sm:py-3 flex items-center gap-2 sm:gap-3">
+          <button onClick={() => navigate(-1)} className="p-1.5 -ml-1 text-ink" data-testid="chat-back-button">
+            <ArrowLeft size={18} />
           </button>
-          <div className="flex-1">
-            <h1 className="font-heading font-bold text-base sm:text-lg text-ink">AI Chat</h1>
-            <p className="text-xs text-muted2">
+          <div className="flex-1 min-w-0">
+            <h1 className="font-heading font-bold text-sm sm:text-lg text-ink">AI Chat</h1>
+            <p className="text-[10px] sm:text-xs text-muted2 truncate">
               {careerContext?.careerTitle ? `Career context: ${careerContext.careerTitle}` : "Your career companion powered by AI"}
             </p>
           </div>
-          <button className="p-2 text-muted2" data-testid="chat-history-button"><History size={20} /></button>
-          <button className="p-2 text-muted2"><MoreVertical size={20} /></button>
+          <button className="p-1.5 text-muted2" data-testid="chat-history-button"><History size={18} /></button>
+          <button className="p-1.5 text-muted2"><MoreVertical size={18} /></button>
         </div>
 
         <div className="flex-1 overflow-y-auto px-3 sm:px-5 py-4 bg-brand-50/45">
@@ -354,12 +354,12 @@ export default function AIChat() {
           </div>
         </div>
 
-        <div className="bg-white border-t border-line px-3 sm:px-5 py-3">
-          <div className="max-w-3xl mx-auto flex items-center gap-2">
-            <button className="p-2.5 rounded-full bg-brand-50 text-brand" data-testid="chat-plus-button">
-              <Plus size={18} />
+        <div className="bg-white border-t border-line px-2.5 sm:px-5 py-2 sm:py-3" style={{ paddingBottom: "max(env(safe-area-inset-bottom, 8px), 8px)" }}>
+          <div className="max-w-3xl mx-auto flex items-center gap-1.5 sm:gap-2">
+            <button className="p-2 rounded-full bg-brand-50 text-brand shrink-0" data-testid="chat-plus-button">
+              <Plus size={16} />
             </button>
-            <div className="flex-1 relative">
+            <div className="flex-1 relative min-w-0">
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -369,21 +369,21 @@ export default function AIChat() {
                     send();
                   }
                 }}
-                placeholder={careerContext?.careerTitle ? `Ask anything about ${careerContext.careerTitle}...` : "Ask anything about your career..."}
-                className="w-full bg-brand-50 border border-brand-100 rounded-full pl-4 pr-12 py-3 text-sm sm:text-[15px] placeholder:text-muted2"
+                placeholder={careerContext?.careerTitle ? `Ask about ${careerContext.careerTitle}...` : "Ask anything about your career..."}
+                className="w-full bg-brand-50 border border-brand-100 rounded-full pl-3.5 pr-10 py-2.5 sm:py-3 text-xs sm:text-[15px] placeholder:text-muted2"
                 data-testid="chat-input"
               />
               <button className="absolute right-3 top-1/2 -translate-y-1/2 text-muted2">
-                <Mic size={16} />
+                <Mic size={15} />
               </button>
             </div>
             <button
               onClick={() => send()}
               disabled={!input.trim() || isGenerating}
-              className="p-3 rounded-full bg-brand text-white disabled:opacity-50"
+              className="p-2.5 sm:p-3 rounded-full bg-brand text-white disabled:opacity-50 shrink-0"
               data-testid="chat-send-button"
             >
-              <Send size={16} />
+              <Send size={15} />
             </button>
           </div>
         </div>
