@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, lazy } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import * as Icons from "lucide-react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -8,18 +7,48 @@ import {
   BookOpen,
   Bookmark,
   Bot,
+  Brain,
   Briefcase,
   CheckCircle2,
   ChevronRight,
+  Code2,
+  Database,
   Globe,
   IndianRupee,
+  Layers3,
+  LayoutGrid,
+  LineChart,
+  MessageCircle,
+  RefreshCcw,
+  Rocket,
   Search,
+  ShieldCheck,
   Sparkles,
   Star,
   Target,
   TrendingUp,
   Users,
 } from "lucide-react";
+
+// Icon cache to avoid import * as Icons
+const iconCache = {
+  ArrowLeft, ArrowRight, BarChart3, BookOpen, Bookmark, Bot, Brain, Briefcase,
+  CheckCircle2, ChevronRight, Code2, Database, Globe, IndianRupee, Layers3,
+  LayoutGrid, LineChart, MessageCircle, RefreshCcw, Rocket, Search, ShieldCheck,
+  Sparkles, Star, Target, TrendingUp, Users,
+};
+let fullIconsPromise = null;
+function loadFullIcons() {
+  if (!fullIconsPromise) fullIconsPromise = import("lucide-react");
+  return fullIconsPromise;
+}
+function getIcon(name) {
+  if (iconCache[name]) return iconCache[name];
+  loadFullIcons().then((mod) => { if (mod[name]) iconCache[name] = mod[name]; });
+  return Briefcase;
+}
+// Replacement for Icons[name]
+const Icons = new Proxy(iconCache, { get: (t, p) => t[p] || getIcon(p) || Briefcase });
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
@@ -431,40 +460,40 @@ function getSkillCategory(name = "") {
 
 function AskAiCta({ title, body, color, onClick }) {
   return (
-    <div className="bg-brand-50 border border-brand-100 rounded-3xl p-4 sm:p-5 flex items-center gap-3">
-      <div className="w-12 h-12 rounded-2xl cc-logo-gradient flex items-center justify-center shrink-0 shadow-brand">
-        <Bot size={21} className="text-white" />
+    <div className="bg-brand-50 border border-brand-100 rounded-2xl p-3 sm:p-4 flex items-center gap-2.5">
+      <div className="w-9 h-9 rounded-xl cc-logo-gradient flex items-center justify-center shrink-0 shadow-brand">
+        <Bot size={15} className="text-white" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="font-heading font-bold text-base text-ink">{title}</p>
-        <p className="text-sm text-muted2 mt-0.5">{body}</p>
+        <p className="font-heading font-bold text-xs sm:text-sm text-ink">{title}</p>
+        <p className="text-[10px] sm:text-xs text-muted2 mt-0.5">{body}</p>
       </div>
       <button
         onClick={onClick}
-        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl border bg-white text-sm font-bold shrink-0"
+        className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border bg-white text-xs font-bold shrink-0"
         style={{ borderColor: `${color}70`, color }}
       >
-        <Bot size={16} /> Ask AI
+        <Bot size={13} /> Ask AI
       </button>
     </div>
   );
 }
 
 function CircleScore({ value, color }) {
-  const size = 96;
-  const r = 42;
+  const size = 56;
+  const r = 22;
   const circumference = 2 * Math.PI * r;
   const dash = (Math.max(0, Math.min(100, value)) / 100) * circumference;
 
   return (
-    <div className="relative w-24 h-24 shrink-0">
+    <div className="relative w-14 h-14 shrink-0">
       <svg width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#E8E4FF" strokeWidth="8" />
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth="8" strokeDasharray={`${dash} ${circumference}`} strokeLinecap="round" />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#E8E4FF" strokeWidth="4" />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth="4" strokeDasharray={`${dash} ${circumference}`} strokeLinecap="round" />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-heading font-extrabold text-2xl leading-none" style={{ color }}>{value}%</span>
-        <span className="text-[10px] text-muted2 font-semibold mt-0.5">Match Score</span>
+        <span className="font-heading font-extrabold text-sm leading-none" style={{ color }}>{value}%</span>
+        <span className="text-[7px] text-muted2 font-semibold">Match</span>
       </div>
     </div>
   );
@@ -505,12 +534,12 @@ function CareerHeroGraphic({ color }) {
 
 function ToolBadge({ name }) {
   const n = name.toLowerCase();
-  if (n.includes("python")) return <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-extrabold">Py</div>;
-  if (n.includes("sql")) return <div className="w-10 h-10 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center text-[10px] font-extrabold">SQL</div>;
-  if (n.includes("tensor")) return <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center text-[10px] font-extrabold">TF</div>;
-  if (n.includes("scikit")) return <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-[10px] font-extrabold">SK</div>;
-  if (n.includes("docker")) return <div className="w-10 h-10 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center text-[10px] font-extrabold">DK</div>;
-  return <div className="w-10 h-10 rounded-xl bg-brand-50 text-brand flex items-center justify-center text-[10px] font-extrabold">{name.slice(0, 2).toUpperCase()}</div>;
+  if (n.includes("python")) return <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-extrabold">Py</div>;
+  if (n.includes("sql")) return <div className="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center text-[10px] font-extrabold">SQL</div>;
+  if (n.includes("tensor")) return <div className="w-8 h-8 rounded-lg bg-orange-100 text-orange-700 flex items-center justify-center text-[10px] font-extrabold">TF</div>;
+  if (n.includes("scikit")) return <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-[10px] font-extrabold">SK</div>;
+  if (n.includes("docker")) return <div className="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-[10px] font-extrabold">DK</div>;
+  return <div className="w-8 h-8 rounded-lg bg-brand-50 text-brand flex items-center justify-center text-[10px] font-extrabold">{name.slice(0, 2).toUpperCase()}</div>;
 }
 
 export default function CareerDetail() {
@@ -616,7 +645,7 @@ export default function CareerDetail() {
 
                 <div className="mt-5 bg-white/80 border border-line rounded-2xl p-4 text-left">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${activeStep.color}18`, color: activeStep.color }}>
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${activeStep.color}18`, color: activeStep.color }}>
                       <LoadingIcon size={19} />
                     </div>
                     <div>
@@ -772,134 +801,127 @@ export default function CareerDetail() {
   };
 
   return (
-    <div className="max-w-[1100px] mx-auto pb-24 md:pb-10" data-testid="career-detail-page">
-      <div className="bg-white/95 border-b border-line px-4 sm:px-6 py-4 sticky top-0 z-20 backdrop-blur">
-        <div className="flex items-center gap-3">
-          <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-ink shrink-0">
-            <ArrowLeft size={20} />
+    <div className="max-w-[1100px] mx-auto pb-24 md:pb-10 overflow-x-hidden w-full min-w-0" data-testid="career-detail-page">
+      <div className="bg-white/95 border-b border-line px-3 sm:px-5 py-2.5 sticky top-0 z-20 backdrop-blur">
+        <div className="flex items-center gap-2">
+          <button onClick={() => navigate(-1)} className="p-1.5 -ml-1 text-ink shrink-0">
+            <ArrowLeft size={18} />
           </button>
-          <p className="flex-1 font-heading font-bold text-base sm:text-lg text-ink truncate">{career.title}</p>
-          <button onClick={toggleSave} className={`p-2 rounded-full ${isSaved ? "text-brand" : "text-muted2"}`}>
-            <Bookmark size={20} fill={isSaved ? iconColor : "none"} />
+          <p className="flex-1 font-heading font-bold text-sm sm:text-base text-ink truncate">{career.title}</p>
+          <button onClick={toggleSave} className={`p-1.5 rounded-full ${isSaved ? "text-brand" : "text-muted2"}`}>
+            <Bookmark size={16} fill={isSaved ? iconColor : "none"} />
           </button>
         </div>
       </div>
 
-      <div className="px-4 sm:px-6 pt-6">
-        <div className="glass-card rounded-3xl p-5 sm:p-6">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex items-start gap-4 flex-1 min-w-0">
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm shrink-0" style={{ background: `${iconColor}24`, color: iconColor }}>
-                <CareerIcon size={30} />
+      <div className="px-3 sm:px-5 pt-4">
+        <div className="glass-card rounded-2xl p-3 sm:p-4">
+          <div className="flex items-start gap-3">
+            <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center shadow-sm shrink-0" style={{ background: `${iconColor}24`, color: iconColor }}>
+              <CareerIcon size={22} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <h1 className="font-heading font-extrabold text-base sm:text-xl text-ink">{career.title}</h1>
+                {aiMatch && (
+                  <span className="px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold">✨ {aiMatch.matchPercent}%</span>
+                )}
               </div>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h1 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink">{career.title}</h1>
-                  {aiMatch && (
-                    <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">✨ {aiMatch.matchPercent}% Match</span>
-                  )}
-                </div>
-                <p className="text-sm sm:text-base text-muted2 mt-2 leading-relaxed">{career.description}</p>
-                <div className="flex gap-2 mt-3 flex-wrap">
-                  {(career.tags || []).map((tag) => (
-                    <span key={tag} className="px-2.5 py-1 rounded-full text-xs font-semibold border border-line text-muted2">{tag}</span>
-                  ))}
-                </div>
+              <p className="text-[11px] sm:text-xs text-muted2 mt-1 leading-snug line-clamp-2">{career.description}</p>
+              <div className="flex gap-1 mt-1.5 flex-wrap">
+                {(career.tags || []).slice(0, 3).map((tag) => (
+                  <span key={tag} className="px-1.5 py-px rounded-full text-[9px] sm:text-[10px] font-semibold border border-line text-muted2">{tag}</span>
+                ))}
               </div>
             </div>
-            <CareerHeroGraphic color={iconColor} />
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-5 border-t border-line pt-5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3 border-t border-line pt-3">
             {statItems.map((item) => (
-              <div key={item.label} className="rounded-2xl bg-white border border-line p-3 sm:p-4">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-2" style={{ background: `${iconColor}1e`, color: iconColor }}>
-                  <item.icon size={16} />
+              <div key={item.label} className="rounded-xl bg-white border border-line p-2 sm:p-2.5 flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${iconColor}1e`, color: iconColor }}>
+                  <item.icon size={13} />
                 </div>
-                <p className="text-[11px] text-muted2">{item.label}</p>
-                <p className="text-sm font-bold text-ink mt-0.5">{item.value}</p>
-                {item.sub && <p className="text-[11px] font-semibold text-emerald-600 mt-0.5">{item.sub}</p>}
+                <div className="min-w-0">
+                  <p className="text-[9px] sm:text-[10px] text-muted2 truncate">{item.label}</p>
+                  <p className="text-[11px] sm:text-xs font-bold text-ink">{item.value}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="mt-4 overflow-x-auto no-scrollbar">
-          <div className="w-max min-w-full bg-white border border-line rounded-2xl p-1 flex gap-1">
-            {TAB_ITEMS.map((item) => (
-              (() => {
-                const TabIcon = Icons[item.icon] || Sparkles;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => setTab(item.id)}
-                    className={`px-3 sm:px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition inline-flex items-center gap-1.5 ${
-                      tab === item.id ? "text-white shadow-sm" : "text-muted2 hover:text-ink"
-                    }`}
-                    style={tab === item.id ? { background: iconColor } : {}}
-                  >
-                    <TabIcon size={14} />
-                    {item.label}
-                  </button>
-                );
-              })()
-            ))}
+        <div className="mt-3 overflow-x-auto no-scrollbar -mx-3 px-3 sm:mx-0 sm:px-0">
+          <div className="w-max min-w-full bg-white border border-line rounded-xl p-0.5 flex gap-0.5">
+            {TAB_ITEMS.map((item) => {
+              const TabIcon = Icons[item.icon] || Sparkles;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setTab(item.id)}
+                  className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold whitespace-nowrap transition inline-flex items-center gap-1 ${
+                    tab === item.id ? "text-white shadow-sm" : "text-muted2 hover:text-ink"
+                  }`}
+                  style={tab === item.id ? { background: iconColor } : {}}
+                >
+                  <TabIcon size={12} />
+                  {item.label}
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {tab === "overview" && (
-          <div className="mt-4 space-y-4">
+          <div className="mt-3 space-y-3">
             {aiMatch?.reasons?.length > 0 && (
-              <div className="glass-card rounded-3xl p-5 sm:p-6">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: `${iconColor}20`, color: iconColor }}>
-                        <Star size={15} />
+              <div className="glass-card rounded-2xl p-3 sm:p-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: `${iconColor}20`, color: iconColor }}>
+                        <Star size={12} />
                       </div>
-                      <p className="font-heading font-bold text-lg text-ink">Why this is a great fit for you</p>
+                      <p className="font-heading font-bold text-xs sm:text-sm text-ink">Why this fits you</p>
                     </div>
-                    <ul className="space-y-2">
+                    <ul className="space-y-1">
                       {aiMatch.reasons.map((reason, index) => (
-                        <li key={index} className="flex items-start gap-2 text-sm sm:text-base text-ink">
-                          <CheckCircle2 size={17} className="shrink-0 mt-0.5" style={{ color: iconColor }} />
+                        <li key={index} className="flex items-start gap-1.5 text-[11px] sm:text-xs text-ink">
+                          <CheckCircle2 size={12} className="shrink-0 mt-0.5" style={{ color: iconColor }} />
                           {reason}
                         </li>
                       ))}
                     </ul>
-                    <Link to="/careers" className="inline-flex items-center gap-1 text-sm font-semibold mt-3" style={{ color: iconColor }}>
-                      View full match analysis <ArrowRight size={14} />
-                    </Link>
                   </div>
                   <CircleScore value={aiMatch.matchPercent} color={iconColor} />
                 </div>
               </div>
             )}
 
-            <div className="glass-card rounded-3xl p-5 sm:p-6">
-              <p className="font-heading font-bold text-lg text-ink">What does a {career.title} do?</p>
-              <p className="text-sm sm:text-base text-muted2 leading-relaxed mt-1">{career.overview}</p>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+            <div className="glass-card rounded-2xl p-3 sm:p-4">
+              <p className="font-heading font-bold text-sm text-ink">What does a {career.title} do?</p>
+              <p className="text-[11px] sm:text-xs text-muted2 leading-snug mt-1 line-clamp-3">{career.overview}</p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3">
                 {activities.map((activity, index) => {
                   const iconSet = [Target, Search, BarChart3, BookOpen];
                   const Icon = iconSet[index % iconSet.length];
                   return (
-                    <div key={activity} className="bg-white border border-line rounded-2xl p-3 sm:p-4 text-center">
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-2" style={{ background: `${iconColor}1a`, color: iconColor }}>
-                        <Icon size={17} />
+                    <div key={activity} className="bg-white border border-line rounded-xl p-2 sm:p-2.5 text-center">
+                      <div className="w-7 h-7 rounded-lg flex items-center justify-center mx-auto mb-1" style={{ background: `${iconColor}1a`, color: iconColor }}>
+                        <Icon size={13} />
                       </div>
-                      <p className="text-xs sm:text-sm font-semibold text-ink leading-tight">{activity}</p>
+                      <p className="text-[10px] sm:text-xs font-semibold text-ink leading-tight">{activity}</p>
                     </div>
                   );
                 })}
               </div>
             </div>
 
-            <div className="glass-card rounded-3xl p-5 sm:p-6">
-              <p className="font-heading font-bold text-lg text-ink">Top Skills</p>
-              <div className="flex flex-wrap gap-2 mt-3">
+            <div className="glass-card rounded-2xl p-3 sm:p-4">
+              <p className="font-heading font-bold text-sm text-ink">Top Skills</p>
+              <div className="flex flex-wrap gap-1.5 mt-2">
                 {skills.slice(0, 8).map((skill) => (
-                  <span key={skill.name} className="px-3 py-1.5 rounded-full text-sm font-semibold border" style={{ borderColor: `${iconColor}52`, color: iconColor, background: `${iconColor}12` }}>
+                  <span key={skill.name} className="px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold border" style={{ borderColor: `${iconColor}52`, color: iconColor, background: `${iconColor}12` }}>
                     {skill.name}
                   </span>
                 ))}
@@ -916,45 +938,41 @@ export default function CareerDetail() {
         )}
 
         {tab === "skills" && (
-          <div className="mt-4 space-y-4">
-            <div className="glass-card rounded-3xl p-5 sm:p-6">
-              <p className="font-heading font-bold text-xl text-ink">Essential Skills</p>
-              <p className="text-sm text-muted2 mt-1">Key capabilities employers expect for {career.title} roles.</p>
-              <div className="mt-3 flex gap-2 overflow-x-auto no-scrollbar pb-1">
+          <div className="mt-3 space-y-3">
+            <div className="glass-card rounded-2xl p-3 sm:p-4">
+              <p className="font-heading font-bold text-sm sm:text-base text-ink">Essential Skills</p>
+              <p className="text-[10px] sm:text-xs text-muted2 mt-0.5">Key capabilities employers expect for {career.title} roles.</p>
+              <div className="mt-2 flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
                 {["All Skills", "Technical", "Analytical", "Tool", "Soft Skill"].map((label) => (
-                  <span key={label} className="px-3 py-1.5 rounded-full bg-white border border-line text-xs font-semibold text-muted2 whitespace-nowrap">
+                  <span key={label} className="px-2 py-1 rounded-full bg-white border border-line text-[10px] font-semibold text-muted2 whitespace-nowrap">
                     {label}
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="glass-card rounded-3xl overflow-hidden">
+            <div className="glass-card rounded-2xl overflow-hidden">
               {skills.map((skill, index) => {
                 const skillCategory = getSkillCategory(skill.name);
                 const skillIconNames = ["Code2", "Database", "BarChart3", "Brain", "LineChart", "MessageCircle", "ShieldCheck"];
                 const SkillIcon = Icons[skillIconNames[index % skillIconNames.length]] || Sparkles;
                 return (
-                  <div key={skill.name} className="bg-white border-b border-line last:border-b-0 px-4 sm:px-5 py-4 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0" style={{ background: `${iconColor}14`, color: iconColor }}>
-                      <SkillIcon size={22} />
+                  <div key={skill.name} className="bg-white border-b border-line last:border-b-0 px-3 sm:px-4 py-2.5 flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0" style={{ background: `${iconColor}14`, color: iconColor }}>
+                      <SkillIcon size={15} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <p className="font-heading font-bold text-base text-ink">{skill.name}</p>
-                        <span className="px-2 py-0.5 rounded-full text-[11px] font-bold" style={{ background: `${iconColor}12`, color: iconColor }}>
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <p className="font-heading font-bold text-xs sm:text-sm text-ink">{skill.name}</p>
+                        <span className="px-1.5 py-px rounded-full text-[9px] font-bold" style={{ background: `${iconColor}12`, color: iconColor }}>
                           {skillCategory}
                         </span>
                       </div>
-                      <p className="text-sm text-muted2 mt-1">
-                        {skill.status === "Essential" ? "Core skill for hiring conversations and daily work." : "Useful differentiator for stronger applications and projects."}
+                      <p className="text-[10px] text-muted2 mt-0.5 line-clamp-1">
+                        {skill.status === "Essential" ? "Core skill for hiring and daily work." : "Differentiator for stronger applications."}
                       </p>
                     </div>
-                    <div className="hidden sm:block text-right">
-                      <p className="text-xs text-muted2">Priority</p>
-                      <p className="font-bold text-ink">{skill.status}</p>
-                    </div>
-                    <ChevronRight size={17} className="text-muted2 shrink-0" />
+                    <ChevronRight size={13} className="text-muted2 shrink-0" />
                   </div>
                 );
               })}
@@ -970,13 +988,13 @@ export default function CareerDetail() {
         )}
 
         {tab === "roadmap" && (
-          <div className="mt-4 space-y-4">
-            <div className="glass-card rounded-3xl p-5 sm:p-6">
-              <p className="font-heading font-bold text-xl text-ink">Your Personalized Roadmap</p>
-              <p className="text-sm text-muted2 mt-1">A step-by-step path to become a successful {career.title}.</p>
-              <div className="mt-3 px-3 py-2 rounded-2xl bg-brand-50 border border-brand-100 inline-flex items-center gap-2">
-                <Star size={13} className="text-brand" />
-                <p className="text-xs font-semibold text-brand">Tailored to your profile and goals</p>
+          <div className="mt-3 space-y-3">
+            <div className="glass-card rounded-2xl p-3 sm:p-4">
+              <p className="font-heading font-bold text-sm sm:text-base text-ink">Your Personalized Roadmap</p>
+              <p className="text-[10px] sm:text-xs text-muted2 mt-0.5">Step-by-step path to become a successful {career.title}.</p>
+              <div className="mt-2 px-2 py-1 rounded-full bg-brand-50 border border-brand-100 inline-flex items-center gap-1.5">
+                <Star size={10} className="text-brand" />
+                <p className="text-[10px] font-semibold text-brand">Tailored to your profile</p>
               </div>
             </div>
 
@@ -985,52 +1003,48 @@ export default function CareerDetail() {
               const stageColor = STAGE_COLORS[idx % STAGE_COLORS.length];
 
               return (
-                <div key={stage.stageNum} className="flex gap-3 sm:gap-4">
-                  <div className="flex flex-col items-center shrink-0">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center" style={{ background: `${stageColor}17`, color: stageColor }}>
-                      <StageIcon size={21} />
+                <div key={stage.stageNum} className="flex gap-2.5 sm:gap-3">
+                  <div className="flex flex-col items-center shrink-0 w-14 sm:w-16">
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center" style={{ background: `${stageColor}17`, color: stageColor }}>
+                      <StageIcon size={16} />
                     </div>
-                    <p className="text-[10px] font-bold mt-1" style={{ color: stageColor }}>Stage {stage.stageNum}</p>
-                    <p className="text-[10px] text-muted2">{stage.duration}</p>
-                    {idx < roadmapStages.length - 1 && <div className="w-0.5 flex-1 min-h-6 bg-line mt-1 rounded-full" />}
+                    <p className="text-[9px] font-bold mt-0.5" style={{ color: stageColor }}>Stage {stage.stageNum}</p>
+                    <p className="text-[8px] sm:text-[9px] text-muted2 text-center">{stage.duration}</p>
+                    {idx < roadmapStages.length - 1 && (
+                      <div className="flex flex-col items-center mt-1">
+                        <div className="w-1.5 h-1.5 rounded-full" style={{ background: stageColor }} />
+                        <div className="w-0.5 flex-1 min-h-[20px] bg-brand-100" />
+                      </div>
+                    )}
                   </div>
 
-                  <div className="glass-card rounded-3xl p-4 sm:p-5 flex-1 mb-3">
-                    <div className="flex items-start gap-3">
-                      <div className="flex-1">
-                        <p className="font-heading font-bold text-lg text-ink">{stage.title}</p>
-                        <p className="text-sm text-muted2 mt-1 leading-relaxed">{stage.description}</p>
-                        {stage.skills?.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 mt-3">
-                            {stage.skills.slice(0, 5).map((skill) => (
-                              <span key={skill} className="px-2 py-0.5 rounded-full text-[11px] font-semibold" style={{ background: `${stageColor}16`, color: stageColor }}>
-                                {skill}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                        <div className="mt-3 inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-semibold" style={{ background: `${stageColor}16`, color: stageColor }}>
-                          Estimated timeline: {stage.duration}
-                        </div>
+                  <div className="glass-card rounded-xl p-2.5 sm:p-3 flex-1 mb-2">
+                    <p className="font-heading font-bold text-xs sm:text-sm text-ink leading-tight">{stage.title}</p>
+                    <p className="text-[10px] sm:text-xs text-muted2 mt-0.5 leading-snug line-clamp-2">{stage.description}</p>
+                    {stage.skills?.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-1.5">
+                        {stage.skills.slice(0, 4).map((skill) => (
+                          <span key={skill} className="px-1.5 py-px rounded-full text-[9px] font-semibold" style={{ background: `${stageColor}16`, color: stageColor }}>
+                            {skill}
+                          </span>
+                        ))}
                       </div>
-
-                      <p className="text-[11px] text-muted2 shrink-0">View requirements</p>
-                    </div>
+                    )}
                   </div>
                 </div>
               );
             })}
 
-            <div className="bg-brand-50 border border-brand-100 rounded-3xl p-5 flex items-center gap-3">
-              <div className="w-11 h-11 rounded-2xl bg-white border border-brand-100 text-brand flex items-center justify-center shrink-0">
-                <Sparkles size={18} />
+            <div className="bg-brand-50 border border-brand-100 rounded-2xl p-3 flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-white border border-brand-100 text-brand flex items-center justify-center shrink-0">
+                <Sparkles size={14} />
               </div>
-              <div className="flex-1">
-                <p className="font-heading font-bold text-base text-ink">Next Step for You</p>
-                <p className="text-sm text-muted2 mt-0.5">Start from Stage 1 requirements and build one portfolio milestone each week.</p>
+              <div className="flex-1 min-w-0">
+                <p className="font-heading font-bold text-xs sm:text-sm text-ink">Next Step for You</p>
+                <p className="text-[10px] sm:text-xs text-muted2 mt-0.5">Start Stage 1 and build one milestone each week.</p>
               </div>
-              <Link to="/roadmap" className="hidden sm:inline-flex items-center gap-1.5 bg-brand text-white font-semibold text-sm px-4 py-2.5 rounded-full shadow-brand">
-                View Requirements <ArrowRight size={14} />
+              <Link to="/roadmap" className="hidden sm:inline-flex items-center gap-1 bg-brand text-white font-semibold text-[11px] px-3 py-2 rounded-full shadow-brand shrink-0">
+                View <ArrowRight size={11} />
               </Link>
             </div>
 
@@ -1044,47 +1058,32 @@ export default function CareerDetail() {
         )}
 
         {tab === "jobs" && (
-          <div className="mt-4 space-y-4">
-            <div className="glass-card rounded-3xl p-5 sm:p-6">
-              <p className="font-heading font-bold text-xl text-ink">Job Roles & Salary Insights</p>
-              <p className="text-sm text-muted2 mt-1">Explore AI-curated role paths, descriptions, and salary ranges for this career.</p>
-              <div className="mt-3 px-3 py-2 rounded-2xl bg-brand-50 border border-brand-100 text-xs font-medium text-muted2 inline-flex items-center gap-2">
-                <Sparkles size={13} className="text-brand" />
-                Salary ranges are indicative and vary by company, location, and specialization.
-              </div>
+          <div className="mt-3 space-y-3">
+            <div className="glass-card rounded-2xl p-3 sm:p-4">
+              <p className="font-heading font-bold text-sm sm:text-base text-ink">Job Roles & Salary</p>
+              <p className="text-[10px] sm:text-xs text-muted2 mt-0.5">AI-curated role paths and salary ranges.</p>
             </div>
 
-            <div className="glass-card rounded-3xl overflow-hidden">
-              <div className="hidden md:grid grid-cols-[140px_1fr_220px] gap-3 px-5 py-3 border-b border-line bg-white/70">
-                <p className="text-xs uppercase tracking-wide text-muted2 font-bold">Experience Level</p>
-                <p className="text-xs uppercase tracking-wide text-muted2 font-bold">Job Role & Description</p>
-                <p className="text-xs uppercase tracking-wide text-muted2 font-bold">Average Package (INR/Year)</p>
-              </div>
-
+            <div className="glass-card rounded-2xl overflow-hidden">
               {jobs.map((job, idx) => {
                 const color = levelColor(job.level);
                 return (
-                  <div key={`${job.level}-${idx}`} className="grid md:grid-cols-[140px_1fr_220px] gap-3 px-5 py-4 border-b border-line last:border-b-0 bg-white">
-                    <div className="flex md:block items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm" style={{ background: `${color}1f`, color }}>
-                        {idx + 1}
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-ink">{job.level}</p>
-                        <p className="text-xs text-muted2">{job.experience}</p>
-                      </div>
+                  <div key={`${job.level}-${idx}`} className="px-3 sm:px-4 py-2.5 border-b border-line last:border-b-0 bg-white flex items-start gap-2.5">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-[11px] shrink-0" style={{ background: `${color}1f`, color }}>
+                      {idx + 1}
                     </div>
-
-                    <div>
-                      <p className="font-heading font-bold text-lg text-ink">{job.title}</p>
-                      <p className="text-sm text-muted2 mt-1 leading-relaxed">{job.desc}</p>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <p className="font-heading font-bold text-xs sm:text-sm text-ink">{job.title}</p>
+                        <span className="text-[9px] text-muted2">({job.experience})</span>
+                      </div>
+                      <p className="text-[10px] text-muted2 mt-0.5 line-clamp-1">{job.desc}</p>
                     </div>
-
-                    <div className="md:text-right">
-                      <p className="font-heading font-extrabold text-xl text-ink">
-                        {formatLpa(job.salaryMin)} - {formatLpa(job.salaryMax)}
+                    <div className="text-right shrink-0">
+                      <p className="font-heading font-bold text-xs sm:text-sm text-ink">
+                        {formatLpa(job.salaryMin)}-{formatLpa(job.salaryMax)}
                       </p>
-                      <p className="text-xs text-muted2 mt-0.5">Indicative CTC range</p>
+                      <p className="text-[9px] text-muted2">CTC/yr</p>
                     </div>
                   </div>
                 );
@@ -1101,75 +1100,58 @@ export default function CareerDetail() {
         )}
 
         {tab === "insights" && (
-          <div className="mt-4 space-y-4">
-            <div className="glass-card rounded-3xl p-5 sm:p-6">
-              <p className="font-heading font-bold text-xl text-ink">{career.title} Insights</p>
-              <p className="text-sm text-muted2 mt-1">Industry trends, hiring demand, and tool ecosystem.</p>
-            </div>
-
-            <div className="glass-card rounded-3xl p-5 sm:p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: `${iconColor}1f`, color: iconColor }}>
-                  <Globe size={17} />
+          <div className="mt-3 space-y-3">
+            <div className="glass-card rounded-2xl p-3 sm:p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: `${iconColor}1f`, color: iconColor }}>
+                  <Globe size={13} />
                 </div>
-                <div>
-                  <p className="font-heading font-bold text-base text-ink">Current Demand in the World</p>
-                  <p className="text-xs text-muted2">Global outlook for {career.title} roles</p>
-                </div>
+                <p className="font-heading font-bold text-sm text-ink">Market Demand</p>
               </div>
-
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                <div className="rounded-2xl p-4 bg-emerald-50 border border-emerald-100 min-h-[132px]">
-                  <p className="text-xs text-muted2">Global Demand</p>
-                  <p className="font-semibold text-emerald-700 text-sm leading-relaxed mt-2">{career.insights?.globalDemand || career.demand || "High"}</p>
-                  <p className="text-[11px] text-emerald-600 mt-2">Current outlook</p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div className="rounded-xl p-2.5 bg-emerald-50 border border-emerald-100">
+                  <p className="text-[9px] text-muted2">Global Demand</p>
+                  <p className="font-semibold text-emerald-700 text-xs mt-1">{career.insights?.globalDemand || career.demand || "High"}</p>
                 </div>
-                <div className="rounded-2xl p-4 bg-brand-50 border border-brand-100 min-h-[132px]">
-                  <p className="text-xs text-muted2">Job Growth (Global)</p>
-                  <p className="font-heading font-bold text-brand text-2xl mt-2">{asNumber(career.jobGrowth5Y, 12)}%</p>
-                  <p className="text-[11px] text-muted2 mt-1">Next 5 years</p>
+                <div className="rounded-xl p-2.5 bg-brand-50 border border-brand-100">
+                  <p className="text-[9px] text-muted2">Growth (5Y)</p>
+                  <p className="font-heading font-bold text-brand text-base mt-1">{asNumber(career.jobGrowth5Y, 12)}%</p>
                 </div>
-                <div className="rounded-2xl p-4 bg-brand-50 border border-brand-100 min-h-[132px]">
-                  <p className="text-xs text-muted2">Open Positions</p>
-                  <p className="font-semibold text-ink text-sm leading-relaxed mt-2">{career.insights?.openPositions || "10,000+"}</p>
-                  <p className="text-[11px] text-muted2 mt-2">India estimate</p>
+                <div className="rounded-xl p-2.5 bg-brand-50 border border-brand-100">
+                  <p className="text-[9px] text-muted2">Open Positions</p>
+                  <p className="font-semibold text-ink text-xs mt-1">{career.insights?.openPositions || "10,000+"}</p>
                 </div>
-                <div className="rounded-2xl p-4 bg-brand-50 border border-brand-100 min-h-[132px]">
-                  <p className="text-xs text-muted2">Top Hiring Countries</p>
-                  <div className="mt-2 space-y-1.5">
+                <div className="rounded-xl p-2.5 bg-brand-50 border border-brand-100">
+                  <p className="text-[9px] text-muted2">Top Countries</p>
+                  <div className="flex flex-wrap gap-1 mt-1">
                     {countries.map((country) => (
-                      <div key={country.code} className="inline-flex mr-1.5 mb-1.5 items-center gap-1.5 px-2 py-1 rounded-full bg-white border border-line text-[11px] font-semibold text-ink">
-                        <span>{country.flag}</span>
-                        <span>{country.name}</span>
-                      </div>
+                      <span key={country.code} className="inline-flex items-center gap-1 px-1.5 py-px rounded-full bg-white border border-line text-[9px] font-semibold text-ink">
+                        {country.flag} {country.name}
+                      </span>
                     ))}
                   </div>
-                  <p className="text-[11px] text-muted2 mt-1">Role-dependent markets</p>
                 </div>
               </div>
-
-              <div className="mt-4">
-                <p className="text-xs font-semibold text-muted2 mb-2">Top Industries Hiring</p>
-                <div className="flex flex-wrap gap-2">
+              <div className="mt-2.5">
+                <p className="text-[9px] font-semibold text-muted2 mb-1.5">Top Industries</p>
+                <div className="flex flex-wrap gap-1">
                   {topIndustries.map((industry) => (
-                    <span key={industry} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-line text-xs font-semibold text-ink">
-                      <Briefcase size={11} className="text-brand" /> {industry}
+                    <span key={industry} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-line text-[10px] font-semibold text-ink">
+                      <Briefcase size={9} className="text-brand" /> {industry}
                     </span>
                   ))}
                 </div>
               </div>
             </div>
 
-            <div className="glass-card rounded-3xl p-5 sm:p-6">
-              <p className="font-heading font-bold text-lg text-ink">AI Tools for {career.title}</p>
-              <p className="text-xs text-muted2 mt-1">Tools to learn and use for better outcomes in this career path.</p>
-
-              <div className="mt-3 flex gap-2 overflow-x-auto no-scrollbar pb-1">
+            <div className="glass-card rounded-2xl p-3 sm:p-4">
+              <p className="font-heading font-bold text-sm text-ink">AI Tools for {career.title}</p>
+              <div className="mt-2 flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
                 {["All", "Core", "Analytics", "Automation"].map((filter) => (
                   <button
                     key={filter}
                     onClick={() => setToolFilter(filter)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap border transition ${
+                    className={`px-2 py-1 rounded-full text-[10px] font-semibold whitespace-nowrap border transition ${
                       toolFilter === filter ? "text-white border-transparent" : "text-muted2 border-line bg-white"
                     }`}
                     style={toolFilter === filter ? { background: iconColor } : {}}
@@ -1178,37 +1160,26 @@ export default function CareerDetail() {
                   </button>
                 ))}
               </div>
-
-              <div className="mt-3 space-y-2">
+              <div className="mt-2 space-y-1.5">
                 {filteredTools.map((tool) => (
-                  <div key={tool.name} className="bg-white border border-line rounded-2xl px-3 py-3 flex items-center gap-3">
+                  <div key={tool.name} className="bg-white border border-line rounded-xl px-2.5 py-2 flex items-center gap-2.5">
                     <ToolBadge name={tool.name} />
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-ink">{tool.name}</p>
-                      <p className="text-xs text-muted2 mt-0.5">Best for {tool.category.toLowerCase()} workflows</p>
+                      <p className="font-semibold text-xs text-ink">{tool.name}</p>
+                      <p className="text-[10px] text-muted2">{tool.category}</p>
                     </div>
-                    <ChevronRight size={16} className="text-muted2 shrink-0" />
+                    <ChevronRight size={13} className="text-muted2 shrink-0" />
                   </div>
                 ))}
               </div>
-
-              <div className="mt-4 bg-brand-50 border border-brand-100 rounded-2xl p-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl cc-logo-gradient flex items-center justify-center shrink-0">
-                  <Bot size={18} className="text-white" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm text-ink">Work Smarter with AI</p>
-                  <p className="text-xs text-muted2">Ask the assistant for a custom tool-learning plan.</p>
-                </div>
-                <button
-                  onClick={() => openCareerAI("AI tools and industry insights")}
-                  className="inline-flex items-center gap-1.5 text-white text-xs font-semibold px-3 py-2 rounded-full"
-                  style={{ background: iconColor }}
-                >
-                  <Bot size={12} /> Ask AI
-                </button>
-              </div>
             </div>
+
+            <AskAiCta
+              title={`${career.title} tools & insights`}
+              body="Ask AI for a custom tool-learning plan."
+              color={iconColor}
+              onClick={() => openCareerAI("AI tools and industry insights")}
+            />
           </div>
         )}
       </div>
