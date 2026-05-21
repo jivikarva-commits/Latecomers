@@ -12,7 +12,7 @@ export default function Logo({ size = 36, className = "" }) {
           <path d="M12 7l2 5-5 2 3-7z" fill="white" />
         </svg>
       </div>
-      <span className="font-heading font-extrabold text-ink text-lg sm:text-xl tracking-tight">
+      <span className="font-heading font-extrabold text-ink text-base sm:text-lg md:text-xl tracking-tight whitespace-nowrap">
         LATE COMERS <span className="text-brand">AI</span>
       </span>
     </div>

@@ -5,13 +5,13 @@ import Logo from "../components/Logo";
 import { useAuth } from "../context/AuthContext";
 
 const Stat = ({ icon: Icon, value, label, color }) => (
-  <div className="flex items-center gap-3 sm:gap-4 p-4 sm:p-5">
-    <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: color + "20", color }}>
-      <Icon size={22} />
+  <div className="flex flex-col sm:flex-row items-center sm:items-center gap-2 sm:gap-4 p-3 sm:p-5 text-center sm:text-left">
+    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0" style={{ background: color + "20", color }}>
+      <Icon size={18} className="sm:w-[22px] sm:h-[22px]" />
     </div>
     <div>
-      <p className="font-heading font-bold text-xl sm:text-2xl text-ink leading-none">{value}</p>
-      <p className="text-xs sm:text-sm text-muted2 mt-1">{label}</p>
+      <p className="font-heading font-bold text-lg sm:text-2xl text-ink leading-none">{value}</p>
+      <p className="text-[10px] sm:text-sm text-muted2 mt-0.5 sm:mt-1 leading-tight">{label}</p>
     </div>
   </div>
 );
@@ -97,53 +97,53 @@ export default function Landing() {
             </button>
             <button
               onClick={startJourney}
-              className="inline-flex items-center gap-2 bg-brand hover:bg-brand-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full shadow-brand transition"
+              className="inline-flex items-center gap-1.5 sm:gap-2 bg-brand hover:bg-brand-600 text-white font-semibold text-xs sm:text-sm px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-brand transition whitespace-nowrap"
               data-testid="nav-get-started-button"
             >
-              Get Started Free <ArrowRight size={16} />
+              Get Started Free <ArrowRight size={14} className="sm:w-4 sm:h-4" />
             </button>
           </div>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 pb-10 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-16 pb-8 sm:pb-10 grid lg:grid-cols-2 gap-8 lg:gap-14 items-center">
         <div className="animate-fade-up">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-line text-xs sm:text-sm text-muted2">
+          <span className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-white border border-line text-xs sm:text-sm text-muted2">
             <Sparkles size={14} className="text-brand" /> AI-Powered Career Guidance
           </span>
-          <h1 className="font-heading font-extrabold tracking-tight text-4xl sm:text-5xl lg:text-6xl text-ink mt-5 leading-[1.05]">
+          <h1 className="font-heading font-extrabold tracking-tight text-3xl sm:text-5xl lg:text-6xl text-ink mt-4 sm:mt-5 leading-[1.1] sm:leading-[1.05]">
             Find your perfect career in <span className="text-brand">10 minutes</span>,
-            <br />not just engineering or medical.
+            <br className="hidden sm:block" /><span className="sm:hidden"> </span>not just engineering or medical.
           </h1>
-          <p className="mt-5 text-base sm:text-lg text-muted2 max-w-xl leading-relaxed">
+          <p className="mt-4 sm:mt-5 text-sm sm:text-lg text-muted2 max-w-xl leading-relaxed">
             Personalized roadmap, top coaching near you, scholarships, mock interviews and more — all in one place.
           </p>
-          <div className="mt-7 flex flex-wrap items-center gap-4">
+          <div className="mt-5 sm:mt-7 flex flex-wrap items-center gap-3 sm:gap-4">
             <button
               onClick={startJourney}
-              className="inline-flex items-center gap-2 bg-brand hover:bg-brand-600 text-white font-semibold px-6 py-3.5 rounded-full shadow-brand transition"
+              className="inline-flex items-center gap-2 bg-brand hover:bg-brand-600 text-white font-semibold text-sm sm:text-base px-5 sm:px-6 py-3 sm:py-3.5 rounded-full shadow-brand transition"
               data-testid="hero-start-test-button"
             >
-              Start AI Career Test — It's Free <ArrowRight size={18} />
+              Start AI Career Test — It's Free <ArrowRight size={16} className="sm:w-[18px] sm:h-[18px]" />
             </button>
             <button className="inline-flex items-center gap-2 text-ink font-medium" data-testid="hero-watch-demo">
-              <span className="w-11 h-11 rounded-full bg-white border border-line flex items-center justify-center">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l16 9-16 9V3z"/></svg>
+              <span className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white border border-line flex items-center justify-center">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l16 9-16 9V3z"/></svg>
               </span>
-              <span className="text-sm">Watch demo<br /><span className="text-xs text-muted2">60 sec</span></span>
+              <span className="text-xs sm:text-sm">Watch demo<br /><span className="text-[10px] sm:text-xs text-muted2">60 sec</span></span>
             </button>
           </div>
-          <div className="mt-7 flex flex-wrap items-center gap-5 text-sm text-muted2">
-            <span className="inline-flex items-center gap-1.5"><CheckCircle2 size={16} className="text-brand" /> 100% Free</span>
-            <span className="inline-flex items-center gap-1.5"><CreditCard size={16} className="text-brand" /> No credit card</span>
-            <span className="inline-flex items-center gap-1.5"><Sparkles size={16} className="text-brand" /> AI-Powered</span>
+          <div className="mt-5 sm:mt-7 flex flex-wrap items-center gap-3 sm:gap-5 text-xs sm:text-sm text-muted2">
+            <span className="inline-flex items-center gap-1.5"><CheckCircle2 size={14} className="text-brand sm:w-4 sm:h-4" /> 100% Free</span>
+            <span className="inline-flex items-center gap-1.5"><CreditCard size={14} className="text-brand sm:w-4 sm:h-4" /> No credit card</span>
+            <span className="inline-flex items-center gap-1.5"><Sparkles size={14} className="text-brand sm:w-4 sm:h-4" /> AI-Powered</span>
             <span className="inline-flex items-center gap-1.5">🇮🇳 Made for India</span>
           </div>
         </div>
 
-        {/* Hero preview card */}
-        <div className="relative animate-fade-up" data-testid="hero-preview">
+        {/* Hero preview card — hidden on mobile */}
+        <div className="relative animate-fade-up hidden lg:block" data-testid="hero-preview">
           <div className="glass-card rounded-3xl p-3 sm:p-4">
             <div className="flex gap-3">
               <div className="hidden sm:flex flex-col gap-1 w-32 bg-brand-50 rounded-2xl p-3 text-xs">
@@ -196,9 +196,9 @@ export default function Landing() {
       </section>
 
       {/* How it works */}
-      <section id="how" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
-        <div className="text-center mb-10">
-          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-ink">How it works</h2>
+      <section id="how" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-20">
+        <div className="text-center mb-8 sm:mb-10">
+          <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink">How it works</h2>
           <p className="text-muted2 mt-2">Get your personalized career roadmap in 3 simple steps</p>
         </div>
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
@@ -209,8 +209,8 @@ export default function Landing() {
       </section>
 
       {/* Testimonials */}
-      <section id="features" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
-        <h3 className="text-center font-heading font-bold text-2xl sm:text-3xl text-ink mb-8">
+      <section id="features" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 sm:pb-14">
+        <h3 className="text-center font-heading font-bold text-xl sm:text-3xl text-ink mb-6 sm:mb-8">
           Loved by students across India ❤️
         </h3>
         <div className="grid md:grid-cols-3 gap-5">
@@ -221,13 +221,13 @@ export default function Landing() {
       </section>
 
       {/* Final CTA */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div className="glass-card rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14 sm:pb-20">
+        <div className="glass-card rounded-3xl p-6 sm:p-12 text-center relative overflow-hidden">
           <Sparkles size={16} className="hidden sm:block absolute left-8 top-9 text-brand-200" />
           <Sparkles size={12} className="hidden sm:block absolute left-16 bottom-10 text-brand-300" />
           <CompassOrb />
           <div className="relative z-10 sm:pr-32 lg:pr-44">
-            <h2 className="font-heading font-extrabold text-3xl sm:text-5xl text-ink leading-tight">
+            <h2 className="font-heading font-extrabold text-2xl sm:text-5xl text-ink leading-tight">
               Your career. Your map. <span className="text-brand">Your future.</span>
             </h2>
             <p className="text-muted2 mt-3 text-sm sm:text-base">
@@ -235,7 +235,7 @@ export default function Landing() {
             </p>
             <button
               onClick={startJourney}
-              className="mt-7 inline-flex items-center gap-2 bg-brand hover:bg-brand-600 text-white font-semibold px-7 py-3.5 rounded-full shadow-brand"
+              className="mt-5 sm:mt-7 inline-flex items-center gap-2 bg-brand hover:bg-brand-600 text-white font-semibold text-sm sm:text-base px-5 sm:px-7 py-3 sm:py-3.5 rounded-full shadow-brand"
               data-testid="cta-start-button"
             >
               Start Your Journey — It's 100% Free <ArrowRight size={18} />

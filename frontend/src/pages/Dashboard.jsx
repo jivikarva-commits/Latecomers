@@ -144,12 +144,12 @@ export default function Dashboard() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto" data-testid="dashboard-page">
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4">
         <div className="flex-1 min-w-0">
-          <h1 className="font-heading font-extrabold text-2xl sm:text-3xl text-ink">
+          <h1 className="font-heading font-extrabold text-xl sm:text-3xl text-ink">
             {getTimeGreeting()}, {user?.name?.split(" ")[0] || "there"}! <span className="inline-block">👋</span>
           </h1>
-          <p className="text-muted2 mt-1 text-sm sm:text-base">
+          <p className="text-muted2 mt-0.5 sm:mt-1 text-xs sm:text-base">
             {hasRealData ? "Your AI-powered career requirement snapshot is ready." : "Let's map your career requirements clearly."}
           </p>
         </div>
@@ -157,25 +157,18 @@ export default function Dashboard() {
           <div className="hidden md:block">
             <NotificationBell />
           </div>
-          <button
-            onClick={() => navigate("/roadmap")}
-            className="inline-flex items-center gap-2 bg-white border border-line rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm font-semibold text-ink hover:bg-brand-50"
-            data-testid="dashboard-resume-roadmap"
-          >
-            <Download size={14} /> <span className="hidden xs:inline">Career</span> Requirements
-          </button>
         </div>
       </div>
 
-      <div className="mt-5 sm:mt-6 glass-card rounded-3xl p-5 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-5 items-center" data-testid="career-match-card">
+      <div className="mt-4 sm:mt-6 glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 items-center" data-testid="career-match-card">
         <div className="flex flex-col gap-2">
           <p className="text-xs font-semibold text-muted2 uppercase tracking-wider">Career Match Score</p>
           {hasRealData ? (
             <>
-              <div className="flex items-end gap-3">
-                <p className="font-heading font-extrabold text-5xl text-brand leading-none">
+              <div className="flex items-end gap-2 sm:gap-3">
+                <p className="font-heading font-extrabold text-4xl sm:text-5xl text-brand leading-none">
                   {overall}
-                  <span className="text-3xl">%</span>
+                  <span className="text-2xl sm:text-3xl">%</span>
                 </p>
                 {scoreBadge && (
                   <span className={`mb-1 px-3 py-1 rounded-full text-xs font-semibold ${scoreBadge.cls}`}>
@@ -216,10 +209,10 @@ export default function Dashboard() {
             </>
           ) : (
             <>
-              <p className="font-heading font-extrabold text-5xl text-brand/30 leading-none">
-                —<span className="text-3xl">%</span>
+              <p className="font-heading font-extrabold text-4xl sm:text-5xl text-brand/30 leading-none">
+                —<span className="text-2xl sm:text-3xl">%</span>
               </p>
-              <p className="text-sm text-muted2 mt-1">Complete the career quiz to see your personalized match score.</p>
+              <p className="text-xs sm:text-sm text-muted2 mt-1">Complete the career quiz to see your personalized match score.</p>
               <button
                 onClick={() => navigate("/onboarding")}
                 className="mt-2 inline-flex items-center gap-2 bg-brand text-white font-semibold px-4 py-2.5 rounded-full text-sm shadow-brand w-fit"
@@ -230,7 +223,7 @@ export default function Dashboard() {
           )}
         </div>
 
-        <div className="h-52 sm:h-56 w-full">
+        <div className="h-44 sm:h-56 w-full">
           <ResponsiveContainer>
             <RadarChart key={`${overall ?? "na"}-${user?.updated_at || "fresh"}`} data={radar} cx="50%" cy="50%" outerRadius="75%">
               <PolarGrid stroke="#E8E4FF" />
@@ -241,8 +234,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-6 flex items-center justify-between">
-        <h2 className="font-heading font-bold text-lg sm:text-xl text-ink">
+      <div className="mt-5 sm:mt-6 flex items-center justify-between">
+        <h2 className="font-heading font-bold text-base sm:text-xl text-ink">
           {hasRealData ? "Your AI-Matched Careers" : "Popular Career Paths"}
         </h2>
         <Link to="/careers" className="text-sm font-semibold text-brand" data-testid="dashboard-view-all-careers">
@@ -262,14 +255,14 @@ export default function Dashboard() {
           ))}
         </div>
       ) : (
-        <div className={careerAnalysis ? "mt-3 flex gap-4 overflow-x-auto pb-2 snap-x" : "mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-4"}>
+        <div className={careerAnalysis ? "mt-3 flex gap-3 sm:gap-4 overflow-x-auto pb-2 snap-x no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0" : "mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"}>
           {displayCareers.map((c) => {
             const Ic = Icons[c.icon] || Icons.Briefcase;
             return (
               <Link
                 to={`/careers/${c.slug}`}
                 key={c.career_id || c.slug}
-                className={careerAnalysis ? "surface-gradient rounded-3xl p-5 border border-line elevated-card hover:shadow-md transition min-w-[280px] sm:min-w-[340px] snap-start" : "surface-gradient rounded-3xl p-5 border border-line elevated-card hover:shadow-md transition"}
+                className={careerAnalysis ? "surface-gradient rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-line elevated-card hover:shadow-md transition min-w-[260px] sm:min-w-[340px] snap-start shrink-0" : "surface-gradient rounded-2xl sm:rounded-3xl p-4 sm:p-5 border border-line elevated-card hover:shadow-md transition"}
                 data-testid={`dashboard-career-card-${c.slug}`}
               >
                 <div className="flex items-start justify-between">
@@ -315,14 +308,14 @@ export default function Dashboard() {
       )}
 
       {careerAnalysis && additionalCareers.length > 0 && (
-        <div className="mt-6" data-testid="dashboard-additional-careers">
-          <h2 className="font-heading font-bold text-lg sm:text-xl text-ink">More Career Matches</h2>
-          <div className="mt-3 space-y-3">
+        <div className="mt-5 sm:mt-6" data-testid="dashboard-additional-careers">
+          <h2 className="font-heading font-bold text-base sm:text-xl text-ink">More Career Matches</h2>
+          <div className="mt-2.5 sm:mt-3 space-y-2.5 sm:space-y-3">
             {additionalCareers.map((c) => (
               <Link
                 to={`/careers/${c.slug}`}
                 key={c.slug}
-                className="bg-white border border-line rounded-2xl p-4 flex items-center justify-between gap-4 hover:bg-brand-50 transition"
+                className="bg-white border border-line rounded-xl sm:rounded-2xl p-3 sm:p-4 flex items-center justify-between gap-3 sm:gap-4 hover:bg-brand-50 transition"
                 data-testid={`dashboard-additional-career-${c.slug}`}
               >
                 <div className="min-w-0">
@@ -347,17 +340,17 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div className="mt-7 glass-card rounded-3xl p-5 sm:p-7" data-testid="dashboard-roadmap-card">
-        <div className="flex items-center justify-between">
-          <h2 className="font-heading font-bold text-lg sm:text-xl text-ink">Career Requirements Snapshot</h2>
-          <Link to="/roadmap" className="text-sm font-semibold text-brand">
+      <div className="mt-5 sm:mt-7 glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-7" data-testid="dashboard-roadmap-card">
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="font-heading font-bold text-base sm:text-xl text-ink">Career Requirements Snapshot</h2>
+          <Link to="/roadmap" className="text-xs sm:text-sm font-semibold text-brand whitespace-nowrap">
             View details →
           </Link>
         </div>
-        <div className="mt-4 grid md:grid-cols-2 gap-3">
+        <div className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
           {REQUIREMENT_SECTIONS.map((section) => (
-            <div key={section.title} className="bg-white border border-line rounded-2xl p-4">
-              <p className="text-sm font-bold text-ink">{section.title}</p>
+            <div key={section.title} className="bg-white border border-line rounded-xl sm:rounded-2xl p-3 sm:p-4">
+              <p className="text-xs sm:text-sm font-bold text-ink">{section.title}</p>
               {section.points.map((point) => (
                 <p key={point} className="text-xs text-muted2 mt-1 inline-flex items-start gap-1.5">
                   <CheckCircle2 size={12} className="text-brand mt-0.5 shrink-0" />
@@ -369,7 +362,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="mt-5 sm:mt-6 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
         {[
           { to: "/career-test", icon: FileText, label: "AI Career Test", id: "qa-career-test" },
           { to: "/mock-interview", icon: Mic, label: "Mock Interview", id: "qa-mock-interview" },
@@ -379,11 +372,11 @@ export default function Dashboard() {
           <Link
             key={a.to}
             to={a.to}
-            className="surface-gradient rounded-2xl border border-line p-4 flex flex-col items-center justify-center text-center hover:bg-brand-50 transition"
+            className="surface-gradient rounded-xl sm:rounded-2xl border border-line p-3 sm:p-4 flex flex-col items-center justify-center text-center hover:bg-brand-50 transition"
             data-testid={a.id}
           >
-            <a.icon size={22} className="text-brand mb-2" />
-            <span className="text-xs sm:text-sm font-semibold text-ink">{a.label}</span>
+            <a.icon size={20} className="text-brand mb-1.5 sm:mb-2" />
+            <span className="text-[11px] sm:text-sm font-semibold text-ink">{a.label}</span>
           </Link>
         ))}
       </div>
