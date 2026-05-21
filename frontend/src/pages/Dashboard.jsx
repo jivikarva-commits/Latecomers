@@ -1,11 +1,41 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, lazy, Suspense } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Download, FileText, Mic, Building2, GraduationCap, Sparkles, CheckCircle2, RotateCcw } from "lucide-react";
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
+import { FileText, Mic, Building2, GraduationCap, Sparkles, CheckCircle2, RotateCcw, Briefcase } from "lucide-react";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
-import * as Icons from "lucide-react";
 import NotificationBell from "../components/NotificationBell";
+
+// Lazy load heavy recharts library
+const LazyRadarChart = lazy(() =>
+  import("recharts").then((mod) => ({
+    default: ({ data, hasRealData, chartKey }) => (
+      <mod.ResponsiveContainer width="100%" height="100%">
+        <mod.RadarChart key={chartKey} data={data} cx="50%" cy="50%" outerRadius="70%">
+          <mod.PolarGrid stroke="#E8E4FF" />
+          <mod.PolarAngleAxis dataKey="metric" tick={{ fill: "#64748B", fontSize: 10, fontWeight: 600 }} />
+          <mod.Radar name="You" dataKey="value" stroke="#5B4FE9" fill="#5B4FE9" fillOpacity={hasRealData ? 0.35 : 0.08} />
+        </mod.RadarChart>
+      </mod.ResponsiveContainer>
+    ),
+  }))
+);
+
+// Dynamic icon resolver — avoids importing entire lucide-react library
+const iconCache = { FileText, Mic, Building2, GraduationCap, Sparkles, CheckCircle2, RotateCcw, Briefcase };
+function getIcon(name) {
+  if (iconCache[name]) return iconCache[name];
+  return Briefcase; // fallback
+}
+// Lazy load remaining icons on demand
+let fullIconsPromise = null;
+function loadFullIcons() {
+  if (!fullIconsPromise) {
+    fullIconsPromise = import("lucide-react").then((mod) => {
+      Object.assign(iconCache, mod);
+    });
+  }
+  return fullIconsPromise;
+}
 
 function getTimeGreeting() {
   const h = new Date().getHours();
@@ -39,6 +69,12 @@ export default function Dashboard() {
   const [careersMap, setCareersMap] = useState({});
   const [allCareers, setAllCareers] = useState([]);
   const [loadingCareers, setLoadingCareers] = useState(true);
+
+  // Lazy load full icon set after mount for career card icons
+  const [iconsLoaded, setIconsLoaded] = useState(false);
+  useEffect(() => {
+    loadFullIcons().then(() => setIconsLoaded(true));
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -143,7 +179,7 @@ export default function Dashboard() {
     : { label: "Growing Match", cls: "bg-amber-100 text-amber-700" };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto" data-testid="dashboard-page">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto overflow-x-hidden w-full min-w-0" data-testid="dashboard-page">
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4">
         <div className="flex-1 min-w-0">
           <h1 className="font-heading font-extrabold text-xl sm:text-3xl text-ink">
@@ -223,14 +259,14 @@ export default function Dashboard() {
           )}
         </div>
 
-        <div className="h-44 sm:h-56 w-full">
-          <ResponsiveContainer>
-            <RadarChart key={`${overall ?? "na"}-${user?.updated_at || "fresh"}`} data={radar} cx="50%" cy="50%" outerRadius="75%">
-              <PolarGrid stroke="#E8E4FF" />
-              <PolarAngleAxis dataKey="metric" tick={{ fill: "#64748B", fontSize: 11, fontWeight: 600 }} />
-              <Radar name="You" dataKey="value" stroke="#5B4FE9" fill="#5B4FE9" fillOpacity={hasRealData ? 0.35 : 0.08} />
-            </RadarChart>
-          </ResponsiveContainer>
+        <div className="h-44 sm:h-56 w-full max-w-full min-w-0 overflow-hidden">
+          <Suspense fallback={<div className="w-full h-full flex items-center justify-center"><div className="w-8 h-8 border-3 border-brand-200 border-t-brand rounded-full animate-spin" /></div>}>
+            <LazyRadarChart
+              data={radar}
+              hasRealData={hasRealData}
+              chartKey={`${overall ?? "na"}-${user?.updated_at || "fresh"}`}
+            />
+          </Suspense>
         </div>
       </div>
 
@@ -244,20 +280,20 @@ export default function Dashboard() {
       </div>
 
       {loadingCareers ? (
-        <div className="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="surface-gradient rounded-3xl border border-line p-5">
-              <div className="w-12 h-12 rounded-2xl skeleton-shimmer" />
+            <div key={i} className="surface-gradient rounded-2xl sm:rounded-3xl border border-line p-4 sm:p-5">
+              <div className="w-11 h-11 rounded-2xl skeleton-shimmer" />
               <div className="h-5 w-2/3 rounded mt-3 skeleton-shimmer" />
               <div className="h-4 w-full rounded mt-2 skeleton-shimmer" />
-              <div className="h-16 w-full rounded mt-3 skeleton-shimmer" />
+              <div className="h-14 w-full rounded mt-3 skeleton-shimmer" />
             </div>
           ))}
         </div>
       ) : (
         <div className={careerAnalysis ? "mt-3 flex gap-3 sm:gap-4 overflow-x-auto pb-2 snap-x no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0" : "mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"}>
           {displayCareers.map((c) => {
-            const Ic = Icons[c.icon] || Icons.Briefcase;
+            const Ic = getIcon(c.icon) || Briefcase;
             return (
               <Link
                 to={`/careers/${c.slug}`}
@@ -352,9 +388,9 @@ export default function Dashboard() {
             <div key={section.title} className="bg-white border border-line rounded-xl sm:rounded-2xl p-3 sm:p-4">
               <p className="text-xs sm:text-sm font-bold text-ink">{section.title}</p>
               {section.points.map((point) => (
-                <p key={point} className="text-xs text-muted2 mt-1 inline-flex items-start gap-1.5">
+                <p key={point} className="text-xs text-muted2 mt-1 flex items-start gap-1.5">
                   <CheckCircle2 size={12} className="text-brand mt-0.5 shrink-0" />
-                  {point}
+                  <span className="min-w-0">{point}</span>
                 </p>
               ))}
             </div>

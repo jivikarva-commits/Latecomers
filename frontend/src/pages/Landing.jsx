@@ -75,7 +75,7 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-50 font-body" data-testid="landing-page">
+    <div className="min-h-screen bg-brand-50 font-body overflow-x-hidden" data-testid="landing-page">
       {/* Top nav */}
       <header className="sticky top-0 z-40 backdrop-blur bg-brand-50/80 border-b border-line">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">

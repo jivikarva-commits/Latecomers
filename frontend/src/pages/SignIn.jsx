@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import Logo from "../components/Logo";
@@ -9,29 +9,55 @@ import { toast } from "sonner";
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 export default function SignIn() {
-  const { user, setUser } = useAuth();
+  const { user, setUser, refresh } = useAuth();
   const navigate = useNavigate();
   const btnContainerRef = useRef(null);
   const initializedRef = useRef(false);
+  const [signingIn, setSigningIn] = useState(false);
+  const loginInProgressRef = useRef(false);
 
   // Handle the ID token returned by Google — MUST be before any early return
   const handleCredential = useCallback(
     async (response) => {
+      // Prevent duplicate login requests
+      if (loginInProgressRef.current) return;
+      loginInProgressRef.current = true;
+      setSigningIn(true);
+
       try {
         const { data } = await api.post("/auth/google", { id_token: response.credential });
+
+        // Store user in auth context
         setUser(data.user);
-        if (data.user && !data.user.onboarded) {
-          window.location.href = "/onboarding";
-        } else {
-          window.location.href = "/dashboard";
+
+        // If the backend returns a token, store it for cookie-less auth fallback
+        if (data.token) {
+          localStorage.setItem("cc_session_token", data.token);
         }
+
+        // Small delay to ensure cookie is fully set before navigation
+        await new Promise((r) => setTimeout(r, 150));
+
+        // Verify the session is actually valid before navigating
+        try {
+          await refresh();
+        } catch {
+          // refresh failed but we already have user data, continue
+        }
+
+        // Use React Router navigate instead of window.location for SPA navigation
+        const dest = data.user && !data.user.onboarded ? "/onboarding" : "/dashboard";
+        navigate(dest, { replace: true });
       } catch (e) {
         const detail = e?.response?.data?.detail || "Sign-in failed. Please try again.";
         toast.error(detail);
         console.error("Google sign-in error:", e?.response?.data || e);
+      } finally {
+        loginInProgressRef.current = false;
+        setSigningIn(false);
       }
     },
-    [setUser]
+    [setUser, refresh, navigate]
   );
 
   // Render Google's official Sign In button — MUST be before any early return
@@ -95,8 +121,15 @@ export default function SignIn() {
 
           {/* Google renders its official button here */}
           <div className="mt-7 flex justify-center" ref={btnContainerRef} data-testid="signin-google-button">
-            {/* Loading placeholder */}
-            <div className="w-full h-11 rounded-full bg-brand-100 animate-pulse" />
+            {signingIn ? (
+              <div className="w-full flex flex-col items-center gap-3 py-2">
+                <div className="w-8 h-8 border-3 border-brand-200 border-t-brand rounded-full animate-spin" />
+                <p className="text-sm text-muted2">Signing you in…</p>
+              </div>
+            ) : (
+              /* Loading placeholder until Google SDK renders */
+              <div className="w-full h-11 rounded-full bg-brand-100 animate-pulse" />
+            )}
           </div>
 
           <p className="text-xs text-muted2 mt-6 leading-relaxed">

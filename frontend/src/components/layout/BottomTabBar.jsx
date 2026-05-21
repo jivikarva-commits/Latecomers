@@ -12,8 +12,8 @@ export default function BottomTabBar() {
   ];
   return (
     <nav
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-line h-16 flex items-center justify-around px-2"
-      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-t border-line h-16 flex items-center justify-around px-2"
+      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       data-testid="bottom-tab-bar"
     >
       {tabs.map((t) => (
