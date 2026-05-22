@@ -691,7 +691,7 @@ def _basic_generated_career(title: str) -> Dict:
 
 # ---------- Careers ----------
 @router.get("/careers")
-async def list_careers(request: Request, q: Optional[str] = None, limit: int = 50):
+async def list_careers(request: Request, q: Optional[str] = None, limit: int = 200):
     flt = {}
     if q:
         flt = {"$or": [{"title": {"$regex": q, "$options": "i"}}, {"tags": {"$regex": q, "$options": "i"}}]}

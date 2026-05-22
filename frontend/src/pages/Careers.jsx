@@ -72,7 +72,7 @@ export default function Careers() {
   useEffect(() => {
     setLoading(true);
     api
-      .get(`/careers?limit=60${q ? `&q=${encodeURIComponent(q)}` : ""}`)
+      .get(`/careers?limit=200${q ? `&q=${encodeURIComponent(q)}` : ""}`)
       .then(({ data }) => setAllCareers(data))
       .finally(() => setLoading(false));
   }, [q]);

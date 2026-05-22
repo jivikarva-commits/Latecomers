@@ -62,7 +62,7 @@ export default function Roadmap() {
 
   useEffect(() => {
     api
-      .get("/careers?limit=50")
+      .get("/careers?limit=200")
       .then(({ data }) => setCareers(data))
       .catch((error) => toast.error(error?.response?.data?.detail || "Failed to load careers."));
   }, []);

@@ -414,12 +414,15 @@ async def seed(db):
     all_careers = [*CAREERS, *DYNAMIC_CAREERS]
     detail_fields = {"aiGeneratedDetails", "detailsCachedAt", "detailsGeneratedByAI"}
 
-    # Fast count check — skip if DB already has enough careers
+    # Always upsert to ensure new catalog entries are added
     existing_count = await db.careers.count_documents({})
     if existing_count >= len(all_careers):
-        logger.info("Seed skipped — DB already has %d careers.", existing_count)
+        logger.info("Seed: DB has %d careers, catalog has %d — quick sync.", existing_count, len(all_careers))
     else:
-        logger.info("Seeding %d missing careers ...", len(all_careers) - existing_count)
+        logger.info("Seeding %d careers (DB has %d) ...", len(all_careers), existing_count)
+
+    # Always run upsert to sync new/updated careers
+    if True:
         career_ops = []
         for c in all_careers:
             doc = dict(c)
