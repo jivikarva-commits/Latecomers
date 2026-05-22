@@ -254,7 +254,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-5 sm:mt-6 flex items-center justify-between">
+      <div className="mt-5 sm:mt-6 flex items-center justify-between px-0">
         <h2 className="font-heading font-bold text-base sm:text-xl text-ink">
           {hasRealData ? "Your AI-Matched Careers" : "Popular Career Paths"}
         </h2>
@@ -280,14 +280,16 @@ export default function Dashboard() {
           ))}
         </div>
       ) : (
-        <div className="mt-2.5 flex gap-2.5 sm:gap-4 overflow-x-auto pb-2 snap-x no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
-          {displayCareers.map((c) => {
+        <div className="mt-2.5 flex gap-3 overflow-x-auto pb-2 snap-x no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0" style={{ WebkitOverflowScrolling: "touch" }}>
+          {displayCareers.map((c, idx) => {
             const Ic = getIcon(c.icon) || Briefcase;
+            const isLast = idx === displayCareers.length - 1;
             return (
               <Link
                 to={`/careers/${c.slug}`}
                 key={c.career_id || c.slug}
-                className="surface-gradient rounded-2xl p-3 sm:p-4 border border-line elevated-card hover:shadow-md transition min-w-[200px] sm:min-w-[280px] max-w-[220px] sm:max-w-[320px] snap-start shrink-0"
+                className="surface-gradient rounded-2xl p-3 sm:p-4 border border-line elevated-card hover:shadow-md transition snap-start shrink-0"
+                style={{ width: "calc(100vw - 80px)", maxWidth: 300, marginRight: isLast ? 16 : 0 }}
                 data-testid={`dashboard-career-card-${c.slug}`}
               >
                 <div className="flex items-center justify-between gap-2">

@@ -84,7 +84,7 @@ export default function CareerTestResults() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto pb-28 overflow-x-hidden w-full min-w-0" data-testid="career-test-results">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto overflow-x-hidden w-full min-w-0" data-testid="career-test-results">
       {/* Header */}
       <div className="flex items-center gap-2 mb-3">
         <button onClick={() => navigate(-1)} className="p-1.5 -ml-1 text-ink">

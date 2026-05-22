@@ -55,7 +55,7 @@ export default function CareerTestQuestions() {
   const exit = () => navigate("/career-test");
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto pb-28 overflow-x-hidden w-full min-w-0" data-testid="career-test-questions">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto overflow-x-hidden w-full min-w-0" data-testid="career-test-questions">
       {/* Top bar */}
       <div className="flex items-center justify-between gap-2 mb-3">
         <button onClick={() => navigate(-1)} className="p-1.5 -ml-1 text-ink" data-testid="back-btn">

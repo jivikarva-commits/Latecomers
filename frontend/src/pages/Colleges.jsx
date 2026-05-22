@@ -209,7 +209,7 @@ export default function Colleges() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto pb-28" data-testid="colleges-page">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto" data-testid="colleges-page">
       <div className="flex items-start justify-between gap-3 mb-4">
         <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-ink">
           <ArrowLeft size={20} />

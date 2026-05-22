@@ -147,7 +147,7 @@ export default function MockInterview() {
     const hasQuestions = Array.isArray(session.questions) && session.questions.length > 0;
     if (!hasQuestions) {
       return (
-        <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto pb-28" data-testid="mock-interview-empty-session">
+        <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto" data-testid="mock-interview-empty-session">
           <div className="glass-card rounded-3xl p-6 sm:p-8 text-center">
             <p className="font-heading font-bold text-xl text-ink">Interview questions unavailable</p>
             <p className="text-sm text-muted2 mt-2">We could not generate valid questions for this setup. Please try again.</p>
@@ -161,7 +161,7 @@ export default function MockInterview() {
 
     if (showResults) {
       return (
-        <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto pb-28" data-testid="mock-interview-results">
+        <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto" data-testid="mock-interview-results">
           <div className="glass-card rounded-3xl p-6">
             <p className="font-heading font-extrabold text-2xl text-ink">Interview Results</p>
             <p className="text-sm text-muted2 mt-1">Role: {session.setup?.role || role}</p>
@@ -238,7 +238,7 @@ export default function MockInterview() {
     const ev = evals[qIdx];
 
     return (
-      <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto pb-28" data-testid="mock-interview-room">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto" data-testid="mock-interview-room">
         <div className="flex items-center gap-3 mb-3">
           <button onClick={() => setSession(null)} className="p-2 -ml-2 text-ink">
             <ArrowLeft size={20} />
@@ -297,7 +297,7 @@ export default function MockInterview() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto pb-28" data-testid="mock-interview-setup">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto" data-testid="mock-interview-setup">
       <div className="flex items-start justify-between gap-3 mb-4">
         <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-ink">
           <ArrowLeft size={20} />

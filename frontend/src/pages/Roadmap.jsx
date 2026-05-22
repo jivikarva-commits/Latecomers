@@ -112,7 +112,7 @@ export default function Roadmap() {
   const topMatch = user?.top_career_matches?.[0];
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-[1080px] mx-auto pb-28 overflow-x-hidden w-full min-w-0" data-testid="roadmap-page">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-[1080px] mx-auto overflow-x-hidden w-full min-w-0" data-testid="roadmap-page">
       <h1 className="font-heading font-extrabold text-xl sm:text-3xl text-ink">Your Personalized Roadmap</h1>
       <p className="text-xs sm:text-sm text-muted2 mt-0.5">Step-by-step plan to become job-ready.</p>
 
