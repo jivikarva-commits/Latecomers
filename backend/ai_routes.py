@@ -854,6 +854,32 @@ async def latest_result(request: Request, user=Depends(current_user)):
 
 
 # ---------- Roadmap generation ----------
+
+def _repair_truncated_json(text: str):
+    """Try to repair truncated JSON from LLM by closing open brackets."""
+    import re
+    raw = (text or "").strip()
+    # Extract JSON portion
+    fenced = re.search(r"```(?:json)?\s*(.*?)```", raw, re.DOTALL | re.IGNORECASE)
+    if fenced:
+        raw = fenced.group(1).strip()
+    # Find first {
+    start = raw.find("{")
+    if start < 0:
+        return None
+    raw = raw[start:]
+    # Try progressively closing brackets
+    for suffix in ["", '"}]}]}', '"]}]}', ']}]}', '"]}]}]}', '"]}}]}', "]}}", "]}"]]:
+        try:
+            candidate = raw + suffix
+            data = json.loads(candidate)
+            if isinstance(data, dict) and data.get("stages"):
+                return data
+        except json.JSONDecodeError:
+            continue
+    return None
+
+
 class RoadmapGenRequest(BaseModel):
     career_slug: str
 
@@ -868,78 +894,45 @@ async def generate_roadmap(payload: RoadmapGenRequest, request: Request, user=De
     education = profile.get("education", "Not specified")
     location = profile.get("location", "India")
 
-    prompt = f"""You are an expert Indian career counselor. Generate a DETAILED, SPECIFIC career roadmap for becoming a **{career['title']}** in India.
+    prompt = f"""Generate a career roadmap for **{career['title']}** in India. Student: {education}, {location}.
 
-Student profile:
-- Education: {education}
-- Location: {location}
-- Full profile: {json.dumps(profile)}
+Rules: Use real course/platform names, real costs in INR, real company names. Be specific and actionable.
 
-IMPORTANT RULES:
-- Use REAL course names, REAL platform names (Coursera, Udemy, NPTEL, Unacademy, etc.)
-- Use REAL company names for job targets (TCS, Infosys, Wipro, Accenture, Flipkart, etc.)
-- Use REAL costs in INR (₹) or mention "Free" where applicable
-- Be SPECIFIC — no vague advice like "learn programming". Say exactly WHAT to learn, WHERE, and HOW LONG
-- Every action item must be a concrete, doable task
-- Include Indian government schemes, AICTE programs, NSDC courses where relevant
+Return ONLY valid JSON (no markdown, no commentary):
+{{"stages":[
+  {{"stageNum":1,"title":"Foundation & Education","duration":"0-3 Months","description":"short summary","preview":"6 word preview","skills":["s1","s2","s3"],"sections":[
+    {{"type":"education","label":"Education Path","items":["item1","item2","item3"]}},
+    {{"type":"courses","label":"Courses & Certifications","items":["Course on Platform - Cost - Duration","item2","item3"]}},
+    {{"type":"skills","label":"Skills to Master","items":["item1","item2","item3"]}}
+  ]}},
+  {{"stageNum":2,"title":"Skill Building & Practice","duration":"3-6 Months",...same structure...}},
+  {{"stageNum":3,"title":"Portfolio & Certification","duration":"6-9 Months",...}},
+  {{"stageNum":4,"title":"Job Readiness & Applications","duration":"9-12 Months",...}}
+]}}
 
-Return STRICT JSON with this exact structure:
-{{
-  "stages": [
-    {{
-      "stageNum": 1,
-      "title": "Foundation & Education",
-      "duration": "0-3 Months",
-      "description": "One line summary of this stage's goal",
-      "preview": "Short 6-8 word preview shown when collapsed",
-      "skills": ["skill1", "skill2"],
-      "sections": [
-        {{
-          "type": "education",
-          "label": "Education Path",
-          "items": ["Specific action item 1 with real details", "Specific action item 2"]
-        }},
-        {{
-          "type": "courses",
-          "label": "Courses & Certifications",
-          "items": ["Course Name on Platform - ₹Cost or Free - Duration", "Another specific course"]
-        }},
-        {{
-          "type": "skills",
-          "label": "Skills to Master",
-          "items": ["Specific skill with tool/technology name", "Another skill"]
-        }},
-        {{
-          "type": "projects",
-          "label": "Projects & Portfolio",
-          "items": ["Build a specific project type using specific technologies", "Another project"]
-        }}
-      ]
-    }}
-  ]
-}}
+4 stages, each with exactly 3 sections, each section with exactly 3 items. Keep items SHORT (under 80 chars each). India-specific."""
 
-Generate exactly 4 stages:
-1. Foundation & Education (0-3 Months) — Entry requirements, beginner courses, basic skills
-2. Skill Building & Practice (3-6 Months) — Intermediate courses, hands-on projects, tools mastery
-3. Portfolio & Certification (6-9 Months) — Advanced projects, industry certifications, GitHub portfolio
-4. Job Readiness & Applications (9-12 Months) — Resume building, interview prep, where to apply, salary expectations
-
-Each stage MUST have 3-5 sections. Each section MUST have 3-5 specific action items.
-Make it actionable for someone in {location}, India.
-"""
-
+    text = None
     try:
-        text = await ask_claude(prompt, max_tokens=6000, json_only=True)
+        text = await ask_claude(prompt, max_tokens=4000, json_only=True)
         data = extract_json(text)
         if not data or not data.get("stages"):
             raise ValueError("AI returned empty or invalid roadmap structure")
-    except json.JSONDecodeError as e:
-        logger.error(f"roadmap JSON parse error: {e} | response length: {len(text) if text else 0}")
-        raise HTTPException(500, "Roadmap generation returned incomplete data. Please try again.")
+    except (json.JSONDecodeError, ValueError) as e:
+        logger.error(f"roadmap JSON error: {e} | response length: {len(text) if text else 0}")
+        # Try to repair truncated JSON by closing open brackets
+        if text:
+            repaired = _repair_truncated_json(text)
+            if repaired:
+                data = repaired
+                logger.info("roadmap JSON repaired successfully")
+            else:
+                raise HTTPException(500, "Roadmap generation returned incomplete data. Please try again.")
+        else:
+            raise HTTPException(500, "Roadmap generation returned no data. Please try again.")
     except Exception as e:
         logger.error(f"roadmap LLM error: {e}")
-        raise HTTPException(500, f"AI roadmap failed. Please try again.")
+        raise HTTPException(500, "AI roadmap failed. Please try again.")
 
     # Save under user
     await db(request).users.update_one(
