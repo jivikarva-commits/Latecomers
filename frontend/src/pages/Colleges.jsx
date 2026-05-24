@@ -2,19 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
-  ArrowLeft,
-  ArrowRight,
-  Bookmark,
-  Building2,
-  ExternalLink,
-  Filter,
-  LocateFixed,
-  MapPin,
-  Navigation,
-  Phone,
-  Search,
-  Sparkles,
-  Star,
+  ArrowLeft, ArrowRight, Bookmark, Building2, ExternalLink, Filter,
+  LocateFixed, MapPin, Navigation, Phone, Search, Sparkles, Star, GraduationCap,
 } from "lucide-react";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
@@ -67,7 +56,7 @@ const InstituteCard = ({ institute }) => {
     .join("");
 
   return (
-    <div className="surface-gradient rounded-3xl border border-line p-4 sm:p-5" data-testid={`college-card-${institute.id || institute.name}`}>
+    <div className="surface-gradient rounded-3xl border border-line p-4 sm:p-5" data-testid={`institute-card-${institute.id || institute.name}`}>
       <div className="flex items-start gap-3 sm:gap-4">
         <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl cc-logo-gradient text-white flex items-center justify-center font-bold text-sm shrink-0">
           {initials}
@@ -137,6 +126,7 @@ export default function Colleges() {
   const { user } = useAuth();
   const [q, setQ] = useState("");
   const [cat, setCat] = useState("All");
+  const [courseQuery, setCourseQuery] = useState("");
   const [locationQuery, setLocationQuery] = useState("");
   const [locationLoading, setLocationLoading] = useState(false);
   const [locationResults, setLocationResults] = useState([]);
@@ -144,14 +134,17 @@ export default function Colleges() {
   const [recommendationLoading, setRecommendationLoading] = useState(false);
   const [locationMessage, setLocationMessage] = useState("");
   const [searchedLocation, setSearchedLocation] = useState("");
+  const [searchedCourse, setSearchedCourse] = useState("");
 
   useEffect(() => {
     setLocationQuery(user?.profile?.location || "");
   }, [user?.profile?.location]);
 
-  const handleLocationSearch = async () => {
-    const normalized = locationQuery.trim();
-    if (!normalized) {
+  const handleSearch = async () => {
+    const normalizedLocation = locationQuery.trim();
+    const normalizedCourse = courseQuery.trim();
+
+    if (!normalizedLocation) {
       setLocationMessage("Enter a location to search nearby institutes.");
       return;
     }
@@ -160,16 +153,25 @@ export default function Colleges() {
     setLocationMessage("");
     setLocationResults([]);
     setRecommendation(null);
-    setSearchedLocation(normalized);
+    setSearchedLocation(normalizedLocation);
+    setSearchedCourse(normalizedCourse);
 
     try {
-      const { data } = await api.post("/colleges/search", { location: normalized });
+      const { data } = await api.post("/colleges/search", {
+        location: normalizedLocation,
+        course: normalizedCourse || undefined,
+      });
       const results = data.results || [];
       setLocationResults(results);
       if (results.length === 0) {
-        setLocationMessage(data.message || "No institutes found near this location. Try a nearby major city.");
+        setLocationMessage(data.message || `No institutes found${normalizedCourse ? ` for ${normalizedCourse}` : ""} near ${normalizedLocation}. Try a nearby major city.`);
       } else {
-        setLocationMessage(data.message || (data.cached ? `Showing cached results for ${data.location || normalized}.` : `Showing live results for ${data.location || normalized}.`));
+        const courseLabel = normalizedCourse ? ` for "${normalizedCourse}"` : "";
+        setLocationMessage(
+          data.cached
+            ? `Showing cached results${courseLabel} in ${data.location || normalizedLocation}.`
+            : `Found ${results.length} institutes${courseLabel} near ${data.location || normalizedLocation}.`
+        );
       }
     } catch (e) {
       setLocationMessage(e?.response?.data?.detail || "Search temporarily unavailable. Please try again.");
@@ -199,7 +201,10 @@ export default function Colleges() {
     }
     setRecommendationLoading(true);
     try {
-      const { data } = await api.post("/colleges/recommend", { location: searchedLocation || locationQuery, results: locationResults });
+      const { data } = await api.post("/colleges/recommend", {
+        location: searchedLocation || locationQuery,
+        results: locationResults,
+      });
       setRecommendation(data);
     } catch (e) {
       toast.error(e?.response?.data?.detail || "Recommendations are temporarily unavailable.");
@@ -209,14 +214,14 @@ export default function Colleges() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto" data-testid="colleges-page">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto" data-testid="institutes-page">
       <div className="flex items-start justify-between gap-3 mb-4">
         <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-ink">
           <ArrowLeft size={20} />
         </button>
         <div className="flex-1">
-          <h1 className="font-heading font-extrabold text-xl sm:text-2xl text-ink">Colleges &amp; Institutes</h1>
-          <p className="text-xs sm:text-sm text-muted2">Find nearby colleges, institutes, and coaching centers</p>
+          <h1 className="font-heading font-extrabold text-xl sm:text-2xl text-ink">Institutes &amp; Colleges</h1>
+          <p className="text-xs sm:text-sm text-muted2">Find nearby institutes, colleges, and coaching centers</p>
         </div>
         <button className="p-2 rounded-full bg-white border border-line text-brand">
           <Bookmark size={16} />
@@ -227,74 +232,65 @@ export default function Colleges() {
         <div className="flex-1 min-w-0">
           <h2 className="font-heading font-bold text-base sm:text-xl text-ink">Find the Right Institute for You</h2>
           <p className="text-xs sm:text-sm text-muted2 mt-1.5 leading-relaxed">
-            Search by city or locality to discover institutes near you.
+            Search by course and city to discover the best institutes near you.
           </p>
         </div>
         <HeroIllustration Icon={Building2} size={96} className="hidden sm:block" />
         <HeroIllustration Icon={Building2} size={64} className="sm:hidden shrink-0" />
       </div>
 
-      <div className="mt-5 flex items-center gap-2">
-        <div className="relative flex-1">
-          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted2" />
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Filter fetched institutes by name, course, or address..."
-            data-testid="colleges-search"
-            className="w-full bg-white border border-line rounded-full pl-10 pr-4 py-3 text-sm"
-          />
-        </div>
-        <button className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-full bg-white border border-line text-xs sm:text-sm font-semibold text-brand">
-          <Filter size={14} /> <span className="hidden sm:inline">Filter</span>
-        </button>
-      </div>
-
-      <div className="mt-3 flex gap-2 overflow-x-auto no-scrollbar pb-1">
-        {CATEGORIES.map((category) => (
-          <button
-            key={category}
-            onClick={() => setCat(category)}
-            data-testid={`cat-${category.toLowerCase()}`}
-            className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap border ${
-              cat === category ? "bg-brand text-white border-brand shadow-brand" : "bg-white border-line text-ink"
-            }`}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
-
-      <div className="mt-6 glass-card rounded-3xl p-4 sm:p-5">
-        <div className="flex items-center gap-2">
+      {/* Search section — Course + Location + Button */}
+      <div className="mt-5 glass-card rounded-3xl p-4 sm:p-5">
+        <div className="flex items-center gap-2 mb-3">
           <LocateFixed size={16} className="text-brand" />
-          <p className="font-heading font-bold text-ink">Find Institutes Near Your Location</p>
+          <p className="font-heading font-bold text-ink text-sm sm:text-base">Search Institutes</p>
         </div>
-        <p className="text-xs text-muted2 mt-1">Search with a city or locality and discover institutes from Google Places.</p>
-        <div className="mt-3 flex flex-col sm:flex-row gap-2">
-          <input
-            value={locationQuery}
-            onChange={(e) => setLocationQuery(e.target.value)}
-            placeholder="e.g. Mumbai, Pune, Delhi NCR"
-            className="flex-1 bg-white border border-line rounded-xl px-4 py-2.5 text-sm"
-            data-testid="location-search-input"
-          />
+        <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] gap-2">
+          <div className="relative">
+            <GraduationCap size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted2" />
+            <input
+              value={courseQuery}
+              onChange={(e) => setCourseQuery(e.target.value)}
+              placeholder="Course — e.g. Engineering, MBA, MBBS"
+              className="w-full bg-white border border-line rounded-xl pl-10 pr-4 py-2.5 text-sm"
+              data-testid="course-search-input"
+            />
+          </div>
+          <div className="relative">
+            <MapPin size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted2" />
+            <input
+              value={locationQuery}
+              onChange={(e) => setLocationQuery(e.target.value)}
+              placeholder="Location — e.g. Mumbai, Pune, Delhi"
+              className="w-full bg-white border border-line rounded-xl pl-10 pr-4 py-2.5 text-sm"
+              data-testid="location-search-input"
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            />
+          </div>
           <button
-            onClick={handleLocationSearch}
+            onClick={handleSearch}
             disabled={locationLoading}
-            className="inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-600 text-white text-sm font-semibold px-4 py-2.5 rounded-xl disabled:opacity-60"
-            data-testid="location-search-button"
+            className="inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl disabled:opacity-60 shrink-0"
+            data-testid="search-institutes-button"
           >
-            <Search size={14} /> {locationLoading ? "Searching..." : "Search Nearby"}
+            <Search size={14} /> {locationLoading ? "Searching..." : "Search"}
           </button>
         </div>
         {locationMessage && <p className="text-xs text-muted2 mt-2">{locationMessage}</p>}
+        {searchedCourse && locationResults.length > 0 && (
+          <p className="text-xs mt-1">
+            <span className="text-muted2">Showing results for</span>{" "}
+            <span className="font-semibold text-brand">{searchedCourse}</span>
+            <span className="text-muted2"> in </span>
+            <span className="font-semibold text-brand">{searchedLocation}</span>
+          </p>
+        )}
 
         {locationLoading && (
           <div className="mt-4 space-y-2">
             <div className="flex items-center gap-2 text-sm font-semibold text-brand">
               <span className="w-4 h-4 border-2 border-brand-200 border-t-brand rounded-full animate-spin" />
-              Searching institutes near {locationQuery.trim()}...
+              Searching institutes{courseQuery.trim() ? ` for ${courseQuery.trim()}` : ""} near {locationQuery.trim()}...
             </div>
             <div className="h-5 w-2/3 rounded skeleton-shimmer" />
             <div className="h-16 w-full rounded skeleton-shimmer" />
@@ -303,15 +299,53 @@ export default function Colleges() {
         )}
       </div>
 
-      <div className="mt-6 flex items-center justify-between">
-        <h3 className="font-heading font-bold text-base sm:text-lg text-ink">Nearby Institutes</h3>
+      {/* Filter bar — only show after results */}
+      {locationResults.length > 0 && (
+        <>
+          <div className="mt-4 flex items-center gap-2">
+            <div className="relative flex-1">
+              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted2" />
+              <input
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="Filter by name, course, or address..."
+                data-testid="institutes-filter"
+                className="w-full bg-white border border-line rounded-full pl-10 pr-4 py-2.5 text-sm"
+              />
+            </div>
+            <button className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-full bg-white border border-line text-xs sm:text-sm font-semibold text-brand">
+              <Filter size={14} /> <span className="hidden sm:inline">Filter</span>
+            </button>
+          </div>
+
+          <div className="mt-3 flex gap-2 overflow-x-auto no-scrollbar pb-1">
+            {CATEGORIES.map((category) => (
+              <button
+                key={category}
+                onClick={() => setCat(category)}
+                data-testid={`cat-${category.toLowerCase()}`}
+                className={`px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap border ${
+                  cat === category ? "bg-brand text-white border-brand shadow-brand" : "bg-white border-line text-ink"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Results header */}
+      <div className="mt-5 flex items-center justify-between">
+        <h3 className="font-heading font-bold text-base sm:text-lg text-ink">
+          {locationResults.length > 0 ? "Nearby Institutes" : "Search to Find Institutes"}
+        </h3>
         {locationResults.length > 0 && (
-          <p className="text-xs sm:text-sm font-semibold text-brand">
-            {filteredResults.length} results
-          </p>
+          <p className="text-xs sm:text-sm font-semibold text-brand">{filteredResults.length} results</p>
         )}
       </div>
 
+      {/* Results list */}
       <div className="mt-3 space-y-3">
         {!locationLoading && recommendation && (
           <div className="ai-suggestions-box">
@@ -332,28 +366,33 @@ export default function Colleges() {
           </div>
         )}
 
-        {!locationLoading && filteredResults.map((institute) => <InstituteCard key={institute.id || institute.name} institute={institute} />)}
+        {!locationLoading && filteredResults.map((institute) => (
+          <InstituteCard key={institute.id || institute.name} institute={institute} />
+        ))}
 
         {!locationLoading && locationResults.length === 0 && (
           <div className="bg-white border border-line rounded-3xl p-6 text-center">
-            <p className="font-semibold text-ink">{locationMessage || "Search a city, area, or locality to load nearby institutes."}</p>
+            <Building2 size={32} className="mx-auto text-muted2 mb-2" />
+            <p className="font-semibold text-ink">{locationMessage || "Search a course and city to find nearby institutes."}</p>
+            <p className="text-xs text-muted2 mt-1">Try: "Engineering" in "Mumbai" or "MBA" in "Delhi"</p>
           </div>
         )}
 
         {!locationLoading && locationResults.length > 0 && filteredResults.length === 0 && (
           <div className="bg-white border border-line rounded-3xl p-6 text-center">
-            <p className="font-semibold text-ink">No institutes match this filter. Try All or another category.</p>
+            <p className="font-semibold text-ink">No institutes match this filter. Try "All" or another category.</p>
           </div>
         )}
       </div>
 
+      {/* Recommendation CTA */}
       <div className="mt-5 glass-card rounded-3xl p-4 sm:p-5 flex items-center gap-4">
         <div className="w-12 h-12 rounded-full bg-white border border-line text-brand flex items-center justify-center shrink-0">
           <Building2 size={22} />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="font-heading font-bold text-sm sm:text-base text-ink">Not sure which college is right for you?</p>
-          <p className="text-xs text-muted2 mt-0.5">Get personalized recommendations from your profile and current results.</p>
+          <p className="font-heading font-bold text-sm sm:text-base text-ink">Not sure which institute is right?</p>
+          <p className="text-xs text-muted2 mt-0.5">Get AI-powered recommendations based on your profile and search results.</p>
         </div>
         <button
           onClick={handleRecommendation}

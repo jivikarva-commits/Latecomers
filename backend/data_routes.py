@@ -223,6 +223,7 @@ def _find_fallback(item: Dict, fallback_lookup: Dict[str, Dict]) -> Dict:
 
 class CollegeSearchRequest(BaseModel):
     location: str
+    course: Optional[str] = None
 
 
 class CollegeRecommendRequest(BaseModel):
@@ -774,16 +775,18 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
     if len(location) < 2:
         raise HTTPException(400, "Enter a valid location.")
 
-    key = _location_key(location)
+    course = (payload.course or "").strip()
+    # Cache key includes both course and location for distinct results
+    cache_key = _location_key(f"{course}_{location}" if course else location)
     now = datetime.now(timezone.utc)
     cutoff = now - timedelta(hours=6)
 
     cache = await db(request).colleges_cache.find_one(
-        {"location": key, "cachedAt": {"$gte": cutoff}},
+        {"location": cache_key, "cachedAt": {"$gte": cutoff}},
         {"_id": 0},
     )
     if not cache:
-        legacy_cache = await db(request).colleges_cache.find_one({"location_key": key}, {"_id": 0})
+        legacy_cache = await db(request).colleges_cache.find_one({"location_key": cache_key}, {"_id": 0})
         legacy_cached_at = legacy_cache.get("timestamp") if legacy_cache else None
         if legacy_cached_at:
             if isinstance(legacy_cached_at, str):
@@ -796,6 +799,7 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
     if cache:
         return {
             "location": cache.get("searchedLocation") or location,
+            "course": course,
             "results": cache.get("results", []),
             "cached": True,
             "enriched": cache.get("enriched", True),
@@ -807,11 +811,18 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
         _log_college_error(location, "google_places_config", error)
         raise HTTPException(503, "Search temporarily unavailable. Please try again.")
 
-    queries = [
-        f"{location} engineering medical colleges",
-        f"{location} commerce arts law colleges",
-        f"{location} coaching institute skill development center",
-    ]
+    if course:
+        queries = [
+            f"{course} colleges in {location}",
+            f"{course} institutes in {location}",
+            f"{course} coaching center {location}",
+        ]
+    else:
+        queries = [
+            f"{location} engineering medical colleges",
+            f"{location} commerce arts law colleges",
+            f"{location} coaching institute skill development center",
+        ]
 
     try:
         async with httpx.AsyncClient(timeout=30.0) as client:
@@ -832,11 +843,12 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
 
             if not top_places:
                 await db(request).colleges_cache.update_one(
-                    {"location": key},
+                    {"location": cache_key},
                     {
                         "$set": {
-                            "location": key,
+                            "location": cache_key,
                             "searchedLocation": location,
+                            "course": course,
                             "results": [],
                             "cachedAt": now,
                             "enriched": False,
@@ -846,9 +858,10 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
                 )
                 return {
                     "location": location,
+                    "course": course,
                     "results": [],
                     "cached": False,
-                    "message": "No institutes found near this location. Try a nearby major city.",
+                    "message": f"No institutes found for{(' ' + course + ' in') if course else ''} {location}. Try a nearby major city.",
                 }
 
             detail_responses = await asyncio.gather(
@@ -867,19 +880,20 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
             details = {}
         raw_results.append(_normalize_google_place(place, details))
 
-    prompt = f"""You are a college research assistant. Here are 10 institutes 
-found near {location} via Google Places API:
+    course_context = f" for '{course}' programs" if course else ""
+    prompt = f"""You are an Indian college/institute research assistant. Here are institutes
+found near {location}{course_context} via Google Places API:
 
 {json.dumps(raw_results, ensure_ascii=False)}
 
 For each institute enrich the data by identifying:
-- What courses they likely offer based on their name
-- Category: Engineering / Medical / Management / Commerce / 
+- What courses they likely offer based on their name{f' (prioritize {course}-related courses)' if course else ''}
+- Category: Engineering / Medical / Management / Commerce /
   Law / Coaching / Skill Development / Arts
-- Any additional context useful for a student
+- Any additional context useful for an Indian student
 
 Return ONLY a JSON array with fields:
-name, address, phone, website, rating, 
+name, address, phone, website, rating,
 reviewCount, courses[], category, businessStatus,
 googleMapsLink (construct as https://maps.google.com/?q={{name}}+{{address}})
 """
@@ -909,11 +923,12 @@ googleMapsLink (construct as https://maps.google.com/?q={{name}}+{{address}})
         _log_college_error(location, "bedrock_enrichment", e)
 
     await db(request).colleges_cache.update_one(
-        {"location": key},
+        {"location": cache_key},
         {
             "$set": {
-                "location": key,
+                "location": cache_key,
                 "searchedLocation": location,
+                "course": course,
                 "results": results,
                 "cachedAt": now,
                 "enriched": enriched,
@@ -923,6 +938,7 @@ googleMapsLink (construct as https://maps.google.com/?q={{name}}+{{address}})
     )
     return {
         "location": location,
+        "course": course,
         "results": results,
         "cached": False,
         "enriched": enriched,

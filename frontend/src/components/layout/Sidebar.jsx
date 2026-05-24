@@ -8,7 +8,7 @@ const items = [
   { to: "/dashboard", label: "Dashboard", icon: Home, id: "nav-dashboard" },
   { to: "/roadmap", label: "Roadmap", icon: Map, id: "nav-roadmap" },
   { to: "/careers", label: "Careers", icon: Briefcase, id: "nav-careers" },
-  { to: "/colleges", label: "Colleges", icon: Building2, id: "nav-colleges" },
+  { to: "/colleges", label: "Institutes", icon: Building2, id: "nav-colleges" },
   { to: "/scholarships", label: "Scholarships", icon: GraduationCap, id: "nav-scholarships" },
   { to: "/mock-interview", label: "Mock Interview", icon: Mic, id: "nav-mock-interview" },
   { to: "/ai-chat", label: "AI Chat", icon: MessageCircle, id: "nav-ai-chat" },

@@ -178,7 +178,7 @@ export default function Profile() {
 
       <div className="grid sm:grid-cols-3 gap-3">
         <Stat icon={Briefcase} label="Saved Careers" value={user?.saved_items?.careers?.length || 0} />
-        <Stat icon={Building2} label="Saved Colleges" value={user?.saved_items?.colleges?.length || 0} />
+        <Stat icon={Building2} label="Saved Institutes" value={user?.saved_items?.colleges?.length || 0} />
         <Stat icon={Award} label="Saved Scholarships" value={user?.saved_items?.scholarships?.length || 0} />
       </div>
 
@@ -192,7 +192,7 @@ export default function Profile() {
           )}
           {noSavedColleges && (
             <p className="text-sm text-muted2">
-              No saved colleges yet. <Link to="/colleges" className="text-brand font-semibold">Explore colleges</Link> and save options you like.
+              No saved institutes yet. <Link to="/colleges" className="text-brand font-semibold">Explore institutes</Link> and save options you like.
             </p>
           )}
           {noSavedScholarships && (

@@ -865,21 +865,72 @@ async def generate_roadmap(payload: RoadmapGenRequest, request: Request, user=De
         raise HTTPException(404, "Career not found")
 
     profile = user.get("profile", {})
-    prompt = f"""Generate a personalized career roadmap for an Indian student pursuing {career['title']}.
+    education = profile.get("education", "Not specified")
+    location = profile.get("location", "India")
 
-Student profile: {json.dumps(profile)}
+    prompt = f"""You are an expert Indian career counselor. Generate a DETAILED, SPECIFIC career roadmap for becoming a **{career['title']}** in India.
 
-Return STRICT JSON:
+Student profile:
+- Education: {education}
+- Location: {location}
+- Full profile: {json.dumps(profile)}
+
+IMPORTANT RULES:
+- Use REAL course names, REAL platform names (Coursera, Udemy, NPTEL, Unacademy, etc.)
+- Use REAL company names for job targets (TCS, Infosys, Wipro, Accenture, Flipkart, etc.)
+- Use REAL costs in INR (₹) or mention "Free" where applicable
+- Be SPECIFIC — no vague advice like "learn programming". Say exactly WHAT to learn, WHERE, and HOW LONG
+- Every action item must be a concrete, doable task
+- Include Indian government schemes, AICTE programs, NSDC courses where relevant
+
+Return STRICT JSON with this exact structure:
 {{
   "stages": [
-    {{"stageNum": 1, "title": "Explore", "duration": "1-2 months", "description": "...", "skills": ["..."], "resources": [{{"label": "...", "type": "course|book|video"}}]}}
+    {{
+      "stageNum": 1,
+      "title": "Foundation & Education",
+      "duration": "0-3 Months",
+      "description": "One line summary of this stage's goal",
+      "preview": "Short 6-8 word preview shown when collapsed",
+      "skills": ["skill1", "skill2"],
+      "sections": [
+        {{
+          "type": "education",
+          "label": "Education Path",
+          "items": ["Specific action item 1 with real details", "Specific action item 2"]
+        }},
+        {{
+          "type": "courses",
+          "label": "Courses & Certifications",
+          "items": ["Course Name on Platform - ₹Cost or Free - Duration", "Another specific course"]
+        }},
+        {{
+          "type": "skills",
+          "label": "Skills to Master",
+          "items": ["Specific skill with tool/technology name", "Another skill"]
+        }},
+        {{
+          "type": "projects",
+          "label": "Projects & Portfolio",
+          "items": ["Build a specific project type using specific technologies", "Another project"]
+        }}
+      ]
+    }}
   ]
 }}
-Provide exactly 4 stages: Explore, Learn, Prepare, Achieve. India-specific resources where possible.
+
+Generate exactly 4 stages:
+1. Foundation & Education (0-3 Months) — Entry requirements, beginner courses, basic skills
+2. Skill Building & Practice (3-6 Months) — Intermediate courses, hands-on projects, tools mastery
+3. Portfolio & Certification (6-9 Months) — Advanced projects, industry certifications, GitHub portfolio
+4. Job Readiness & Applications (9-12 Months) — Resume building, interview prep, where to apply, salary expectations
+
+Each stage MUST have 3-5 sections. Each section MUST have 3-5 specific action items.
+Make it actionable for someone in {location}, India.
 """
 
     try:
-        text = await ask_claude(prompt, max_tokens=2000, json_only=True)
+        text = await ask_claude(prompt, max_tokens=3500, json_only=True)
         data = extract_json(text)
     except Exception as e:
         logger.error(f"roadmap LLM error: {e}")

@@ -405,7 +405,7 @@ export default function Dashboard() {
         {[
           { to: "/career-test", icon: FileText, label: "AI Career Test", id: "qa-career-test" },
           { to: "/mock-interview", icon: Mic, label: "Mock Interview", id: "qa-mock-interview" },
-          { to: "/colleges", icon: Building2, label: "Colleges", id: "qa-colleges" },
+          { to: "/colleges", icon: Building2, label: "Institutes", id: "qa-colleges" },
           { to: "/scholarships", icon: GraduationCap, label: "Scholarships", id: "qa-scholarships" },
         ].map((a) => (
           <Link

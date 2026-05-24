@@ -150,7 +150,7 @@ export default function Landing() {
                 <div className="px-2 py-1.5 rounded-lg bg-white text-brand font-semibold">Dashboard</div>
                 <div className="px-2 py-1.5 text-muted2">Roadmap</div>
                 <div className="px-2 py-1.5 text-muted2">Careers</div>
-                <div className="px-2 py-1.5 text-muted2">Colleges</div>
+                <div className="px-2 py-1.5 text-muted2">Institutes</div>
                 <div className="px-2 py-1.5 text-muted2">Coaching</div>
                 <div className="px-2 py-1.5 text-muted2">Scholarships</div>
               </div>
