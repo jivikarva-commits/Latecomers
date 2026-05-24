@@ -66,6 +66,7 @@ export default function Roadmap() {
         }
       })
       .catch((error) => toast.error(error?.response?.data?.detail || "Failed to load careers."));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
