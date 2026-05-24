@@ -930,11 +930,16 @@ Make it actionable for someone in {location}, India.
 """
 
     try:
-        text = await ask_claude(prompt, max_tokens=3500, json_only=True)
+        text = await ask_claude(prompt, max_tokens=6000, json_only=True)
         data = extract_json(text)
+        if not data or not data.get("stages"):
+            raise ValueError("AI returned empty or invalid roadmap structure")
+    except json.JSONDecodeError as e:
+        logger.error(f"roadmap JSON parse error: {e} | response length: {len(text) if text else 0}")
+        raise HTTPException(500, "Roadmap generation returned incomplete data. Please try again.")
     except Exception as e:
         logger.error(f"roadmap LLM error: {e}")
-        raise HTTPException(500, f"AI roadmap failed: {e}")
+        raise HTTPException(500, f"AI roadmap failed. Please try again.")
 
     # Save under user
     await db(request).users.update_one(

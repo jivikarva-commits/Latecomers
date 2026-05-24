@@ -199,11 +199,19 @@ export default function Roadmap() {
             <Sparkles size={14} /> {loading ? "Generating..." : "Generate Roadmap"}
           </button>
         </div>
-        {selectedCareer && (
+        {selectedCareer && !loading && (
           <div className="mt-2 flex items-center gap-2 text-xs">
             <span className="text-muted2">Selected:</span>
             <span className="font-semibold text-brand">{selectedCareer.title}</span>
             {selectedCareer.salary_range && <span className="text-muted2">· {selectedCareer.salary_range}</span>}
+          </div>
+        )}
+        {loading && (
+          <div className="mt-3 flex items-center gap-3 px-1">
+            <span className="w-4 h-4 border-2 border-brand-200 border-t-brand rounded-full animate-spin shrink-0" />
+            <p className="text-xs sm:text-sm font-semibold text-brand animate-pulse">
+              Crafting your personalized roadmap{selectedCareer ? ` for ${selectedCareer.title}` : ""}...
+            </p>
           </div>
         )}
       </div>

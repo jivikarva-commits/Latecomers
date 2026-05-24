@@ -386,18 +386,20 @@ export default function Colleges() {
       </div>
 
       {/* Recommendation CTA */}
-      <div className="mt-5 glass-card rounded-3xl p-4 sm:p-5 flex items-center gap-4">
-        <div className="w-12 h-12 rounded-full bg-white border border-line text-brand flex items-center justify-center shrink-0">
-          <Building2 size={22} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="font-heading font-bold text-sm sm:text-base text-ink">Not sure which institute is right?</p>
-          <p className="text-xs text-muted2 mt-0.5">Get AI-powered recommendations based on your profile and search results.</p>
+      <div className="mt-5 glass-card rounded-3xl p-4 sm:p-5">
+        <div className="flex items-start gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white border border-line text-brand flex items-center justify-center shrink-0">
+            <Building2 size={20} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-heading font-bold text-sm sm:text-base text-ink">Not sure which institute is right?</p>
+            <p className="text-xs text-muted2 mt-0.5">Get AI-powered recommendations based on your profile and search results.</p>
+          </div>
         </div>
         <button
           onClick={handleRecommendation}
           disabled={recommendationLoading || !locationResults.length}
-          className="inline-flex items-center gap-1.5 bg-brand hover:bg-brand-600 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full disabled:opacity-60"
+          className="mt-3 w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-brand hover:bg-brand-600 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full disabled:opacity-60"
           data-testid="get-recommendations-btn"
         >
           {recommendationLoading ? "Recommending..." : "Get Recommendations"} <ArrowRight size={14} />
