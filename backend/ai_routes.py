@@ -869,7 +869,18 @@ def _repair_truncated_json(text: str):
         return None
     raw = raw[start:]
     # Try progressively closing brackets
-    for suffix in ["", '"}]}]}', '"]}]}', ']}]}', '"]}]}]}', '"]}}]}', "]}}", "]}"]]:
+    suffixes = [
+        "",
+        '"}]}}]}}',
+        '"]}}]}}',
+        "]}}]}}",
+        '"]}}]}}',
+        "]}}",
+        "]}",
+        "}}",
+        "]}}",
+    ]
+    for suffix in suffixes:
         try:
             candidate = raw + suffix
             data = json.loads(candidate)
