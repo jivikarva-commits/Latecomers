@@ -1135,6 +1135,83 @@ class SaveItem(BaseModel):
     item_id: str
 
 
+PLAN_LIMITS = {
+    "basic": {
+        "name": "Basic",
+        "price": 9,
+        "aiChats": 0,
+        "mockInterviews": 0,
+        "instituteSearches": 0,
+        "roadmaps": 0,
+    },
+    "standard": {
+        "name": "Standard",
+        "price": 99,
+        "aiChats": 15,
+        "mockInterviews": 5,
+        "instituteSearches": 10,
+        "roadmaps": 10,
+    },
+    "premium": {
+        "name": "Premium",
+        "price": 299,
+        "aiChats": 30,
+        "mockInterviews": 15,
+        "instituteSearches": 20,
+        "roadmaps": 20,
+    },
+}
+
+
+class MockSubscribeIn(BaseModel):
+    plan: str
+
+
+@router.post("/me/mock-subscribe")
+async def mock_subscribe(payload: MockSubscribeIn, request: Request, user=Depends(current_user)):
+    plan_key = payload.plan.lower().strip()
+    if plan_key not in PLAN_LIMITS:
+        raise HTTPException(400, "Invalid plan")
+    now = datetime.now(timezone.utc).isoformat()
+    subscription = {
+        "provider": "mock",
+        "status": "active",
+        "plan": plan_key,
+        "planName": PLAN_LIMITS[plan_key]["name"],
+        "price": PLAN_LIMITS[plan_key]["price"],
+        "currency": "INR",
+        "startedAt": now,
+        "note": "Mock subscription. Replace with Razorpay verification later.",
+    }
+    usage = {
+        "limits": {
+            "aiChats": PLAN_LIMITS[plan_key]["aiChats"],
+            "mockInterviews": PLAN_LIMITS[plan_key]["mockInterviews"],
+            "instituteSearches": PLAN_LIMITS[plan_key]["instituteSearches"],
+            "roadmaps": PLAN_LIMITS[plan_key]["roadmaps"],
+        },
+        "used": {
+            "aiChats": 0,
+            "mockInterviews": 0,
+            "instituteSearches": 0,
+            "roadmaps": 0,
+        },
+        "periodStartedAt": now,
+    }
+    await db(request).users.update_one(
+        {"user_id": user["user_id"]},
+        {
+            "$set": {
+                "subscription": subscription,
+                "usage": usage,
+                "updated_at": now,
+            }
+        },
+    )
+    updated = await db(request).users.find_one({"user_id": user["user_id"]}, {"_id": 0})
+    return {"ok": True, "user": updated, "subscription": subscription, "usage": usage}
+
+
 @router.post("/me/save")
 async def save_item(payload: SaveItem, request: Request, user=Depends(current_user)):
     if payload.kind not in ("careers", "colleges", "scholarships"):

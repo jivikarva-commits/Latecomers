@@ -37,7 +37,7 @@ client = AsyncIOMotorClient(
 )
 db = client[os.environ.get("DB_NAME", "career_compass")]
 
-app = FastAPI(title="LATE COMERS AI")
+app = FastAPI(title="Latecomers")
 app.state.db = db
 app.state.career_cache_task = None
 
@@ -46,7 +46,7 @@ api_router = APIRouter(prefix="/api")
 
 @api_router.get("/")
 async def root():
-    return {"service": "LATE COMERS AI", "status": "ok", "llm": llm_status()}
+    return {"service": "Latecomers", "status": "ok", "llm": llm_status()}
 
 
 @api_router.get("/health")
@@ -84,7 +84,7 @@ async def on_startup():
 
     asyncio.create_task(_bg())
     app.state.career_cache_task = asyncio.create_task(career_cache_expiry_worker())
-    logger.info("LATE COMERS AI started. LLM: %s", llm_status())
+    logger.info("Latecomers started. LLM: %s", llm_status())
 
 
 @app.on_event("shutdown")

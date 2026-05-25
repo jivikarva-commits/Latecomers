@@ -91,6 +91,8 @@ export default function Profile() {
   const noSavedCareers = (user?.saved_items?.careers?.length || 0) === 0;
   const noSavedColleges = (user?.saved_items?.colleges?.length || 0) === 0;
   const noSavedScholarships = (user?.saved_items?.scholarships?.length || 0) === 0;
+  const subscription = user?.subscription;
+  const usageLimits = user?.usage?.limits;
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto space-y-4" data-testid="profile-page">
@@ -180,6 +182,37 @@ export default function Profile() {
         <Stat icon={Briefcase} label="Saved Careers" value={user?.saved_items?.careers?.length || 0} />
         <Stat icon={Building2} label="Saved Institutes" value={user?.saved_items?.colleges?.length || 0} />
         <Stat icon={Award} label="Saved Scholarships" value={user?.saved_items?.scholarships?.length || 0} />
+      </div>
+
+      <div className="bg-white rounded-3xl border border-line p-5">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="font-heading font-bold text-ink">Subscription</p>
+            <p className="text-sm text-muted2 mt-1">
+              {subscription?.status === "active"
+                ? `${subscription.planName} plan active - mock ${subscription.provider} subscription`
+                : "No active plan yet"}
+            </p>
+          </div>
+          <Link to="/pricing" className="inline-flex items-center gap-1 bg-brand text-white text-xs font-semibold px-4 py-2 rounded-full shadow-brand">
+            Plans <ArrowRight size={12} />
+          </Link>
+        </div>
+        {usageLimits && (
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+            {[
+              ["AI Chats", usageLimits.aiChats],
+              ["Mock Tests", usageLimits.mockInterviews],
+              ["Institutes", usageLimits.instituteSearches],
+              ["Roadmaps", usageLimits.roadmaps],
+            ].map(([label, value]) => (
+              <div key={label} className="rounded-2xl bg-brand-50 border border-line p-3">
+                <p className="font-heading font-bold text-brand">{value}</p>
+                <p className="text-[10px] text-muted2 mt-0.5">{label}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {(noSavedCareers || noSavedColleges || noSavedScholarships) && (

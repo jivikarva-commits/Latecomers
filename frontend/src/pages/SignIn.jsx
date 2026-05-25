@@ -133,7 +133,7 @@ export default function SignIn() {
           </div>
 
           <p className="text-xs text-muted2 mt-6 leading-relaxed">
-            By continuing you agree to LATE COMERS AI's Terms &amp; Privacy. We never share your data.
+            By continuing you agree to Latecomers Terms &amp; Privacy. We never share your data.
           </p>
         </div>
       </div>

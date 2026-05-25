@@ -1,255 +1,149 @@
 import React from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { ArrowRight, CheckCircle2, CreditCard, Sparkles, Users, Building2, GraduationCap, Headphones, Brain, FileText, Rocket, Navigation } from "lucide-react";
-import Logo from "../components/Logo";
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowRight, Brain, Building2, CheckCircle2, GraduationCap, Headphones, Map, MessageCircle, Mic, Search, Sparkles, UserRoundCheck } from "lucide-react";
+import PublicShell from "../components/PublicShell";
 import { useAuth } from "../context/AuthContext";
 
-const Stat = ({ icon: Icon, value, label, color }) => (
-  <div className="flex flex-col sm:flex-row items-center sm:items-center gap-2 sm:gap-4 p-3 sm:p-5 text-center sm:text-left">
-    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0" style={{ background: color + "20", color }}>
-      <Icon size={18} className="sm:w-[22px] sm:h-[22px]" />
-    </div>
-    <div>
-      <p className="font-heading font-bold text-lg sm:text-2xl text-ink leading-none">{value}</p>
-      <p className="text-[10px] sm:text-sm text-muted2 mt-0.5 sm:mt-1 leading-tight">{label}</p>
-    </div>
-  </div>
-);
+const audiences = [
+  ["BPO & Telecallers", "Your communication skills and resilience are real assets. We show where they can take you next."],
+  ["Backoffice & Data Entry Workers", "Your process thinking can grow into analytics, operations, finance, and admin leadership paths."],
+  ["Graduates With No Direction", "You are not behind. You need a clearer map from your degree to a practical next step."],
+  ["Career Switchers at Any Age", "Your past experience still matters. Latecomers helps you connect the dots and restart with confidence."],
+];
 
-const HowStep = ({ n, icon: Icon, title, desc }) => (
-  <div className="surface-gradient elevated-card rounded-3xl p-6 sm:p-8 border border-line relative" data-testid={`how-step-${n}`}>
-    <div className="absolute -top-3 left-6 w-8 h-8 rounded-full bg-white border border-line shadow-soft flex items-center justify-center text-sm font-bold text-ink">
-      {n}
-    </div>
-    <div className="w-12 h-12 rounded-2xl bg-brand-50 text-brand flex items-center justify-center mb-4">
-      <Icon size={22} />
-    </div>
-    <h3 className="font-heading font-bold text-lg sm:text-xl text-ink mb-2">{title}</h3>
-    <p className="text-sm text-muted2 leading-relaxed">{desc}</p>
-  </div>
-);
+const features = [
+  ["Career Match Score", Brain],
+  ["Step-by-Step Roadmap", Map],
+  ["Institute Search", Building2],
+  ["Scholarship Finder", GraduationCap],
+  ["Mock Interviews", Mic],
+  ["AI Career Chat", MessageCircle],
+];
 
-const Testimonial = ({ quote, name, role, avatarSeed }) => (
-  <div className="surface-gradient elevated-card rounded-3xl p-5 sm:p-6 border border-line flex gap-4" data-testid="testimonial-card">
-    <img
-      src={`https://i.pravatar.cc/100?u=${avatarSeed}`}
-      alt={name}
-      className="w-12 h-12 rounded-full object-cover shrink-0"
-    />
-    <div>
-      <p className="text-sm text-ink leading-relaxed">&ldquo;{quote}&rdquo;</p>
-      <p className="text-xs text-muted2 mt-3">— {name}, {role}</p>
-    </div>
-  </div>
-);
-
-const CompassOrb = () => (
-  <div className="hidden sm:block absolute right-6 lg:right-10 top-1/2 -translate-y-1/2 pointer-events-none">
-    <Sparkles size={14} className="absolute -left-6 top-5 text-brand-300 float-soft" />
-    <Sparkles size={12} className="absolute -left-2 -bottom-2 text-brand-200 float-soft" />
-    <Sparkles size={10} className="absolute right-1 top-0 text-brand-300 float-soft" />
-    <div className="relative w-[132px] h-[132px] lg:w-[164px] lg:h-[164px] rotate-[18deg] float-soft">
-      <div className="absolute inset-0 rounded-full border border-white/30 bg-gradient-to-br from-[#A59BFF] via-[#6A5DEF] to-[#2E63FF] shadow-[0_20px_40px_rgba(84,75,230,0.45)]" />
-      <div className="absolute -top-2 right-6 w-8 h-8 rounded-full bg-gradient-to-br from-[#A7A0F4] to-[#4A3ED8] border border-white/50 shadow-[0_10px_20px_rgba(78,68,220,0.4)]" />
-      <div className="absolute -top-4 right-4 w-4 h-4 rounded-full border-2 border-white/75" />
-
-      <div className="absolute inset-[10px] rounded-full border border-white/35" />
-      <div className="absolute inset-[22px] rounded-full border border-white/32" />
-      <div className="absolute inset-[34px] rounded-full border border-white/28" />
-
-      <div className="absolute inset-[46px] rounded-full border border-white/55 bg-white/10 backdrop-blur-[1px] flex items-center justify-center">
-        <Navigation size={24} className="text-white drop-shadow-sm -rotate-[62deg] lg:w-7 lg:h-7" strokeWidth={2.8} />
-      </div>
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white/95 shadow" />
-    </div>
-  </div>
-);
+const steps = [
+  ["Tell us about yourself", "Answer a simple quiz about your background, interests, personality, values, and goals."],
+  ["Get your AI career match score", "See careers that fit you, with salary ranges, growth, and clear reasons."],
+  ["Follow your personalised roadmap", "Get a month-by-month plan with skills, courses, projects, costs, and timelines."],
+  ["Practice, apply, and land the job", "Use mock interviews, scholarships, institutes, and AI guidance until your first offer."],
+];
 
 export default function Landing() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
-
-  const startJourney = () => {
-    if (isAuthenticated) navigate("/dashboard");
-    else navigate("/signin");
-  };
+  const startJourney = () => navigate(isAuthenticated ? "/dashboard" : "/signin");
 
   return (
-    <div className="min-h-screen bg-brand-50 font-body overflow-x-hidden" data-testid="landing-page">
-      {/* Top nav */}
-      <header className="sticky top-0 z-40 backdrop-blur bg-brand-50/80 border-b border-line">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Logo />
-          <nav className="hidden lg:flex items-center gap-7 text-sm font-medium text-muted2">
-            <a href="#how" className="hover:text-ink">How it works</a>
-            <a href="#features" className="hover:text-ink">Features</a>
-            <a href="#how" className="hover:text-ink">Roadmap</a>
-            <Link to="/colleges" className="hover:text-ink">For Institutes</Link>
-            <Link to="/scholarships" className="hover:text-ink">Scholarships</Link>
-          </nav>
-          <div className="flex items-center gap-2 sm:gap-3">
-            <button
-              onClick={() => navigate("/signin")}
-              className="hidden sm:inline-flex items-center px-5 py-2 rounded-full border border-line text-ink text-sm font-semibold hover:bg-white transition"
-              data-testid="nav-signin-button"
-            >
-              Sign In
-            </button>
-            <button
-              onClick={startJourney}
-              className="inline-flex items-center gap-1.5 sm:gap-2 bg-brand hover:bg-brand-600 text-white font-semibold text-xs sm:text-sm px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full shadow-brand transition whitespace-nowrap"
-              data-testid="nav-get-started-button"
-            >
-              Get Started Free <ArrowRight size={14} className="sm:w-4 sm:h-4" />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-16 pb-8 sm:pb-10 grid lg:grid-cols-2 gap-8 lg:gap-14 items-center">
-        <div className="animate-fade-up">
-          <span className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-white border border-line text-xs sm:text-sm text-muted2">
-            <Sparkles size={14} className="text-brand" /> AI-Powered Career Guidance
+    <PublicShell>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 pb-10 grid lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
+        <div>
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-line text-xs sm:text-sm font-semibold text-muted2">
+            <Sparkles size={14} className="text-brand" /> AI-powered career guidance for late starters
           </span>
-          <h1 className="font-heading font-extrabold tracking-tight text-3xl sm:text-5xl lg:text-6xl text-ink mt-4 sm:mt-5 leading-[1.1] sm:leading-[1.05]">
-            Find your perfect career in <span className="text-brand">10 minutes</span>,
-            <br className="hidden sm:block" /><span className="sm:hidden"> </span>not just engineering or medical.
+          <h1 className="font-heading font-extrabold tracking-normal text-4xl sm:text-6xl lg:text-7xl text-ink mt-5 leading-[1.02]">
+            You didn't start late.
+            <span className="block text-brand">You started at the right time.</span>
           </h1>
-          <p className="mt-4 sm:mt-5 text-sm sm:text-lg text-muted2 max-w-xl leading-relaxed">
-            Personalized roadmap, top coaching near you, scholarships, mock interviews and more — all in one place.
+          <p className="mt-5 text-base sm:text-lg text-muted2 max-w-2xl leading-relaxed">
+            Whether you're stuck in a BPO, grinding in backoffice, or sitting with a degree and no direction, your career story is not over. Latecomers looks at who you really are and tells you which career fits you, and exactly how to get there.
           </p>
-          <div className="mt-5 sm:mt-7 flex flex-wrap items-center gap-3 sm:gap-4">
-            <button
-              onClick={startJourney}
-              className="inline-flex items-center gap-2 bg-brand hover:bg-brand-600 text-white font-semibold text-sm sm:text-base px-5 sm:px-6 py-3 sm:py-3.5 rounded-full shadow-brand transition"
-              data-testid="hero-start-test-button"
-            >
-              Start AI Career Test — It's Free <ArrowRight size={16} className="sm:w-[18px] sm:h-[18px]" />
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            <button onClick={startJourney} className="inline-flex items-center gap-2 bg-brand hover:bg-brand-600 text-white font-semibold px-5 sm:px-6 py-3.5 rounded-full shadow-brand">
+              Find my career path <ArrowRight size={18} />
             </button>
-            <button className="inline-flex items-center gap-2 text-ink font-medium" data-testid="hero-watch-demo">
-              <span className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white border border-line flex items-center justify-center">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l16 9-16 9V3z"/></svg>
-              </span>
-              <span className="text-xs sm:text-sm">Watch demo<br /><span className="text-[10px] sm:text-xs text-muted2">60 sec</span></span>
-            </button>
+            <a href="#how" className="inline-flex items-center gap-2 text-ink font-semibold px-4 py-3">
+              See how it works <ArrowRight size={16} />
+            </a>
           </div>
-          <div className="mt-5 sm:mt-7 flex flex-wrap items-center gap-3 sm:gap-5 text-xs sm:text-sm text-muted2">
-            <span className="inline-flex items-center gap-1.5"><CheckCircle2 size={14} className="text-brand sm:w-4 sm:h-4" /> 100% Free</span>
-            <span className="inline-flex items-center gap-1.5"><CreditCard size={14} className="text-brand sm:w-4 sm:h-4" /> No credit card</span>
-            <span className="inline-flex items-center gap-1.5"><Sparkles size={14} className="text-brand sm:w-4 sm:h-4" /> AI-Powered</span>
-            <span className="inline-flex items-center gap-1.5">🇮🇳 Made for India</span>
+          <div className="mt-5 flex flex-wrap items-center gap-3 text-xs sm:text-sm text-muted2">
+            {["All Career Options", "No resume needed", "Takes 5 minutes", "₹9 to unlock full results"].map((item) => (
+              <span key={item} className="inline-flex items-center gap-1.5">
+                <CheckCircle2 size={15} className="text-brand" /> {item}
+              </span>
+            ))}
           </div>
         </div>
 
-        {/* Hero preview card — hidden on mobile */}
-        <div className="relative animate-fade-up hidden lg:block" data-testid="hero-preview">
-          <div className="glass-card rounded-3xl p-3 sm:p-4">
-            <div className="flex gap-3">
-              <div className="hidden sm:flex flex-col gap-1 w-32 bg-brand-50 rounded-2xl p-3 text-xs">
-                <div className="px-2 py-1.5 rounded-lg bg-white text-brand font-semibold">Dashboard</div>
-                <div className="px-2 py-1.5 text-muted2">Roadmap</div>
-                <div className="px-2 py-1.5 text-muted2">Careers</div>
-                <div className="px-2 py-1.5 text-muted2">Institutes</div>
-                <div className="px-2 py-1.5 text-muted2">Coaching</div>
-                <div className="px-2 py-1.5 text-muted2">Scholarships</div>
-              </div>
-              <div className="flex-1 bg-brand-50 rounded-2xl p-4 space-y-3">
-                <p className="text-sm font-semibold text-ink">LATE COMERS <span className="text-brand">AI</span></p>
-                <p className="text-sm">Hey Arjun! 👋<br />Let's find the perfect career for you.</p>
-                <div className="bg-white rounded-2xl px-3 py-2 text-sm shadow-sm">Which subjects do you enjoy the most?</div>
-                <div className="flex flex-wrap gap-2 text-xs">
-                  {["Maths", "Physics", "Biology", "Business", "Design", "Others"].map((s) => (
-                    <span key={s} className="px-3 py-1 rounded-full bg-white border border-line">{s}</span>
-                  ))}
+        <div className="relative">
+          <div className="bg-white border border-line rounded-3xl shadow-soft p-4 sm:p-6">
+            <img src="/brand/latecomers-logo.jpeg" alt="Latecomers logo" className="w-full rounded-2xl border border-line object-cover" />
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              {[
+                ["12,000+", "Careers discovered"],
+                ["89%", "Quiz match accuracy"],
+                ["320+", "Active scholarships"],
+                ["4.8", "User rating"],
+              ].map(([value, label]) => (
+                <div key={label} className="rounded-2xl bg-brand-50 border border-line p-4">
+                  <p className="font-heading font-extrabold text-2xl text-ink">{value}</p>
+                  <p className="text-xs text-muted2 mt-1">{label}</p>
                 </div>
-                <div className="bg-white rounded-2xl p-3 mt-2">
-                  <p className="text-xs font-semibold text-ink mb-2">Your Top Career Matches</p>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[
-                      { t: "Data Scientist", m: 92, c: "#5B4FE9" },
-                      { t: "UX Designer", m: 88, c: "#3B82F6" },
-                      { t: "Product Mgr", m: 85, c: "#F97316" },
-                    ].map((c) => (
-                      <div key={c.t} className="rounded-xl border border-line p-2">
-                        <div className="w-7 h-7 rounded-lg mb-1" style={{ background: c.c + "30" }} />
-                        <p className="text-[10px] font-semibold text-ink leading-tight">{c.t}</p>
-                        <p className="text-[10px] text-muted2">{c.m}% Match</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
-         <div className="glass-card rounded-3xl grid grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-line">
-          <Stat icon={Users} value="12,847+" label="Students guided this week" color="#5B4FE9" />
-          <Stat icon={Building2} value="50,000+" label="Top institutes listed" color="#3B82F6" />
-          <Stat icon={GraduationCap} value="1,600+" label="Scholarships available" color="#A855F7" />
-          <Stat icon={Headphones} value="24/7" label="AI career counselor" color="#EC4899" />
-        </div>
-      </section>
-
-      {/* How it works */}
-      <section id="how" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-20">
-        <div className="text-center mb-8 sm:mb-10">
-          <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink">How it works</h2>
-          <p className="text-muted2 mt-2">Get your personalized career roadmap in 3 simple steps</p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-          <HowStep n={1} icon={Brain} title="Take AI Career Test" desc="Answer a few smart questions about your interests, skills and goals." />
-          <HowStep n={2} icon={FileText} title="Get Your Roadmap" desc="Receive your personalized career list, college options and growth path." />
-          <HowStep n={3} icon={Rocket} title="Take Action & Grow" desc="Find top coaching, apply for scholarships, crack interviews and achieve your dream." />
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section id="features" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 sm:pb-14">
-        <h3 className="text-center font-heading font-bold text-xl sm:text-3xl text-ink mb-6 sm:mb-8">
-          Loved by students across India ❤️
-        </h3>
-        <div className="grid md:grid-cols-3 gap-5">
-          <Testimonial quote="Finally got clarity! The AI test was accurate and the roadmap really helped me." name="Rohan" role="12th Student" avatarSeed="1" />
-          <Testimonial quote="Found the best coaching near me and even got a scholarship through Late Comers AI." name="Ananya" role="B.Tech Student" avatarSeed="2" />
-          <Testimonial quote="Mock interviews were game-changer! Boosted my confidence and cracked my dream role." name="Karan" role="Engineering Graduate" avatarSeed="3" />
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14 sm:pb-20">
-        <div className="glass-card rounded-3xl p-6 sm:p-12 text-center relative overflow-hidden">
-          <Sparkles size={16} className="hidden sm:block absolute left-8 top-9 text-brand-200" />
-          <Sparkles size={12} className="hidden sm:block absolute left-16 bottom-10 text-brand-300" />
-          <CompassOrb />
-          <div className="relative z-10 sm:pr-32 lg:pr-44">
-            <h2 className="font-heading font-extrabold text-2xl sm:text-5xl text-ink leading-tight">
-              Your career. Your map. <span className="text-brand">Your future.</span>
-            </h2>
-            <p className="text-muted2 mt-3 text-sm sm:text-base">
-              Join thousands of students who are already building their dream careers.
-            </p>
-            <button
-              onClick={startJourney}
-              className="mt-5 sm:mt-7 inline-flex items-center gap-2 bg-brand hover:bg-brand-600 text-white font-semibold text-sm sm:text-base px-5 sm:px-7 py-3 sm:py-3.5 rounded-full shadow-brand"
-              data-testid="cta-start-button"
-            >
-              Start Your Journey — It's 100% Free <ArrowRight size={18} />
-            </button>
-            <p className="mt-4 text-xs text-muted2">No credit card required · Free forever</p>
+      <section className="bg-white border-y border-line py-12 sm:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-xs font-bold tracking-[0.28em] text-brand uppercase">Who is this for?</p>
+          <h2 className="font-heading font-extrabold text-3xl sm:text-5xl text-ink mt-3">Built for people the system forgot.</h2>
+          <p className="text-muted2 mt-4 max-w-3xl leading-relaxed">
+            Most career platforms are made for freshers with perfect resumes and clear goals. We are built for everyone else.
+          </p>
+          <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {audiences.map(([title, text]) => (
+              <div key={title} className="surface-gradient border border-line rounded-2xl p-5">
+                <UserRoundCheck className="text-brand mb-4" size={24} />
+                <h3 className="font-heading font-bold text-lg text-ink">{title}</h3>
+                <p className="text-sm text-muted2 mt-2 leading-relaxed">{text}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-line bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm text-muted2">
-          © 2026 LATE COMERS AI · Made with ❤ for Indian students
+      <section id="how" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+        <p className="text-xs font-bold tracking-[0.28em] text-brand uppercase">How it works</p>
+        <h2 className="font-heading font-extrabold text-3xl sm:text-5xl text-ink mt-3">From confused to career-ready in 4 steps.</h2>
+        <div className="mt-8 grid md:grid-cols-4 gap-4">
+          {steps.map(([title, text], index) => (
+            <div key={title} className="bg-white border border-line rounded-2xl p-5">
+              <div className="w-9 h-9 rounded-full bg-brand text-white flex items-center justify-center font-bold">{index + 1}</div>
+              <h3 className="font-heading font-bold text-lg text-ink mt-4">{title}</h3>
+              <p className="text-sm text-muted2 mt-2 leading-relaxed">{text}</p>
+            </div>
+          ))}
         </div>
-      </footer>
-    </div>
+      </section>
+
+      <section className="bg-white border-y border-line py-12 sm:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-xs font-bold tracking-[0.28em] text-brand uppercase">What you get</p>
+          <h2 className="font-heading font-extrabold text-3xl sm:text-5xl text-ink mt-3">Everything you need. Nothing you don't.</h2>
+          <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {features.map(([title, Icon]) => (
+              <div key={title} className="surface-gradient border border-line rounded-2xl p-5 flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-brand-50 text-brand flex items-center justify-center"><Icon size={22} /></div>
+                <p className="font-heading font-bold text-ink">{title}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 text-center">
+        <Headphones className="mx-auto text-brand" size={34} />
+        <h2 className="font-heading font-extrabold text-3xl sm:text-5xl text-ink mt-4">Late But not Lost.</h2>
+        <p className="text-muted2 mt-3 max-w-2xl mx-auto">Start with one honest quiz. Leave with a direction you can actually follow.</p>
+        <div className="mt-7 flex justify-center gap-3 flex-wrap">
+          <button onClick={startJourney} className="inline-flex items-center gap-2 bg-brand hover:bg-brand-600 text-white font-semibold px-6 py-3.5 rounded-full shadow-brand">
+            Start now <ArrowRight size={18} />
+          </button>
+          <Link to="/pricing" className="inline-flex items-center gap-2 bg-white border border-line text-ink font-semibold px-6 py-3.5 rounded-full">
+            View plans
+          </Link>
+        </div>
+      </section>
+    </PublicShell>
   );
 }

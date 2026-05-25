@@ -7,6 +7,13 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AppLayout from "./components/layout/AppLayout";
 
 import Landing from "./pages/Landing";
+import About from "./pages/About";
+import CareersExplore from "./pages/CareersExplore";
+import Pricing from "./pages/Pricing";
+import Blog from "./pages/Blog";
+import BlogDetail from "./pages/BlogDetail";
+import Contact from "./pages/Contact";
+import ForInstitutes from "./pages/ForInstitutes";
 import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
 import Onboarding from "./pages/Onboarding";
@@ -30,10 +37,21 @@ function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/signin" element={<SignIn />} />
+            <Route path="/register" element={<SignIn />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/careers-explore" element={<CareersExplore />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogDetail />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/for-institutes" element={<ForInstitutes />} />
+            <Route path="/onboarding/payment" element={<Pricing />} />
 
             <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/onboarding" element={<Onboarding />} />
+              <Route path="/onboarding/quiz" element={<CareerTestQuestions />} />
+              <Route path="/onboarding/choose-career" element={<Careers />} />
               <Route path="/career-test" element={<CareerTestIntro />} />
               <Route path="/career-test/questions" element={<CareerTestQuestions />} />
               <Route path="/career-test/results" element={<CareerTestResults />} />
@@ -41,6 +59,7 @@ function App() {
               <Route path="/careers/:slug" element={<CareerDetail />} />
               <Route path="/roadmap" element={<Roadmap />} />
               <Route path="/colleges" element={<Colleges />} />
+              <Route path="/institutes" element={<Colleges />} />
               <Route path="/scholarships" element={<Scholarships />} />
               <Route path="/mock-interview" element={<MockInterview />} />
               <Route path="/ai-chat" element={<AIChat />} />

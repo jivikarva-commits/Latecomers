@@ -46,7 +46,7 @@ export default function AppLayout() {
       <div className="flex w-full min-w-0">
         <Sidebar />
         <main className="flex-1 min-w-0 pb-20 md:pb-0 relative overflow-x-hidden">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(520px_240px_at_14%_0%,rgba(124,114,239,0.13),transparent_55%),radial-gradient(480px_220px_at_100%_8%,rgba(37,99,235,0.1),transparent_55%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(520px_240px_at_14%_0%,rgba(16,158,209,0.13),transparent_55%),radial-gradient(480px_220px_at_100%_8%,rgba(6,26,79,0.09),transparent_55%)]" />
           {!isOnboarding && !isChat && <MobileHeader />}
           <div className="relative">
             <Outlet />
