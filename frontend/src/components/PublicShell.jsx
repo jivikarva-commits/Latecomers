@@ -11,6 +11,7 @@ const navItems = [
   { to: "/careers-explore", label: "Careers" },
   { to: "/pricing", label: "Pricing" },
   { to: "/blog", label: "Blog" },
+  { to: "/for-institutes", label: "For Institutes" },
   { to: "/contact", label: "Contact" },
 ];
 

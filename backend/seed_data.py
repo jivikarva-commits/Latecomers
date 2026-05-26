@@ -8,6 +8,18 @@ REMOVED_CAREER_SLUGS = [
     "surgeon",
     "pharmacist",
     "civil-engineer",
+    "nurse",
+    "physiotherapist",
+    "veterinarian",
+    "veterinary-doctor",
+    "optometrist",
+    "occupational-therapist",
+    "speech-therapist",
+    "audiologist",
+    "paramedic",
+    "homeopathic-doctor",
+    "ayurvedic-doctor",
+    "unani-practitioner",
 ]
 
 CAREERS = [
@@ -460,6 +472,11 @@ async def seed(db):
             ))
         await db.careers.bulk_write(career_ops, ordered=False)
         await db.careers.delete_many({"slug": {"$in": REMOVED_CAREER_SLUGS}})
+        # Auto-cleanup: remove any career not in the current catalog
+        valid_slugs = [c["slug"] for c in all_careers]
+        cleanup = await db.careers.delete_many({"slug": {"$nin": valid_slugs}})
+        if cleanup.deleted_count:
+            logger.info("Cleaned up %d stale careers from DB.", cleanup.deleted_count)
         logger.info("Career seed done.")
 
     # ── Support collections — only if empty (single bulk per collection) ───────
