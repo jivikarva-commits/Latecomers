@@ -55,7 +55,7 @@ const journey = [
 
 function HeroIllustration() {
   return (
-    <div className="relative mx-auto w-full max-w-[520px]">
+    <div className="relative mx-auto w-full max-w-[260px] sm:max-w-[520px]">
       <img
         src="/brand/hero-roadmap-illustration.png"
         alt="Career signpost, road and compass illustration"
@@ -107,31 +107,36 @@ export default function Landing() {
         description="Latecomers AI helps BPO workers, confused graduates, students, and career switchers in India find practical career paths, roadmaps, institutes, scholarships, mock interviews, and AI guidance."
       />
 
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-12 pb-8 sm:pb-12 grid lg:grid-cols-[1.02fr_0.98fr] gap-5 sm:gap-8 items-center">
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-12 pb-6 sm:pb-12 grid grid-cols-[1.1fr_0.9fr] sm:grid-cols-[1.02fr_0.98fr] gap-3 sm:gap-8 items-center">
         <div className="relative">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-[11px] sm:text-sm font-bold text-ink shadow-[0_10px_30px_rgba(6,27,79,0.04)]">
-            <Star size={13} className="text-brand" /> For late starters, BPO workers and confused graduates
+          <span className="inline-flex items-center gap-1 rounded-full border border-line bg-white px-2 py-1 sm:px-4 sm:py-2 text-[9px] sm:text-sm font-bold text-ink shadow-[0_10px_30px_rgba(6,27,79,0.04)]">
+            <Star size={10} className="text-brand sm:hidden" />
+            <Star size={15} className="text-brand hidden sm:block" />
+            <span className="hidden sm:inline">For late starters, BPO workers and confused graduates</span>
+            <span className="sm:hidden">For late starters &amp; career switchers</span>
           </span>
-          <h1 className="mt-4 sm:mt-6 font-heading text-2xl sm:text-5xl lg:text-[4rem] font-extrabold leading-[1.08] tracking-tight text-ink">
+          <h1 className="mt-3 sm:mt-6 font-heading text-[1.25rem] sm:text-5xl lg:text-[4rem] font-extrabold leading-[1.12] sm:leading-[1.08] tracking-tight text-ink">
             You are not late.
             <span className="block">You just <span className="text-brand">need the</span></span>
             <span className="block text-brand">right career map.</span>
           </h1>
-          <p className="mt-3 sm:mt-5 max-w-2xl text-sm sm:text-lg leading-relaxed text-muted2">
+          <p className="mt-2 sm:mt-5 max-w-2xl text-[11px] sm:text-lg leading-relaxed text-muted2">
             Latecomers AI helps you find a practical career path, understand why it fits, and follow a step-by-step roadmap to move from confusion to action.
           </p>
-          <div className="mt-4 sm:mt-7 flex flex-wrap items-center gap-2.5 sm:gap-6">
-            <button onClick={startJourney} className="inline-flex items-center gap-1.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-brand-800 to-brand px-4 sm:px-6 py-2.5 sm:py-4 text-xs sm:text-base font-bold text-white transition hover:from-brand-700 hover:to-brand-500">
-              Take the career quiz <ArrowRight size={15} />
+          <div className="mt-3 sm:mt-7 flex flex-wrap items-center gap-2 sm:gap-6">
+            <button onClick={startJourney} className="inline-flex items-center gap-1.5 rounded-lg sm:rounded-2xl bg-gradient-to-r from-brand-800 to-brand px-3 sm:px-6 py-2 sm:py-4 text-[10px] sm:text-base font-bold text-white transition hover:from-brand-700 hover:to-brand-500">
+              Take the career quiz <ArrowRight size={12} className="sm:hidden" /><ArrowRight size={18} className="hidden sm:block" />
             </button>
-            <a href="#how" className="inline-flex items-center gap-1.5 px-1 py-2.5 text-xs sm:text-base font-extrabold text-ink transition hover:text-brand">
-              See how it works <ArrowRight size={15} />
+            <a href="#how" className="inline-flex items-center gap-1 px-1 py-2 text-[10px] sm:text-base font-extrabold text-ink transition hover:text-brand">
+              See how it works <ArrowRight size={12} className="sm:hidden" /><ArrowRight size={18} className="hidden sm:block" />
             </a>
           </div>
-          <div className="mt-4 sm:mt-8 flex flex-wrap items-center gap-x-3 sm:gap-x-6 gap-y-1.5 text-[11px] sm:text-sm font-medium text-muted2">
+          <div className="mt-3 sm:mt-8 flex flex-wrap items-center gap-x-2.5 sm:gap-x-6 gap-y-1 text-[9px] sm:text-sm font-medium text-muted2">
             {["No signup needed", "Switcher-friendly", "Takes 5 min", "100% Free"].map((item) => (
-              <span key={item} className="inline-flex items-center gap-1.5">
-                <CheckCircle2 size={14} className="text-ink" /> {item}
+              <span key={item} className="inline-flex items-center gap-1">
+                <CheckCircle2 size={11} className="text-ink sm:hidden" />
+                <CheckCircle2 size={18} className="text-ink hidden sm:block" />
+                {item}
               </span>
             ))}
           </div>
