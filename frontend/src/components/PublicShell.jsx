@@ -24,7 +24,7 @@ export function PublicNav() {
     <header className="sticky top-0 z-40 border-b border-white/70 bg-white/78 backdrop-blur-2xl shadow-[0_8px_30px_rgba(42,42,43,0.04)]">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-[72px] flex items-center justify-between gap-3">
         <Link to="/" aria-label="Latecomers AI home" className="shrink-0 flex items-center">
-          <Logo size={38} compact />
+          <Logo size={44} />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1 text-sm font-semibold text-muted2 rounded-full bg-white/70 border border-line p-1 shadow-[0_8px_24px_rgba(42,42,43,0.04)]">
