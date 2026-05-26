@@ -69,23 +69,24 @@ function HeroIllustration() {
 
 function JourneyCard() {
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-1 sm:-mt-2 pb-10 sm:pb-14">
-      <div className="rounded-[2rem] border border-line bg-white p-5 sm:p-8 lg:p-10 shadow-soft">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-1 sm:-mt-2 pb-8 sm:pb-14">
+      <div className="rounded-2xl sm:rounded-[2rem] border border-line bg-white p-3.5 sm:p-8 lg:p-10 shadow-soft">
         <div className="text-center">
-          <h2 className="font-heading text-2xl sm:text-3xl font-extrabold text-ink">Your Career Journey Starts Here</h2>
-          <p className="mt-2 text-sm sm:text-base font-semibold text-muted2">Personalized guidance | Practical roadmap | Real results</p>
+          <h2 className="font-heading text-lg sm:text-3xl font-extrabold text-ink">Your Career Journey Starts Here</h2>
+          <p className="mt-1.5 text-xs sm:text-base font-semibold text-muted2">Personalized guidance · Practical roadmap · Real results</p>
         </div>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+        <div className="mt-5 sm:mt-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-4">
           {journey.map(([title, text, Icon], index) => (
             <div key={title} className="relative text-center">
               {index < journey.length - 1 && (
                 <ArrowRight className="absolute right-[-20px] top-12 hidden text-brand lg:block" size={34} strokeWidth={2.4} />
               )}
-              <div className="mx-auto flex h-28 w-28 items-center justify-center rounded-full bg-brand-50">
-                <Icon size={58} className="text-brand-800" strokeWidth={1.8} />
+              <div className="mx-auto flex h-16 w-16 sm:h-28 sm:w-28 items-center justify-center rounded-full bg-brand-50">
+                <Icon size={32} className="text-brand-800 sm:hidden" strokeWidth={1.8} />
+                <Icon size={58} className="text-brand-800 hidden sm:block" strokeWidth={1.8} />
               </div>
-              <h3 className="mt-5 font-heading text-lg font-extrabold text-ink">{title}</h3>
-              <p className="mx-auto mt-2 max-w-[220px] text-sm leading-relaxed text-ink/82">{text}</p>
+              <h3 className="mt-2.5 sm:mt-5 font-heading text-xs sm:text-lg font-extrabold text-ink">{title}</h3>
+              <p className="mx-auto mt-1 sm:mt-2 max-w-[220px] text-[10px] sm:text-sm leading-relaxed text-ink/82">{text}</p>
             </div>
           ))}
         </div>
@@ -106,31 +107,31 @@ export default function Landing() {
         description="Latecomers AI helps BPO workers, confused graduates, students, and career switchers in India find practical career paths, roadmaps, institutes, scholarships, mock interviews, and AI guidance."
       />
 
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-10 sm:pb-12 grid lg:grid-cols-[1.02fr_0.98fr] gap-8 items-center">
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-12 pb-8 sm:pb-12 grid lg:grid-cols-[1.02fr_0.98fr] gap-5 sm:gap-8 items-center">
         <div className="relative">
-          <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-xs sm:text-sm font-bold text-ink shadow-[0_10px_30px_rgba(6,27,79,0.04)]">
-            <Star size={15} className="text-brand" /> For late starters, BPO workers and confused graduates
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-[11px] sm:text-sm font-bold text-ink shadow-[0_10px_30px_rgba(6,27,79,0.04)]">
+            <Star size={13} className="text-brand" /> For late starters, BPO workers and confused graduates
           </span>
-          <h1 className="mt-6 font-heading text-4xl sm:text-5xl lg:text-[4rem] font-extrabold leading-[1.08] tracking-tight text-ink">
+          <h1 className="mt-4 sm:mt-6 font-heading text-2xl sm:text-5xl lg:text-[4rem] font-extrabold leading-[1.08] tracking-tight text-ink">
             You are not late.
             <span className="block">You just <span className="text-brand">need the</span></span>
             <span className="block text-brand">right career map.</span>
           </h1>
-          <p className="mt-5 max-w-2xl text-base sm:text-lg leading-relaxed text-muted2">
+          <p className="mt-3 sm:mt-5 max-w-2xl text-sm sm:text-lg leading-relaxed text-muted2">
             Latecomers AI helps you find a practical career path, understand why it fits, and follow a step-by-step roadmap to move from confusion to action.
           </p>
-          <div className="mt-7 flex flex-wrap items-center gap-3 sm:gap-6">
-            <button onClick={startJourney} className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-brand-800 to-brand px-6 py-4 text-sm sm:text-base font-bold text-white transition hover:from-brand-700 hover:to-brand-500">
-              Take the career quiz <ArrowRight size={18} />
+          <div className="mt-4 sm:mt-7 flex flex-wrap items-center gap-2.5 sm:gap-6">
+            <button onClick={startJourney} className="inline-flex items-center gap-1.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-brand-800 to-brand px-4 sm:px-6 py-2.5 sm:py-4 text-xs sm:text-base font-bold text-white transition hover:from-brand-700 hover:to-brand-500">
+              Take the career quiz <ArrowRight size={15} />
             </button>
-            <a href="#how" className="inline-flex items-center gap-2 px-1 py-3 text-sm sm:text-base font-extrabold text-ink transition hover:text-brand">
-              See how it works <ArrowRight size={18} />
+            <a href="#how" className="inline-flex items-center gap-1.5 px-1 py-2.5 text-xs sm:text-base font-extrabold text-ink transition hover:text-brand">
+              See how it works <ArrowRight size={15} />
             </a>
           </div>
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium text-muted2">
+          <div className="mt-4 sm:mt-8 flex flex-wrap items-center gap-x-3 sm:gap-x-6 gap-y-1.5 text-[11px] sm:text-sm font-medium text-muted2">
             {["No signup needed", "Switcher-friendly", "Takes 5 min", "100% Free"].map((item) => (
-              <span key={item} className="inline-flex items-center gap-2">
-                <CheckCircle2 size={18} className="text-ink" /> {item}
+              <span key={item} className="inline-flex items-center gap-1.5">
+                <CheckCircle2 size={14} className="text-ink" /> {item}
               </span>
             ))}
           </div>
@@ -147,15 +148,16 @@ export default function Landing() {
         <p className="text-sm sm:text-base text-muted2 mt-3 max-w-3xl leading-relaxed">
           Most career platforms speak to perfect freshers. Latecomers AI is for people who have lived a little, worked a little, struggled a little, and now want a real next step.
         </p>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <div className="mt-5 sm:mt-6 grid gap-2.5 sm:gap-4 grid-cols-1 md:grid-cols-2">
           {audiences.map(([title, text, Icon]) => (
-            <div key={title} className="flex gap-4 rounded-2xl border border-line bg-white p-4 shadow-[0_10px_28px_rgba(6,27,79,0.04)] transition hover:-translate-y-0.5 hover:shadow-soft">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-brand text-white shadow-brand">
-                <Icon size={26} />
+            <div key={title} className="flex gap-3 sm:gap-4 rounded-xl sm:rounded-2xl border border-line bg-white p-3 sm:p-4 shadow-[0_10px_28px_rgba(6,27,79,0.04)] transition hover:-translate-y-0.5 hover:shadow-soft">
+              <div className="flex h-10 w-10 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-brand text-white shadow-brand">
+                <Icon size={20} className="sm:hidden" />
+                <Icon size={26} className="hidden sm:block" />
               </div>
               <div>
-                <h3 className="font-heading font-extrabold text-lg text-ink leading-tight">{title}</h3>
-                <p className="text-sm text-ink/82 mt-1 leading-relaxed">{text}</p>
+                <h3 className="font-heading font-extrabold text-sm sm:text-lg text-ink leading-tight">{title}</h3>
+                <p className="text-xs sm:text-sm text-ink/82 mt-0.5 sm:mt-1 leading-relaxed">{text}</p>
               </div>
             </div>
           ))}
