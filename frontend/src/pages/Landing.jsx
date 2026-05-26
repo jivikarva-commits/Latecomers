@@ -55,44 +55,14 @@ const journey = [
 
 function HeroIllustration() {
   return (
-    <div className="relative mx-auto w-full max-w-[520px] min-h-[330px] sm:min-h-[430px] text-ink">
-      <svg viewBox="0 0 560 470" role="img" aria-label="Career roadmap illustration" className="absolute inset-0 h-full w-full">
-        <g fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" opacity="0.26">
-          <path d="M452 62c16-21 52-9 55 17 17-4 33 4 41 19H472" />
-          <path d="M410 252c16-21 52-9 55 17 17-4 33 4 41 19H430" />
-          <path d="M80 316c14 17 36 26 62 28M74 318c8-18 22-27 43-26M105 302c2-21 13-37 32-48M144 310c13-8 27-9 44-5" />
-        </g>
-
-        <g fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M255 172v210" />
-          <path d="M232 382h45" />
-          <path d="M245 172h22" />
-          <path d="M181 77l88-25 28 31-26 25-91-15z" fill="#F7FAFD" />
-          <text x="215" y="89" fontSize="17" fill="#061B4F" transform="rotate(12 215 89)" fontWeight="700">Consultant</text>
-          <path d="M170 132l106 7 18 27-23 18-114-13z" fill="#F7FAFD" />
-          <text x="214" y="159" fontSize="17" fill="#061B4F" transform="rotate(4 214 159)" fontWeight="700">Marketer</text>
-          <path d="M190 193l106 3 18 23-22 20-112-9z" fill="#F7FAFD" />
-          <text x="225" y="220" fontSize="17" fill="#0B9BD4" fontWeight="800">Aviation</text>
-          <path d="M181 255l112 2 18 22-22 20-118-7z" fill="#F7FAFD" />
-          <text x="231" y="282" fontSize="17" fill="#061B4F" fontWeight="700">Tech</text>
-          <path d="M166 320h124l14 19-13 18H171l-17-18z" fill="#F7FAFD" />
-          <text x="206" y="344" fontSize="17" fill="#061B4F" fontWeight="700">Govt. Service</text>
-        </g>
-
-        <g transform="translate(407 152)">
-          <circle cx="68" cy="68" r="54" fill="#F7FAFD" stroke="#0B9BD4" strokeWidth="8" />
-          <path d="M68 1v20M68 115v20M1 68h20M115 68h20" stroke="#061B4F" strokeWidth="3" strokeLinecap="round" />
-          <path d="M96 36L76 79 40 102 61 59z" fill="#0B9BD4" stroke="#061B4F" strokeWidth="3" />
-          <circle cx="68" cy="68" r="7" fill="#061B4F" />
-        </g>
-
-        <g fill="none" stroke="#061B4F" strokeWidth="2.2" strokeLinecap="round" opacity="0.64">
-          <path d="M355 344c72-68 120-60 185-52" />
-          <path d="M334 408c54-78 114-102 205-99" />
-          <path d="M415 382c43-37 83-51 130-47" />
-          <path d="M350 346c-21 9-46 15-76 19" opacity="0.26" />
-        </g>
-      </svg>
+    <div className="relative mx-auto w-full max-w-[520px]">
+      <img
+        src="/brand/hero-roadmap-illustration.png"
+        alt="Career signpost, road and compass illustration"
+        className="w-full object-contain mix-blend-multiply"
+        loading="eager"
+        decoding="async"
+      />
     </div>
   );
 }
@@ -150,7 +120,7 @@ export default function Landing() {
             Latecomers AI helps you find a practical career path, understand why it fits, and follow a step-by-step roadmap to move from confusion to action.
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-3 sm:gap-6">
-            <button onClick={startJourney} className="inline-flex items-center gap-2 rounded-2xl bg-ink px-6 py-4 text-sm sm:text-base font-bold text-white shadow-brand transition hover:bg-brand-800">
+            <button onClick={startJourney} className="inline-flex items-center gap-2 rounded-2xl bg-ink px-6 py-4 text-sm sm:text-base font-bold text-white transition hover:bg-brand-800">
               Take the career quiz <ArrowRight size={18} />
             </button>
             <a href="#how" className="inline-flex items-center gap-2 px-1 py-3 text-sm sm:text-base font-extrabold text-ink transition hover:text-brand">

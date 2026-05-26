@@ -39,7 +39,7 @@ export function PublicNav() {
                 key={item.to}
                 to={item.to}
                 className={`px-4 py-2 rounded-full transition ${
-                  location.pathname === item.to ? "bg-brand text-white shadow-brand" : "hover:text-brand hover:bg-white"
+                  location.pathname === item.to ? "bg-brand text-white" : "hover:text-brand hover:bg-white"
                 }`}
               >
                 {item.label}
@@ -51,7 +51,7 @@ export function PublicNav() {
         <div className="flex items-center gap-2">
           <button
             onClick={start}
-            className="inline-flex items-center gap-1.5 bg-ink hover:bg-brand-800 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2.5 rounded-2xl shadow-brand transition whitespace-nowrap"
+            className="inline-flex items-center gap-1.5 bg-ink hover:bg-brand-800 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2.5 rounded-2xl transition whitespace-nowrap"
           >
             Start Quiz <ArrowRight size={15} />
           </button>
