@@ -433,7 +433,7 @@ async def seed(db):
     from pymongo import UpdateOne
     logger = logging.getLogger(__name__)
 
-    all_careers = [*CAREERS, *DYNAMIC_CAREERS]
+    all_careers = [*DYNAMIC_CAREERS]
     detail_fields = {"aiGeneratedDetails", "detailsCachedAt", "detailsGeneratedByAI"}
 
     # Always upsert to ensure new catalog entries are added

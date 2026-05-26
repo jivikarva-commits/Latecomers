@@ -13,7 +13,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Query
 from pydantic import BaseModel
 
 from auth_routes import current_user
-from career_catalog import FIELD_META, slugify
+from career_catalog import ALLOWED_CAREER_SLUGS, FIELD_META, slugify
 from llm_client import ask_claude, extract_json
 
 router = APIRouter(tags=["data"])
@@ -711,18 +711,11 @@ async def get_career(slug: str, request: Request):
 
 
 async def _get_career_detail_by_slug(slug: str, request: Request):
+    if slug not in ALLOWED_CAREER_SLUGS:
+        raise HTTPException(404, "Career is not in the approved catalog.")
     item = await db(request).careers.find_one({"slug": slug})
     if not item:
-        title = re.sub(r"\s+", " ", slug.replace("-", " ")).strip().title()
-        item = _basic_generated_career(title)
-        await db(request).careers.update_one(
-            {"slug": item["slug"]},
-            {"$setOnInsert": item},
-            upsert=True,
-        )
-        inserted = await db(request).careers.find_one({"slug": item["slug"]})
-        if inserted:
-            item = inserted
+        raise HTTPException(404, "Career is not available yet. Please restart the server to sync the approved catalog.")
     if _career_details_fresh(item):
         return _merge_ai_details(item)
     return await _generate_and_cache_career_details(request, item)
@@ -734,15 +727,11 @@ async def generate_career(payload: CareerGenerateRequest, request: Request):
     if len(title) < 2:
         raise HTTPException(400, "Enter a valid career title.")
     slug = slugify(title)
+    if slug not in ALLOWED_CAREER_SLUGS:
+        raise HTTPException(400, "This career is not in the approved catalog.")
     item = await db(request).careers.find_one({"slug": slug})
     if not item:
-        item = _basic_generated_career(title)
-        await db(request).careers.update_one(
-            {"slug": slug},
-            {"$setOnInsert": item},
-            upsert=True,
-        )
-        item = await db(request).careers.find_one({"slug": slug}) or item
+        raise HTTPException(404, "Career is not available yet. Please restart the server to sync the approved catalog.")
     if _career_details_fresh(item):
         return _merge_ai_details(item)
     return await _generate_and_cache_career_details(request, item)

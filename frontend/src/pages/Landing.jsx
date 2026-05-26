@@ -55,7 +55,7 @@ const journey = [
 
 function HeroIllustration() {
   return (
-    <div className="relative mx-auto w-full max-w-[260px] sm:max-w-[520px]">
+    <div className="relative mx-auto w-full max-w-[360px] sm:max-w-[520px]">
       <img
         src="/brand/hero-roadmap-illustration.png"
         alt="Career signpost, road and compass illustration"
@@ -107,7 +107,7 @@ export default function Landing() {
         description="Latecomers AI helps BPO workers, confused graduates, students, and career switchers in India find practical career paths, roadmaps, institutes, scholarships, mock interviews, and AI guidance."
       />
 
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-12 pb-6 sm:pb-12 grid grid-cols-[1.1fr_0.9fr] sm:grid-cols-[1.02fr_0.98fr] gap-3 sm:gap-8 items-center">
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-12 pb-6 sm:pb-12 grid grid-cols-[1fr_1fr] sm:grid-cols-[1.02fr_0.98fr] gap-3 sm:gap-8 items-center">
         <div className="relative">
           <span className="inline-flex items-center gap-1 rounded-full border border-line bg-white px-2 py-1 sm:px-4 sm:py-2 text-[9px] sm:text-sm font-bold text-ink shadow-[0_10px_30px_rgba(6,27,79,0.04)]">
             <Star size={10} className="text-brand sm:hidden" />

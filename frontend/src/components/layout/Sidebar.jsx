@@ -38,7 +38,7 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `group flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-[15px] transition-all ${
                 isActive
-                  ? "premium-gradient text-white shadow-brand"
+                  ? "bg-brand text-white shadow-brand"
                   : "text-muted2 hover:bg-white hover:text-brand"
               }`
             }
@@ -63,7 +63,7 @@ export default function Sidebar() {
               onError={() => setAvatarError(true)}
             />
           ) : (
-            <div className="w-10 h-10 rounded-full cc-logo-gradient text-white flex items-center justify-center font-semibold">
+            <div className="w-10 h-10 rounded-full bg-brand-800 text-white flex items-center justify-center font-semibold">
               {(user?.name || "U").slice(0, 1).toUpperCase()}
             </div>
           )}
