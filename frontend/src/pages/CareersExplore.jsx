@@ -25,35 +25,35 @@ export default function CareersExplore() {
         title="Explore Career Options in India"
         description="Explore practical career options for graduates, BPO workers, students, and career switchers including full stack, MERN, UI/UX, digital marketing, analytics, AI/ML, and more."
       />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
-        <p className="text-xs font-bold tracking-[0.28em] text-brand uppercase">Career Options</p>
-        <div className="mt-3 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
+        <p className="text-[10px] sm:text-xs font-bold tracking-[0.25em] text-brand uppercase">Career Options</p>
+        <div className="mt-2 flex flex-col lg:flex-row lg:items-end justify-between gap-4">
           <div>
-            <h1 className="font-heading font-extrabold text-4xl sm:text-6xl text-ink leading-tight">Explore practical career paths.</h1>
-            <p className="text-muted2 mt-4 max-w-2xl text-lg">Browse careers across technology, operations, business, healthcare, trades, creative work, and more.</p>
+            <h1 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink leading-tight">Explore practical career paths.</h1>
+            <p className="text-muted2 mt-2 max-w-2xl text-sm sm:text-base">Browse careers across technology, operations, business, healthcare, trades, creative work, and more.</p>
           </div>
-          <div className="relative w-full lg:w-[360px]">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted2" size={18} />
+          <div className="relative w-full lg:w-[320px]">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted2" size={16} />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search careers"
-              className="w-full bg-white border border-line rounded-full pl-11 pr-4 py-3 text-sm"
+              className="w-full bg-white border border-line rounded-full pl-10 pr-4 py-2.5 text-sm"
             />
           </div>
         </div>
 
-        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="mt-5 sm:mt-8 grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
           {filtered.map((career) => (
-            <Link key={career.slug} to={`/careers/${career.slug}`} className="surface-gradient border border-line rounded-2xl p-5 hover:shadow-soft transition">
-              <div className="w-12 h-12 rounded-2xl bg-brand-50 text-brand flex items-center justify-center">
-                <Briefcase size={22} />
+            <Link key={career.slug} to={`/careers/${career.slug}`} className="surface-gradient border border-line rounded-xl sm:rounded-2xl p-3 sm:p-4 hover:shadow-soft transition">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-brand-50 text-brand flex items-center justify-center">
+                <Briefcase size={16} />
               </div>
-              <h2 className="font-heading font-bold text-xl text-ink mt-4">{career.title}</h2>
-              <p className="text-sm text-muted2 mt-2 line-clamp-2">{career.description || "Explore salary, skills, demand, roadmap, and job possibilities."}</p>
-              <div className="mt-4 flex items-center justify-between text-sm">
+              <h2 className="font-heading font-bold text-xs sm:text-sm text-ink mt-2 sm:mt-3 leading-tight">{career.title}</h2>
+              <p className="text-[10px] sm:text-xs text-muted2 mt-1 line-clamp-2">{career.description || "Explore salary, skills, demand, and roadmap."}</p>
+              <div className="mt-2 sm:mt-3 flex items-center justify-between text-[11px] sm:text-xs">
                 <span className="font-semibold text-ink">₹{career.avgSalary?.min || 3}-{career.avgSalary?.max || 12}L</span>
-                <span className="inline-flex items-center gap-1 text-brand font-semibold">View <ArrowRight size={14} /></span>
+                <span className="inline-flex items-center gap-1 text-brand font-semibold">View <ArrowRight size={12} /></span>
               </div>
             </Link>
           ))}
