@@ -96,7 +96,7 @@ export function PublicFooter() {
           <Link to="/blog" className="text-muted2 hover:text-ink">Blog</Link>
           <Link to="/contact" className="text-muted2 hover:text-ink">Contact</Link>
           <Link to="/signin" className="text-muted2 hover:text-ink">Sign In</Link>
-          <Link to="/dashboard" className="text-muted2 hover:text-ink">Dashboard</Link>
+          <Link to="/pricing" className="text-muted2 hover:text-ink">Start Quiz</Link>
         </div>
       </div>
       <div className="border-t border-line py-4 text-center text-xs text-muted2">

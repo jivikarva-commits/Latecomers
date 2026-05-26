@@ -4,6 +4,7 @@ import { ArrowRight, Briefcase, Search } from "lucide-react";
 import PublicShell from "../components/PublicShell";
 import { api } from "../lib/api";
 import SEO from "../components/SEO";
+import { breadcrumbSchema, itemListSchema } from "../lib/seoSchemas";
 
 export default function CareersExplore() {
   const [careers, setCareers] = useState([]);
@@ -24,6 +25,18 @@ export default function CareersExplore() {
       <SEO
         title="Explore Career Options in India"
         description="Explore practical career options for graduates, BPO workers, students, and career switchers including full stack, MERN, UI/UX, digital marketing, analytics, AI/ML, and more."
+        path="/careers-explore"
+        jsonLd={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Career Options", path: "/careers-explore" },
+          ]),
+          itemListSchema(
+            "Career options and course roadmaps in India",
+            "Practical career and course options for students, graduates, BPO workers, and career switchers.",
+            filtered.slice(0, 24).map((career) => ({ name: career.title, path: `/careers/${career.slug}` }))
+          ),
+        ]}
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         <p className="text-[10px] sm:text-xs font-bold tracking-[0.25em] text-brand uppercase">Career Options</p>

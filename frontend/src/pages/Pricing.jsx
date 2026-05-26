@@ -5,6 +5,7 @@ import PublicShell from "../components/PublicShell";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import SEO from "../components/SEO";
+import { breadcrumbSchema, softwareAppSchema } from "../lib/seoSchemas";
 
 const plans = [
   {
@@ -70,6 +71,14 @@ export default function Pricing() {
     <PublicShell>
       <SEO
         title="Pricing Plans - Latecomers AI"
+        path="/pricing"
+        jsonLd={[
+          softwareAppSchema(),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Pricing", path: "/pricing" },
+          ]),
+        ]}
         description="Choose a Latecomers AI plan: Basic ₹9, Standard ₹99, or Premium ₹299 for career results, AI chats, mock interviews, institute search, and roadmaps."
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">

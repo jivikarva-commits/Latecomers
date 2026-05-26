@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import PublicShell from "../components/PublicShell";
 import SEO from "../components/SEO";
 import { BLOG_POSTS, getBlogPost } from "../data/blogPosts";
+import { articleSchema, breadcrumbSchema } from "../lib/seoSchemas";
 
 export default function BlogDetail() {
   const { slug } = useParams();
@@ -17,6 +18,15 @@ export default function BlogDetail() {
         description={post.excerpt}
         image={post.image}
         type="article"
+        path={`/blog/${post.slug}`}
+        jsonLd={[
+          articleSchema(post),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Blog", path: "/blog" },
+            { name: post.title, path: `/blog/${post.slug}` },
+          ]),
+        ]}
       />
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-14">
         <Link to="/blog" className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-brand">

@@ -2,6 +2,7 @@ import React from "react";
 import { Compass, HeartHandshake, Map, ShieldCheck } from "lucide-react";
 import PublicShell from "../components/PublicShell";
 import SEO from "../components/SEO";
+import { breadcrumbSchema, organizationSchema } from "../lib/seoSchemas";
 
 const values = [
   ["No shame", "We do not treat late starts, career gaps, or confusion as failure.", HeartHandshake],
@@ -15,6 +16,14 @@ export default function About() {
       <SEO
         title="About Latecomers AI - Late but not lost"
         description="Learn why Latecomers AI exists for BPO workers, confused graduates, late starters, students, and career switchers who need practical career direction."
+        path="/about"
+        jsonLd={[
+          organizationSchema(),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "About", path: "/about" },
+          ]),
+        ]}
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-6 sm:gap-10 items-center">

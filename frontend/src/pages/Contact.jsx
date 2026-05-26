@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import PublicShell from "../components/PublicShell";
 import SEO from "../components/SEO";
+import { breadcrumbSchema, organizationSchema } from "../lib/seoSchemas";
 
 export default function Contact() {
   const [sent, setSent] = useState(false);
@@ -11,6 +12,14 @@ export default function Contact() {
       <SEO
         title="Contact Latecomers AI"
         description="Contact Latecomers AI for career guidance, institute partnerships, plan questions, and support for students and career switchers in India."
+        path="/contact"
+        jsonLd={[
+          organizationSchema(),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Contact", path: "/contact" },
+          ]),
+        ]}
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 grid lg:grid-cols-[0.9fr_1.1fr] gap-5 sm:gap-8">
         <div>

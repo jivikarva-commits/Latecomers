@@ -4,6 +4,7 @@ import { ArrowRight, Search } from "lucide-react";
 import PublicShell from "../components/PublicShell";
 import SEO from "../components/SEO";
 import { BLOG_POSTS } from "../data/blogPosts";
+import { breadcrumbSchema, itemListSchema } from "../lib/seoSchemas";
 
 export default function Blog() {
   const featured = BLOG_POSTS[0];
@@ -14,6 +15,18 @@ export default function Blog() {
       <SEO
         title="Career Blog for BPO Workers, Graduates and Career Switchers"
         description="Read practical India-focused career guides on BPO career switches, skills for 2026, tech jobs, digital marketing, AI careers, remote jobs, and upskilling."
+        path="/blog"
+        jsonLd={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Blog", path: "/blog" },
+          ]),
+          itemListSchema(
+            "Latecomers AI Career Blog",
+            "India-focused career guides for BPO workers, graduates, late starters, and career switchers.",
+            BLOG_POSTS.map((post) => ({ name: post.title, path: `/blog/${post.slug}` }))
+          ),
+        ]}
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14">
         <section className="grid lg:grid-cols-[0.92fr_1.08fr] gap-5 sm:gap-8 lg:items-end">

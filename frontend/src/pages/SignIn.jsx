@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import Logo from "../components/Logo";
+import SEO from "../components/SEO";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../lib/api";
 import { toast } from "sonner";
@@ -102,8 +103,10 @@ export default function SignIn() {
   }
 
   return (
-    <div className="min-h-screen bg-brand-50 flex items-center justify-center p-4" data-testid="signin-page">
-      <div className="max-w-md w-full">
+    <>
+      <SEO title="Sign In - Latecomers AI" description="Sign in to Latecomers AI." path="/signin" robots="noindex,nofollow" />
+      <div className="min-h-screen bg-brand-50 flex items-center justify-center p-4" data-testid="signin-page">
+        <div className="max-w-md w-full">
         <button
           onClick={() => navigate("/")}
           className="mb-6 inline-flex items-center gap-2 text-muted2 hover:text-ink text-sm"
@@ -136,7 +139,8 @@ export default function SignIn() {
             By continuing you agree to Latecomers Terms &amp; Privacy. We never share your data.
           </p>
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

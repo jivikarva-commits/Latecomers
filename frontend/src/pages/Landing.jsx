@@ -22,6 +22,7 @@ import {
 import PublicShell from "../components/PublicShell";
 import { useAuth } from "../context/AuthContext";
 import SEO from "../components/SEO";
+import { faqSchema, organizationSchema, softwareAppSchema, websiteSchema } from "../lib/seoSchemas";
 
 const audiences = [
   ["BPO & Telecallers", "Turn communication, patience, and CRM discipline into customer success, sales, operations, or support roles.", Users],
@@ -105,6 +106,26 @@ export default function Landing() {
       <SEO
         title="Latecomers AI - Career Guidance for Late Starters"
         description="Latecomers AI helps BPO workers, confused graduates, students, and career switchers in India find practical career paths, roadmaps, institutes, scholarships, mock interviews, and AI guidance."
+        path="/"
+        jsonLd={[
+          organizationSchema(),
+          websiteSchema(),
+          softwareAppSchema(),
+          faqSchema([
+            {
+              question: "Who is Latecomers AI for?",
+              answer: "Latecomers AI is for BPO workers, confused graduates, students, late starters, and career switchers in India who need practical career direction.",
+            },
+            {
+              question: "How much does Latecomers AI start at?",
+              answer: "Latecomers AI plans start at ₹9 for basic career results.",
+            },
+            {
+              question: "What does Latecomers AI provide?",
+              answer: "Latecomers AI provides career matching, practical roadmaps, institute search, scholarship guidance, mock interviews, and AI career chat.",
+            },
+          ]),
+        ]}
       />
 
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-12 pb-6 sm:pb-12 grid grid-cols-[0.65fr_1fr] sm:grid-cols-[1.02fr_0.98fr] gap-2 sm:gap-8 items-center">

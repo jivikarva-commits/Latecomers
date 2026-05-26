@@ -3,6 +3,7 @@ import { ArrowRight, BarChart3, Building2, CheckCircle2, ClipboardList, ShieldCh
 import { Link } from "react-router-dom";
 import PublicShell from "../components/PublicShell";
 import SEO from "../components/SEO";
+import { breadcrumbSchema, organizationSchema } from "../lib/seoSchemas";
 
 const benefits = [
   ["Reach learners with intent", "Students come after identifying a target career, budget, city, and timeline.", Users],
@@ -25,6 +26,14 @@ export default function ForInstitutes() {
       <SEO
         title="For Institutes - Partner with Latecomers AI"
         description="Partner with Latecomers AI to reach career-ready learners looking for practical training, upskilling courses, institutes, and coaching in India."
+        path="/for-institutes"
+        jsonLd={[
+          organizationSchema(),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "For Institutes", path: "/for-institutes" },
+          ]),
+        ]}
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         <section className="grid lg:grid-cols-[1fr_0.9fr] gap-5 sm:gap-8 items-center">
