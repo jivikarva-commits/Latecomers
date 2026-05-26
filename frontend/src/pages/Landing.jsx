@@ -55,7 +55,7 @@ const journey = [
 
 function HeroIllustration() {
   return (
-    <div className="relative mx-auto w-full max-w-[360px] sm:max-w-[520px]">
+    <div className="relative mx-auto w-full sm:max-w-[520px]">
       <img
         src="/brand/hero-roadmap-illustration.png"
         alt="Career signpost, road and compass illustration"
