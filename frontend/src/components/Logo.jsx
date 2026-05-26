@@ -8,8 +8,8 @@ export default function Logo({ size = 42, className = "", showTagline = false, c
         alt="Latecomers AI - Late but not lost"
         loading="eager"
         decoding="async"
-        className="h-auto w-auto object-contain max-h-10 sm:max-h-14"
-        style={{ maxWidth: compact ? 140 : 200 }}
+        className="h-auto w-auto object-contain max-h-12 sm:max-h-[4.5rem]"
+        style={{ maxWidth: compact ? 160 : 260 }}
       />
       {showTagline && (
         <span className="hidden sm:inline-block text-[10px] tracking-[0.24em] text-muted2 uppercase leading-none">
