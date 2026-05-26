@@ -22,16 +22,16 @@ export function PublicNav() {
   const start = () => navigate(isAuthenticated ? "/dashboard" : "/signin");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/70 bg-white/78 backdrop-blur-2xl shadow-[0_8px_30px_rgba(42,42,43,0.04)]">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-[72px] flex items-center justify-between gap-3">
+    <header className="sticky top-0 z-40 border-b border-line/80 bg-brand-50/88 backdrop-blur-2xl shadow-[0_8px_26px_rgba(6,27,79,0.04)]">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-[76px] sm:h-[84px] flex items-center justify-between gap-3">
         <Link to="/" aria-label="Latecomers AI home" className="shrink-0 flex items-center">
-          <Logo size={44} />
+          <Logo size={52} showTagline />
         </Link>
 
-        <nav className="hidden lg:flex items-center gap-1 text-sm font-semibold text-muted2 rounded-full bg-white/70 border border-line p-1 shadow-[0_8px_24px_rgba(42,42,43,0.04)]">
+        <nav className="hidden lg:flex items-center gap-2 text-sm font-bold text-ink">
           {navItems.map((item) =>
             item.anchor ? (
-              <a key={item.label} href={item.to} className="px-4 py-2 rounded-full hover:text-ink hover:bg-brand-50 transition">
+              <a key={item.label} href={item.to} className="px-4 py-2 rounded-full hover:text-brand hover:bg-white transition">
                 {item.label}
               </a>
             ) : (
@@ -39,7 +39,7 @@ export function PublicNav() {
                 key={item.to}
                 to={item.to}
                 className={`px-4 py-2 rounded-full transition ${
-                  location.pathname === item.to ? "premium-gradient text-white shadow-brand" : "hover:text-ink hover:bg-brand-50"
+                  location.pathname === item.to ? "bg-brand text-white shadow-brand" : "hover:text-brand hover:bg-white"
                 }`}
               >
                 {item.label}
@@ -51,7 +51,7 @@ export function PublicNav() {
         <div className="flex items-center gap-2">
           <button
             onClick={start}
-            className="inline-flex items-center gap-1.5 premium-gradient hover:opacity-95 text-white font-semibold text-xs sm:text-sm px-3.5 sm:px-5 py-2.5 rounded-full shadow-brand transition whitespace-nowrap"
+            className="inline-flex items-center gap-1.5 bg-ink hover:bg-brand-800 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2.5 rounded-2xl shadow-brand transition whitespace-nowrap"
           >
             Start Quiz <ArrowRight size={15} />
           </button>
@@ -70,7 +70,7 @@ export function PublicNav() {
                 key={item.to}
                 to={item.to}
                 className={`px-3 py-1.5 rounded-full border text-xs font-semibold ${
-                  location.pathname === item.to ? "premium-gradient text-white border-transparent" : "bg-white border-line text-muted2"
+                  location.pathname === item.to ? "bg-brand text-white border-transparent" : "bg-white border-line text-muted2"
                 }`}
               >
                 {item.label}
