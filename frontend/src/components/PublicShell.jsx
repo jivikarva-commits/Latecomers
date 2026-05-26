@@ -51,7 +51,7 @@ export function PublicNav() {
         <div className="flex items-center gap-2">
           <button
             onClick={start}
-            className="inline-flex items-center gap-1.5 bg-ink hover:bg-brand-800 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2.5 rounded-2xl transition whitespace-nowrap"
+            className="inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-800 to-brand hover:from-brand-700 hover:to-brand-500 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2.5 rounded-2xl transition whitespace-nowrap"
           >
             Start Quiz <ArrowRight size={15} />
           </button>

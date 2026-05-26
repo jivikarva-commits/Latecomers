@@ -120,7 +120,7 @@ export default function Landing() {
             Latecomers AI helps you find a practical career path, understand why it fits, and follow a step-by-step roadmap to move from confusion to action.
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-3 sm:gap-6">
-            <button onClick={startJourney} className="inline-flex items-center gap-2 rounded-2xl bg-ink px-6 py-4 text-sm sm:text-base font-bold text-white transition hover:bg-brand-800">
+            <button onClick={startJourney} className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-brand-800 to-brand px-6 py-4 text-sm sm:text-base font-bold text-white transition hover:from-brand-700 hover:to-brand-500">
               Take the career quiz <ArrowRight size={18} />
             </button>
             <a href="#how" className="inline-flex items-center gap-2 px-1 py-3 text-sm sm:text-base font-extrabold text-ink transition hover:text-brand">
