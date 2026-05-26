@@ -300,7 +300,7 @@ export default function AIChat() {
         </div>
 
         <div className="flex-1 overflow-y-auto px-3 sm:px-5 py-4 bg-brand-50/45">
-          <div className="max-w-3xl mx-auto space-y-4" data-testid="chat-messages">
+          <div className="max-w-3xl mx-auto min-h-full flex flex-col justify-end space-y-4" data-testid="chat-messages">
             {messages.map((message, index) => (
               <div key={message.id || index} className={`flex gap-2 ${message.role === "user" ? "justify-end" : "items-start"}`}>
                 {message.role === "assistant" && <AssistantAvatar />}

@@ -26,7 +26,7 @@ const LazyRadarChart = lazy(() =>
       };
       return (
         <mod.ResponsiveContainer width="100%" height="100%">
-          <mod.RadarChart key={chartKey} data={data} cx="50%" cy="50%" outerRadius="65%">
+          <mod.RadarChart key={chartKey} data={data} cx="50%" cy="50%" outerRadius="58%">
             <mod.PolarGrid stroke="#CDECF8" />
             <mod.PolarAngleAxis dataKey="metric" tick={renderTick} />
             <mod.Radar name="You" dataKey="value" stroke="#0B9BD4" fill="#0B9BD4" fillOpacity={hasRealData ? 0.28 : 0.08} />
@@ -280,7 +280,7 @@ export default function Dashboard() {
           ))}
         </div>
       ) : (
-        <div className="mt-2.5 flex gap-3 overflow-x-auto pb-2 snap-x no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0" style={{ WebkitOverflowScrolling: "touch" }}>
+        <div className="mt-2.5 flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory no-scrollbar" style={{ WebkitOverflowScrolling: "touch" }}>
           {displayCareers.map((c, idx) => {
             const Ic = getIcon(c.icon) || Briefcase;
             const isLast = idx === displayCareers.length - 1;
@@ -288,8 +288,8 @@ export default function Dashboard() {
               <Link
                 to={`/careers/${c.slug}`}
                 key={c.career_id || c.slug}
-                className="surface-gradient rounded-2xl p-3 sm:p-4 border border-line elevated-card hover:shadow-md transition snap-start shrink-0"
-                style={{ width: "calc(100vw - 80px)", maxWidth: 300, marginRight: isLast ? 16 : 0 }}
+                className="surface-gradient rounded-2xl p-3 sm:p-4 border border-line elevated-card hover:shadow-md transition snap-start shrink-0 w-full sm:w-[300px]"
+                style={{ marginRight: isLast ? 2 : 0 }}
                 data-testid={`dashboard-career-card-${c.slug}`}
               >
                 <div className="flex items-center justify-between gap-2">
