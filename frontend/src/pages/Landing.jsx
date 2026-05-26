@@ -72,7 +72,7 @@ export default function Landing() {
 
         <div className="relative">
           <div className="relative bg-white/90 border border-line rounded-3xl shadow-soft p-3 sm:p-5 premium-ring">
-            <img src="/brand/latecomers-logo.jpeg" alt="Latecomers AI logo" className="w-full rounded-2xl border border-line object-cover" loading="eager" decoding="async" />
+            <img src="/brand/latecomers-logo.png" alt="Latecomers AI logo" className="w-full rounded-2xl border border-line object-cover" loading="eager" decoding="async" />
             <div className="mt-3 grid grid-cols-2 gap-2 sm:gap-3">
               {[
                 ["150+", "Career paths"],

@@ -9,7 +9,7 @@ function upsertMeta(selector, attrs) {
   Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
 }
 
-export default function SEO({ title, description, image = "/brand/latecomers-logo.jpeg", type = "website" }) {
+export default function SEO({ title, description, image = "/brand/latecomers-logo.png", type = "website" }) {
   useEffect(() => {
     const fullTitle = title.includes("Latecomers") ? title : `${title} | Latecomers AI`;
     document.title = fullTitle;
