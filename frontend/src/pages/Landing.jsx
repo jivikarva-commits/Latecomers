@@ -132,7 +132,7 @@ export default function Landing() {
             </a>
           </div>
           <div className="mt-3 sm:mt-8 flex flex-wrap items-center gap-x-2.5 sm:gap-x-6 gap-y-1 text-[9px] sm:text-sm font-medium text-muted2">
-            {["No signup needed", "Switcher-friendly", "Takes 5 min", "100% Free"].map((item) => (
+            {["Starts at ₹9", "Switcher-friendly", "Takes 5 min"].map((item) => (
               <span key={item} className="inline-flex items-center gap-1">
                 <CheckCircle2 size={11} className="text-ink sm:hidden" />
                 <CheckCircle2 size={18} className="text-ink hidden sm:block" />

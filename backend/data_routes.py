@@ -13,7 +13,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Query
 from pydantic import BaseModel
 
 from auth_routes import current_user
-from career_catalog import ALLOWED_CAREER_SLUGS, FIELD_META, slugify
+from career_catalog import ALLOWED_CAREER_SLUGS, DYNAMIC_CAREERS, FIELD_META, slugify
 from llm_client import ask_claude, extract_json
 
 router = APIRouter(tags=["data"])
@@ -233,6 +233,70 @@ class CollegeRecommendRequest(BaseModel):
 
 class CareerGenerateRequest(BaseModel):
     title: str
+
+
+CATALOG_BY_SLUG = {career["slug"]: career for career in DYNAMIC_CAREERS}
+LEGACY_CAREER_SLUG_MAP = {
+    "software-developer": "full-stack-development",
+    "full-stack-developer": "full-stack-development",
+    "mern-stack-developer": "mern-stack-and-mean-stack",
+    "mean-stack-developer": "mern-stack-and-mean-stack",
+    "frontend-developer": "frontend-development",
+    "backend-developer": "backend-development",
+    "python-developer": "python-development",
+    "java-developer": "java-development",
+    "android-developer": "android-development",
+    "ios-developer": "ios-development",
+    "flutter-developer": "flutter-development",
+    "react-native-developer": "react-native",
+    "data-scientist": "data-science",
+    "data-analyst": "data-analytics",
+    "business-analyst": "business-analytics",
+    "ai-ml-engineer": "ai-and-machine-learning",
+    "prompt-engineer": "prompt-engineering",
+    "cybersecurity-analyst": "soc-analyst",
+    "cloud-engineer": "google-cloud",
+    "devops-engineer": "devops",
+    "graphic-designer": "graphic-and-visual-design",
+    "ux-designer": "ui-ux-and-product-design",
+    "ui-ux-designer": "ui-ux-and-product-design",
+    "video-editor": "video-and-motion",
+    "digital-marketing-manager": "digital-marketing",
+    "social-media-manager": "digital-marketing",
+    "marketing-manager": "digital-marketing",
+    "financial-analyst": "financial-modeling",
+    "medical-coder": "medical-coding",
+    "medical-biller": "medical-billing",
+    "radiology-technician": "radiology",
+    "nutritionist-and-dietitian": "nutritionist",
+    "hotel-manager": "hotel-management",
+    "aviation-manager": "aviation-management",
+}
+
+
+def _approved_slug(slug: str) -> Optional[str]:
+    clean_slug = slugify(slug)
+    if clean_slug in ALLOWED_CAREER_SLUGS:
+        return clean_slug
+    mapped = LEGACY_CAREER_SLUG_MAP.get(clean_slug)
+    if mapped in ALLOWED_CAREER_SLUGS:
+        return mapped
+    return None
+
+
+async def _ensure_catalog_career(request: Request, slug: str) -> Optional[Dict]:
+    item = await db(request).careers.find_one({"slug": slug})
+    if item:
+        return item
+    catalog_item = CATALOG_BY_SLUG.get(slug)
+    if not catalog_item:
+        return None
+    await db(request).careers.update_one(
+        {"slug": slug},
+        {"$setOnInsert": dict(catalog_item)},
+        upsert=True,
+    )
+    return await db(request).careers.find_one({"slug": slug})
 
 
 def _parse_dt(value):
@@ -693,9 +757,9 @@ def _basic_generated_career(title: str) -> Dict:
 # ---------- Careers ----------
 @router.get("/careers")
 async def list_careers(request: Request, q: Optional[str] = None, limit: int = 200):
-    flt = {}
+    flt = {"slug": {"$in": list(ALLOWED_CAREER_SLUGS)}}
     if q:
-        flt = {"$or": [{"title": {"$regex": q, "$options": "i"}}, {"tags": {"$regex": q, "$options": "i"}}]}
+        flt["$or"] = [{"title": {"$regex": q, "$options": "i"}}, {"tags": {"$regex": q, "$options": "i"}}]
     items = await db(request).careers.find(flt, {"_id": 0}).limit(limit).to_list(limit)
     return [_normalize_public_career(item) for item in items]
 
@@ -711,11 +775,12 @@ async def get_career(slug: str, request: Request):
 
 
 async def _get_career_detail_by_slug(slug: str, request: Request):
-    if slug not in ALLOWED_CAREER_SLUGS:
+    approved_slug = _approved_slug(slug)
+    if not approved_slug:
         raise HTTPException(404, "Career is not in the approved catalog.")
-    item = await db(request).careers.find_one({"slug": slug})
+    item = await _ensure_catalog_career(request, approved_slug)
     if not item:
-        raise HTTPException(404, "Career is not available yet. Please restart the server to sync the approved catalog.")
+        raise HTTPException(404, "Career is not available yet.")
     if _career_details_fresh(item):
         return _merge_ai_details(item)
     return await _generate_and_cache_career_details(request, item)
@@ -726,12 +791,12 @@ async def generate_career(payload: CareerGenerateRequest, request: Request):
     title = re.sub(r"\s+", " ", payload.title).strip()
     if len(title) < 2:
         raise HTTPException(400, "Enter a valid career title.")
-    slug = slugify(title)
-    if slug not in ALLOWED_CAREER_SLUGS:
+    slug = _approved_slug(title)
+    if not slug:
         raise HTTPException(400, "This career is not in the approved catalog.")
-    item = await db(request).careers.find_one({"slug": slug})
+    item = await _ensure_catalog_career(request, slug)
     if not item:
-        raise HTTPException(404, "Career is not available yet. Please restart the server to sync the approved catalog.")
+        raise HTTPException(404, "Career is not available yet.")
     if _career_details_fresh(item):
         return _merge_ai_details(item)
     return await _generate_and_cache_career_details(request, item)
