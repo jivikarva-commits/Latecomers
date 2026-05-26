@@ -38,7 +38,7 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `group flex items-center gap-3 px-4 py-3 rounded-2xl font-semibold text-[15px] transition-all ${
                 isActive
-                  ? "glass-card text-brand"
+                  ? "premium-gradient text-white shadow-brand"
                   : "text-muted2 hover:bg-white hover:text-brand"
               }`
             }

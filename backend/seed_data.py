@@ -1,6 +1,15 @@
 """Seed data: careers, colleges, scholarships, career test questions."""
 from career_catalog import DYNAMIC_CAREERS
 
+REMOVED_CAREER_SLUGS = [
+    "doctor",
+    "doctor-mbbs",
+    "dentist",
+    "surgeon",
+    "pharmacist",
+    "civil-engineer",
+]
+
 CAREERS = [
     {
         "career_id": "c1", "slug": "data-scientist", "title": "Data Scientist",
@@ -131,24 +140,25 @@ CAREERS = [
      "overview": "Core role across investment banks, corporates and consulting.",
      "skills": [{"name": "Financial Modeling", "importance": 90, "status": "Essential"}, {"name": "Excel", "importance": 95, "status": "Essential"}],
      "roadmap": [], "jobs": [], "insights": {"globalDemand": "High", "openPositions": "8,000+", "topIndustries": ["BFSI", "Consulting"], "aiTools": ["Bloomberg", "Excel"]}},
-    {"career_id": "c10", "slug": "doctor", "title": "Doctor (MBBS)", "icon": "Stethoscope", "iconColor": "#EF4444",
-     "description": "Diagnose and treat patients to save lives.", "tags": ["Medicine", "Empathy", "Science"],
-     "avgSalary": {"min": 8, "max": 30}, "jobGrowth5Y": 10, "jobRoles": "All specialties", "demand": "Very High",
-     "overview": "Noble profession with strong demand. Long but rewarding journey from MBBS through PG.",
-     "skills": [{"name": "Biology", "importance": 95, "status": "Essential"}, {"name": "Empathy", "importance": 90, "status": "Essential"}],
-     "roadmap": [], "jobs": [], "insights": {"globalDemand": "Very High", "openPositions": "Always hiring", "topIndustries": ["Hospitals", "Govt"], "aiTools": []}},
+    {"career_id": "c10", "slug": "medical-representative-mr", "title": "Medical Representative (MR)", "icon": "BriefcaseMedical", "iconColor": "#7C3AED",
+     "description": "Build healthcare sales relationships with doctors, clinics, hospitals, and pharma teams.",
+     "tags": ["Sales", "Healthcare", "Communication"],
+     "avgSalary": {"min": 3, "max": 12}, "jobGrowth5Y": 18, "jobRoles": "10+", "demand": "High",
+     "overview": "Medical Representative is a practical healthcare-adjacent role for graduates who can communicate well, travel locally, learn product knowledge, and grow into area sales or pharma brand roles.",
+     "skills": [{"name": "Product Knowledge", "importance": 85, "status": "Essential"}, {"name": "Communication", "importance": 95, "status": "Essential"}, {"name": "CRM Follow-up", "importance": 78, "status": "Important"}],
+     "roadmap": [], "jobs": [], "insights": {"globalDemand": "High", "openPositions": "18,000+", "topIndustries": ["Pharma", "Healthcare Sales", "Diagnostics"], "aiTools": ["CRM", "Excel", "WhatsApp Business"]}},
     {"career_id": "c11", "slug": "lawyer", "title": "Lawyer", "icon": "Scale", "iconColor": "#A855F7",
      "description": "Practice law and advocate for clients.", "tags": ["Law", "Communication", "Analysis"],
      "avgSalary": {"min": 5, "max": 25}, "jobGrowth5Y": 8, "jobRoles": "All practice areas", "demand": "Medium",
      "overview": "5-year integrated law or 3-year LLB after grad. NLUs are the top schools.",
      "skills": [{"name": "Legal Research", "importance": 90, "status": "Essential"}, {"name": "Communication", "importance": 95, "status": "Essential"}],
      "roadmap": [], "jobs": [], "insights": {"globalDemand": "Medium", "openPositions": "5,000+", "topIndustries": ["Law Firms", "Corporate"], "aiTools": []}},
-    {"career_id": "c12", "slug": "civil-engineer", "title": "Civil Engineer", "icon": "HardHat", "iconColor": "#F59E0B",
-     "description": "Design and build infrastructure that shapes society.", "tags": ["Engineering", "Math", "Design"],
-     "avgSalary": {"min": 4, "max": 15}, "jobGrowth5Y": 12, "jobRoles": "Many", "demand": "Medium",
-     "overview": "India's infrastructure boom drives demand across roads, real estate, smart cities.",
-     "skills": [{"name": "Structural Analysis", "importance": 90, "status": "Essential"}, {"name": "AutoCAD", "importance": 80, "status": "Essential"}],
-     "roadmap": [], "jobs": [], "insights": {"globalDemand": "Medium", "openPositions": "9,000+", "topIndustries": ["Construction", "Govt"], "aiTools": ["AutoCAD", "Revit"]}},
+    {"career_id": "c12", "slug": "interior-designer", "title": "Interior Designer", "icon": "Home", "iconColor": "#A855F7",
+     "description": "Design functional, beautiful homes, offices, studios, and retail spaces.", "tags": ["Design", "Space Planning", "Creativity"],
+     "avgSalary": {"min": 4, "max": 15}, "jobGrowth5Y": 20, "jobRoles": "12+", "demand": "High",
+     "overview": "Interior design is a strong switcher-friendly path for creative graduates who can learn AutoCAD, SketchUp, client handling, vendor coordination, and portfolio presentation.",
+     "skills": [{"name": "Space Planning", "importance": 88, "status": "Essential"}, {"name": "AutoCAD or SketchUp", "importance": 82, "status": "Essential"}, {"name": "Client Communication", "importance": 80, "status": "Important"}],
+     "roadmap": [], "jobs": [], "insights": {"globalDemand": "High", "openPositions": "12,000+", "topIndustries": ["Real Estate", "Studios", "Retail"], "aiTools": ["SketchUp", "Canva", "Pinterest"]}},
     {"career_id": "c13", "slug": "chartered-accountant", "title": "Chartered Accountant", "icon": "Calculator", "iconColor": "#0EA5E9",
      "description": "Audit, taxation, finance — the trusted advisors.", "tags": ["Finance", "Accounting", "Detail"],
      "avgSalary": {"min": 7, "max": 25}, "jobGrowth5Y": 14, "jobRoles": "All sectors", "demand": "High",
@@ -322,8 +332,8 @@ def _build_questions():
         ("Pick a weekend hobby:", ["Coding side projects", "Drawing/painting", "Volunteering", "Organizing events"]),
         ("Favorite subject in school?", ["Maths/Science", "Art/Design", "Biology/Psychology", "Business studies"]),
         ("You enjoy reading about:", ["Tech innovations", "Movies/culture", "Health/science", "Startup stories"]),
-        ("YouTube channel you binge:", ["3Blue1Brown", "Will Paterson", "Doctor Mike", "Y Combinator"]),
-        ("You'd love to work on:", ["AI systems", "Brand identity", "Healthcare", "New product launch"]),
+        ("YouTube channel you binge:", ["3Blue1Brown", "Will Paterson", "Think School", "Y Combinator"]),
+        ("You'd love to work on:", ["AI systems", "Brand identity", "Healthcare sales", "New product launch"]),
         ("A dream city to work in:", ["Bangalore (tech)", "Mumbai (creative)", "Delhi (impact)", "Anywhere global"]),
         ("Pick a magazine:", ["Wired", "Vogue", "National Geographic", "Forbes"]),
         ("Free time, you choose:", ["Build something", "Make something beautiful", "Learn about people", "Plan something"]),
@@ -449,6 +459,7 @@ async def seed(db):
                 upsert=True,
             ))
         await db.careers.bulk_write(career_ops, ordered=False)
+        await db.careers.delete_many({"slug": {"$in": REMOVED_CAREER_SLUGS}})
         logger.info("Career seed done.")
 
     # ── Support collections — only if empty (single bulk per collection) ───────

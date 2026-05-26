@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Briefcase, Search } from "lucide-react";
 import PublicShell from "../components/PublicShell";
 import { api } from "../lib/api";
+import SEO from "../components/SEO";
 
 export default function CareersExplore() {
   const [careers, setCareers] = useState([]);
@@ -20,6 +21,10 @@ export default function CareersExplore() {
 
   return (
     <PublicShell>
+      <SEO
+        title="Explore Career Options in India"
+        description="Explore practical career options for graduates, BPO workers, students, and career switchers including full stack, MERN, UI/UX, digital marketing, analytics, AI/ML, and more."
+      />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
         <p className="text-xs font-bold tracking-[0.28em] text-brand uppercase">Career Options</p>
         <div className="mt-3 flex flex-col lg:flex-row lg:items-end justify-between gap-6">

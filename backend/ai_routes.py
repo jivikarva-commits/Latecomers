@@ -25,7 +25,7 @@ Career match scoring rules (apply ALL these rules to score each career):
 STREAM MATCHING (highest weight):
 - Commerce stream → strongly prioritize: CA, CMA, CS, ACCA, CFA, GST Practitioner, Income Tax Consultant, Tally Accountant, SAP FICO, Financial Modeler, Investment Banker, Stock Market Trader, Mutual Fund Advisor, Business Analyst, Financial Analyst, MBA Manager. Also good: Digital Marketing, SEO, Social Media Manager, Business Development, Entrepreneur, Copywriter.
 - Science PCM → strongly prioritize: Full Stack Dev, Python Dev, Java Dev, Data Scientist, AI ML Engineer, DevOps, AWS Architect, Cybersecurity Analyst, Ethical Hacker, Robotics Engineer, IoT Engineer, EV Technology Engineer, Software Developer, Cloud Engineer. Also good: Data Analytics, Business Analytics, Game Developer, Drone Technology.
-- Science PCB → strongly prioritize: Nurse, Physiotherapist, Pharmacist, Medical Coder, Lab Technician, Nutritionist Dietitian, Radiologist Technician. Also good: Yoga Instructor, Fitness Trainer, Spa Therapist.
+- Science PCB → strongly prioritize switcher-friendly paths: Medical Representative MR, Medical Coder, Healthcare Data Analyst, Clinical Research Associate, Lab Technician, Nutritionist Dietitian, Radiologist Technician. Also good: Yoga Instructor, Fitness Trainer, Spa Therapist.
 - Arts/Humanities → strongly prioritize: Lawyer, Judiciary Officer, UPSC IAS, MPSC Officer, HR Manager, Translator, Interpreter, Content Writer, Copywriter, Social Worker, Teacher. Also good: Graphic Designer, Video Editor, Photographer, Social Media Manager.
 
 FIELD INTEREST MATCHING (Q10):
@@ -134,7 +134,7 @@ def _adaptive_fallback_question(answered_questions: List[Dict], next_number: int
             ("Engineering Style", "Which project would you pick first?", ["A mobile app", "A robot or IoT device", "A data dashboard", "A secure cloud system", "A bridge or product design"]),
         ],
         "pcb": [
-            ("PCB Focus", "Which biology-linked path should we narrow toward?", ["Doctor or clinical care", "Pharmacy and medicines", "Biotech and research", "Nutrition and wellness", "Medical coding or health tech"]),
+            ("PCB Focus", "Which biology-linked path should we narrow toward?", ["Healthcare sales", "Medical coding", "Biotech and research", "Nutrition and wellness", "Health data or operations"]),
             ("Healthcare Style", "How would you prefer to contribute in healthcare?", ["Treat patients directly", "Work in labs and research", "Advise on diet and wellness", "Manage healthcare data", "Support medicines and pharmacy"]),
             ("Medical Readiness", "What kind of medical journey feels realistic for you?", ["Long MBBS route", "Allied healthcare degree", "Biotech or life-science degree", "Shorter job-oriented certification", "Still comparing options"]),
         ],

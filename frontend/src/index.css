@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background: 198 82% 98%;
-    --foreground: 223 86% 17%;
+    --background: 270 60% 99%;
+    --foreground: 240 1% 17%;
     --card: 0 0% 100%;
-    --card-foreground: 235 25% 14%;
+    --card-foreground: 240 1% 17%;
     --popover: 0 0% 100%;
-    --popover-foreground: 235 25% 14%;
-    --primary: 196 86% 44%;
+    --popover-foreground: 240 1% 17%;
+    --primary: 262 83% 58%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 196 75% 95%;
-    --secondary-foreground: 223 86% 17%;
-    --muted: 198 56% 95%;
-    --muted-foreground: 214 18% 46%;
-    --accent: 196 75% 95%;
-    --accent-foreground: 196 86% 34%;
+    --secondary: 262 100% 97%;
+    --secondary-foreground: 240 1% 17%;
+    --muted: 260 42% 96%;
+    --muted-foreground: 252 5% 41%;
+    --accent: 262 100% 97%;
+    --accent-foreground: 262 83% 48%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 199 48% 90%;
-    --input: 199 48% 90%;
-    --ring: 196 86% 44%;
-    --radius: 0.6rem;
+    --border: 260 35% 92%;
+    --input: 260 35% 92%;
+    --ring: 262 83% 58%;
+    --radius: 0.75rem;
   }
 }
 
@@ -41,10 +41,10 @@ body {
   padding: 0;
   font-family: "DM Sans", "Plus Jakarta Sans", system-ui, sans-serif;
   background:
-    radial-gradient(900px 500px at -8% -10%, rgba(16, 158, 209, 0.14), transparent 50%),
-    radial-gradient(700px 420px at 108% 0%, rgba(6, 26, 79, 0.09), transparent 52%),
-    #EEF9FD;
-  color: #061A4F;
+    radial-gradient(900px 500px at -8% -10%, rgba(124, 58, 237, 0.12), transparent 50%),
+    radial-gradient(740px 420px at 108% 0%, rgba(37, 99, 235, 0.11), transparent 52%),
+    linear-gradient(180deg, #FEFCFF 0%, #F8F6FF 100%);
+  color: #2A2A2B;
   min-height: 100%;
   height: auto;
   line-height: 1.45;
@@ -73,48 +73,76 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Logo gradient */
 .cc-logo-gradient {
-  background: linear-gradient(135deg, #061A4F 0%, #109ED1 100%);
+  background: linear-gradient(135deg, #2A2A2B 0%, #7C3AED 48%, #2563EB 100%);
 }
 
 .latecomers-mark {
   clip-path: polygon(37% 8%, 83% 0, 72% 100%, 18% 100%, 27% 27%, 0 39%);
-  background: linear-gradient(145deg, #14B9EA 0%, #061A4F 78%);
+  background: linear-gradient(145deg, #8B5CF6 0%, #2563EB 48%, #2A2A2B 100%);
 }
 
 .brand-orb {
   background:
     radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.1) 40%, transparent 58%),
-    linear-gradient(145deg, #14B9EA 0%, #109ED1 42%, #061A4F 100%);
-  box-shadow: 0 16px 36px rgba(16, 158, 209, 0.28), inset 0 -6px 14px rgba(0, 0, 0, 0.08);
+    linear-gradient(145deg, #A855F7 0%, #7C3AED 42%, #2563EB 100%);
+  box-shadow: 0 18px 42px rgba(124, 58, 237, 0.26), inset 0 -6px 14px rgba(0, 0, 0, 0.08);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(183, 222, 239, 0.82);
-  box-shadow: 0 12px 36px rgba(6, 26, 79, 0.08);
-  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(232, 228, 244, 0.9);
+  box-shadow: 0 18px 50px rgba(42, 42, 43, 0.08);
+  backdrop-filter: blur(16px);
 }
 
 .elevated-card {
   box-shadow:
-    0 16px 34px rgba(6, 26, 79, 0.08),
-    0 3px 8px rgba(31, 24, 96, 0.05);
+    0 18px 40px rgba(42, 42, 43, 0.08),
+    0 4px 10px rgba(42, 42, 43, 0.04);
 }
 
 .surface-gradient {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(239, 249, 253, 0.98) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(249, 247, 255, 0.98) 100%);
+}
+
+.premium-gradient {
+  background: linear-gradient(135deg, #2A2A2B 0%, #7C3AED 48%, #2563EB 100%);
+}
+
+.premium-text-gradient {
+  background: linear-gradient(135deg, #2A2A2B 0%, #7C3AED 48%, #2563EB 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.premium-ring {
+  position: relative;
+}
+
+.premium-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.5), rgba(37, 99, 235, 0.45));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #AEE4F4; border-radius: 8px; }
-::-webkit-scrollbar-thumb:hover { background: #73D0EA; }
+::-webkit-scrollbar-thumb { background: #D9CBFF; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #BFA6FF; }
 
 /* Chat typing indicator */
 .typing-dot {
-  width: 8px; height: 8px; background: #109ED1; border-radius: 999px; display: inline-block;
+  width: 8px; height: 8px; background: #7C3AED; border-radius: 999px; display: inline-block;
   animation: bounce-dot 1.4s infinite ease-in-out both;
 }
 .typing-dot:nth-child(1){ animation-delay: -0.32s; }
@@ -124,7 +152,7 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #109ED1, #061A4F);
+  background: linear-gradient(90deg, #7C3AED, #2563EB);
   animation: chat-progress 2.4s ease-in-out infinite;
 }
 
@@ -175,7 +203,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 5px;
   height: 5px;
   border-radius: 999px;
-  background: #109ED1;
+  background: #7C3AED;
 }
 
 .typing-caret {
@@ -185,7 +213,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: 2px;
   vertical-align: -0.18rem;
   border-radius: 999px;
-  background: #109ED1;
+  background: #7C3AED;
   animation: caret-blink 0.9s steps(2, start) infinite;
 }
 
@@ -233,14 +261,14 @@ h1, h2, h3, h4, h5, h6 {
   100% { background-position: 200% 0; }
 }
 .skeleton-shimmer {
-  background: linear-gradient(90deg, #D7F1FA 25%, #EEF9FD 50%, #D7F1FA 75%);
+  background: linear-gradient(90deg, #EEE7FF 25%, #F8F6FF 50%, #EEE7FF 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
 
 .ai-suggestions-box {
-  background: linear-gradient(135deg, #eef9fd 0%, #eff7ff 100%);
-  border: 1px solid #bfe3f1;
+  background: linear-gradient(135deg, #F7F4FF 0%, #EEF4FF 100%);
+  border: 1px solid #E1D8FF;
   border-radius: 1rem;
   padding: 0.875rem 1rem;
 }
@@ -260,6 +288,6 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 999px;
   font-size: 0.7rem;
   font-weight: 700;
-  color: #061A4F;
-  background: #D7F1FA;
+  color: #2A2A2B;
+  background: #EEE7FF;
 }

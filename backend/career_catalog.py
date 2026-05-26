@@ -4,11 +4,11 @@ import re
 
 FIELD_CAREERS = {
     "Science": [
-        "Doctor MBBS", "Surgeon", "Dentist", "Pharmacist", "Nurse", "Physiotherapist", "Lab Technician",
-        "Radiology Technician", "Medical Coder", "Nutritionist and Dietitian", "Veterinarian", "Biotechnologist",
+        "Medical Representative MR", "Clinical Research Associate", "Medical Coder", "Healthcare Data Analyst",
+        "Radiology Technician", "Lab Technician", "Nutritionist and Dietitian", "Biotechnologist",
         "Research Scientist", "Environmental Scientist", "Forensic Scientist", "Geologist", "Astronomer",
-        "Physics Teacher", "Chemistry Teacher", "Civil Engineer", "Mechanical Engineer", "Electrical Engineer",
-        "Electronics Engineer", "Chemical Engineer", "Aerospace Engineer", "Biomedical Engineer",
+        "Physics Teacher", "Chemistry Teacher", "Interior Designer", "Mechanical Engineer", "Electrical Engineer",
+        "Electronics Engineer", "Chemical Engineer", "Aerospace Engineer",
         "Agricultural Scientist", "Food Technologist", "AI ML Engineer", "Data Scientist", "Robotics Engineer",
         "EV Technician", "Drone Pilot", "IoT Engineer", "Nuclear Scientist",
     ],
@@ -46,6 +46,7 @@ FIELD_CAREERS = {
     ],
     "Technology": [
         "Full Stack Developer", "Frontend Developer", "Backend Developer", "MERN Stack Developer",
+        "MEAN Stack Developer",
         "Python Developer", "Java Developer", "Android Developer", "iOS Developer", "Flutter Developer",
         "React Native Developer", "DevOps Engineer", "Cloud Architect", "AWS Solutions Architect",
         "Cloud Engineer", "Azure Engineer", "Kubernetes Engineer", "Docker Specialist", "Cybersecurity Analyst",
@@ -71,8 +72,8 @@ FIELD_CAREERS = {
     "Healthcare and Wellness": [
         "Yoga Instructor", "Fitness Trainer", "Personal Trainer", "Spa Therapist", "Makeup Artist",
         "Hair Stylist", "Nail Art Technician", "Beauty Salon Owner", "Ayurvedic Practitioner",
-        "Homeopathy Doctor", "Meditation Coach", "Diet and Nutrition Coach",
-        "Medical Biller", "Nutritionist",
+        "Meditation Coach", "Diet and Nutrition Coach",
+        "Medical Biller", "Medical Representative MR", "Nutritionist",
     ],
     "Aviation and Hospitality": [
         "Cabin Crew", "Pilot", "Airport Ground Staff", "Aviation Manager", "Hotel Manager",
@@ -118,13 +119,13 @@ FIELD_META = {
 
 TITLE_OVERRIDES = {
     # ─── Science ───
-    "Doctor MBBS": {"slug": "doctor-mbbs", "icon": "Stethoscope", "salary": (8, 30), "demand": "Very High", "growth": 10},
     "Data Scientist": {"icon": "BarChart3", "salary": (10, 28), "demand": "Very High", "growth": 31, "tags": ["Python", "ML", "Analytics"]},
     "AI ML Engineer": {"icon": "BrainCircuit", "salary": (12, 35), "demand": "Very High", "growth": 35, "tags": ["AI", "Machine Learning", "Python"]},
     "Robotics Engineer": {"icon": "Bot", "salary": (6, 20), "demand": "High", "growth": 25, "tags": ["Robotics", "Engineering", "AI"]},
-    "Nurse": {"icon": "HeartPulse", "salary": (3, 10), "demand": "High", "growth": 15, "tags": ["Nursing", "Healthcare", "Hospital"]},
-    "Physiotherapist": {"icon": "HeartPulse", "salary": (3, 12), "demand": "High", "growth": 18, "tags": ["Physio", "Therapy", "Healthcare"]},
     "Medical Coder": {"icon": "FileText", "salary": (3, 10), "demand": "High", "growth": 20, "tags": ["Medical", "Coding", "ICD"]},
+    "Medical Representative MR": {"slug": "medical-representative-mr", "icon": "BriefcaseMedical", "salary": (3, 12), "demand": "High", "growth": 18, "tags": ["Sales", "Healthcare", "Pharma"]},
+    "Clinical Research Associate": {"icon": "ClipboardCheck", "salary": (4, 14), "demand": "High", "growth": 20, "tags": ["Clinical Research", "Trials", "Healthcare"]},
+    "Healthcare Data Analyst": {"icon": "BarChart3", "salary": (5, 16), "demand": "High", "growth": 24, "tags": ["Healthcare", "Data", "Analytics"]},
 
     # ─── Commerce / Finance ───
     "Chartered Accountant CA": {"slug": "chartered-accountant-ca", "icon": "Calculator", "salary": (7, 28), "demand": "High"},
@@ -169,6 +170,7 @@ TITLE_OVERRIDES = {
     # ─── Technology ───
     "Full Stack Developer": {"icon": "Code2", "salary": (8, 25), "demand": "Very High", "growth": 25, "tags": ["Coding", "Web", "JavaScript"]},
     "MERN Stack Developer": {"icon": "Code2", "salary": (8, 22), "demand": "Very High", "growth": 25, "tags": ["MongoDB", "React", "Node"]},
+    "MEAN Stack Developer": {"icon": "Code2", "salary": (7, 21), "demand": "High", "growth": 22, "tags": ["MongoDB", "Angular", "Node"]},
     "Frontend Developer": {"icon": "Monitor", "salary": (6, 20), "demand": "High", "growth": 22, "tags": ["React", "CSS", "JavaScript"]},
     "Backend Developer": {"icon": "Server", "salary": (7, 22), "demand": "High", "growth": 22, "tags": ["Node", "API", "Database"]},
     "Java Developer": {"icon": "Code2", "salary": (7, 22), "demand": "High", "growth": 20, "tags": ["Java", "Spring", "Backend"]},

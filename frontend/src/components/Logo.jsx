@@ -1,25 +1,23 @@
 import React from "react";
 
-export default function Logo({ size = 42, className = "", showTagline = false }) {
+export default function Logo({ size = 42, className = "", showTagline = false, compact = false }) {
   return (
-    <div className={`flex items-center gap-2.5 ${className}`} data-testid="cc-logo">
-      <div className="relative shrink-0" style={{ width: size, height: size }}>
-        <div className="absolute inset-0 latecomers-mark flex items-center justify-center">
-          <span className="font-heading font-black text-white leading-none" style={{ fontSize: size * 0.72 }}>
-            L
-          </span>
-        </div>
-      </div>
-      <div className="min-w-0">
-        <span className="font-heading font-extrabold text-ink text-xl sm:text-2xl tracking-normal whitespace-nowrap leading-none">
-          Latec<span className="text-brand">o</span>mers
+    <div className={`flex items-center gap-3 ${className}`} data-testid="cc-logo">
+      <img
+        src="/brand/latecomers-logo.jpeg"
+        alt="Latecomers AI - Late but not lost"
+        width={compact ? Math.round(size * 3.4) : Math.round(size * 4.7)}
+        height={size}
+        loading="eager"
+        decoding="async"
+        className="h-auto max-h-10 sm:max-h-12 w-auto object-contain mix-blend-multiply"
+        style={{ maxWidth: compact ? size * 3.4 : size * 4.7 }}
+      />
+      {showTagline && (
+        <span className="hidden sm:inline-block text-[10px] tracking-[0.24em] text-muted2 uppercase leading-none">
+          Late but <span className="text-brand font-semibold normal-case tracking-normal">not</span> lost
         </span>
-        {showTagline && (
-          <p className="text-[10px] sm:text-xs tracking-[0.26em] text-muted2 uppercase leading-none mt-1">
-            Late But <span className="text-brand font-semibold normal-case tracking-normal">not</span> Lost.
-          </p>
-        )}
-      </div>
+      )}
     </div>
   );
 }

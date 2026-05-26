@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import PublicShell from "../components/PublicShell";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
+import SEO from "../components/SEO";
 
 const plans = [
   {
@@ -67,6 +68,10 @@ export default function Pricing() {
 
   return (
     <PublicShell>
+      <SEO
+        title="Pricing Plans - Latecomers AI"
+        description="Choose a Latecomers AI plan: Basic ₹9, Standard ₹99, or Premium ₹299 for career results, AI chats, mock interviews, institute search, and roadmaps."
+      />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
         <div className="text-center max-w-3xl mx-auto">
           <p className="text-xs font-bold tracking-[0.28em] text-brand uppercase">Pricing</p>
@@ -80,7 +85,7 @@ export default function Pricing() {
           {plans.map((plan) => {
             const isActive = activePlan === plan.key;
             return (
-              <div key={plan.key} className={`relative rounded-3xl border p-6 bg-white ${plan.featured ? "border-brand shadow-brand" : "border-line shadow-soft"}`}>
+              <div key={plan.key} className={`relative rounded-3xl border p-6 bg-white ${plan.featured ? "premium-ring shadow-brand" : "border-line shadow-soft"}`}>
                 {plan.featured && (
                   <span className="absolute -top-3 left-6 px-3 py-1 rounded-full bg-brand text-white text-xs font-bold">Recommended</span>
                 )}
@@ -97,7 +102,7 @@ export default function Pricing() {
                   onClick={() => subscribe(plan.key)}
                   disabled={loadingPlan === plan.key}
                   className={`mt-6 w-full inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 font-semibold ${
-                    plan.featured ? "bg-brand text-white shadow-brand" : "bg-brand-50 text-ink border border-line"
+                    plan.featured ? "premium-gradient text-white shadow-brand" : "bg-brand-50 text-ink border border-line"
                   } disabled:opacity-60`}
                 >
                   <Sparkles size={16} /> {loadingPlan === plan.key ? "Activating..." : isActive ? "Subscribed" : "Subscribe now"}

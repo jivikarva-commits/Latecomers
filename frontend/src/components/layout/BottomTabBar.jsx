@@ -31,7 +31,7 @@ export default function BottomTabBar() {
             t.center ? (
               <div
                 className={`relative -mt-7 w-14 h-14 rounded-full flex items-center justify-center shadow-brand border-4 border-brand-50 ${
-                  isActive ? "bg-brand-600" : "bg-brand"
+                  isActive ? "premium-gradient" : "premium-gradient"
                 } text-white`}
               >
                 <t.icon size={24} />
