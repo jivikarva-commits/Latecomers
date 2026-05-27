@@ -105,12 +105,26 @@ export default function Roadmap() {
 
   useEffect(() => {
     if (!slug) { setLoadingPage(false); return; }
+    let cancelled = false;
     setLoadingPage(true);
-    api
-      .get(`/ai/roadmap/${slug}`)
-      .then(({ data }) => setRoadmap(data))
-      .catch(() => setRoadmap(null))
-      .finally(() => setLoadingPage(false));
+    (async () => {
+      try {
+        try {
+          const { data } = await api.get(`/ai/roadmap/${slug}`);
+          if (!cancelled) setRoadmap(data);
+        } catch (_) {
+          const { data } = await api.post("/ai/roadmap/generate", { career_slug: slug });
+          if (!cancelled) setRoadmap(data);
+        }
+      } catch (error) {
+        if (!cancelled) setRoadmap(null);
+      } finally {
+        if (!cancelled) setLoadingPage(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [slug]);
 
   // Close suggestions on outside click

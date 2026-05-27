@@ -360,6 +360,16 @@ function isGenericRoadmapItem(item = "") {
   return /(item\d|course specialization|tool certification|mentor-led practical|check eligibility|compare degree|shortlist institutes|career specialization|project\d|role\d|tip\d|fundamentals$|industry awareness$)/.test(value);
 }
 
+function hasSpecificRoadmap(roadmap = []) {
+  return Array.isArray(roadmap)
+    && roadmap.length >= 6
+    && roadmap.some((stage) =>
+      (stage.sections || []).some((section) =>
+        (section.items || []).some((item) => !isGenericRoadmapItem(item))
+      )
+    );
+}
+
 function buildEducationItems(career) {
   const title = career.title || "this career";
   const category = `${career.category || ""} ${career.field || ""}`.toLowerCase();
@@ -742,6 +752,8 @@ export default function CareerDetail() {
   const [openRoadmapStage, setOpenRoadmapStage] = useState(0);
   const [loadingStep, setLoadingStep] = useState(0);
   const [loadingPreview, setLoadingPreview] = useState("Salary");
+  const [roadmapSyncing, setRoadmapSyncing] = useState(false);
+  const [roadmapSyncedSlug, setRoadmapSyncedSlug] = useState("");
 
   useEffect(() => {
     let mounted = true;
@@ -776,6 +788,56 @@ export default function CareerDetail() {
     }, 1400);
     return () => clearInterval(id);
   }, [career]);
+
+  useEffect(() => {
+    if (tab !== "roadmap" || !career?.slug || roadmapSyncedSlug === career.slug) return;
+    let cancelled = false;
+
+    const applyRoadmap = (data) => {
+      if (!data?.stages?.length || cancelled) return;
+      setCareer((prev) => {
+        if (!prev || prev.slug !== career.slug) return prev;
+        return {
+          ...prev,
+          roadmap: data.stages,
+          roadmapTotalDuration: data.totalDuration,
+          personalizedRoadmapReady: true,
+          aiGeneratedDetails: {
+            ...(prev.aiGeneratedDetails || {}),
+            roadmap: data,
+          },
+        };
+      });
+      setOpenRoadmapStage(0);
+    };
+
+    const syncRoadmap = async () => {
+      setRoadmapSyncedSlug(career.slug);
+      setRoadmapSyncing(true);
+      try {
+        try {
+          const { data } = await api.get(`/ai/roadmap/${career.slug}`);
+          if (hasSpecificRoadmap(data?.stages)) {
+            applyRoadmap(data);
+            return;
+          }
+        } catch (_) {
+          // No personalized roadmap yet; generate one below.
+        }
+        const { data } = await api.post("/ai/roadmap/generate", { career_slug: career.slug });
+        applyRoadmap(data);
+      } catch (error) {
+        toast.error(error?.response?.data?.detail || "Personalized roadmap generation failed.");
+      } finally {
+        if (!cancelled) setRoadmapSyncing(false);
+      }
+    };
+
+    syncRoadmap();
+    return () => {
+      cancelled = true;
+    };
+  }, [tab, career?.slug, roadmapSyncedSlug]);
 
   const currentCareer = career || EMPTY_CAREER;
   const iconColor = currentCareer.iconColor || "#5B4FE9";
@@ -1189,11 +1251,23 @@ export default function CareerDetail() {
         {tab === "roadmap" && (
           <div className="mt-3 space-y-3">
             <div className="glass-card rounded-2xl p-3 sm:p-4">
-              <p className="font-heading font-bold text-sm sm:text-base text-ink">Your Personalized Roadmap</p>
-              <p className="text-[10px] sm:text-xs text-muted2 mt-0.5">Step-by-step path to become a successful {career.title}.</p>
-              <div className="mt-2 px-2 py-1 rounded-full bg-brand-50 border border-brand-100 inline-flex items-center gap-1.5">
-                <Star size={10} className="text-brand" />
-                <p className="text-[10px] font-semibold text-brand">Tailored to your profile</p>
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="font-heading font-bold text-sm sm:text-base text-ink">Your Personalized Roadmap</p>
+                  <p className="text-[10px] sm:text-xs text-muted2 mt-0.5">Step-by-step path to become a successful {career.title}.</p>
+                  <div className="mt-2 px-2 py-1 rounded-full bg-brand-50 border border-brand-100 inline-flex items-center gap-1.5">
+                    <Star size={10} className="text-brand" />
+                    <p className="text-[10px] font-semibold text-brand">
+                      {career.personalizedRoadmapReady ? "Tailored to your quiz profile" : "Tailored to your profile"}
+                    </p>
+                  </div>
+                </div>
+                {roadmapSyncing && (
+                  <div className="inline-flex items-center gap-2 text-[10px] font-semibold text-brand bg-brand-50 border border-brand-100 rounded-full px-2 py-1 shrink-0">
+                    <span className="w-3 h-3 border-2 border-brand-200 border-t-brand rounded-full animate-spin" />
+                    Personalizing
+                  </div>
+                )}
               </div>
             </div>
 

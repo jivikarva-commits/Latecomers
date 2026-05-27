@@ -919,6 +919,13 @@ def _roadmap_has_generic_items(roadmap: Dict) -> bool:
         "check minimum eligibility",
         "compare degree or diploma options",
         "shortlist institutes or online programs",
+        "specific education step",
+        "specific skill item",
+        "specific course",
+        "specific portfolio project",
+        "specific role",
+        "specific placement tip",
+        "tool with use case",
     )
     for stage in roadmap.get("stages") or []:
       for section in stage.get("sections") or []:
@@ -933,45 +940,75 @@ class RoadmapGenRequest(BaseModel):
     career_slug: str
 
 
+ROADMAP_SLUG_ALIASES = {
+    "business-development-executive": "digital-marketing",
+    "business-development-manager": "digital-marketing",
+    "business-development": "digital-marketing",
+    "sales-executive": "digital-marketing",
+    "sales-manager": "digital-marketing",
+    "financial-analyst": "financial-modeling",
+    "finance-analyst": "financial-modeling",
+    "finance-manager": "financial-modeling",
+    "mba-manager": "mba-entrance",
+    "business-manager": "mba-entrance",
+    "management-trainee": "mba-entrance",
+    "graphic-designer": "graphic-and-visual-design",
+    "ui-ux-designer": "ui-ux-and-product-design",
+    "ux-designer": "ui-ux-and-product-design",
+    "video-editor": "video-and-motion",
+    "animator-3d": "3d-animation",
+    "3d-animator": "3d-animation",
+    "animator-2d": "2d-animation",
+    "2d-animator": "2d-animation",
+    "game-designer": "game-design",
+    "game-developer": "game-development",
+}
+
+
 @router.post("/roadmap/generate")
 async def generate_roadmap(payload: RoadmapGenRequest, request: Request, user=Depends(current_user)):
-    career = await db(request).careers.find_one({"slug": payload.career_slug}, {"_id": 0})
+    resolved_slug = ROADMAP_SLUG_ALIASES.get(payload.career_slug, payload.career_slug)
+    career = await db(request).careers.find_one({"slug": resolved_slug}, {"_id": 0})
     if not career:
         raise HTTPException(404, "Career not found")
 
     profile = user.get("profile", {})
-    education = profile.get("education", "Not specified")
-    location = profile.get("location", "India")
+    latest_test = await db(request).test_results.find_one(
+        {"user_id": user["user_id"]}, {"_id": 0}, sort=[("completed_at", -1)]
+    )
+    student_context = _compact_student_context(user, latest_test)
+    education = profile.get("educationLevel") or profile.get("education") or "Not specified"
+    stream = profile.get("stream") or "Not specified"
+    location = profile.get("location") or "India"
 
-    cached = _career_cached_roadmap(career)
-    if cached:
-        await db(request).users.update_one(
-            {"user_id": user["user_id"]},
-            {
-                "$set": {
-                    f"personalized_roadmaps.{payload.career_slug}": cached,
-                    "lastRoadmapCareerSlug": payload.career_slug,
-                    "updated_at": datetime.now(timezone.utc).isoformat(),
-                }
-            },
-        )
-        return cached
+    prompt = f"""Generate a personalized career roadmap for **{career['title']}** in India.
 
-    prompt = f"""Generate a career roadmap for **{career['title']}** in India. Student: {education}, {location}.
+Student context JSON:
+{json.dumps(student_context, ensure_ascii=False)}
 
-Rules: Use real course/platform names, real costs in INR, real company names. Be specific and actionable.
+Known student summary:
+- Education/background: {education}
+- Stream: {stream}
+- Location: {location}
+
+Rules:
+- Personalize every stage using the student's education, stream, current situation, interests, budget, income timeline, learning preference, challenges, and top career matches when present.
+- Do not give generic items like item1, project1, role1, check eligibility, compare options, or shortlist programs.
+- If the student is from a different stream, include bridge steps clearly.
+- Use real course/platform names, realistic INR costs, real tools, real portfolio/project ideas, real job roles, and India-specific application channels.
+- Keep each item specific and actionable.
 
 Return ONLY valid JSON (no markdown, no commentary):
 {{"totalDuration":"12 Months","stages":[
-  {{"stageNum":1,"title":"Education","duration":"0-2 Months","description":"formal education path for {career['title']}","preview":"education eligibility","skills":["s1","s2","s3"],"sections":[{{"type":"education","label":"Education Path","items":["item1","item2","item3"]}}]}},
-  {{"stageNum":2,"title":"Skills To Master","duration":"2-6 Months","description":"core skills needed for {career['title']}","preview":"master core skills","skills":["s1","s2","s3","s4"],"sections":[{{"type":"skills","label":"Skills To Master","items":["item1","item2","item3","item4"]}}]}},
-  {{"stageNum":3,"title":"Courses","duration":"6-9 Months","description":"recommended paid courses only","preview":"complete courses","skills":["course selection"],"sections":[{{"type":"courses","label":"Recommended Paid Courses","items":["Course - Provider - Cost","Course - Provider - Cost","Course - Provider - Cost"]}}]}},
-  {{"stageNum":4,"title":"AI Tools","duration":"9-10 Months","description":"AI tools that help this career","preview":"learn AI tools","skills":["tool usage"],"sections":[{{"type":"tools","label":"AI Tools","items":["tool1","tool2","tool3","tool4"]}}]}},
-  {{"stageNum":5,"title":"Portfolio & Projects","duration":"10-11 Months","description":"projects and portfolio proof to build","preview":"build portfolio projects","skills":["project building"],"sections":[{{"type":"projects","label":"Portfolio Projects","items":["project1","project2","project3"]}}]}},
-  {{"stageNum":6,"title":"Placement & Jobs","duration":"11-12 Months","description":"job roles and hiring actions","preview":"apply and interview","skills":["interview prep"],"sections":[{{"type":"jobs","label":"Common Job Roles","items":["role1","role2","role3"]}},{{"type":"placement","label":"Placement Suggestions","items":["tip1","tip2","tip3"]}}]}}
+  {{"stageNum":1,"title":"Education","duration":"0-2 Months","description":"personalized education/bridge path for {career['title']}","preview":"education bridge","skills":["career foundation"],"sections":[{{"type":"education","label":"Education Path","items":["specific education step 1","specific education step 2","specific education step 3"]}}]}},
+  {{"stageNum":2,"title":"Skills To Master","duration":"2-6 Months","description":"skills the student must build for {career['title']}","preview":"master core skills","skills":["specific skill 1","specific skill 2","specific skill 3","specific skill 4"],"sections":[{{"type":"skills","label":"Skills To Master","items":["specific skill item 1","specific skill item 2","specific skill item 3","specific skill item 4"]}}]}},
+  {{"stageNum":3,"title":"Courses","duration":"6-9 Months","description":"courses matched to budget and learning preference","preview":"complete courses","skills":["course selection"],"sections":[{{"type":"courses","label":"Recommended Paid Courses","items":["Specific course - Provider - Cost","Specific course - Provider - Cost","Specific course - Provider - Cost"]}}]}},
+  {{"stageNum":4,"title":"AI Tools","duration":"9-10 Months","description":"AI tools for this career workflow","preview":"learn AI tools","skills":["AI workflow"],"sections":[{{"type":"tools","label":"AI Tools","items":["tool with use case 1","tool with use case 2","tool with use case 3","tool with use case 4"]}}]}},
+  {{"stageNum":5,"title":"Portfolio & Projects","duration":"10-11 Months","description":"portfolio proof matched to student background","preview":"build portfolio","skills":["project building"],"sections":[{{"type":"projects","label":"Portfolio Projects","items":["specific portfolio project 1","specific portfolio project 2","specific portfolio project 3"]}}]}},
+  {{"stageNum":6,"title":"Placement & Jobs","duration":"11-12 Months","description":"job roles and applications for this student","preview":"apply and interview","skills":["interview prep"],"sections":[{{"type":"jobs","label":"Common Job Roles","items":["specific role 1","specific role 2","specific role 3"]}},{{"type":"placement","label":"Placement Suggestions","items":["specific placement tip 1","specific placement tip 2","specific placement tip 3"]}}]}}
 ]}}
 
-Exactly 6 stages with these exact titles: Education, Skills To Master, Courses, AI Tools, Portfolio & Projects, Placement & Jobs. Keep items SHORT (under 80 chars each). India-specific."""
+Exactly 6 stages with these exact titles: Education, Skills To Master, Courses, AI Tools, Portfolio & Projects, Placement & Jobs. Keep items SHORT (under 95 chars each). India-specific."""
 
     text = None
     try:
@@ -979,6 +1016,8 @@ Exactly 6 stages with these exact titles: Education, Skills To Master, Courses, 
         data = extract_json(text)
         if not data or not data.get("stages"):
             raise ValueError("AI returned empty or invalid roadmap structure")
+        if _roadmap_has_generic_items(data):
+            raise ValueError("AI returned generic roadmap items")
     except (json.JSONDecodeError, ValueError) as e:
         logger.error(f"roadmap JSON error: {e} | response length: {len(text) if text else 0}")
         # Try to repair truncated JSON by closing open brackets
@@ -1001,13 +1040,14 @@ Exactly 6 stages with these exact titles: Education, Skills To Master, Courses, 
         {
             "$set": {
                 f"personalized_roadmaps.{payload.career_slug}": data,
-                "lastRoadmapCareerSlug": payload.career_slug,
+                f"personalized_roadmaps.{resolved_slug}": data,
+                "lastRoadmapCareerSlug": resolved_slug,
                 "updated_at": datetime.now(timezone.utc).isoformat(),
             }
         },
     )
     await db(request).careers.update_one(
-        {"slug": payload.career_slug},
+        {"slug": resolved_slug},
         {
             "$set": {
                 "aiGeneratedDetails.roadmap": data,
@@ -1021,15 +1061,11 @@ Exactly 6 stages with these exact titles: Education, Skills To Master, Courses, 
 
 @router.get("/roadmap/{career_slug}")
 async def get_user_roadmap(career_slug: str, request: Request, user=Depends(current_user)):
-    rmap = (user.get("personalized_roadmaps") or {}).get(career_slug)
-    if rmap:
+    resolved_slug = ROADMAP_SLUG_ALIASES.get(career_slug, career_slug)
+    rmap = (user.get("personalized_roadmaps") or {}).get(resolved_slug) or (user.get("personalized_roadmaps") or {}).get(career_slug)
+    if rmap and len(rmap.get("stages") or []) >= 6 and not _roadmap_has_generic_items(rmap):
         return rmap
-    career = await db(request).careers.find_one({"slug": career_slug}, {"_id": 0})
-    if career:
-        cached = _career_cached_roadmap(career)
-        if cached:
-            return cached
-    raise HTTPException(404, "No roadmap available; generate one first.")
+    raise HTTPException(404, "No personalized roadmap available; generate one first.")
 
 
 # ---------- AI Chat ----------
