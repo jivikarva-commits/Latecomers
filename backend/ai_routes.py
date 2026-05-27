@@ -1,6 +1,7 @@
 """AI routes: onboarding analysis, career test scoring, chat, roadmap generation, mock interview, scholarship matcher."""
 import json
 import logging
+import re
 import uuid
 from datetime import datetime, timezone
 from typing import Any, List, Optional, Dict, Union
@@ -916,6 +917,7 @@ def _roadmap_has_generic_items(roadmap: Dict) -> bool:
         "course specialization",
         "tool certification course",
         "mentor-led practical course",
+        "recommended paid courses",
         "check minimum eligibility",
         "compare degree or diploma options",
         "shortlist institutes or online programs",
@@ -926,6 +928,11 @@ def _roadmap_has_generic_items(roadmap: Dict) -> bool:
         "specific role",
         "specific placement tip",
         "tool with use case",
+        "provider - cost",
+        "paid course",
+        "free course",
+        "₹",
+        " inr ",
     )
     for stage in roadmap.get("stages") or []:
       for section in stage.get("sections") or []:
@@ -934,6 +941,26 @@ def _roadmap_has_generic_items(roadmap: Dict) -> bool:
           if any(marker in text for marker in generic_markers):
             return True
     return False
+
+
+def _strip_roadmap_course_costs(roadmap: Dict) -> Dict:
+    if not isinstance(roadmap, dict):
+        return roadmap
+    for stage in roadmap.get("stages") or []:
+        for section in stage.get("sections") or []:
+            section_key = str(section.get("type") or section.get("label") or "").lower()
+            if "course" not in section_key:
+                continue
+            section["label"] = "Courses"
+            cleaned = []
+            for item in section.get("items") or []:
+                text = re.sub(r"\s*[-–—]\s*(Coursera|Udemy|edX|Google|Microsoft|NSE Academy|CFI|Domestika|LinkedIn Learning|Skillshare|upGrad|Simplilearn|Great Learning|Elearnmarkets|BSE Institute).*$", "", str(item), flags=re.I)
+                text = re.sub(r"\b(paid|free|cost|fee|fees|inr|rs\.?|₹)\b.*$", "", text, flags=re.I).strip(" -–—,")
+                text = re.sub(r"\s+", " ", text).strip()
+                if text:
+                    cleaned.append(text)
+            section["items"] = cleaned[:5]
+    return roadmap
 
 
 class RoadmapGenRequest(BaseModel):
@@ -991,7 +1018,8 @@ async def generate_roadmap(payload: RoadmapGenRequest, request: Request, user=De
 
 Rules:
 - Do not give generic items like item1, project1, role1, check eligibility, compare options, or shortlist programs.
-- Use real course/platform names, realistic INR costs, real tools, real portfolio/project ideas, real job roles, and India-specific application channels.
+- Use real course/topic names, real tools, real portfolio/project ideas, real job roles, and India-specific application channels.
+- Courses section must contain only course/topic names. Do not mention paid/free, platforms, providers, prices, costs, INR, fees, or duration in course items.
 - Keep each item specific and actionable.
 - This roadmap must be reusable for all students interested in {career['title']}; do not personalize it to one user.
 - Mention common entry routes for different backgrounds where useful.
@@ -1000,7 +1028,7 @@ Return ONLY valid JSON (no markdown, no commentary):
 {{"totalDuration":"12 Months","stages":[
   {{"stageNum":1,"title":"Education","duration":"0-2 Months","description":"education and eligibility path for {career['title']}","preview":"education route","skills":["career foundation"],"sections":[{{"type":"education","label":"Education Path","items":["specific education route 1","specific education route 2","specific education route 3"]}}]}},
   {{"stageNum":2,"title":"Skills To Master","duration":"2-6 Months","description":"core skills needed for {career['title']}","preview":"master core skills","skills":["specific skill 1","specific skill 2","specific skill 3","specific skill 4"],"sections":[{{"type":"skills","label":"Skills To Master","items":["specific skill 1","specific skill 2","specific skill 3","specific skill 4"]}}]}},
-  {{"stageNum":3,"title":"Courses","duration":"6-9 Months","description":"recommended paid courses and certifications","preview":"complete courses","skills":["course selection"],"sections":[{{"type":"courses","label":"Recommended Paid Courses","items":["Specific course - Provider - Cost","Specific course - Provider - Cost","Specific course - Provider - Cost"]}}]}},
+  {{"stageNum":3,"title":"Courses","duration":"6-9 Months","description":"courses and certifications to study","preview":"complete courses","skills":["course selection"],"sections":[{{"type":"courses","label":"Courses","items":["Specific course name","Specific course name","Specific course name"]}}]}},
   {{"stageNum":4,"title":"AI Tools","duration":"9-10 Months","description":"AI tools for this career workflow","preview":"learn AI tools","skills":["AI workflow"],"sections":[{{"type":"tools","label":"AI Tools","items":["tool with use case 1","tool with use case 2","tool with use case 3","tool with use case 4"]}}]}},
   {{"stageNum":5,"title":"Portfolio & Projects","duration":"10-11 Months","description":"portfolio proof to build","preview":"build portfolio","skills":["project building"],"sections":[{{"type":"projects","label":"Portfolio Projects","items":["specific portfolio project 1","specific portfolio project 2","specific portfolio project 3"]}}]}},
   {{"stageNum":6,"title":"Placement & Jobs","duration":"11-12 Months","description":"job roles and application plan","preview":"apply and interview","skills":["interview prep"],"sections":[{{"type":"jobs","label":"Common Job Roles","items":["specific role 1","specific role 2","specific role 3"]}},{{"type":"placement","label":"Placement Suggestions","items":["specific placement tip 1","specific placement tip 2","specific placement tip 3"]}}]}}
@@ -1014,6 +1042,7 @@ Exactly 6 stages with these exact titles: Education, Skills To Master, Courses, 
         data = extract_json(text)
         if not data or not data.get("stages"):
             raise ValueError("AI returned empty or invalid roadmap structure")
+        data = _strip_roadmap_course_costs(data)
         if _roadmap_has_generic_items(data):
             raise ValueError("AI returned generic roadmap items")
     except (json.JSONDecodeError, ValueError) as e:
@@ -1022,7 +1051,7 @@ Exactly 6 stages with these exact titles: Education, Skills To Master, Courses, 
         if text:
             repaired = _repair_truncated_json(text)
             if repaired:
-                data = repaired
+                data = _strip_roadmap_course_costs(repaired)
                 logger.info("roadmap JSON repaired successfully")
             else:
                 raise HTTPException(500, "Roadmap generation returned incomplete data. Please try again.")

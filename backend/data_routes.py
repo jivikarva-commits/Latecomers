@@ -42,7 +42,7 @@ GOOGLE_DETAILS_FIELDS = ",".join(
     ]
 )
 CAREER_DETAILS_TTL_DAYS = 90
-CAREER_DETAILS_PROMPT_VERSION = "career-details-roadmap-v5-2026-05-27"
+CAREER_DETAILS_PROMPT_VERSION = "career-details-rich-courses-v6-2026-05-27"
 
 
 def db(request: Request):
@@ -594,6 +594,8 @@ Rules:
 - Be specific only to {title}; never use generic skills like "Domain Fundamentals".
 - overview.description must contain the exact phrase "{title}".
 - Use real India-relevant roles, companies, tools, exams/degrees/certifications.
+- Roadmap must be detailed, career-specific, and practical; every stage needs concrete action items.
+- Courses section must contain course/topic names only. Do not mention paid/free, platform names, providers, prices, costs, INR, fees, or duration in course items.
 - insights.topHiringCountries must always include "India" as the first country, followed by relevant global markets.
 - For CA, government, medical, law, creative, and technical paths, use the correct education/exam/portfolio/project roadmap.
 - Return JSON only. No markdown fences. No comments. No trailing commas. Keep every string on one line.
@@ -621,7 +623,7 @@ Schema:
     "stages": [
       {{"stageNum": 1, "title": "Education", "duration": "0-2 Months", "description": "education path for {title}", "preview": "education eligibility", "skills": ["skill1", "skill2"], "sections": [{{"type": "education", "label": "Education Path", "items": ["item1", "item2", "item3"]}}], "milestone": "education plan ready", "estimatedTimeline": "timeline"}},
       {{"stageNum": 2, "title": "Skills To Master", "duration": "2-6 Months", "description": "core skills for {title}", "preview": "master core skills", "skills": ["skill1", "skill2", "skill3", "skill4"], "sections": [{{"type": "skills", "label": "Skills To Master", "items": ["item1", "item2", "item3", "item4"]}}], "milestone": "core skills practiced", "estimatedTimeline": "timeline"}},
-      {{"stageNum": 3, "title": "Courses", "duration": "6-9 Months", "description": "paid and credible courses", "preview": "complete paid courses", "skills": ["course selection"], "sections": [{{"type": "courses", "label": "Recommended Paid Courses", "items": ["Course - Provider - Cost", "Course - Provider - Cost", "Course - Provider - Cost"]}}], "milestone": "courses completed", "estimatedTimeline": "timeline"}},
+      {{"stageNum": 3, "title": "Courses", "duration": "6-9 Months", "description": "courses to study", "preview": "complete courses", "skills": ["course selection"], "sections": [{{"type": "courses", "label": "Courses", "items": ["Course name only", "Course name only", "Course name only"]}}], "milestone": "courses completed", "estimatedTimeline": "timeline"}},
       {{"stageNum": 4, "title": "AI Tools", "duration": "9-10 Months", "description": "AI tools that improve productivity", "preview": "learn AI tools", "skills": ["tool usage"], "sections": [{{"type": "tools", "label": "AI Tools", "items": ["tool1", "tool2", "tool3", "tool4"]}}], "milestone": "AI workflow ready", "estimatedTimeline": "timeline"}},
       {{"stageNum": 5, "title": "Portfolio & Projects", "duration": "10-11 Months", "description": "portfolio and projects to prove ability", "preview": "build portfolio projects", "skills": ["project building"], "sections": [{{"type": "projects", "label": "Portfolio Projects", "items": ["project1", "project2", "project3"]}}], "milestone": "portfolio published", "estimatedTimeline": "timeline"}},
       {{"stageNum": 6, "title": "Placement & Jobs", "duration": "11-12 Months", "description": "job roles and hiring actions", "preview": "apply and interview", "skills": ["interview prep"], "sections": [{{"type": "jobs", "label": "Common Job Roles", "items": ["role1", "role2", "role3"]}}, {{"type": "placement", "label": "Placement Suggestions", "items": ["tip1", "tip2", "tip3"]}}], "milestone": "applications started", "estimatedTimeline": "timeline"}}
@@ -640,7 +642,7 @@ Schema:
     "aiImpact": "specific AI impact",
     "futureScope": "5-10 year outlook",
     "aiTools": [{{"name": "actual AI tool", "category": "Core", "description": "how used"}}],
-    "certifications": [{{"name": "real certification", "provider": "provider", "cost": "INR cost", "duration": "duration"}}]
+    "certifications": [{{"name": "real certification", "provider": "provider", "cost": "", "duration": "duration"}}]
   }},
   "salaryProgression": [{{"level": "Fresher", "minLPA": 0, "maxLPA": 0}}, {{"level": "2-3 Years", "minLPA": 0, "maxLPA": 0}}, {{"level": "5+ Years", "minLPA": 0, "maxLPA": 0}}, {{"level": "10+ Years", "minLPA": 0, "maxLPA": 0}}]
 }}"""
@@ -714,10 +716,10 @@ def _fallback_ai_details(career_title: str) -> Dict:
                     "stageNum": 3,
                     "title": "Courses",
                     "duration": "6 - 9 Months",
-                    "description": "Complete structured paid courses and guided practice.",
-                    "preview": "complete paid courses",
+                    "description": "Complete structured courses and guided practice.",
+                    "preview": "complete courses",
                     "skills": ["Course selection"],
-                    "sections": [{"type": "courses", "label": "Recommended Paid Courses", "items": ["Career specialization course", "Tool certification course", "Mentor-led practical course"]}],
+                    "sections": [{"type": "courses", "label": "Courses", "items": ["Career specialization", "Tool certification", "Practical capstone course"]}],
                     "milestone": "Courses completed.",
                 },
                 {
@@ -812,6 +814,27 @@ def _start_career_detail_generation(request: Request, career: Dict) -> None:
     asyncio.create_task(_runner())
 
 
+def _strip_course_costs(details: Dict) -> Dict:
+    if not isinstance(details, dict):
+        return details
+    roadmap = details.get("roadmap") or {}
+    for stage in roadmap.get("stages") or []:
+        for section in stage.get("sections") or []:
+            if str(section.get("type") or section.get("label") or "").lower().find("course") == -1:
+                continue
+            section["label"] = "Courses"
+            cleaned_items = []
+            for item in section.get("items") or []:
+                text = str(item)
+                text = re.sub(r"\s*[-–—]\s*(Coursera|Udemy|edX|Google|Microsoft|NSE Academy|CFI|Domestika|LinkedIn Learning|Skillshare|upGrad|Simplilearn|Great Learning|Elearnmarkets|BSE Institute).*$", "", text, flags=re.I)
+                text = re.sub(r"\b(paid|free|cost|fee|fees|inr|rs\.?|₹)\b.*$", "", text, flags=re.I).strip(" -–—,")
+                text = re.sub(r"\s+", " ", text).strip()
+                if text:
+                    cleaned_items.append(text)
+            section["items"] = cleaned_items[:5]
+    return details
+
+
 async def _generate_and_cache_career_details(request: Request, career: Dict) -> Dict:
     prompt = _career_details_prompt(career)
     try:
@@ -860,7 +883,7 @@ Malformed response:
                 )
                 candidate = extract_json(repair_text)
             if _career_title_present(career["title"], candidate):
-                details = candidate
+                details = _strip_course_costs(candidate)
                 break
             logger.warning(
                 "Career detail response failed title check slug=%s attempt=%s",
@@ -966,10 +989,8 @@ async def _get_career_detail_by_slug(slug: str, request: Request):
     if _career_details_fresh(item):
         return _merge_ai_details(item)
     if isinstance(item.get("aiGeneratedDetails"), dict):
-        _start_career_detail_generation(request, item)
-        return _merge_ai_details(item)
-    _start_career_detail_generation(request, item)
-    return _fallback_career_response(item)
+        return await _generate_and_cache_career_details(request, item)
+    return await _generate_and_cache_career_details(request, item)
 
 
 @router.post("/careers/generate")

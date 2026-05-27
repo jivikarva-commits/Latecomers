@@ -13,7 +13,7 @@ const STAGE_COLORS = ["#7C3AED", "#10B981", "#0EA5E9", "#8B5CF6", "#F97316", "#E
 const STAGE_ICONS = [GraduationCap, Target, BookOpen, Bot, FolderOpen, Briefcase];
 const SECTION_META = {
   education: { icon: GraduationCap, label: "Education Path", color: "#7C3AED" },
-  courses: { icon: BookOpen, label: "Recommended Paid Courses", color: "#0EA5E9" },
+  courses: { icon: BookOpen, label: "Courses", color: "#0EA5E9" },
   skills: { icon: Target, label: "Skills To Master", color: "#10B981" },
   projects: { icon: FolderOpen, label: "Projects & Portfolio", color: "#F97316" },
   portfolio: { icon: FolderOpen, label: "Projects & Portfolio", color: "#F97316" },

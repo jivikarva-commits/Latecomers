@@ -81,7 +81,7 @@ const FALLBACK_STAGE_META = [
 const SECTION_META = {
   education: { icon: GraduationCap, label: "Education Path", color: "#7C3AED" },
   skills: { icon: Target, label: "Skills To Master", color: "#10B981" },
-  courses: { icon: BookOpen, label: "Recommended Paid Courses", color: "#0EA5E9" },
+  courses: { icon: BookOpen, label: "Courses", color: "#0EA5E9" },
   tools: { icon: Bot, label: "AI Tools", color: "#8B5CF6" },
   projects: { icon: FolderOpen, label: "Portfolio Projects", color: "#F97316" },
   portfolio: { icon: FolderOpen, label: "Portfolio Projects", color: "#F97316" },
@@ -415,33 +415,33 @@ function buildCourseItems(career) {
   if (certs.length) return certs;
   if (/(financial model|financial analyst|investment|finance)/.test(lower)) {
     return [
-      "Financial Modeling & Valuation Analyst (FMVA) - CFI",
-      "Financial Modeling and Valuation - NSE Academy / Elearnmarkets",
-      "Excel for Financial Analysis - Udemy or Coursera paid course",
-      "Equity Research and Valuation - BSE Institute or similar provider",
+      "Financial Modeling",
+      "Valuation Analysis",
+      "Excel for Financial Analysis",
+      "Equity Research",
     ];
   }
   if (/(graphic|visual|design)/.test(lower)) {
     return [
-      "Graphic Design Specialization - Coursera",
-      "Adobe Photoshop and Illustrator Masterclass - Udemy",
-      "Brand Identity Design - Domestika",
-      "UI/UX Design Professional Certificate - Google or Coursera",
+      "Graphic Design",
+      "Adobe Photoshop",
+      "Adobe Illustrator",
+      "Brand Identity Design",
     ];
   }
   if (/(data|analytics|business analyst)/.test(lower)) {
     return [
-      "Google Data Analytics Professional Certificate - Coursera",
-      "Excel to MySQL: Analytic Techniques - Duke University",
-      "Power BI Data Analyst Associate training - Microsoft Learn",
-      "SQL and Tableau for Analytics - Udemy paid course",
+      "Data Analytics",
+      "Excel Analytics",
+      "Power BI",
+      "SQL and Tableau",
     ];
   }
   return [
-    `${title} job-ready certification from a reputed provider`,
-    `${title} practical masterclass with assignments and mentor feedback`,
-    "Communication, resume, and interview preparation course",
-    "Paid specialization course with portfolio or capstone project",
+    `${title} Foundations`,
+    `${title} Practical Skills`,
+    `${title} Portfolio Building`,
+    "Communication and Interview Preparation",
   ];
 }
 
@@ -487,7 +487,7 @@ function fallbackSectionsForStage(career, meta, commonSkills) {
   const map = {
     education: [{ type: "education", label: "Education Path", items: buildEducationItems(career) }],
     skills: [{ type: "skills", label: "Skills To Master", items: uniqueItems(commonSkills, 8) }],
-    courses: [{ type: "courses", label: "Recommended Paid Courses", items: buildCourseItems(career) }],
+    courses: [{ type: "courses", label: "Courses", items: buildCourseItems(career) }],
     tools: [{ type: "tools", label: "AI Tools", items: tools.length ? tools : ["ChatGPT", "Perplexity", "Notion AI", "Canva AI"] }],
     projects: [{ type: "projects", label: "Portfolio Projects", items: buildProjectItems(career) }],
     jobs: [
