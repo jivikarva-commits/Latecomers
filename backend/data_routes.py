@@ -790,6 +790,28 @@ def _fallback_ai_details(career_title: str) -> Dict:
     }
 
 
+def _fallback_career_response(career: Dict) -> Dict:
+    details = _fallback_ai_details(career.get("title") or "This career")
+    return _merge_ai_details(
+        {
+            **career,
+            "aiGeneratedDetails": details,
+            "detailsCachedAt": None,
+            "detailsGeneratedByAI": False,
+        }
+    )
+
+
+def _start_career_detail_generation(request: Request, career: Dict) -> None:
+    async def _runner():
+        try:
+            await _generate_and_cache_career_details(request, career)
+        except Exception as exc:
+            logger.warning("Background career detail generation failed slug=%s: %s", career.get("slug"), exc)
+
+    asyncio.create_task(_runner())
+
+
 async def _generate_and_cache_career_details(request: Request, career: Dict) -> Dict:
     prompt = _career_details_prompt(career)
     try:
@@ -944,8 +966,10 @@ async def _get_career_detail_by_slug(slug: str, request: Request):
     if _career_details_fresh(item):
         return _merge_ai_details(item)
     if isinstance(item.get("aiGeneratedDetails"), dict):
+        _start_career_detail_generation(request, item)
         return _merge_ai_details(item)
-    return await _generate_and_cache_career_details(request, item)
+    _start_career_detail_generation(request, item)
+    return _fallback_career_response(item)
 
 
 @router.post("/careers/generate")
