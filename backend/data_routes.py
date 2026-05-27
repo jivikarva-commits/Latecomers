@@ -803,21 +803,56 @@ def _strip_course_costs(details: Dict) -> Dict:
     return details
 
 
+def _career_roadmap_prompt(career: Dict) -> str:
+    title = career.get("title") or "This Career"
+    category = career.get("category") or career.get("field") or "General"
+    return f"""Generate only a detailed career roadmap JSON for {title} in India.
+Category: {category}
+
+Rules:
+- Return JSON only.
+- Exactly 6 stages: Education, Skills To Master, Courses, AI Tools, Portfolio & Projects, Placement & Jobs.
+- Each stage must have one sections array.
+- Each section must have exactly 3 concrete, career-specific items.
+- Courses section must contain course/topic names only. No paid/free, provider, platform, cost, fee, INR, Rs, duration.
+- No placeholders like item1, project1, role1, generic fundamentals.
+
+Shape:
+{{"totalDuration":"12 Months","stages":[
+{{"stageNum":1,"title":"Education","duration":"0-2 Months","description":"education route for {title}","preview":"education route","skills":["foundation"],"sections":[{{"type":"education","label":"Education Path","items":["route 1","route 2","route 3"]}}],"milestone":"education plan ready"}},
+{{"stageNum":2,"title":"Skills To Master","duration":"2-6 Months","description":"skills for {title}","preview":"skills","skills":["skill1","skill2","skill3"],"sections":[{{"type":"skills","label":"Skills To Master","items":["skill 1","skill 2","skill 3"]}}],"milestone":"skills ready"}},
+{{"stageNum":3,"title":"Courses","duration":"6-9 Months","description":"courses to study","preview":"courses","skills":["course selection"],"sections":[{{"type":"courses","label":"Courses","items":["course name","course name","course name"]}}],"milestone":"courses completed"}},
+{{"stageNum":4,"title":"AI Tools","duration":"9-10 Months","description":"AI tools for {title}","preview":"AI tools","skills":["AI workflow"],"sections":[{{"type":"tools","label":"AI Tools","items":["tool - use case","tool - use case","tool - use case"]}}],"milestone":"AI workflow ready"}},
+{{"stageNum":5,"title":"Portfolio & Projects","duration":"10-11 Months","description":"portfolio for {title}","preview":"portfolio","skills":["project building"],"sections":[{{"type":"projects","label":"Portfolio Projects","items":["project 1","project 2","project 3"]}}],"milestone":"portfolio ready"}},
+{{"stageNum":6,"title":"Placement & Jobs","duration":"11-12 Months","description":"jobs for {title}","preview":"jobs","skills":["interview prep"],"sections":[{{"type":"jobs","label":"Common Job Roles","items":["role 1","role 2","role 3"]}},{{"type":"placement","label":"Placement Suggestions","items":["action 1","action 2","action 3"]}}],"milestone":"applications started"}}
+]}}"""
+
+
+def _roadmap_has_bad_items(roadmap: Dict) -> bool:
+    bad = ("item1", "project1", "role1", "tip1", "course - provider", "paid", "free", "₹", " inr ", " rs ")
+    for stage in roadmap.get("stages") or []:
+        for section in stage.get("sections") or []:
+            for item in section.get("items") or []:
+                text = f" {str(item).lower()} "
+                if any(marker in text for marker in bad):
+                    return True
+    return False
+
+
 async def _generate_and_cache_career_details(request: Request, career: Dict) -> Dict:
-    prompt = _career_details_prompt(career)
+    prompt = _career_roadmap_prompt(career)
     try:
-        details = None
+        details = _fallback_ai_details(career["title"])
         last_error = None
         for attempt in range(1, 3):
             try:
                 text = await ask_claude(
                     prompt,
                     system_prompt=(
-                        "You are a career guidance expert for Indian students. "
-                        "Return only valid compact JSON. Every field must match the requested career exactly. "
-                        "Do not mention paid/free/course prices in course items."
+                        "You generate concise, valid JSON career roadmaps for Indian students. "
+                        "Return only roadmap JSON. No markdown. No paid/free/course prices."
                     ),
-                    max_tokens=2200,
+                    max_tokens=1800,
                     json_only=True,
                 )
             except Exception as call_exc:
@@ -830,39 +865,39 @@ async def _generate_and_cache_career_details(request: Request, career: Dict) -> 
                 )
                 continue
             try:
-                candidate = extract_json(text)
+                roadmap = _strip_course_costs({"roadmap": extract_json(text)})["roadmap"]
             except Exception as parse_exc:
                 last_error = parse_exc
                 logger.warning(
-                    "Career detail JSON parse failed slug=%s attempt=%s: %s",
+                    "Career roadmap JSON parse failed slug=%s attempt=%s: %s",
                     career.get("slug"),
                     attempt,
                     parse_exc,
                 )
-                repair_prompt = f"""Repair this malformed JSON response for career "{career['title']}".
+                repair_prompt = f"""Repair this malformed roadmap JSON for career "{career['title']}".
 Return ONLY a valid JSON object. Do not add markdown. Preserve career-specific content.
 
 Malformed response:
-{text[:28000]}"""
+{text[:16000]}"""
                 repair_text = await ask_claude(
                     repair_prompt,
                     system_prompt="You repair malformed JSON. Return only valid JSON, no markdown.",
-                    max_tokens=2200,
+                    max_tokens=1800,
                     json_only=True,
                 )
-                candidate = extract_json(repair_text)
-            if _career_title_present(career["title"], candidate):
-                details = _strip_course_costs(candidate)
+                roadmap = _strip_course_costs({"roadmap": extract_json(repair_text)})["roadmap"]
+            if isinstance(roadmap, dict) and len(roadmap.get("stages") or []) >= 6 and not _roadmap_has_bad_items(roadmap):
+                details["roadmap"] = roadmap
                 break
             logger.warning(
-                "Career detail response failed title check slug=%s attempt=%s",
+                "Career roadmap response failed quality check slug=%s attempt=%s",
                 career.get("slug"),
                 attempt,
             )
-        if details is None:
-            raise last_error or ValueError(f"Claude response did not mention career title in overview: {career['title']}")
+        if not isinstance((details.get("roadmap") or {}).get("stages"), list) or len(details["roadmap"]["stages"]) < 6:
+            raise last_error or ValueError(f"AI roadmap generation failed quality check: {career['title']}")
     except Exception as exc:
-        logger.exception("Career detail AI generation failed for slug=%s: %s", career.get("slug"), exc)
+        logger.exception("Career roadmap AI generation failed for slug=%s: %s", career.get("slug"), exc)
         details = _fallback_ai_details(career["title"])
         fallback = {
             **career,
