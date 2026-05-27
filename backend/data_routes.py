@@ -594,23 +594,24 @@ Rules:
 - No generic placeholders: item1, project1, role1, Domain Fundamentals.
 - Courses section: course/topic names only. No paid/free, providers, platforms, prices, INR, fees, or duration.
 - Roadmap must have exactly 6 stages: Education, Skills To Master, Courses, AI Tools, Portfolio & Projects, Placement & Jobs.
-- Each roadmap stage needs 3-5 concrete items for that exact career.
+- Each roadmap stage needs exactly 3 concrete items for that exact career.
+- Keep arrays small: 2 skills per skill group, 1 work area, 2 job levels, 3 salary points, 3 AI tools.
 - Return JSON only.
 
 JSON shape:
 {{
-  "overview": {{"description": "120 words about {title} in India", "whyChooseThis": "why choose it", "indianMarketDemand": "India demand", "globalScope": "global scope", "typicalDay": "typical day", "whyGreatFit": ["reason1","reason2","reason3"], "workAreas": [{{"title": "area", "icon": "briefcase"}}]}},
+  "overview": {{"description": "70 words about {title} in India", "whyChooseThis": "why choose it", "indianMarketDemand": "India demand", "globalScope": "global scope", "typicalDay": "typical day", "whyGreatFit": ["reason1","reason2"], "workAreas": [{{"title": "area", "icon": "briefcase"}}]}},
   "skills": {{"technical": [{{"name": "skill", "type": "Core", "importance": 95, "description": "short", "priority": "Essential"}}], "analytical": [{{"name": "skill", "type": "Analytical", "importance": 85, "description": "short", "priority": "Essential"}}], "tools": [{{"name": "tool", "type": "Tool", "importance": 80, "description": "short", "priority": "Important"}}], "softSkills": [{{"name": "skill", "type": "Soft Skill", "importance": 75, "description": "short", "priority": "Good to have"}}]}},
   "roadmap": {{"totalDuration": "12 Months", "stages": [
     {{"stageNum": 1, "title": "Education", "duration": "0-2 Months", "description": "education route", "preview": "education route", "skills": ["skill"], "sections": [{{"type": "education", "label": "Education Path", "items": ["concrete education route", "bridge option", "eligibility requirement"]}}], "milestone": "education plan ready"}},
-    {{"stageNum": 2, "title": "Skills To Master", "duration": "2-6 Months", "description": "skills", "preview": "skills", "skills": ["skill1","skill2","skill3"], "sections": [{{"type": "skills", "label": "Skills To Master", "items": ["specific skill", "specific skill", "specific skill", "specific skill"]}}], "milestone": "core skills ready"}},
-    {{"stageNum": 3, "title": "Courses", "duration": "6-9 Months", "description": "courses", "preview": "courses", "skills": ["course selection"], "sections": [{{"type": "courses", "label": "Courses", "items": ["course name", "course name", "course name", "course name"]}}], "milestone": "courses completed"}},
+    {{"stageNum": 2, "title": "Skills To Master", "duration": "2-6 Months", "description": "skills", "preview": "skills", "skills": ["skill1","skill2","skill3"], "sections": [{{"type": "skills", "label": "Skills To Master", "items": ["specific skill", "specific skill", "specific skill"]}}], "milestone": "core skills ready"}},
+    {{"stageNum": 3, "title": "Courses", "duration": "6-9 Months", "description": "courses", "preview": "courses", "skills": ["course selection"], "sections": [{{"type": "courses", "label": "Courses", "items": ["course name", "course name", "course name"]}}], "milestone": "courses completed"}},
     {{"stageNum": 4, "title": "AI Tools", "duration": "9-10 Months", "description": "AI tools", "preview": "AI tools", "skills": ["AI workflow"], "sections": [{{"type": "tools", "label": "AI Tools", "items": ["tool - use case", "tool - use case", "tool - use case"]}}], "milestone": "AI workflow ready"}},
     {{"stageNum": 5, "title": "Portfolio & Projects", "duration": "10-11 Months", "description": "portfolio", "preview": "portfolio", "skills": ["project building"], "sections": [{{"type": "projects", "label": "Portfolio Projects", "items": ["specific project", "specific project", "specific project"]}}], "milestone": "portfolio ready"}},
     {{"stageNum": 6, "title": "Placement & Jobs", "duration": "11-12 Months", "description": "jobs", "preview": "jobs", "skills": ["interview prep"], "sections": [{{"type": "jobs", "label": "Common Job Roles", "items": ["actual role", "actual role", "actual role"]}}, {{"type": "placement", "label": "Placement Suggestions", "items": ["specific job search action", "specific profile action", "specific interview action"]}}], "milestone": "applications started"}}
   ]}},
   "jobs": {{"levels": [{{"level": "Entry", "yearsExp": "0-2 Years", "roles": [{{"title": "actual role", "description": "short duties", "salaryMin": 0, "salaryMax": 0, "companies": ["company1","company2"]}}]}}, {{"level": "Mid", "yearsExp": "2-5 Years", "roles": [{{"title": "actual role", "description": "short duties", "salaryMin": 0, "salaryMax": 0, "companies": ["company1","company2"]}}]}}]}},
-  "insights": {{"globalDemand": "short", "jobGrowthGlobal": "{growth}%", "openPositionsIndia": "approximate", "topHiringCountries": ["India","country2","country3"], "topIndustriesHiring": ["industry1","industry2","industry3"], "topCompaniesIndia": ["company1","company2","company3"], "aiImpact": "short", "futureScope": "short", "aiTools": [{{"name": "tool", "category": "Core", "description": "short"}}], "certifications": [{{"name": "certification", "provider": "", "cost": "", "duration": ""}}]}},
+  "insights": {{"globalDemand": "short", "jobGrowthGlobal": "{growth}%", "openPositionsIndia": "approximate", "topHiringCountries": ["India","country2","country3"], "topIndustriesHiring": ["industry1","industry2","industry3"], "topCompaniesIndia": ["company1","company2","company3"], "aiImpact": "short", "futureScope": "short", "aiTools": [{{"name": "tool", "category": "Core", "description": "short"}}, {{"name": "tool", "category": "Core", "description": "short"}}, {{"name": "tool", "category": "Core", "description": "short"}}], "certifications": [{{"name": "certification", "provider": "", "cost": "", "duration": ""}}]}},
   "salaryProgression": [{{"level": "Fresher", "minLPA": 0, "maxLPA": 0}}, {{"level": "2-3 Years", "minLPA": 0, "maxLPA": 0}}, {{"level": "5+ Years", "minLPA": 0, "maxLPA": 0}}]
 }}"""
 
@@ -816,7 +817,7 @@ async def _generate_and_cache_career_details(request: Request, career: Dict) -> 
                         "Return only valid compact JSON. Every field must match the requested career exactly. "
                         "Do not mention paid/free/course prices in course items."
                     ),
-                    max_tokens=3200,
+                    max_tokens=2200,
                     json_only=True,
                 )
             except Exception as call_exc:
@@ -846,7 +847,7 @@ Malformed response:
                 repair_text = await ask_claude(
                     repair_prompt,
                     system_prompt="You repair malformed JSON. Return only valid JSON, no markdown.",
-                    max_tokens=3200,
+                    max_tokens=2200,
                     json_only=True,
                 )
                 candidate = extract_json(repair_text)
