@@ -78,9 +78,23 @@ export default function Careers() {
   }, [q]);
 
   const savedSet = new Set(user?.saved_items?.careers || []);
+  const careerAnalysis = user?.careerAnalysis || null;
 
-  // Memoize user match data to keep references stable
-  const userMatches = useMemo(() => user?.top_career_matches || [], [user?.top_career_matches]);
+  const userMatches = useMemo(() => {
+    if (careerAnalysis?.topCareers?.length > 0) {
+      return careerAnalysis.topCareers.map((m) => ({
+        careerSlug: m.slug || m.careerSlug,
+        matchPercent: m.matchPercent,
+        tags: m.tags || [],
+        reasons: m.whyMatch || m.reasons || [],
+        avgSalaryMin: m.avgSalaryMin,
+        avgSalaryMax: m.avgSalaryMax,
+        jobGrowth: m.jobGrowth,
+      }));
+    }
+    return user?.top_career_matches || [];
+  }, [careerAnalysis, user?.top_career_matches]);
+
   const matchMap = useMemo(() => new Map(userMatches.map((m) => [m.careerSlug, m])), [userMatches]);
   const hasAiMatches = userMatches.length > 0;
 
@@ -89,9 +103,24 @@ export default function Careers() {
     if (!hasAiMatches || allCareers.length === 0) return allCareers;
 
     // Build ordered list: AI matches in score order first
-    const aiSlugs = userMatches.map((m) => m.careerSlug);
+    const aiSlugs = userMatches.map((m) => m.careerSlug).filter(Boolean);
     const aiCareers = aiSlugs
-      .map((slug) => allCareers.find((c) => c.slug === slug))
+      .map((slug) => {
+        const career = allCareers.find((c) => c.slug === slug);
+        const match = matchMap.get(slug);
+        return {
+          ...(career || {}),
+          ...(match || {}),
+          slug,
+          career_id: career?.career_id || `match-${slug}`,
+          title: career?.title || match?.title || slug.replace(/-/g, " ").replace(/\b\w/g, (ch) => ch.toUpperCase()),
+          description: career?.description || match?.description || `Explore ${match?.title || slug.replace(/-/g, " ")} as a matched career path.`,
+          tags: match?.tags?.length ? match.tags : career?.tags || [],
+          avgSalary: match?.avgSalaryMin ? { min: match.avgSalaryMin, max: match.avgSalaryMax } : career?.avgSalary,
+          jobGrowth5Y: match?.jobGrowth ?? career?.jobGrowth5Y,
+          demand: match?.demand || career?.demand || "High",
+        };
+      })
       .filter(Boolean);
 
     // Remaining careers not in AI matches
@@ -99,7 +128,7 @@ export default function Careers() {
     const otherCareers = allCareers.filter((c) => !aiSlugSet.has(c.slug));
 
     return [...aiCareers, ...otherCareers];
-  }, [allCareers, userMatches, hasAiMatches]);
+  }, [allCareers, userMatches, matchMap, hasAiMatches]);
 
   const getMatch = (slug, idx) => {
     const m = matchMap.get(slug);

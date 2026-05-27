@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
@@ -135,10 +135,85 @@ export default function Colleges() {
   const [locationMessage, setLocationMessage] = useState("");
   const [searchedLocation, setSearchedLocation] = useState("");
   const [searchedCourse, setSearchedCourse] = useState("");
+  const [detectingLocation, setDetectingLocation] = useState(false);
+  const autoSearchKeyRef = useRef("");
+  const locationPromptedRef = useRef(false);
 
   useEffect(() => {
-    setLocationQuery(user?.profile?.location || "");
+    const storedCourse = localStorage.getItem("active_institute_course") || localStorage.getItem("last_roadmap_career_title") || "";
+    if (storedCourse && !courseQuery) setCourseQuery(storedCourse);
+    if (user?.profile?.location && !locationQuery) setLocationQuery(user.profile.location);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.profile?.location]);
+
+  useEffect(() => {
+    const handler = (event) => {
+      const nextCourse = event.detail?.course || localStorage.getItem("active_institute_course") || "";
+      if (nextCourse) setCourseQuery(nextCourse);
+    };
+    window.addEventListener("latecomers:institute-course-change", handler);
+    window.addEventListener("storage", handler);
+    return () => {
+      window.removeEventListener("latecomers:institute-course-change", handler);
+      window.removeEventListener("storage", handler);
+    };
+  }, []);
+
+  const requestLocationAccess = useCallback(async () => {
+    if (detectingLocation) return;
+    if (!navigator.geolocation) {
+      setLocationMessage("Location access is not supported. Please enter your city manually.");
+      return;
+    }
+    if (!window.isSecureContext) {
+      setLocationMessage("Browser location works only on HTTPS or localhost. Please enter your city manually.");
+      return;
+    }
+    try {
+      if (navigator.permissions?.query) {
+        const permission = await navigator.permissions.query({ name: "geolocation" });
+        if (permission.state === "denied") {
+          setLocationMessage("Location permission is blocked in browser settings. Allow it for this site or enter your city manually.");
+          return;
+        }
+      }
+    } catch {
+      // Some browsers do not support querying geolocation permission; request normally.
+    }
+    setDetectingLocation(true);
+    setLocationMessage("Please allow location access to find institutes near you, or enter your city manually.");
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { data } = await api.post("/colleges/reverse-geocode", {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+          if (data.location) {
+            setLocationQuery(data.location);
+            setLocationMessage(`Detected your location: ${data.location}`);
+          } else {
+            setLocationMessage(data.message || "Please enter your city manually.");
+          }
+        } catch (error) {
+          setLocationMessage(error?.response?.data?.detail || "Could not detect your city. Please enter it manually.");
+        } finally {
+          setDetectingLocation(false);
+        }
+      },
+      () => {
+        setDetectingLocation(false);
+        setLocationMessage("Location permission was denied or dismissed. Please enter your city manually.");
+      },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 10 * 60 * 1000 }
+    );
+  }, [detectingLocation]);
+
+  useEffect(() => {
+    if (locationPromptedRef.current) return;
+    locationPromptedRef.current = true;
+    requestLocationAccess();
+  }, [requestLocationAccess]);
 
   const handleSearch = async () => {
     const normalizedLocation = locationQuery.trim();
@@ -179,6 +254,17 @@ export default function Colleges() {
       setLocationLoading(false);
     }
   };
+
+  useEffect(() => {
+    const normalizedLocation = locationQuery.trim();
+    const normalizedCourse = courseQuery.trim();
+    if (!normalizedLocation || !normalizedCourse || locationLoading) return;
+    const key = `${normalizedCourse}|${normalizedLocation}`;
+    if (autoSearchKeyRef.current === key || locationResults.length > 0) return;
+    autoSearchKeyRef.current = key;
+    handleSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [courseQuery, locationQuery]);
 
   const filteredResults = useMemo(() => {
     const query = q.trim().toLowerCase();
@@ -252,7 +338,7 @@ export default function Colleges() {
               value={courseQuery}
               onChange={(e) => setCourseQuery(e.target.value)}
               placeholder="Course — e.g. Engineering, MBA, MBBS"
-              className="w-full bg-white border border-line rounded-xl pl-10 pr-4 py-2.5 text-sm"
+              className="w-full bg-white border border-line rounded-xl pl-10 pr-12 py-2.5 text-sm"
               data-testid="course-search-input"
             />
           </div>
@@ -266,6 +352,16 @@ export default function Colleges() {
               data-testid="location-search-input"
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
+            <button
+              type="button"
+              onClick={requestLocationAccess}
+              disabled={detectingLocation}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-brand-50 text-brand flex items-center justify-center disabled:opacity-50"
+              title="Use current location"
+              data-testid="use-current-location-button"
+            >
+              <LocateFixed size={14} className={detectingLocation ? "animate-pulse" : ""} />
+            </button>
           </div>
           <button
             onClick={handleSearch}
@@ -273,7 +369,7 @@ export default function Colleges() {
             className="inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl disabled:opacity-60 shrink-0"
             data-testid="search-institutes-button"
           >
-            <Search size={14} /> {locationLoading ? "Searching..." : "Search"}
+            <Search size={14} /> {locationLoading ? "Searching..." : detectingLocation ? "Detecting..." : "Search"}
           </button>
         </div>
         {locationMessage && <p className="text-xs text-muted2 mt-2">{locationMessage}</p>}

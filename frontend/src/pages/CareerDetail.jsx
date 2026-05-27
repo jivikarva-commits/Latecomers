@@ -10,10 +10,14 @@ import {
   Brain,
   Briefcase,
   CheckCircle2,
+  ChevronDown,
   ChevronRight,
+  ChevronUp,
   Code2,
   Database,
+  FolderOpen,
   Globe,
+  GraduationCap,
   IndianRupee,
   Layers3,
   LayoutGrid,
@@ -28,14 +32,15 @@ import {
   Target,
   TrendingUp,
   Users,
+  Wrench,
 } from "lucide-react";
 
 // Icon cache to avoid import * as Icons
 const iconCache = {
   ArrowLeft, ArrowRight, BarChart3, BookOpen, Bookmark, Bot, Brain, Briefcase,
-  CheckCircle2, ChevronRight, Code2, Database, Globe, IndianRupee, Layers3,
-  LayoutGrid, LineChart, MessageCircle, RefreshCcw, Rocket, Search, ShieldCheck,
-  Sparkles, Star, Target, TrendingUp, Users,
+  CheckCircle2, ChevronDown, ChevronRight, ChevronUp, Code2, Database, FolderOpen,
+  Globe, GraduationCap, IndianRupee, Layers3, LayoutGrid, LineChart, MessageCircle,
+  RefreshCcw, Rocket, Search, ShieldCheck, Sparkles, Star, Target, TrendingUp, Users, Wrench,
 };
 let fullIconsPromise = null;
 function loadFullIcons() {
@@ -61,16 +66,28 @@ const TAB_ITEMS = [
   { id: "insights", label: "Insights", icon: "BarChart3" },
 ];
 
-const STAGE_ICONS = ["Rocket", "Code2", "Brain", "Briefcase", "Target"];
-const STAGE_COLORS = ["#5B4FE9", "#22C55E", "#3B82F6", "#F97316", "#A855F7"];
+const STAGE_ICONS = ["GraduationCap", "Target", "BookOpen", "Bot", "FolderOpen", "Briefcase"];
+const STAGE_COLORS = ["#7C3AED", "#10B981", "#0EA5E9", "#8B5CF6", "#F97316", "#EC4899"];
 
 const FALLBACK_STAGE_META = [
-  { title: "Build a Strong Foundation", duration: "0 - 3 Months" },
-  { title: "Learn Core Skills", duration: "3 - 6 Months" },
-  { title: "Explore Advanced Topics", duration: "6 - 9 Months" },
-  { title: "Work on Real-World Projects", duration: "9 - 12 Months" },
-  { title: "Career Ready", duration: "12+ Months" },
+  { title: "Education", duration: "0 - 2 Months", type: "education" },
+  { title: "Skills To Master", duration: "2 - 6 Months", type: "skills" },
+  { title: "Courses", duration: "6 - 9 Months", type: "courses" },
+  { title: "AI Tools", duration: "9 - 10 Months", type: "tools" },
+  { title: "Portfolio & Projects", duration: "10 - 11 Months", type: "projects" },
+  { title: "Placement & Jobs", duration: "11 - 12 Months", type: "jobs" },
 ];
+
+const SECTION_META = {
+  education: { icon: GraduationCap, label: "Education Path", color: "#7C3AED" },
+  skills: { icon: Target, label: "Skills To Master", color: "#10B981" },
+  courses: { icon: BookOpen, label: "Recommended Paid Courses", color: "#0EA5E9" },
+  tools: { icon: Bot, label: "AI Tools", color: "#8B5CF6" },
+  projects: { icon: FolderOpen, label: "Portfolio Projects", color: "#F97316" },
+  portfolio: { icon: FolderOpen, label: "Portfolio Projects", color: "#F97316" },
+  jobs: { icon: Briefcase, label: "Common Job Roles", color: "#EC4899" },
+  placement: { icon: Briefcase, label: "Placement Suggestions", color: "#EC4899" },
+};
 
 const FALLBACK_JOB_META = [
   { level: "Fresher", experience: "0 - 1 Year", multiplier: 0.58 },
@@ -324,32 +341,204 @@ function normalizeSkills(career) {
   return existing.sort((a, b) => b.importance - a.importance);
 }
 
+function uniqueItems(items, limit = 6) {
+  const seen = new Set();
+  return items
+    .map((item) => (typeof item === "string" ? item : item?.name || item?.title || item?.label || item?.text || ""))
+    .map((item) => item.trim())
+    .filter((item) => {
+      const key = item.toLowerCase();
+      if (!item || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, limit);
+}
+
+function isGenericRoadmapItem(item = "") {
+  const value = String(item).toLowerCase();
+  return /(item\d|course specialization|tool certification|mentor-led practical|check eligibility|compare degree|shortlist institutes|career specialization|project\d|role\d|tip\d|fundamentals$|industry awareness$)/.test(value);
+}
+
+function buildEducationItems(career) {
+  const title = career.title || "this career";
+  const category = `${career.category || ""} ${career.field || ""}`.toLowerCase();
+  if (/(finance|commerce|account|financial|bank|investment|tax|cfa|ca|cma|cs)/.test(category + title.toLowerCase())) {
+    return [
+      "10+2 Commerce or any stream with strong maths/business interest",
+      "B.Com, BBA Finance, BAF, BMS, Economics, or related degree preferred",
+      "Excel, accounting basics, finance statements, and business maths foundation",
+    ];
+  }
+  if (/(software|tech|data|ai|cloud|cyber|developer|analytics)/.test(category + title.toLowerCase())) {
+    return [
+      "10+2 any stream; PCM or computer science helps but is not mandatory",
+      "BCA, BSc IT, BE/BTech, diploma, or strong project portfolio route",
+      "Build fundamentals in logic, computers, English, and problem solving",
+    ];
+  }
+  if (/(design|creative|media|animation|vfx|ui|ux|graphic)/.test(category + title.toLowerCase())) {
+    return [
+      "10+2 any stream with visual communication and creative aptitude",
+      "Design, fine arts, animation, media, or UI/UX diploma/degree preferred",
+      "Portfolio quality matters more than marks for most entry roles",
+    ];
+  }
+  if (/(government|upsc|mpsc|ssc|railway|bank|defense|police)/.test(category + title.toLowerCase())) {
+    return [
+      "Check official exam eligibility, age limit, attempts, and reservation rules",
+      "Complete graduation if the target exam requires a degree",
+      "Keep documents, domicile/category certificates, and exam calendar ready",
+    ];
+  }
+  return [
+    `Understand eligibility and entry routes for ${title}`,
+    "Compare degree, diploma, certification, and apprenticeship options",
+    "Shortlist institutes, online programs, and local training providers",
+  ];
+}
+
+function buildCourseItems(career) {
+  const title = career.title || "Career";
+  const lower = title.toLowerCase();
+  const certs = uniqueItems(career.insights?.certifications || [], 4);
+  if (certs.length) return certs;
+  if (/(financial model|financial analyst|investment|finance)/.test(lower)) {
+    return [
+      "Financial Modeling & Valuation Analyst (FMVA) - CFI",
+      "Financial Modeling and Valuation - NSE Academy / Elearnmarkets",
+      "Excel for Financial Analysis - Udemy or Coursera paid course",
+      "Equity Research and Valuation - BSE Institute or similar provider",
+    ];
+  }
+  if (/(graphic|visual|design)/.test(lower)) {
+    return [
+      "Graphic Design Specialization - Coursera",
+      "Adobe Photoshop and Illustrator Masterclass - Udemy",
+      "Brand Identity Design - Domestika",
+      "UI/UX Design Professional Certificate - Google or Coursera",
+    ];
+  }
+  if (/(data|analytics|business analyst)/.test(lower)) {
+    return [
+      "Google Data Analytics Professional Certificate - Coursera",
+      "Excel to MySQL: Analytic Techniques - Duke University",
+      "Power BI Data Analyst Associate training - Microsoft Learn",
+      "SQL and Tableau for Analytics - Udemy paid course",
+    ];
+  }
+  return [
+    `${title} job-ready certification from a reputed provider`,
+    `${title} practical masterclass with assignments and mentor feedback`,
+    "Communication, resume, and interview preparation course",
+    "Paid specialization course with portfolio or capstone project",
+  ];
+}
+
+function buildProjectItems(career) {
+  const title = career.title || "Career";
+  const lower = title.toLowerCase();
+  if (/(financial model|financial analyst|investment|finance)/.test(lower)) {
+    return [
+      "Build a 3-statement financial model for an Indian listed company",
+      "Create DCF and comparable-company valuation case study",
+      "Publish an Excel dashboard with assumptions, charts, and summary note",
+      "Prepare a 5-slide investment recommendation presentation",
+    ];
+  }
+  if (/(graphic|visual|design)/.test(lower)) {
+    return [
+      "Create 8-10 logo, poster, social media, and branding samples",
+      "Build one complete brand identity case study",
+      "Redesign one real business brochure, packaging, or landing section",
+      "Publish portfolio on Behance, Dribbble, or a simple website",
+    ];
+  }
+  if (/(data|analytics|business analyst)/.test(lower)) {
+    return [
+      "Analyze a public dataset and publish insights dashboard",
+      "Create an Excel/Power BI business KPI dashboard",
+      "Write one case study with problem, data, analysis, and recommendation",
+      "Upload project files and summary to GitHub or portfolio",
+    ];
+  }
+  return [
+    `Build 3 practical ${title} projects with real-world scenarios`,
+    "Write short case studies explaining problem, process, and result",
+    "Collect screenshots, files, certificates, and project links in one portfolio",
+    "Prepare a 60-second project explanation for interviews",
+  ];
+}
+
+function fallbackSectionsForStage(career, meta, commonSkills) {
+  const tools = uniqueItems(normalizeTools(career, normalizeSkills(career)).map((tool) => tool.name), 6);
+  const jobs = uniqueItems(normalizeJobs(career).map((job) => job.title), 5);
+  const title = career.title || "this career";
+  const map = {
+    education: [{ type: "education", label: "Education Path", items: buildEducationItems(career) }],
+    skills: [{ type: "skills", label: "Skills To Master", items: uniqueItems(commonSkills, 8) }],
+    courses: [{ type: "courses", label: "Recommended Paid Courses", items: buildCourseItems(career) }],
+    tools: [{ type: "tools", label: "AI Tools", items: tools.length ? tools : ["ChatGPT", "Perplexity", "Notion AI", "Canva AI"] }],
+    projects: [{ type: "projects", label: "Portfolio Projects", items: buildProjectItems(career) }],
+    jobs: [
+      { type: "jobs", label: "Common Job Roles", items: jobs.length ? jobs : [`${title} Trainee`, `Junior ${title}`, `${title} Associate`] },
+      {
+        type: "placement",
+        label: "Placement Suggestions",
+        items: [
+          "Build a role-specific resume with project proof",
+          "Optimize LinkedIn, Naukri, Indeed, and Internshala profiles",
+          "Apply weekly and track responses in a simple spreadsheet",
+          "Practice interviews, assignments, and portfolio walkthroughs",
+        ],
+      },
+    ],
+  };
+  return map[meta.type] || [];
+}
+
 function normalizeRoadmap(career) {
+  const skillBuckets = normalizeSkills(career).map((s) => s.name);
   const raw = Array.isArray(career.roadmap) ? career.roadmap : [];
   if (raw.length) {
     return raw.map((stage, idx) => ({
-      stageNum: stage.stageNum || idx + 1,
-      title: stage.title || FALLBACK_STAGE_META[idx]?.title || `Stage ${idx + 1}`,
-      duration: stage.duration || FALLBACK_STAGE_META[idx]?.duration || "Flexible",
-      description: stage.description || "Build relevant practical capability for this stage.",
-      skills: stage.skills || [],
+      ...(() => {
+        const meta = FALLBACK_STAGE_META[idx] || {};
+        const start = Math.max(0, idx - 1) * 2;
+        const commonSkills = uniqueItems([...(stage.skills || []), ...skillBuckets.slice(start, start + 4)], 8);
+        const rawSections = stage.sections || [];
+        const hasUsefulSections = rawSections.some((section) => (section.items || []).some((item) => !isGenericRoadmapItem(item)));
+        return {
+          stageNum: stage.stageNum || idx + 1,
+          title: stage.title || meta.title || `Stage ${idx + 1}`,
+          duration: stage.duration || meta.duration || "Flexible",
+          description: stage.description || `Build practical capability for ${career.title}.`,
+          preview: stage.preview || stage.description || "",
+          skills: commonSkills,
+          sections: hasUsefulSections ? rawSections : fallbackSectionsForStage(career, meta, commonSkills),
+          resources: stage.resources || [],
+          milestone: stage.milestone,
+        };
+      })(),
     }));
   }
 
-  const skillBuckets = normalizeSkills(career).map((s) => s.name);
   return FALLBACK_STAGE_META.map((meta, idx) => {
-    const start = idx * 2;
+    const start = Math.max(0, idx - 1) * 2;
+    const commonSkills = uniqueItems(skillBuckets.slice(start, start + 4), 8);
     return {
       stageNum: idx + 1,
       title: meta.title,
       duration: meta.duration,
       description:
         idx === 0
-          ? `Learn the fundamentals required to start as a ${career.title}.`
-          : idx === 4
-            ? `Prepare for interviews, applications, and role readiness in ${career.title}.`
-            : `Advance your practical ability in ${career.title} with structured learning and outcomes.`,
-      skills: skillBuckets.slice(start, start + 4),
+          ? `Formal education and eligibility required for ${career.title}.`
+          : idx === 5
+            ? `Prepare for jobs, applications, and interviews in ${career.title}.`
+            : `Build practical proof and capability for ${career.title}.`,
+      preview: meta.title,
+      skills: commonSkills,
+      sections: fallbackSectionsForStage(career, meta, commonSkills),
     };
   });
 }
@@ -550,6 +739,7 @@ export default function CareerDetail() {
   const [career, setCareer] = useState(null);
   const [tab, setTab] = useState("overview");
   const [toolFilter, setToolFilter] = useState("All");
+  const [openRoadmapStage, setOpenRoadmapStage] = useState(0);
   const [loadingStep, setLoadingStep] = useState(0);
   const [loadingPreview, setLoadingPreview] = useState("Salary");
 
@@ -560,6 +750,15 @@ export default function CareerDetail() {
         const { data } = await api.get(`/careers/${slug}`);
         if (!mounted) return;
         setCareer(data);
+        localStorage.setItem("last_roadmap_career_slug", data.slug || slug);
+        localStorage.setItem("last_roadmap_career_title", data.title || "");
+        localStorage.setItem("active_institute_course", data.title || "");
+        window.dispatchEvent(new CustomEvent("latecomers:roadmap-career-change", {
+          detail: { slug: data.slug || slug, title: data.title || "" },
+        }));
+        window.dispatchEvent(new CustomEvent("latecomers:institute-course-change", {
+          detail: { course: data.title || "" },
+        }));
       } catch (error) {
         toast.error(error?.response?.data?.detail || "Failed to load career details.");
       }
@@ -1001,6 +1200,8 @@ export default function CareerDetail() {
             {roadmapStages.map((stage, idx) => {
               const StageIcon = Icons[STAGE_ICONS[idx % STAGE_ICONS.length]] || Target;
               const stageColor = STAGE_COLORS[idx % STAGE_COLORS.length];
+              const isOpen = openRoadmapStage === idx;
+              const sections = stage.sections || [];
 
               return (
                 <div key={stage.stageNum} className="flex gap-2.5 sm:gap-3">
@@ -1009,25 +1210,72 @@ export default function CareerDetail() {
                       <StageIcon size={16} />
                     </div>
                     <p className="text-[9px] font-bold mt-0.5" style={{ color: stageColor }}>Stage {stage.stageNum}</p>
-                    <p className="text-[8px] sm:text-[9px] text-muted2 text-center">{stage.duration}</p>
                     {idx < roadmapStages.length - 1 && (
                       <div className="flex flex-col items-center mt-1">
                         <div className="w-1.5 h-1.5 rounded-full" style={{ background: stageColor }} />
-                        <div className="w-0.5 flex-1 min-h-[20px] bg-brand-100" />
+                        <div className="w-0.5 flex-1 min-h-[26px]" style={{ background: `${stageColor}28` }} />
                       </div>
                     )}
                   </div>
 
-                  <div className="glass-card rounded-xl p-2.5 sm:p-3 flex-1 mb-2">
-                    <p className="font-heading font-bold text-xs sm:text-sm text-ink leading-tight">{stage.title}</p>
-                    <p className="text-[10px] sm:text-xs text-muted2 mt-0.5 leading-snug line-clamp-2">{stage.description}</p>
-                    {stage.skills?.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-1.5">
-                        {stage.skills.slice(0, 4).map((skill) => (
-                          <span key={skill} className="px-1.5 py-px rounded-full text-[9px] font-semibold" style={{ background: `${stageColor}16`, color: stageColor }}>
-                            {skill}
-                          </span>
-                        ))}
+                  <div className={`rounded-xl sm:rounded-2xl border flex-1 mb-2 overflow-hidden transition ${isOpen ? "glass-card border-brand/20 shadow-md" : "surface-gradient border-line"}`}>
+                    <button
+                      onClick={() => setOpenRoadmapStage(isOpen ? -1 : idx)}
+                      className="w-full p-2.5 sm:p-3 flex items-start gap-2 text-left"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <p className="font-heading font-bold text-xs sm:text-sm text-ink leading-tight">{stage.title}</p>
+                          <span className="px-1.5 py-px rounded-full text-[9px] font-bold" style={{ background: `${stageColor}15`, color: stageColor }}>{stage.duration}</span>
+                        </div>
+                        <p className={`text-[10px] sm:text-xs text-muted2 mt-0.5 leading-snug ${isOpen ? "" : "line-clamp-1"}`}>{stage.description}</p>
+                      </div>
+                      <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style={{ background: `${stageColor}12`, color: stageColor }}>
+                        {isOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                      </div>
+                    </button>
+
+                    {isOpen && (
+                      <div className="px-2.5 sm:px-3 pb-3 space-y-2.5">
+                        {sections.map((section, sIdx) => {
+                          const key = (section.type || section.label || "").toLowerCase().replace(/[^a-z]/g, "");
+                          const meta = SECTION_META[key] || SECTION_META.skills;
+                          const SectionIcon = meta.icon;
+                          const items = section.items || [];
+                          return (
+                            <div key={`${stage.stageNum}-${sIdx}`} className="bg-white border border-line rounded-xl p-2.5">
+                              <div className="flex items-center gap-2 mb-2">
+                                <div className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0" style={{ background: `${meta.color}15`, color: meta.color }}>
+                                  <SectionIcon size={13} />
+                                </div>
+                                <p className="text-xs font-bold text-ink">{section.label || meta.label}</p>
+                              </div>
+                              <div className={key === "skills" || key === "tools" ? "flex flex-wrap gap-1.5 pl-8" : "space-y-1.5 pl-8"}>
+                                {items.map((item, iIdx) => (
+                                  key === "skills" || key === "tools" ? (
+                                    <span key={iIdx} className="px-2 py-1 rounded-full text-[10px] font-semibold" style={{ background: `${meta.color}12`, color: meta.color }}>
+                                      {typeof item === "string" ? item : item.text || item.label}
+                                    </span>
+                                  ) : (
+                                    <div key={iIdx} className="flex items-start gap-2 text-[10px] sm:text-xs text-ink leading-relaxed">
+                                      <CheckCircle2 size={12} className="mt-0.5 shrink-0" style={{ color: meta.color }} />
+                                      <span>{typeof item === "string" ? item : item.text || item.label}</span>
+                                    </div>
+                                  )
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })}
+                        {!sections.length && stage.skills?.length > 0 && (
+                          <div className="flex flex-wrap gap-1">
+                            {stage.skills.slice(0, 8).map((skill) => (
+                              <span key={skill} className="px-1.5 py-px rounded-full text-[9px] font-semibold" style={{ background: `${stageColor}16`, color: stageColor }}>
+                                {skill}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

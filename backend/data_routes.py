@@ -20,6 +20,7 @@ router = APIRouter(tags=["data"])
 logger = logging.getLogger(__name__)
 GOOGLE_PLACES_TEXT_SEARCH_URL = "https://places.googleapis.com/v1/places:searchText"
 GOOGLE_PLACES_DETAILS_URL = "https://places.googleapis.com/v1/places/{place_id}"
+GOOGLE_GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
 GOOGLE_TEXT_SEARCH_FIELDS = ",".join(
     [
         "places.id",
@@ -41,7 +42,7 @@ GOOGLE_DETAILS_FIELDS = ",".join(
     ]
 )
 CAREER_DETAILS_TTL_DAYS = 90
-CAREER_DETAILS_PROMPT_VERSION = "career-details-specific-v4-2026-05-15"
+CAREER_DETAILS_PROMPT_VERSION = "career-details-roadmap-v5-2026-05-27"
 
 
 def db(request: Request):
@@ -221,6 +222,98 @@ def _find_fallback(item: Dict, fallback_lookup: Dict[str, Dict]) -> Dict:
     return {}
 
 
+def _dedupe_colleges(items: List[Dict]) -> List[Dict]:
+    seen = set()
+    deduped = []
+    for item in items:
+        name = str(item.get("name") or "").strip().lower()
+        address = str(item.get("address") or "").strip().lower()
+        key = item.get("placeId") or item.get("id") or f"{name}|{address}"
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        deduped.append(item)
+    return deduped
+
+
+async def _store_college_results(request: Request, results: List[Dict], location: str, course: str = "") -> None:
+    if not results:
+        return
+    ops = []
+    now = datetime.now(timezone.utc).isoformat()
+    for idx, item in enumerate(results):
+        name = item.get("name")
+        if not name:
+            continue
+        college_id = item.get("placeId") or item.get("id") or slugify(f"{name}-{location}") or f"college-{idx}"
+        record = {
+            **item,
+            "college_id": college_id,
+            "source": "google_places",
+            "searchedLocation": location,
+            "searchedCourse": course,
+            "updated_at": now,
+        }
+        ops.append(
+            {
+                "filter": {"college_id": college_id},
+                "update": {"$set": record, "$setOnInsert": {"created_at": now}},
+                "upsert": True,
+            }
+        )
+    if not ops:
+        return
+    from pymongo import UpdateOne
+
+    await db(request).colleges.bulk_write(
+        [UpdateOne(op["filter"], op["update"], upsert=op["upsert"]) for op in ops],
+        ordered=False,
+    )
+
+
+async def _supplement_college_results(request: Request, results: List[Dict], location: str, course: str, limit: int = 10) -> List[Dict]:
+    if len(results) >= limit:
+        return results[:limit]
+    additions = []
+    location_regex = re.escape(location.strip())
+    course_terms = [part for part in re.split(r"[\s,/&+-]+", course or "") if len(part) >= 3][:4]
+    flt: Dict = {
+        "$or": [
+            {"searchedLocation": {"$regex": location_regex, "$options": "i"}},
+            {"location": {"$regex": location_regex, "$options": "i"}},
+            {"city": {"$regex": location_regex, "$options": "i"}},
+            {"address": {"$regex": location_regex, "$options": "i"}},
+        ]
+    }
+    if course_terms:
+        flt["$and"] = [
+            {
+                "$or": [
+                    {"searchedCourse": {"$regex": term, "$options": "i"}}
+                    for term in course_terms
+                ]
+                + [
+                    {"courses": {"$regex": term, "$options": "i"}}
+                    for term in course_terms
+                ]
+                + [
+                    {"name": {"$regex": term, "$options": "i"}}
+                    for term in course_terms
+                ]
+            }
+        ]
+    stored = await db(request).colleges.find(flt, {"_id": 0}).limit(limit * 2).to_list(limit * 2)
+    additions.extend(stored)
+    if len(results) + len(additions) < limit:
+        cache_docs = await db(request).colleges_cache.find(
+            {"searchedLocation": {"$regex": location_regex, "$options": "i"}},
+            {"_id": 0},
+        ).sort("cachedAt", -1).limit(5).to_list(5)
+        for cache in cache_docs:
+            additions.extend(cache.get("results") or [])
+    return _dedupe_colleges([*results, *additions])[:limit]
+
+
 class CollegeSearchRequest(BaseModel):
     location: str
     course: Optional[str] = None
@@ -233,6 +326,11 @@ class CollegeRecommendRequest(BaseModel):
 
 class CareerGenerateRequest(BaseModel):
     title: str
+
+
+class ReverseGeocodeRequest(BaseModel):
+    lat: float
+    lng: float
 
 
 CATALOG_BY_SLUG = {career["slug"]: career for career in DYNAMIC_CAREERS}
@@ -480,7 +578,7 @@ Rules:
 - insights.topHiringCountries must always include "India" as the first country, followed by relevant global markets.
 - For CA, government, medical, law, creative, and technical paths, use the correct education/exam/portfolio/project roadmap.
 - Return JSON only. No markdown fences. No comments. No trailing commas. Keep every string on one line.
-- Keep output concise: 4 skills per skill group, 4 roadmap stages, 5 job levels with 1 role each, 4 AI tools, 4 certifications.
+- Keep output concise: 4 skills per skill group, exactly 6 roadmap stages, 5 job levels with 1 role each, 4 AI tools, 4 certifications.
 
 Schema:
 {{
@@ -501,7 +599,14 @@ Schema:
   }},
   "roadmap": {{
     "totalDuration": "career-specific duration",
-    "stages": [{{"stageNum": 1, "title": "specific stage", "duration": "duration", "description": "what to do", "skills": ["skill1", "skill2"], "milestone": "outcome", "estimatedTimeline": "timeline"}}]
+    "stages": [
+      {{"stageNum": 1, "title": "Education", "duration": "0-2 Months", "description": "education path for {title}", "preview": "education eligibility", "skills": ["skill1", "skill2"], "sections": [{{"type": "education", "label": "Education Path", "items": ["item1", "item2", "item3"]}}], "milestone": "education plan ready", "estimatedTimeline": "timeline"}},
+      {{"stageNum": 2, "title": "Skills To Master", "duration": "2-6 Months", "description": "core skills for {title}", "preview": "master core skills", "skills": ["skill1", "skill2", "skill3", "skill4"], "sections": [{{"type": "skills", "label": "Skills To Master", "items": ["item1", "item2", "item3", "item4"]}}], "milestone": "core skills practiced", "estimatedTimeline": "timeline"}},
+      {{"stageNum": 3, "title": "Courses", "duration": "6-9 Months", "description": "paid and credible courses", "preview": "complete paid courses", "skills": ["course selection"], "sections": [{{"type": "courses", "label": "Recommended Paid Courses", "items": ["Course - Provider - Cost", "Course - Provider - Cost", "Course - Provider - Cost"]}}], "milestone": "courses completed", "estimatedTimeline": "timeline"}},
+      {{"stageNum": 4, "title": "AI Tools", "duration": "9-10 Months", "description": "AI tools that improve productivity", "preview": "learn AI tools", "skills": ["tool usage"], "sections": [{{"type": "tools", "label": "AI Tools", "items": ["tool1", "tool2", "tool3", "tool4"]}}], "milestone": "AI workflow ready", "estimatedTimeline": "timeline"}},
+      {{"stageNum": 5, "title": "Portfolio & Projects", "duration": "10-11 Months", "description": "portfolio and projects to prove ability", "preview": "build portfolio projects", "skills": ["project building"], "sections": [{{"type": "projects", "label": "Portfolio Projects", "items": ["project1", "project2", "project3"]}}], "milestone": "portfolio published", "estimatedTimeline": "timeline"}},
+      {{"stageNum": 6, "title": "Placement & Jobs", "duration": "11-12 Months", "description": "job roles and hiring actions", "preview": "apply and interview", "skills": ["interview prep"], "sections": [{{"type": "jobs", "label": "Common Job Roles", "items": ["role1", "role2", "role3"]}}, {{"type": "placement", "label": "Placement Suggestions", "items": ["tip1", "tip2", "tip3"]}}], "milestone": "applications started", "estimatedTimeline": "timeline"}}
+    ]
   }},
   "jobs": {{
     "levels": [{{"level": "Entry", "yearsExp": "0-2 Years", "roles": [{{"title": "actual role", "description": "specific duties", "salaryMin": 0, "salaryMax": 0, "salaryNote": "Indicative CTC range", "companies": ["Indian company 1", "Indian company 2"]}}]}}]
@@ -564,34 +669,70 @@ def _fallback_ai_details(career_title: str) -> Dict:
             ],
         },
         "roadmap": {
-            "totalDuration": "12 - 24 months",
+            "totalDuration": "12 months",
             "stages": [
                 {
                     "stageNum": 1,
-                    "title": f"Understand {clean_title}",
+                    "title": "Education",
                     "duration": "0 - 2 Months",
-                    "description": f"Learn what {clean_title} professionals do, required qualifications, and common job paths.",
+                    "description": f"Understand the education and eligibility path for {clean_title}.",
+                    "preview": "education eligibility",
                     "skills": [f"{clean_title} Fundamentals", f"{clean_title} Career Research"],
-                    "resources": ["Introductory courses", "Career videos", "College/program websites"],
-                    "milestone": "Create a clear career checklist.",
+                    "sections": [{"type": "education", "label": "Education Path", "items": ["Check minimum eligibility", "Compare degree or diploma options", "Shortlist institutes or online programs"]}],
+                    "milestone": "Education plan ready.",
                 },
                 {
                     "stageNum": 2,
-                    "title": f"Build {clean_title} Core Skills",
+                    "title": "Skills To Master",
                     "duration": "2 - 8 Months",
-                    "description": "Study the core syllabus, practice regularly, and track progress with small projects or assignments.",
+                    "description": f"Build the core skills required for entry-level {clean_title} work.",
+                    "preview": "master core skills",
                     "skills": [f"{clean_title} Problem Solving", f"{clean_title} Communication", f"{clean_title} Practical Work"],
-                    "resources": ["Free online courses", "Textbooks", "Mentor guidance"],
-                    "milestone": "Complete 2-3 practical learning outputs.",
+                    "sections": [{"type": "skills", "label": "Skills To Master", "items": [f"{clean_title} fundamentals", "Communication", "Problem solving", "Industry awareness"]}],
+                    "milestone": "Core skills practiced.",
                 },
                 {
                     "stageNum": 3,
-                    "title": f"Prepare for {clean_title} Entry Roles",
-                    "duration": "8 - 18 Months",
-                    "description": "Build a resume, prepare for interviews, apply to internships, and speak with professionals.",
-                    "skills": ["Interview Prep", "Resume Writing", "Industry Awareness"],
-                    "resources": ["Internship portals", "LinkedIn", "Mock interviews"],
-                    "milestone": "Apply to relevant internships or beginner roles.",
+                    "title": "Courses",
+                    "duration": "6 - 9 Months",
+                    "description": "Complete structured paid courses and guided practice.",
+                    "preview": "complete paid courses",
+                    "skills": ["Course selection"],
+                    "sections": [{"type": "courses", "label": "Recommended Paid Courses", "items": ["Career specialization course", "Tool certification course", "Mentor-led practical course"]}],
+                    "milestone": "Courses completed.",
+                },
+                {
+                    "stageNum": 4,
+                    "title": "AI Tools",
+                    "duration": "9 - 10 Months",
+                    "description": f"Use AI tools to speed up research, practice, and {clean_title} workflows.",
+                    "preview": "learn AI tools",
+                    "skills": ["AI-assisted workflow"],
+                    "sections": [{"type": "tools", "label": "AI Tools", "items": ["ChatGPT", "Perplexity", "Canva", "Notion AI"]}],
+                    "milestone": "AI workflow ready.",
+                },
+                {
+                    "stageNum": 5,
+                    "title": "Portfolio & Projects",
+                    "duration": "10 - 11 Months",
+                    "description": f"Build proof of ability with portfolio projects for {clean_title}.",
+                    "preview": "build portfolio projects",
+                    "skills": ["Project building"],
+                    "sections": [{"type": "projects", "label": "Portfolio Projects", "items": ["Create 3 practical projects", "Write short case studies", "Publish portfolio links"]}],
+                    "milestone": "Portfolio published.",
+                },
+                {
+                    "stageNum": 6,
+                    "title": "Placement & Jobs",
+                    "duration": "11 - 12 Months",
+                    "description": "Prepare applications, interviews, and job search channels.",
+                    "preview": "apply and interview",
+                    "skills": ["Interview Prep", "Resume Writing"],
+                    "sections": [
+                        {"type": "jobs", "label": "Common Job Roles", "items": [f"{clean_title} Trainee", f"Junior {clean_title}", f"{clean_title} Associate"]},
+                        {"type": "placement", "label": "Placement Suggestions", "items": ["Optimize LinkedIn profile", "Apply on job portals", "Practice mock interviews"]},
+                    ],
+                    "milestone": "Applications started.",
                 },
             ],
         },
@@ -833,7 +974,7 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
     # Cache key includes both course and location for distinct results
     cache_key = _location_key(f"{course}_{location}" if course else location)
     now = datetime.now(timezone.utc)
-    cutoff = now - timedelta(hours=6)
+    cutoff = now - timedelta(days=30)
 
     cache = await db(request).colleges_cache.find_one(
         {"location": cache_key, "cachedAt": {"$gte": cutoff}},
@@ -851,10 +992,11 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
                 cache = legacy_cache
 
     if cache:
+        cached_results = await _supplement_college_results(request, cache.get("results", []), cache.get("searchedLocation") or location, course, 10)
         return {
             "location": cache.get("searchedLocation") or location,
             "course": course,
-            "results": cache.get("results", []),
+            "results": cached_results,
             "cached": True,
             "enriched": cache.get("enriched", True),
         }
@@ -870,12 +1012,16 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
             f"{course} colleges in {location}",
             f"{course} institutes in {location}",
             f"{course} coaching center {location}",
+            f"best {course} training institute near {location}",
+            f"{course} classes academy {location}",
         ]
     else:
         queries = [
             f"{location} engineering medical colleges",
             f"{location} commerce arts law colleges",
             f"{location} coaching institute skill development center",
+            f"{location} job oriented courses institutes",
+            f"{location} professional training academy",
         ]
 
     try:
@@ -893,7 +1039,7 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
                 places_by_id.values(),
                 key=lambda item: (item.get("rating") or 0, item.get("userRatingCount") or 0),
                 reverse=True,
-            )[:10]
+            )[:15]
 
             if not top_places:
                 await db(request).colleges_cache.update_one(
@@ -965,7 +1111,7 @@ googleMapsLink (construct as https://maps.google.com/?q={{name}}+{{address}})
         fallback_lookup = _fallback_by_name(raw_results)
         normalized = [
             _normalize_college_item(item, idx, _find_fallback(item, fallback_lookup))
-            for idx, item in enumerate(parsed[:10])
+            for idx, item in enumerate(parsed[:15])
             if isinstance(item, dict)
         ]
         if normalized:
@@ -975,6 +1121,9 @@ googleMapsLink (construct as https://maps.google.com/?q={{name}}+{{address}})
     except Exception as e:
         enriched = False
         _log_college_error(location, "bedrock_enrichment", e)
+
+    results = await _supplement_college_results(request, _dedupe_colleges(results), location, course, 10)
+    await _store_college_results(request, results, location, course)
 
     await db(request).colleges_cache.update_one(
         {"location": cache_key},
@@ -998,6 +1147,42 @@ googleMapsLink (construct as https://maps.google.com/?q={{name}}+{{address}})
         "enriched": enriched,
         "message": None if enriched else "Showing raw Google Places results because enrichment is temporarily unavailable.",
     }
+
+
+@router.post("/colleges/reverse-geocode")
+async def reverse_geocode_location(payload: ReverseGeocodeRequest, request: Request):
+    maps_key = os.environ.get("GOOGLE_MAPS_API_KEY", "").strip()
+    if not maps_key:
+        raise HTTPException(503, "Location detection is temporarily unavailable.")
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.get(
+                GOOGLE_GEOCODE_URL,
+                params={"latlng": f"{payload.lat},{payload.lng}", "key": maps_key, "language": "en"},
+            )
+        if response.status_code >= 400:
+            raise HTTPException(502, "Failed to detect your city.")
+        data = response.json()
+        results = data.get("results") or []
+        if not results:
+            return {"location": "", "message": "We could not detect your city. Please enter it manually."}
+        components = results[0].get("address_components") or []
+        city = ""
+        state = ""
+        for component in components:
+            types = component.get("types") or []
+            if not city and any(t in types for t in ("locality", "postal_town", "administrative_area_level_3", "administrative_area_level_2")):
+                city = component.get("long_name") or ""
+            if not state and "administrative_area_level_1" in types:
+                state = component.get("long_name") or ""
+        location = city or results[0].get("formatted_address", "").split(",")[0].strip()
+        label = ", ".join([part for part in [location, state] if part])
+        return {"location": label or location, "formattedAddress": results[0].get("formatted_address")}
+    except HTTPException:
+        raise
+    except Exception as exc:
+        _log_college_error(f"{payload.lat},{payload.lng}", "reverse_geocode", exc)
+        raise HTTPException(503, "Location detection failed. Please enter your city manually.")
 
 
 @router.post("/colleges/recommend")

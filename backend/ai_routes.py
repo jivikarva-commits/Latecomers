@@ -3,7 +3,7 @@ import json
 import logging
 import uuid
 from datetime import datetime, timezone
-from typing import List, Optional, Dict, Union
+from typing import Any, List, Optional, Dict, Union
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
@@ -891,6 +891,44 @@ def _repair_truncated_json(text: str):
     return None
 
 
+def _career_cached_roadmap(career: Dict):
+    details = career.get("aiGeneratedDetails") or {}
+    roadmap = details.get("roadmap") if isinstance(details, dict) else None
+    if isinstance(roadmap, dict) and len(roadmap.get("stages") or []) >= 6 and not _roadmap_has_generic_items(roadmap):
+        return roadmap
+    if len(career.get("roadmap") or []) >= 6:
+        fallback = {"stages": career["roadmap"]}
+        if not _roadmap_has_generic_items(fallback):
+            return fallback
+    return None
+
+
+def _roadmap_has_generic_items(roadmap: Dict) -> bool:
+    generic_markers = (
+        "item1",
+        "item2",
+        "item3",
+        "project1",
+        "project2",
+        "role1",
+        "role2",
+        "tip1",
+        "course specialization",
+        "tool certification course",
+        "mentor-led practical course",
+        "check minimum eligibility",
+        "compare degree or diploma options",
+        "shortlist institutes or online programs",
+    )
+    for stage in roadmap.get("stages") or []:
+      for section in stage.get("sections") or []:
+        for item in section.get("items") or []:
+          text = str(item).lower()
+          if any(marker in text for marker in generic_markers):
+            return True
+    return False
+
+
 class RoadmapGenRequest(BaseModel):
     career_slug: str
 
@@ -905,23 +943,35 @@ async def generate_roadmap(payload: RoadmapGenRequest, request: Request, user=De
     education = profile.get("education", "Not specified")
     location = profile.get("location", "India")
 
+    cached = _career_cached_roadmap(career)
+    if cached:
+        await db(request).users.update_one(
+            {"user_id": user["user_id"]},
+            {
+                "$set": {
+                    f"personalized_roadmaps.{payload.career_slug}": cached,
+                    "lastRoadmapCareerSlug": payload.career_slug,
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                }
+            },
+        )
+        return cached
+
     prompt = f"""Generate a career roadmap for **{career['title']}** in India. Student: {education}, {location}.
 
 Rules: Use real course/platform names, real costs in INR, real company names. Be specific and actionable.
 
 Return ONLY valid JSON (no markdown, no commentary):
-{{"stages":[
-  {{"stageNum":1,"title":"Foundation & Education","duration":"0-3 Months","description":"short summary","preview":"6 word preview","skills":["s1","s2","s3"],"sections":[
-    {{"type":"education","label":"Education Path","items":["item1","item2","item3"]}},
-    {{"type":"courses","label":"Courses & Certifications","items":["Course on Platform - Cost - Duration","item2","item3"]}},
-    {{"type":"skills","label":"Skills to Master","items":["item1","item2","item3"]}}
-  ]}},
-  {{"stageNum":2,"title":"Skill Building & Practice","duration":"3-6 Months",...same structure...}},
-  {{"stageNum":3,"title":"Portfolio & Certification","duration":"6-9 Months",...}},
-  {{"stageNum":4,"title":"Job Readiness & Applications","duration":"9-12 Months",...}}
+{{"totalDuration":"12 Months","stages":[
+  {{"stageNum":1,"title":"Education","duration":"0-2 Months","description":"formal education path for {career['title']}","preview":"education eligibility","skills":["s1","s2","s3"],"sections":[{{"type":"education","label":"Education Path","items":["item1","item2","item3"]}}]}},
+  {{"stageNum":2,"title":"Skills To Master","duration":"2-6 Months","description":"core skills needed for {career['title']}","preview":"master core skills","skills":["s1","s2","s3","s4"],"sections":[{{"type":"skills","label":"Skills To Master","items":["item1","item2","item3","item4"]}}]}},
+  {{"stageNum":3,"title":"Courses","duration":"6-9 Months","description":"recommended paid courses only","preview":"complete courses","skills":["course selection"],"sections":[{{"type":"courses","label":"Recommended Paid Courses","items":["Course - Provider - Cost","Course - Provider - Cost","Course - Provider - Cost"]}}]}},
+  {{"stageNum":4,"title":"AI Tools","duration":"9-10 Months","description":"AI tools that help this career","preview":"learn AI tools","skills":["tool usage"],"sections":[{{"type":"tools","label":"AI Tools","items":["tool1","tool2","tool3","tool4"]}}]}},
+  {{"stageNum":5,"title":"Portfolio & Projects","duration":"10-11 Months","description":"projects and portfolio proof to build","preview":"build portfolio projects","skills":["project building"],"sections":[{{"type":"projects","label":"Portfolio Projects","items":["project1","project2","project3"]}}]}},
+  {{"stageNum":6,"title":"Placement & Jobs","duration":"11-12 Months","description":"job roles and hiring actions","preview":"apply and interview","skills":["interview prep"],"sections":[{{"type":"jobs","label":"Common Job Roles","items":["role1","role2","role3"]}},{{"type":"placement","label":"Placement Suggestions","items":["tip1","tip2","tip3"]}}]}}
 ]}}
 
-4 stages, each with exactly 3 sections, each section with exactly 3 items. Keep items SHORT (under 80 chars each). India-specific."""
+Exactly 6 stages with these exact titles: Education, Skills To Master, Courses, AI Tools, Portfolio & Projects, Placement & Jobs. Keep items SHORT (under 80 chars each). India-specific."""
 
     text = None
     try:
@@ -951,6 +1001,17 @@ Return ONLY valid JSON (no markdown, no commentary):
         {
             "$set": {
                 f"personalized_roadmaps.{payload.career_slug}": data,
+                "lastRoadmapCareerSlug": payload.career_slug,
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+            }
+        },
+    )
+    await db(request).careers.update_one(
+        {"slug": payload.career_slug},
+        {
+            "$set": {
+                "aiGeneratedDetails.roadmap": data,
+                "roadmap": data.get("stages", []),
                 "updated_at": datetime.now(timezone.utc).isoformat(),
             }
         },
@@ -963,14 +1024,93 @@ async def get_user_roadmap(career_slug: str, request: Request, user=Depends(curr
     rmap = (user.get("personalized_roadmaps") or {}).get(career_slug)
     if rmap:
         return rmap
-    # Fallback to career-default roadmap
     career = await db(request).careers.find_one({"slug": career_slug}, {"_id": 0})
-    if career and career.get("roadmap"):
-        return {"stages": career["roadmap"]}
+    if career:
+        cached = _career_cached_roadmap(career)
+        if cached:
+            return cached
     raise HTTPException(404, "No roadmap available; generate one first.")
 
 
 # ---------- AI Chat ----------
+def _small_list(values: Any, limit: int = 6):
+    if not isinstance(values, list):
+        return values
+    return values[:limit]
+
+
+def _compact_match(match: Dict[str, Any]) -> Dict[str, Any]:
+    if not isinstance(match, dict):
+        return {}
+    return {
+        "title": match.get("title") or match.get("careerTitle"),
+        "careerSlug": match.get("careerSlug") or match.get("slug"),
+        "matchPercent": match.get("matchPercent"),
+        "tags": _small_list(match.get("tags") or [], 5),
+        "reasons": _small_list(match.get("reasons") or match.get("whyMatch") or [], 3),
+        "salaryRangeLPA": {
+            "min": match.get("avgSalaryMin"),
+            "max": match.get("avgSalaryMax"),
+        } if match.get("avgSalaryMin") or match.get("avgSalaryMax") else None,
+        "demand": match.get("demand"),
+    }
+
+
+def _compact_student_context(user: Dict[str, Any], latest_test: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    profile = user.get("profile") or {}
+    career_analysis = user.get("careerAnalysis") or {}
+    top_matches = career_analysis.get("topCareers") or user.get("top_career_matches") or []
+    additional_matches = career_analysis.get("additionalCareers") or []
+
+    context = {
+        "name": user.get("name") or user.get("full_name"),
+        "profile": {
+            "educationLevel": profile.get("educationLevel") or profile.get("education"),
+            "stream": profile.get("stream"),
+            "currentSituation": profile.get("currentSituation"),
+            "subjects": _small_list(profile.get("subjects") or [], 8),
+            "activities": _small_list(profile.get("activities") or [], 8),
+            "workType": profile.get("workType"),
+            "personality": profile.get("personality"),
+            "careerGoal": profile.get("careerGoal"),
+            "incomeTimeline": profile.get("incomeTimeline"),
+            "fieldInterest": profile.get("fieldInterest"),
+            "govtExamInterest": profile.get("govtExamInterest"),
+            "budget": profile.get("budget"),
+            "learningPreference": profile.get("learningPreference") or profile.get("learningStyle"),
+            "biggestChallenge": profile.get("biggestChallenge"),
+            "careerIdentity": profile.get("careerIdentity"),
+            "location": profile.get("location"),
+            "summary": profile.get("summary") or profile.get("onboardingSummary"),
+            "careerMatchScore": profile.get("careerMatchScore"),
+        },
+        "quizAnalysis": {
+            "overallScore": career_analysis.get("overallScore"),
+            "scores": career_analysis.get("scores"),
+            "summary": career_analysis.get("summary"),
+            "topCareers": [_compact_match(m) for m in top_matches[:5]],
+            "additionalCareers": [_compact_match(m) for m in additional_matches[:5]],
+        },
+        "latestCareerTest": {
+            "overall": (latest_test or {}).get("overall"),
+            "scores": (latest_test or {}).get("scores"),
+            "summary": (latest_test or {}).get("summary"),
+            "topMatches": [_compact_match(m) for m in ((latest_test or {}).get("topMatches") or [])[:5]],
+            "completed_at": (latest_test or {}).get("completed_at"),
+        } if latest_test else None,
+    }
+
+    def _strip_empty(value):
+        if isinstance(value, dict):
+            cleaned = {k: _strip_empty(v) for k, v in value.items()}
+            return {k: v for k, v in cleaned.items() if v not in (None, "", [], {}, {"min": None, "max": None})}
+        if isinstance(value, list):
+            return [v for v in (_strip_empty(x) for x in value) if v not in (None, "", [], {})]
+        return value
+
+    return _strip_empty(context)
+
+
 class ChatRequest(BaseModel):
     message: str
     chat_id: Optional[str] = None
@@ -981,15 +1121,25 @@ class ChatRequest(BaseModel):
 async def chat(payload: ChatRequest, request: Request, user=Depends(current_user)):
     chat_id = payload.chat_id or str(uuid.uuid4())
     chat_doc = await db(request).chats.find_one({"chat_id": chat_id, "user_id": user["user_id"]}, {"_id": 0})
+    latest_test = await db(request).test_results.find_one(
+        {"user_id": user["user_id"]}, {"_id": 0}, sort=[("completed_at", -1)]
+    )
+    student_context = _compact_student_context(user, latest_test)
 
     history = chat_doc["messages"] if chat_doc else []
 
     system = (
         "You are Late Comers AI, a friendly, India-specific career counselor for students. "
         "Help with career guidance, skill advice, college selection, scholarship tips, interview prep. "
+        "Always personalize answers using the student's quiz/profile context below. "
+        "When the user asks about any career, guide them according to their education level, stream, skills, interests, age/current situation if present, budget, income timeline, learning preference, location, and career requirements. "
+        "Compare a requested career with their top matches when useful, and explain fit, gaps, next steps, and realistic India-specific path. "
+        "If a needed detail is missing, say what is missing and ask at most one clarifying question. Do not invent unknown facts. "
         "Be concise, encouraging, and practical. "
         "Use clean plain text only: no markdown headings, no # symbols, no **bold** markers, no code fences. "
-        "Use short section titles on their own line and simple hyphen bullets where useful."
+        "Use short section titles on their own line and simple hyphen bullets where useful.\n\n"
+        "Student quiz/profile context:\n"
+        f"{json.dumps(student_context, ensure_ascii=False)[:7000]}"
     )
     if payload.career_slug:
         career = await db(request).careers.find_one({"slug": payload.career_slug}, {"_id": 0})

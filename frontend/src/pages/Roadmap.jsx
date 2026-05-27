@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
-  ArrowRight, BookOpen, Briefcase, CheckCircle2, ChevronDown, ChevronUp,
+  ArrowRight, BookOpen, Briefcase, Bot, CheckCircle2, ChevronDown, ChevronUp,
   Code2, GraduationCap, Layers3, Rocket, Search, Sparkles, Target,
   Wrench, FolderOpen, Award, MapPin,
 } from "lucide-react";
@@ -9,17 +9,19 @@ import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import BackToTopButton from "../components/BackToTopButton";
 
-const STAGE_COLORS = ["#5B4FE9", "#22C55E", "#3B82F6", "#F97316"];
-const STAGE_ICONS = [Rocket, Code2, Layers3, Target];
+const STAGE_COLORS = ["#7C3AED", "#10B981", "#0EA5E9", "#8B5CF6", "#F97316", "#EC4899"];
+const STAGE_ICONS = [GraduationCap, Target, BookOpen, Bot, FolderOpen, Briefcase];
 const SECTION_META = {
-  education: { icon: GraduationCap, label: "Education Path", color: "#5B4FE9" },
-  courses: { icon: BookOpen, label: "Courses & Certifications", color: "#3B82F6" },
-  skills: { icon: Wrench, label: "Skills to Master", color: "#22C55E" },
+  education: { icon: GraduationCap, label: "Education Path", color: "#7C3AED" },
+  courses: { icon: BookOpen, label: "Recommended Paid Courses", color: "#0EA5E9" },
+  skills: { icon: Target, label: "Skills To Master", color: "#10B981" },
   projects: { icon: FolderOpen, label: "Projects & Portfolio", color: "#F97316" },
+  portfolio: { icon: FolderOpen, label: "Projects & Portfolio", color: "#F97316" },
   certifications: { icon: Award, label: "Certifications", color: "#EC4899" },
-  tools: { icon: Code2, label: "Tools & Technologies", color: "#8B5CF6" },
+  tools: { icon: Bot, label: "AI Tools", color: "#8B5CF6" },
   resources: { icon: BookOpen, label: "Resources", color: "#14B8A6" },
-  jobs: { icon: Briefcase, label: "Job Targets", color: "#EF4444" },
+  jobs: { icon: Briefcase, label: "Common Job Roles", color: "#EC4899" },
+  placement: { icon: Briefcase, label: "Placement Suggestions", color: "#EC4899" },
   location: { icon: MapPin, label: "Where to Apply", color: "#6366F1" },
 };
 
@@ -40,7 +42,9 @@ function normalizeStages(roadmapData) {
 
 export default function Roadmap() {
   const { user } = useAuth();
-  const defaultSlug = user?.top_career_matches?.[0]?.careerSlug || "";
+  const storedSlug = localStorage.getItem("last_roadmap_career_slug") || "";
+  const storedTitle = localStorage.getItem("last_roadmap_career_title") || "";
+  const defaultSlug = user?.lastRoadmapCareerSlug || storedSlug || user?.top_career_matches?.[0]?.careerSlug || "";
 
   const [slug, setSlug] = useState(defaultSlug);
   const [careers, setCareers] = useState([]);
@@ -50,7 +54,7 @@ export default function Roadmap() {
   const [openStage, setOpenStage] = useState(0);
 
   // Search autocomplete state
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(storedSlug === defaultSlug ? storedTitle : "");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchRef = useRef(null);
 
@@ -63,6 +67,7 @@ export default function Roadmap() {
         if (defaultSlug) {
           const match = data.find((c) => c.slug === defaultSlug);
           if (match) setSearchText(match.title);
+          else if (storedSlug === defaultSlug && storedTitle) setSearchText(storedTitle);
         }
       })
       .catch((error) => toast.error(error?.response?.data?.detail || "Failed to load careers."));
@@ -70,13 +75,33 @@ export default function Roadmap() {
   }, []);
 
   useEffect(() => {
-    const topSlug = user?.top_career_matches?.[0]?.careerSlug;
-    if (topSlug) {
-      setSlug(topSlug);
-      const match = careers.find((c) => c.slug === topSlug);
+    const nextSlug = user?.lastRoadmapCareerSlug || localStorage.getItem("last_roadmap_career_slug") || user?.top_career_matches?.[0]?.careerSlug;
+    if (nextSlug && nextSlug !== slug) {
+      setSlug(nextSlug);
+      const match = careers.find((c) => c.slug === nextSlug);
       if (match) setSearchText(match.title);
+      else setSearchText(localStorage.getItem("last_roadmap_career_title") || "");
     }
-  }, [user?.top_career_matches, careers]);
+  }, [user?.lastRoadmapCareerSlug, user?.top_career_matches, careers, slug]);
+
+  useEffect(() => {
+    const handler = (event) => {
+      const nextSlug = event.detail?.slug || localStorage.getItem("last_roadmap_career_slug");
+      const nextTitle = event.detail?.title || localStorage.getItem("last_roadmap_career_title") || "";
+      if (!nextSlug) return;
+      setSlug(nextSlug);
+      setRoadmap(null);
+      setOpenStage(0);
+      const match = careers.find((c) => c.slug === nextSlug);
+      setSearchText(match?.title || nextTitle);
+    };
+    window.addEventListener("latecomers:roadmap-career-change", handler);
+    window.addEventListener("storage", handler);
+    return () => {
+      window.removeEventListener("latecomers:roadmap-career-change", handler);
+      window.removeEventListener("storage", handler);
+    };
+  }, [careers]);
 
   useEffect(() => {
     if (!slug) { setLoadingPage(false); return; }
@@ -107,21 +132,24 @@ export default function Roadmap() {
   }, [searchText, careers]);
 
   const stages = useMemo(() => normalizeStages(roadmap), [roadmap]);
+  const selectedCareer = careers.find((c) => c.slug === slug);
 
   const summary = useMemo(() => {
     const totalSkills = new Set(stages.flatMap((s) => s.skills || [])).size;
-    const sectionCount = stages.reduce((a, s) => a + (s.sections?.length || 0), 0);
+    const actionCount = stages.reduce((a, s) => a + (s.sections || []).reduce((sum, section) => sum + (section.items?.length || 0), 0), 0);
     return {
-      duration: stages.length ? `${stages.length * 3} Months` : "—",
+      duration: roadmap?.totalDuration || (stages.length ? "12 Months" : "-"),
       stages: stages.length,
       skills: Math.max(totalSkills, stages.length ? 10 : 0),
-      projects: Math.max(sectionCount, stages.length ? 4 : 0),
+      projects: Math.max(actionCount, stages.length ? 12 : 0),
     };
-  }, [stages]);
+  }, [roadmap?.totalDuration, stages]);
 
   const selectCareer = (career) => {
     setSlug(career.slug);
     setSearchText(career.title);
+    localStorage.setItem("last_roadmap_career_slug", career.slug);
+    localStorage.setItem("last_roadmap_career_title", career.title);
     setShowSuggestions(false);
   };
 
@@ -131,6 +159,10 @@ export default function Roadmap() {
     try {
       const { data } = await api.post("/ai/roadmap/generate", { career_slug: slug });
       setRoadmap(data);
+      if (selectedCareer) {
+        localStorage.setItem("last_roadmap_career_slug", selectedCareer.slug);
+        localStorage.setItem("last_roadmap_career_title", selectedCareer.title);
+      }
       toast.success("Roadmap generated with specific action items!");
       setOpenStage(0);
     } catch (error) {
@@ -141,8 +173,6 @@ export default function Roadmap() {
   };
 
   const topMatch = user?.top_career_matches?.[0];
-  const selectedCareer = careers.find((c) => c.slug === slug);
-
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-[1080px] mx-auto overflow-x-hidden w-full min-w-0" data-testid="roadmap-page">
       <h1 className="font-heading font-extrabold text-xl sm:text-3xl text-ink">Your Career Roadmap</h1>
