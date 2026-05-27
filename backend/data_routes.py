@@ -362,13 +362,32 @@ LEGACY_CAREER_SLUG_MAP = {
     "digital-marketing-manager": "digital-marketing",
     "social-media-manager": "digital-marketing",
     "marketing-manager": "digital-marketing",
+    "business-development": "digital-marketing",
+    "business-development-executive": "digital-marketing",
+    "business-development-manager": "digital-marketing",
+    "sales-executive": "digital-marketing",
+    "sales-manager": "digital-marketing",
     "financial-analyst": "financial-modeling",
+    "finance-analyst": "financial-modeling",
+    "finance-manager": "financial-modeling",
+    "mba-manager": "mba-entrance",
+    "business-manager": "mba-entrance",
+    "management-trainee": "mba-entrance",
     "medical-coder": "medical-coding",
     "medical-biller": "medical-billing",
     "radiology-technician": "radiology",
     "nutritionist-and-dietitian": "nutritionist",
     "hotel-manager": "hotel-management",
     "aviation-manager": "aviation-management",
+    "animator-3d": "3d-animation",
+    "3d-animator": "3d-animation",
+    "animator-2d": "2d-animation",
+    "2d-animator": "2d-animation",
+    "game-designer": "game-design",
+    "game-developer": "game-development",
+    "web-designer": "web-design",
+    "wordpress-developer": "wordpress-development",
+    "shopify-developer": "shopify-development",
 }
 
 
@@ -923,6 +942,8 @@ async def _get_career_detail_by_slug(slug: str, request: Request):
     if not item:
         raise HTTPException(404, "Career is not available yet.")
     if _career_details_fresh(item):
+        return _merge_ai_details(item)
+    if isinstance(item.get("aiGeneratedDetails"), dict):
         return _merge_ai_details(item)
     return await _generate_and_cache_career_details(request, item)
 
