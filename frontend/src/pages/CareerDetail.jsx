@@ -752,7 +752,6 @@ export default function CareerDetail() {
   const [openRoadmapStage, setOpenRoadmapStage] = useState(0);
   const [loadingStep, setLoadingStep] = useState(0);
   const [loadingPreview, setLoadingPreview] = useState("Salary");
-  const [roadmapSyncing, setRoadmapSyncing] = useState(false);
   const [roadmapSyncedSlug, setRoadmapSyncedSlug] = useState("");
 
   useEffect(() => {
@@ -813,23 +812,13 @@ export default function CareerDetail() {
 
     const syncRoadmap = async () => {
       setRoadmapSyncedSlug(career.slug);
-      setRoadmapSyncing(true);
       try {
-        try {
-          const { data } = await api.get(`/ai/roadmap/${career.slug}`);
-          if (hasSpecificRoadmap(data?.stages)) {
-            applyRoadmap(data);
-            return;
-          }
-        } catch (_) {
-          // No personalized roadmap yet; generate one below.
+        const { data } = await api.get(`/ai/roadmap/${career.slug}`);
+        if (hasSpecificRoadmap(data?.stages)) {
+          applyRoadmap(data);
         }
-        const { data } = await api.post("/ai/roadmap/generate", { career_slug: career.slug });
-        applyRoadmap(data);
-      } catch (error) {
-        toast.error(error?.response?.data?.detail || "Personalized roadmap generation failed.");
-      } finally {
-        if (!cancelled) setRoadmapSyncing(false);
+      } catch (_) {
+        // No cached roadmap yet. Avoid auto-generating here to save API cost.
       }
     };
 
@@ -1258,16 +1247,10 @@ export default function CareerDetail() {
                   <div className="mt-2 px-2 py-1 rounded-full bg-brand-50 border border-brand-100 inline-flex items-center gap-1.5">
                     <Star size={10} className="text-brand" />
                     <p className="text-[10px] font-semibold text-brand">
-                      {career.personalizedRoadmapReady ? "Tailored to your quiz profile" : "Tailored to your profile"}
+                      {career.personalizedRoadmapReady ? "AI roadmap ready" : "Career roadmap"}
                     </p>
                   </div>
                 </div>
-                {roadmapSyncing && (
-                  <div className="inline-flex items-center gap-2 text-[10px] font-semibold text-brand bg-brand-50 border border-brand-100 rounded-full px-2 py-1 shrink-0">
-                    <span className="w-3 h-3 border-2 border-brand-200 border-t-brand rounded-full animate-spin" />
-                    Personalizing
-                  </div>
-                )}
               </div>
             </div>
 

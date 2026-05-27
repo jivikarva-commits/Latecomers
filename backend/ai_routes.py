@@ -972,40 +972,38 @@ async def generate_roadmap(payload: RoadmapGenRequest, request: Request, user=De
     if not career:
         raise HTTPException(404, "Career not found")
 
-    profile = user.get("profile", {})
-    latest_test = await db(request).test_results.find_one(
-        {"user_id": user["user_id"]}, {"_id": 0}, sort=[("completed_at", -1)]
-    )
-    student_context = _compact_student_context(user, latest_test)
-    education = profile.get("educationLevel") or profile.get("education") or "Not specified"
-    stream = profile.get("stream") or "Not specified"
-    location = profile.get("location") or "India"
+    cached = _career_cached_roadmap(career)
+    if cached:
+        await db(request).users.update_one(
+            {"user_id": user["user_id"]},
+            {
+                "$set": {
+                    f"personalized_roadmaps.{payload.career_slug}": cached,
+                    f"personalized_roadmaps.{resolved_slug}": cached,
+                    "lastRoadmapCareerSlug": resolved_slug,
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                }
+            },
+        )
+        return cached
 
-    prompt = f"""Generate a personalized career roadmap for **{career['title']}** in India.
-
-Student context JSON:
-{json.dumps(student_context, ensure_ascii=False)}
-
-Known student summary:
-- Education/background: {education}
-- Stream: {stream}
-- Location: {location}
+    prompt = f"""Generate one reusable career roadmap for **{career['title']}** in India.
 
 Rules:
-- Personalize every stage using the student's education, stream, current situation, interests, budget, income timeline, learning preference, challenges, and top career matches when present.
 - Do not give generic items like item1, project1, role1, check eligibility, compare options, or shortlist programs.
-- If the student is from a different stream, include bridge steps clearly.
 - Use real course/platform names, realistic INR costs, real tools, real portfolio/project ideas, real job roles, and India-specific application channels.
 - Keep each item specific and actionable.
+- This roadmap must be reusable for all students interested in {career['title']}; do not personalize it to one user.
+- Mention common entry routes for different backgrounds where useful.
 
 Return ONLY valid JSON (no markdown, no commentary):
 {{"totalDuration":"12 Months","stages":[
-  {{"stageNum":1,"title":"Education","duration":"0-2 Months","description":"personalized education/bridge path for {career['title']}","preview":"education bridge","skills":["career foundation"],"sections":[{{"type":"education","label":"Education Path","items":["specific education step 1","specific education step 2","specific education step 3"]}}]}},
-  {{"stageNum":2,"title":"Skills To Master","duration":"2-6 Months","description":"skills the student must build for {career['title']}","preview":"master core skills","skills":["specific skill 1","specific skill 2","specific skill 3","specific skill 4"],"sections":[{{"type":"skills","label":"Skills To Master","items":["specific skill item 1","specific skill item 2","specific skill item 3","specific skill item 4"]}}]}},
-  {{"stageNum":3,"title":"Courses","duration":"6-9 Months","description":"courses matched to budget and learning preference","preview":"complete courses","skills":["course selection"],"sections":[{{"type":"courses","label":"Recommended Paid Courses","items":["Specific course - Provider - Cost","Specific course - Provider - Cost","Specific course - Provider - Cost"]}}]}},
+  {{"stageNum":1,"title":"Education","duration":"0-2 Months","description":"education and eligibility path for {career['title']}","preview":"education route","skills":["career foundation"],"sections":[{{"type":"education","label":"Education Path","items":["specific education route 1","specific education route 2","specific education route 3"]}}]}},
+  {{"stageNum":2,"title":"Skills To Master","duration":"2-6 Months","description":"core skills needed for {career['title']}","preview":"master core skills","skills":["specific skill 1","specific skill 2","specific skill 3","specific skill 4"],"sections":[{{"type":"skills","label":"Skills To Master","items":["specific skill 1","specific skill 2","specific skill 3","specific skill 4"]}}]}},
+  {{"stageNum":3,"title":"Courses","duration":"6-9 Months","description":"recommended paid courses and certifications","preview":"complete courses","skills":["course selection"],"sections":[{{"type":"courses","label":"Recommended Paid Courses","items":["Specific course - Provider - Cost","Specific course - Provider - Cost","Specific course - Provider - Cost"]}}]}},
   {{"stageNum":4,"title":"AI Tools","duration":"9-10 Months","description":"AI tools for this career workflow","preview":"learn AI tools","skills":["AI workflow"],"sections":[{{"type":"tools","label":"AI Tools","items":["tool with use case 1","tool with use case 2","tool with use case 3","tool with use case 4"]}}]}},
-  {{"stageNum":5,"title":"Portfolio & Projects","duration":"10-11 Months","description":"portfolio proof matched to student background","preview":"build portfolio","skills":["project building"],"sections":[{{"type":"projects","label":"Portfolio Projects","items":["specific portfolio project 1","specific portfolio project 2","specific portfolio project 3"]}}]}},
-  {{"stageNum":6,"title":"Placement & Jobs","duration":"11-12 Months","description":"job roles and applications for this student","preview":"apply and interview","skills":["interview prep"],"sections":[{{"type":"jobs","label":"Common Job Roles","items":["specific role 1","specific role 2","specific role 3"]}},{{"type":"placement","label":"Placement Suggestions","items":["specific placement tip 1","specific placement tip 2","specific placement tip 3"]}}]}}
+  {{"stageNum":5,"title":"Portfolio & Projects","duration":"10-11 Months","description":"portfolio proof to build","preview":"build portfolio","skills":["project building"],"sections":[{{"type":"projects","label":"Portfolio Projects","items":["specific portfolio project 1","specific portfolio project 2","specific portfolio project 3"]}}]}},
+  {{"stageNum":6,"title":"Placement & Jobs","duration":"11-12 Months","description":"job roles and application plan","preview":"apply and interview","skills":["interview prep"],"sections":[{{"type":"jobs","label":"Common Job Roles","items":["specific role 1","specific role 2","specific role 3"]}},{{"type":"placement","label":"Placement Suggestions","items":["specific placement tip 1","specific placement tip 2","specific placement tip 3"]}}]}}
 ]}}
 
 Exactly 6 stages with these exact titles: Education, Skills To Master, Courses, AI Tools, Portfolio & Projects, Placement & Jobs. Keep items SHORT (under 95 chars each). India-specific."""
@@ -1065,7 +1063,12 @@ async def get_user_roadmap(career_slug: str, request: Request, user=Depends(curr
     rmap = (user.get("personalized_roadmaps") or {}).get(resolved_slug) or (user.get("personalized_roadmaps") or {}).get(career_slug)
     if rmap and len(rmap.get("stages") or []) >= 6 and not _roadmap_has_generic_items(rmap):
         return rmap
-    raise HTTPException(404, "No personalized roadmap available; generate one first.")
+    career = await db(request).careers.find_one({"slug": resolved_slug}, {"_id": 0})
+    if career:
+        cached = _career_cached_roadmap(career)
+        if cached:
+            return cached
+    raise HTTPException(404, "No roadmap available; generate one first.")
 
 
 # ---------- AI Chat ----------

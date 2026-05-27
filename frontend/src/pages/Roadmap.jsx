@@ -109,13 +109,8 @@ export default function Roadmap() {
     setLoadingPage(true);
     (async () => {
       try {
-        try {
-          const { data } = await api.get(`/ai/roadmap/${slug}`);
-          if (!cancelled) setRoadmap(data);
-        } catch (_) {
-          const { data } = await api.post("/ai/roadmap/generate", { career_slug: slug });
-          if (!cancelled) setRoadmap(data);
-        }
+        const { data } = await api.get(`/ai/roadmap/${slug}`);
+        if (!cancelled) setRoadmap(data);
       } catch (error) {
         if (!cancelled) setRoadmap(null);
       } finally {
