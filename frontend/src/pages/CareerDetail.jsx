@@ -733,11 +733,11 @@ function CareerHeroGraphic({ color }) {
 
 function ToolBadge({ name }) {
   const n = name.toLowerCase();
-  if (n.includes("python")) return <div className="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-extrabold">Py</div>;
-  if (n.includes("sql")) return <div className="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center text-[10px] font-extrabold">SQL</div>;
+  if (n.includes("python")) return <div className="w-8 h-8 rounded-lg bg-brand-100 text-brand-800 flex items-center justify-center text-xs font-extrabold">Py</div>;
+  if (n.includes("sql")) return <div className="w-8 h-8 rounded-lg bg-fuchsia-100 text-fuchsia-700 flex items-center justify-center text-[10px] font-extrabold">SQL</div>;
   if (n.includes("tensor")) return <div className="w-8 h-8 rounded-lg bg-orange-100 text-orange-700 flex items-center justify-center text-[10px] font-extrabold">TF</div>;
   if (n.includes("scikit")) return <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-[10px] font-extrabold">SK</div>;
-  if (n.includes("docker")) return <div className="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center text-[10px] font-extrabold">DK</div>;
+  if (n.includes("docker")) return <div className="w-8 h-8 rounded-lg bg-violet-100 text-violet-700 flex items-center justify-center text-[10px] font-extrabold">DK</div>;
   return <div className="w-8 h-8 rounded-lg bg-brand-50 text-brand flex items-center justify-center text-[10px] font-extrabold">{name.slice(0, 2).toUpperCase()}</div>;
 }
 

@@ -63,7 +63,7 @@ export default function Sidebar() {
               onError={() => setAvatarError(true)}
             />
           ) : (
-            <div className="w-10 h-10 rounded-full bg-brand-800 text-white flex items-center justify-center font-semibold">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand to-pink-500 text-white flex items-center justify-center font-semibold">
               {(user?.name || "U").slice(0, 1).toUpperCase()}
             </div>
           )}

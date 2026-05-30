@@ -76,7 +76,7 @@ export default function Profile() {
     : overall >= 80
     ? { label: "Excellent Match", cls: "bg-emerald-100 text-emerald-700" }
     : overall >= 65
-    ? { label: "Good Match", cls: "bg-blue-100 text-blue-700" }
+    ? { label: "Good Match", cls: "bg-brand-100 text-brand-800" }
     : { label: "Growing Match", cls: "bg-amber-100 text-amber-700" };
 
   const profileFields = [

@@ -73,11 +73,11 @@ const journey = [
 
 const popularCareers = [
   ["UI/UX Designer", "Design", "High Demand", Palette, "from-purple-500 to-violet-700"],
-  ["Data Analyst", "Analytics", "High Growth", BarChart3, "from-cyan-400 to-sky-600"],
-  ["DevOps Engineer", "IT & Cloud", "High Salary", Cloud, "from-blue-400 to-indigo-600"],
-  ["Cybersecurity Analyst", "Security", "High Growth", ShieldCheck, "from-blue-500 to-violet-700"],
+  ["Data Analyst", "Analytics", "High Growth", BarChart3, "from-violet-400 to-fuchsia-600"],
+  ["DevOps Engineer", "IT & Cloud", "High Salary", Cloud, "from-brand-400 to-violet-700"],
+  ["Cybersecurity Analyst", "Security", "High Growth", ShieldCheck, "from-purple-500 to-violet-800"],
   ["Makeup Artist", "Creative", "Flexible", Sparkles, "from-pink-400 to-fuchsia-600"],
-  ["Cloud Engineer", "IT & Cloud", "High Salary", Cloud, "from-sky-400 to-blue-700"],
+  ["Cloud Engineer", "IT & Cloud", "High Salary", Cloud, "from-fuchsia-400 to-brand-700"],
   ["Medical Coder", "Healthcare", "Stable", HeartPulse, "from-purple-500 to-pink-500"],
   ["CA Foundation", "Commerce", "Elite Path", Calculator, "from-emerald-400 to-teal-600"],
   ["B.Com / BAF", "Accounts", "Degree Track", BookOpen, "from-amber-400 to-orange-600"],

@@ -13,13 +13,13 @@ import BackToTopButton from "../components/BackToTopButton";
 const CATEGORIES = ["All", "Engineering", "Medical", "Management", "Commerce", "Law", "Coaching", "Skill"];
 
 const CATEGORY_STYLES = {
-  Engineering: "bg-blue-100 text-blue-700",
+  Engineering: "bg-brand-100 text-brand-800",
   Medical: "bg-rose-100 text-rose-700",
   Management: "bg-violet-100 text-violet-700",
   Commerce: "bg-emerald-100 text-emerald-700",
   Law: "bg-amber-100 text-amber-700",
   Coaching: "bg-orange-100 text-orange-700",
-  "Skill Development": "bg-cyan-100 text-cyan-700",
+  "Skill Development": "bg-fuchsia-100 text-fuchsia-700",
   Arts: "bg-pink-100 text-pink-700",
 };
 

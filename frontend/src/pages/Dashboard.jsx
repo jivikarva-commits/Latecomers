@@ -17,7 +17,7 @@ const LazyRadarChart = lazy(() =>
               {payload.value}
             </text>
             {hasRealData && item?.value > 0 && (
-              <text x={x} y={y + 13} textAnchor={textAnchor} fill="#0B9BD4" fontSize={10} fontWeight={700}>
+              <text x={x} y={y + 13} textAnchor={textAnchor} fill="#7C2CF2" fontSize={10} fontWeight={700}>
                 {item.value}%
               </text>
             )}
@@ -27,9 +27,9 @@ const LazyRadarChart = lazy(() =>
       return (
         <mod.ResponsiveContainer width="100%" height="100%">
           <mod.RadarChart key={chartKey} data={data} cx="50%" cy="50%" outerRadius="58%">
-            <mod.PolarGrid stroke="#CDECF8" />
+            <mod.PolarGrid stroke="#EBD7FF" />
             <mod.PolarAngleAxis dataKey="metric" tick={renderTick} />
-            <mod.Radar name="You" dataKey="value" stroke="#0B9BD4" fill="#0B9BD4" fillOpacity={hasRealData ? 0.28 : 0.08} />
+            <mod.Radar name="You" dataKey="value" stroke="#7C2CF2" fill="#B86AF8" fillOpacity={hasRealData ? 0.24 : 0.08} />
           </mod.RadarChart>
         </mod.ResponsiveContainer>
       );
@@ -62,10 +62,10 @@ function getTimeGreeting() {
 }
 
 const ROADMAP_STEPS = [
-  { n: 1, icon: Search, label: "Explore", desc: "Discover careers that match you", color: "#0B9BD4" },
-  { n: 2, icon: BookOpen, label: "Learn", desc: "Build the right skills & knowledge", color: "#087CAF" },
-  { n: 3, icon: ClipboardCheck, label: "Prepare", desc: "Get ready with practice & guidance", color: "#073D73" },
-  { n: 4, icon: Trophy, label: "Achieve", desc: "Apply, crack & achieve your goals", color: "#061B4F" },
+  { n: 1, icon: Search, label: "Explore", desc: "Discover careers that match you", color: "#7C2CF2" },
+  { n: 2, icon: BookOpen, label: "Learn", desc: "Build the right skills & knowledge", color: "#9D4EDD" },
+  { n: 3, icon: ClipboardCheck, label: "Prepare", desc: "Get ready with practice & guidance", color: "#C026D3" },
+  { n: 4, icon: Trophy, label: "Achieve", desc: "Apply, crack & achieve your goals", color: "#160741" },
 ];
 
 export default function Dashboard() {
@@ -180,7 +180,7 @@ export default function Dashboard() {
     : overall >= 80
     ? { label: "Excellent Match", cls: "bg-emerald-100 text-emerald-700" }
     : overall >= 65
-    ? { label: "Good Match", cls: "bg-blue-100 text-blue-700" }
+    ? { label: "Good Match", cls: "bg-brand-100 text-brand-800" }
     : { label: "Growing Match", cls: "bg-amber-100 text-amber-700" };
 
   return (
@@ -296,7 +296,7 @@ export default function Dashboard() {
                   <div className="flex items-center gap-2 min-w-0">
                     <div
                       className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                      style={{ background: "#EAF6FC", color: "#0B9BD4" }}
+                      style={{ background: "#F5EAFF", color: "#7C2CF2" }}
                     >
                       <Ic size={17} />
                     </div>
@@ -343,7 +343,7 @@ export default function Dashboard() {
                   <div className="flex items-center justify-between gap-1">
                     <div
                       className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                      style={{ background: "#EAF6FC", color: "#0B9BD4" }}
+                      style={{ background: "#F5EAFF", color: "#7C2CF2" }}
                     >
                       <Ic size={15} />
                     </div>

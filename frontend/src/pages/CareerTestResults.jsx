@@ -229,7 +229,7 @@ export default function CareerTestResults() {
             </div>
             <div className="glass-card rounded-xl p-2.5 sm:p-3">
               <div className="flex items-center gap-1.5 mb-1.5">
-                <div className="w-6 h-6 rounded-md bg-blue-50 text-blue-500 flex items-center justify-center">
+                <div className="w-6 h-6 rounded-md bg-brand-100 text-brand flex items-center justify-center">
                   <Target size={12} />
                 </div>
                 <span className="text-[10px] sm:text-xs font-bold text-ink">Focus Area</span>

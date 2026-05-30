@@ -399,7 +399,7 @@ export default function Roadmap() {
                           {stage.resources?.length > 0 && (
                             <div className="bg-white border border-line rounded-xl p-3">
                               <div className="flex items-center gap-2 mb-2">
-                                <div className="w-6 h-6 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                <div className="w-6 h-6 rounded-md bg-brand-100 text-brand flex items-center justify-center shrink-0">
                                   <BookOpen size={13} />
                                 </div>
                                 <p className="text-xs sm:text-sm font-bold text-ink">Resources</p>
@@ -407,7 +407,7 @@ export default function Roadmap() {
                               <div className="space-y-1.5 pl-8">
                                 {stage.resources.map((r, i) => (
                                   <div key={i} className="flex items-start gap-2 text-[11px] sm:text-xs text-ink">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 shrink-0" />
+                                    <div className="w-1.5 h-1.5 rounded-full bg-brand-400 mt-1.5 shrink-0" />
                                     <span>{r.label || r}</span>
                                   </div>
                                 ))}
