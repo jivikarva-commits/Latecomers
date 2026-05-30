@@ -157,29 +157,29 @@ export default function Landing() {
 
       <section className="relative overflow-hidden bg-[linear-gradient(180deg,#fff_0%,#fff_55%,#FCF8FF_100%)]">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(560px_320px_at_74%_12%,rgba(236,72,153,0.11),transparent_62%),radial-gradient(620px_360px_at_94%_24%,rgba(124,44,242,0.12),transparent_62%)]" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-12 pb-6 sm:pb-10 grid lg:grid-cols-[0.92fr_1.08fr] gap-5 sm:gap-8 lg:gap-10 items-center">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-pink-50 px-3 py-2 text-[11px] sm:text-sm font-extrabold text-brand shadow-[0_10px_28px_rgba(124,44,242,0.08)]">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-12 pb-5 sm:pb-10 grid lg:grid-cols-[0.82fr_1.18fr] gap-4 sm:gap-8 lg:gap-10 items-center">
+          <div className="lg:max-w-[560px]">
+            <span className="inline-flex items-center gap-2 rounded-full bg-pink-50 px-3 py-1.5 sm:py-2 text-[10px] sm:text-sm font-extrabold text-brand shadow-[0_10px_28px_rgba(124,44,242,0.08)]">
               <Star size={14} className="fill-pink-500 text-pink-500" />
               AI-Powered Career Guidance
             </span>
-            <h1 className="mt-5 font-heading text-[2.15rem] min-[390px]:text-[2.35rem] sm:text-5xl lg:text-[4rem] font-black leading-[1.08] text-ink">
+            <h1 className="mt-3 sm:mt-5 font-heading text-[1.82rem] min-[390px]:text-[2rem] sm:text-5xl lg:text-[3.25rem] xl:text-[3.6rem] font-black leading-[1.08] lg:leading-[1.04] text-ink">
               You Are Not Late.
-              <span className="block">You Just Need the</span>
-              <span className="block">Right <span className="premium-text-gradient">Career Map.</span></span>
+              <span className="block">You Just Need the Right</span>
+              <span className="block premium-text-gradient">Career Map.</span>
             </h1>
-            <p className="mt-5 max-w-xl text-sm sm:text-lg leading-relaxed text-ink/82">
+            <p className="mt-3 sm:mt-5 max-w-xl text-[13px] sm:text-lg leading-relaxed text-ink/82">
               Get AI-powered career suggestions, step-by-step roadmaps, and the right skills to build a future you'll love.
             </p>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <button onClick={startJourney} className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-600 to-brand px-4 sm:px-7 py-3 text-sm sm:text-base font-extrabold text-white shadow-brand transition hover:from-brand-700 hover:to-pink-500">
+            <div className="mt-4 sm:mt-6 flex flex-wrap items-center gap-2.5 sm:gap-3">
+              <button onClick={startJourney} className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-600 to-brand px-4 sm:px-7 py-2.5 sm:py-3 text-xs sm:text-base font-extrabold text-white shadow-brand transition hover:from-brand-700 hover:to-pink-500">
                 Take the Career Quiz <ArrowRight size={17} />
               </button>
-              <a href="#how" className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 sm:px-7 py-3 text-sm sm:text-base font-extrabold text-ink transition hover:border-brand hover:text-brand">
+              <a href="#how" className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 sm:px-7 py-2.5 sm:py-3 text-xs sm:text-base font-extrabold text-ink transition hover:border-brand hover:text-brand">
                 <Play size={15} className="fill-ink" /> Watch How It Works
               </a>
             </div>
-            <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-x-3 gap-y-3 max-w-2xl">
+            <div className="mt-4 sm:mt-6 grid grid-cols-2 sm:grid-cols-4 gap-x-2.5 sm:gap-x-3 gap-y-2.5 sm:gap-y-3 max-w-2xl">
               {[
                 ["AI-Powered Matching", Sparkles],
                 ["Personalized Roadmaps", Map],
@@ -197,9 +197,9 @@ export default function Landing() {
             </div>
           </div>
 
-          <div className="relative min-h-0 sm:min-h-[470px]">
+          <div className="relative min-h-0 sm:min-h-[430px] lg:min-h-[470px]">
             <div className="absolute inset-8 hidden rounded-full border border-dashed border-brand/20 sm:block" />
-            <div className="mx-auto mb-3 grid max-w-[300px] grid-cols-2 gap-2 sm:hidden">
+            <div className="mx-auto mb-2.5 grid max-w-[300px] grid-cols-2 gap-2 sm:hidden">
               {heroPills.map(([label, Icon]) => (
                 <div key={label} className="flex items-center gap-2 rounded-xl border border-line bg-white px-2 py-2 shadow-[0_10px_24px_rgba(124,44,242,0.10)]">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-100 text-brand">
@@ -209,23 +209,23 @@ export default function Landing() {
                 </div>
               ))}
             </div>
-            <div className="relative mx-auto w-full max-w-[238px] rounded-[1rem] border border-line bg-white p-3 shadow-[0_18px_42px_rgba(124,44,242,0.16)] sm:absolute sm:left-1/2 sm:top-1/2 sm:w-[270px] sm:max-w-none sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[1.35rem] sm:p-5 sm:shadow-[0_24px_65px_rgba(124,44,242,0.18)] lg:w-[280px] lg:p-6">
+            <div className="relative mx-auto w-full max-w-[224px] rounded-[1rem] border border-line bg-white p-2.5 shadow-[0_18px_42px_rgba(124,44,242,0.16)] sm:absolute sm:left-1/2 sm:top-1/2 sm:w-[258px] sm:max-w-none sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[1.35rem] sm:p-4 sm:shadow-[0_24px_65px_rgba(124,44,242,0.18)] lg:w-[270px] lg:p-5">
               <div className="flex items-start justify-between gap-2 text-[10px] sm:text-xs font-extrabold text-ink">
                 <span>Your AI Career Match</span>
                 <span className="rounded-full bg-emerald-50 px-2 py-1 text-[9px] sm:text-[10px] text-emerald-700">95% Match</span>
               </div>
-              <div className="mt-3 sm:mt-5 lg:mt-6 text-center">
-                <div className="mx-auto flex h-10 w-10 sm:h-14 sm:w-14 lg:h-16 lg:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-brand to-pink-500 text-white shadow-brand">
+              <div className="mt-2.5 sm:mt-4 lg:mt-5 text-center">
+                <div className="mx-auto flex h-9 w-9 sm:h-12 sm:w-12 lg:h-14 lg:w-14 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-brand to-pink-500 text-white shadow-brand">
                   <Palette size={20} className="sm:hidden" />
-                  <Palette size={28} className="hidden sm:block lg:hidden" />
-                  <Palette size={32} className="hidden lg:block" />
+                  <Palette size={24} className="hidden sm:block lg:hidden" />
+                  <Palette size={28} className="hidden lg:block" />
                 </div>
-                <h2 className="mt-2 sm:mt-3 lg:mt-4 font-heading text-base sm:text-xl lg:text-2xl font-black text-ink">UI/UX Designer</h2>
-                <div className="mt-2 sm:mt-3 inline-flex rounded-lg bg-brand-100 px-2.5 sm:px-3 py-1 text-[9.5px] sm:text-[11px] font-extrabold text-brand-800">
+                <h2 className="mt-2 sm:mt-3 font-heading text-[15px] sm:text-xl lg:text-[1.35rem] font-black text-ink">UI/UX Designer</h2>
+                <div className="mt-1.5 sm:mt-2 inline-flex rounded-lg bg-brand-100 px-2.5 sm:px-3 py-1 text-[9px] sm:text-[10.5px] font-extrabold text-brand-800">
                   Creative - High Growth - In Demand
                 </div>
               </div>
-              <div className="mt-3 sm:mt-4 lg:mt-5 space-y-1.5 sm:space-y-2">
+              <div className="mt-2.5 sm:mt-3 lg:mt-4 space-y-1.5 sm:space-y-2">
                 <p className="text-[10px] sm:text-xs font-black text-ink">Why this career?</p>
                 {["Great fit for your personality", "High demand in the market", "Good growth & future scope"].map((item) => (
                   <p key={item} className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-semibold text-ink/78">
@@ -235,7 +235,7 @@ export default function Landing() {
                   </p>
                 ))}
               </div>
-              <button onClick={startJourney} className="mt-3 sm:mt-4 lg:mt-5 w-full rounded-lg bg-gradient-to-r from-brand-600 to-brand py-2 sm:py-2.5 lg:py-3 text-xs sm:text-sm font-extrabold text-white shadow-brand">
+              <button onClick={startJourney} className="mt-2.5 sm:mt-3 lg:mt-4 w-full rounded-lg bg-gradient-to-r from-brand-600 to-brand py-2 sm:py-2.5 text-xs sm:text-sm font-extrabold text-white shadow-brand">
                 View Full Roadmap
               </button>
             </div>
