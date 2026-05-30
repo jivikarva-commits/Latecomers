@@ -23,9 +23,14 @@ export function PublicNav() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-line/80 bg-white/92 backdrop-blur-2xl">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-[58px] sm:h-[76px] flex items-center justify-between gap-2 sm:gap-3">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-[52px] sm:h-[76px] flex items-center justify-between gap-2 sm:gap-3">
         <Link to="/" aria-label="Latecomers AI home" className="shrink-0 flex items-center">
-          <Logo size={50} compact />
+          <span className="sm:hidden">
+            <Logo size={42} compact />
+          </span>
+          <span className="hidden sm:block">
+            <Logo size={50} compact />
+          </span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-2 text-sm font-bold text-ink">
@@ -51,7 +56,7 @@ export function PublicNav() {
         <div className="flex items-center gap-2">
           <button
             onClick={start}
-            className="inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-600 to-brand hover:from-brand-700 hover:to-pink-500 text-white font-bold text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg transition whitespace-nowrap"
+            className="inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-600 to-brand hover:from-brand-700 hover:to-pink-500 text-white font-bold text-[11px] sm:text-sm px-2.5 sm:px-5 py-1.5 sm:py-2.5 rounded-lg transition whitespace-nowrap"
           >
             <span className="hidden min-[390px]:inline">Start Quiz</span>
             <span className="min-[390px]:hidden">Quiz</span>
@@ -60,18 +65,18 @@ export function PublicNav() {
         </div>
       </div>
 
-      <nav className="lg:hidden px-3 pb-3 overflow-x-auto no-scrollbar">
+      <nav className="lg:hidden px-3 pb-2.5 overflow-x-auto no-scrollbar">
         <div className="flex gap-2 min-w-max">
           {navItems.map((item) =>
             item.anchor ? (
-              <a key={item.label} href={item.to} className="px-3 py-1.5 rounded-full bg-white border border-line text-xs font-semibold text-muted2">
+              <a key={item.label} href={item.to} className="px-2.5 py-1.5 rounded-full bg-white border border-line text-[11px] font-semibold text-muted2">
                 {item.label}
               </a>
             ) : (
               <Link
                 key={item.to}
                 to={item.to}
-                className={`px-3 py-1.5 rounded-full border text-xs font-semibold ${
+                className={`px-2.5 py-1.5 rounded-full border text-[11px] font-semibold ${
                   location.pathname === item.to ? "bg-brand text-white border-transparent" : "bg-white border-line text-muted2"
                 }`}
               >
