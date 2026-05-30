@@ -9,7 +9,7 @@ export default function Logo({ size = 42, className = "", showTagline = false, c
         loading="eager"
         decoding="async"
         className="h-auto w-auto object-contain"
-        style={{ width: compact ? "clamp(122px, 34vw, 158px)" : `clamp(${Math.max(size * 2.4, 126)}px, 18vw, 230px)` }}
+        style={{ width: compact ? "clamp(108px, 30vw, 150px)" : `clamp(${Math.max(size * 2.25, 118)}px, 18vw, 220px)` }}
       />
       {showTagline && (
         <span className="sr-only">Late but not lost</span>

@@ -23,7 +23,7 @@ export function PublicNav() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-line/80 bg-white/92 backdrop-blur-2xl shadow-[0_8px_26px_rgba(22,7,65,0.035)]">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-[66px] sm:h-[76px] flex items-center justify-between gap-3">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-[58px] sm:h-[76px] flex items-center justify-between gap-2 sm:gap-3">
         <Link to="/" aria-label="Latecomers AI home" className="shrink-0 flex items-center">
           <Logo size={50} compact />
         </Link>
@@ -51,9 +51,11 @@ export function PublicNav() {
         <div className="flex items-center gap-2">
           <button
             onClick={start}
-            className="inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-600 to-brand hover:from-brand-700 hover:to-pink-500 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2.5 rounded-lg transition whitespace-nowrap shadow-brand"
+            className="inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-600 to-brand hover:from-brand-700 hover:to-pink-500 text-white font-bold text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg transition whitespace-nowrap shadow-brand"
           >
-            Take the Career Quiz <ArrowRight size={15} />
+            <span className="hidden min-[390px]:inline">Take the Career Quiz</span>
+            <span className="min-[390px]:hidden">Quiz</span>
+            <ArrowRight size={15} />
           </button>
         </div>
       </div>
