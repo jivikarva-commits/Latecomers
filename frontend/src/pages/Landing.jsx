@@ -199,31 +199,43 @@ export default function Landing() {
 
           <div className="relative min-h-0 sm:min-h-[470px]">
             <div className="absolute inset-8 hidden rounded-full border border-dashed border-brand/20 sm:block" />
-            <div className="relative mx-auto w-full max-w-[280px] rounded-[1.1rem] border border-line bg-white p-4 shadow-[0_20px_48px_rgba(124,44,242,0.16)] sm:absolute sm:left-1/2 sm:top-1/2 sm:w-[290px] sm:max-w-none sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[1.4rem] sm:p-6 sm:shadow-[0_24px_65px_rgba(124,44,242,0.18)]">
-              <div className="flex items-start justify-between gap-3 text-xs font-extrabold text-ink">
-                <span>Your AI Career Match</span>
-                <span className="rounded-full bg-emerald-50 px-2 py-1 text-[10px] text-emerald-700">95% Match</span>
-              </div>
-              <div className="mt-4 sm:mt-6 text-center">
-                <div className="mx-auto flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-brand to-pink-500 text-white shadow-brand">
-                  <Palette size={24} className="sm:hidden" />
-                  <Palette size={32} className="hidden sm:block" />
+            <div className="mx-auto mb-3 grid max-w-[300px] grid-cols-2 gap-2 sm:hidden">
+              {heroPills.map(([label, Icon]) => (
+                <div key={label} className="flex items-center gap-2 rounded-xl border border-line bg-white px-2 py-2 shadow-[0_10px_24px_rgba(124,44,242,0.10)]">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-100 text-brand">
+                    <Icon size={14} />
+                  </span>
+                  <span className="text-[9.5px] font-black leading-tight text-ink">{label}</span>
                 </div>
-                <h2 className="mt-3 sm:mt-4 font-heading text-lg sm:text-2xl font-black text-ink">UI/UX Designer</h2>
-                <div className="mt-3 inline-flex rounded-lg bg-brand-100 px-3 py-1 text-[11px] font-extrabold text-brand-800">
+              ))}
+            </div>
+            <div className="relative mx-auto w-full max-w-[238px] rounded-[1rem] border border-line bg-white p-3 shadow-[0_18px_42px_rgba(124,44,242,0.16)] sm:absolute sm:left-1/2 sm:top-1/2 sm:w-[270px] sm:max-w-none sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[1.35rem] sm:p-5 sm:shadow-[0_24px_65px_rgba(124,44,242,0.18)] lg:w-[280px] lg:p-6">
+              <div className="flex items-start justify-between gap-2 text-[10px] sm:text-xs font-extrabold text-ink">
+                <span>Your AI Career Match</span>
+                <span className="rounded-full bg-emerald-50 px-2 py-1 text-[9px] sm:text-[10px] text-emerald-700">95% Match</span>
+              </div>
+              <div className="mt-3 sm:mt-5 lg:mt-6 text-center">
+                <div className="mx-auto flex h-10 w-10 sm:h-14 sm:w-14 lg:h-16 lg:w-16 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-brand to-pink-500 text-white shadow-brand">
+                  <Palette size={20} className="sm:hidden" />
+                  <Palette size={28} className="hidden sm:block lg:hidden" />
+                  <Palette size={32} className="hidden lg:block" />
+                </div>
+                <h2 className="mt-2 sm:mt-3 lg:mt-4 font-heading text-base sm:text-xl lg:text-2xl font-black text-ink">UI/UX Designer</h2>
+                <div className="mt-2 sm:mt-3 inline-flex rounded-lg bg-brand-100 px-2.5 sm:px-3 py-1 text-[9.5px] sm:text-[11px] font-extrabold text-brand-800">
                   Creative - High Growth - In Demand
                 </div>
               </div>
-              <div className="mt-4 sm:mt-5 space-y-2">
-                <p className="text-xs font-black text-ink">Why this career?</p>
+              <div className="mt-3 sm:mt-4 lg:mt-5 space-y-1.5 sm:space-y-2">
+                <p className="text-[10px] sm:text-xs font-black text-ink">Why this career?</p>
                 {["Great fit for your personality", "High demand in the market", "Good growth & future scope"].map((item) => (
-                  <p key={item} className="flex items-center gap-2 text-xs font-semibold text-ink/78">
-                    <CheckCircle2 size={14} className="text-emerald-500" />
+                  <p key={item} className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-semibold text-ink/78">
+                    <CheckCircle2 size={12} className="shrink-0 text-emerald-500 sm:hidden" />
+                    <CheckCircle2 size={14} className="hidden shrink-0 text-emerald-500 sm:block" />
                     {item}
                   </p>
                 ))}
               </div>
-              <button onClick={startJourney} className="mt-4 sm:mt-5 w-full rounded-lg bg-gradient-to-r from-brand-600 to-brand py-2.5 sm:py-3 text-sm font-extrabold text-white shadow-brand">
+              <button onClick={startJourney} className="mt-3 sm:mt-4 lg:mt-5 w-full rounded-lg bg-gradient-to-r from-brand-600 to-brand py-2 sm:py-2.5 lg:py-3 text-xs sm:text-sm font-extrabold text-white shadow-brand">
                 View Full Roadmap
               </button>
             </div>
