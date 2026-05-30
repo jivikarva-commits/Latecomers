@@ -9,12 +9,10 @@ export default function Logo({ size = 42, className = "", showTagline = false, c
         loading="eager"
         decoding="async"
         className="h-auto w-auto object-contain"
-        style={{ width: compact ? "clamp(128px, 36vw, 154px)" : "clamp(150px, 16vw, 210px)" }}
+        style={{ width: compact ? "clamp(122px, 34vw, 158px)" : `clamp(${Math.max(size * 2.4, 126)}px, 18vw, 230px)` }}
       />
       {showTagline && (
-        <span className="-mt-1 ml-1 hidden sm:inline-block text-[9px] tracking-[0.23em] text-muted2 uppercase leading-none">
-          Late but <span className="text-brand font-semibold normal-case tracking-normal">not</span> lost
-        </span>
+        <span className="sr-only">Late but not lost</span>
       )}
     </div>
   );

@@ -2,22 +2,39 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
+  BarChart3,
+  BookOpen,
   Brain,
+  BriefcaseBusiness,
   Building2,
+  Calculator,
   CheckCircle2,
   ClipboardCheck,
-  Database,
+  Cloud,
+  Code2,
+  FileSpreadsheet,
   GraduationCap,
   Headphones,
+  HeartPulse,
+  IndianRupee,
+  LineChart,
   Map,
   MapPinned,
+  Megaphone,
   MessageCircle,
   Mic,
+  Palette,
+  Play,
   Repeat2,
+  ShieldCheck,
+  Sparkles,
   Star,
   Target,
   Trophy,
+  User,
+  UserCheck,
   Users,
+  WalletCards,
 } from "lucide-react";
 import PublicShell from "../components/PublicShell";
 import { useAuth } from "../context/AuthContext";
@@ -25,10 +42,10 @@ import SEO from "../components/SEO";
 import { faqSchema, organizationSchema, softwareAppSchema, websiteSchema } from "../lib/seoSchemas";
 
 const audiences = [
-  ["BPO & Telecallers", "Turn communication, patience, and CRM discipline into customer success, sales, operations, or support roles.", Users],
-  ["Backoffice & Data Entry", "Move from repetitive tasks into analytics, operations, MIS, QA, or process leadership.", Database],
-  ["Graduates With No Direction", "Convert your degree into a practical roadmap instead of wasting months comparing random courses.", GraduationCap],
-  ["Career Switchers", "Use your past experience as a bridge into a better-fit career path, not as a burden.", Repeat2],
+  ["Late Starters", "Starting your journey after a break or later in life.", User],
+  ["Job Switchers", "Want to switch your career to something better.", Repeat2],
+  ["Graduates", "Confused about what to do after 12th or graduation.", GraduationCap],
+  ["Confused Professionals", "Not sure if you're on the right path.", UserCheck],
 ];
 
 const features = [
@@ -54,19 +71,29 @@ const journey = [
   ["Achieve Your Goals", "Build confidence, switch smarter, and grow in a career that truly fits.", Trophy],
 ];
 
-function HeroIllustration() {
-  return (
-    <div className="relative mx-auto w-full sm:max-w-[520px]">
-      <img
-        src="/brand/hero-roadmap-illustration.png"
-        alt="Career signpost, road and compass illustration"
-        className="w-full object-contain mix-blend-multiply"
-        loading="eager"
-        decoding="async"
-      />
-    </div>
-  );
-}
+const popularCareers = [
+  ["UI/UX Designer", "Design", "High Demand", Palette, "from-purple-500 to-violet-700"],
+  ["Data Analyst", "Analytics", "High Growth", BarChart3, "from-cyan-400 to-sky-600"],
+  ["DevOps Engineer", "IT & Cloud", "High Salary", Cloud, "from-blue-400 to-indigo-600"],
+  ["Cybersecurity Analyst", "Security", "High Growth", ShieldCheck, "from-blue-500 to-violet-700"],
+  ["Makeup Artist", "Creative", "Flexible", Sparkles, "from-pink-400 to-fuchsia-600"],
+  ["Cloud Engineer", "IT & Cloud", "High Salary", Cloud, "from-sky-400 to-blue-700"],
+  ["Medical Coder", "Healthcare", "Stable", HeartPulse, "from-purple-500 to-pink-500"],
+  ["CA Foundation", "Commerce", "Elite Path", Calculator, "from-emerald-400 to-teal-600"],
+  ["B.Com / BAF", "Accounts", "Degree Track", BookOpen, "from-amber-400 to-orange-600"],
+  ["BBA / BMS", "Management", "Business", BriefcaseBusiness, "from-indigo-400 to-purple-600"],
+  ["Financial Modeling", "Finance", "High Value", LineChart, "from-lime-400 to-emerald-600"],
+  ["Tally + GST", "Accounting", "Job Ready", FileSpreadsheet, "from-rose-400 to-pink-600"],
+];
+
+const heroPills = [
+  ["Full Stack Developer", Code2, "left-[5%] top-[9%]"],
+  ["Cybersecurity Analyst", ShieldCheck, "left-0 top-[40%]"],
+  ["Medical Coder", HeartPulse, "left-[10%] bottom-[14%]"],
+  ["Social Media Manager", Megaphone, "right-0 top-[12%]"],
+  ["Finance Analyst", WalletCards, "right-[3%] top-[42%]"],
+  ["Data Analyst", BarChart3, "right-[7%] bottom-[12%]"],
+];
 
 function JourneyCard() {
   return (
@@ -74,7 +101,7 @@ function JourneyCard() {
       <div className="rounded-2xl sm:rounded-[2rem] border border-line bg-white p-3.5 sm:p-8 lg:p-10 shadow-soft">
         <div className="text-center">
           <h2 className="font-heading text-lg sm:text-3xl font-extrabold text-ink">Your Career Journey Starts Here</h2>
-          <p className="mt-1.5 text-xs sm:text-base font-semibold text-muted2">Personalized guidance · Practical roadmap · Real results</p>
+          <p className="mt-1.5 text-xs sm:text-base font-semibold text-muted2">Personalized guidance - Practical roadmap - Real results</p>
         </div>
         <div className="mt-5 sm:mt-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-4">
           {journey.map(([title, text, Icon], index) => (
@@ -118,7 +145,7 @@ export default function Landing() {
             },
             {
               question: "How much does Latecomers AI start at?",
-              answer: "Latecomers AI plans start at ₹9 for basic career results.",
+              answer: "Latecomers AI plans start at Rs 9 for basic career results.",
             },
             {
               question: "What does Latecomers AI provide?",
@@ -128,67 +155,132 @@ export default function Landing() {
         ]}
       />
 
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-12 pb-6 sm:pb-12 grid grid-cols-[0.65fr_1fr] sm:grid-cols-[1.02fr_0.98fr] gap-2 sm:gap-8 items-center">
-        <div className="relative">
-          <span className="inline-flex items-center gap-1 rounded-full border border-line bg-white px-2 py-1 sm:px-4 sm:py-2 text-[9px] sm:text-sm font-bold text-ink shadow-[0_10px_30px_rgba(6,27,79,0.04)]">
-            <Star size={10} className="text-brand sm:hidden" />
-            <Star size={15} className="text-brand hidden sm:block" />
-            <span className="hidden sm:inline">For late starters, BPO workers and confused graduates</span>
-            <span className="sm:hidden">For late starters &amp; career switchers</span>
-          </span>
-          <h1 className="mt-3 sm:mt-6 font-heading text-[1.25rem] sm:text-5xl lg:text-[4rem] font-extrabold leading-[1.12] sm:leading-[1.08] tracking-tight text-ink">
-            You are not late.
-            <span className="block">You just <span className="text-brand">need the</span></span>
-            <span className="block text-brand">right career map.</span>
-          </h1>
-          <p className="mt-2 sm:mt-5 max-w-2xl text-[11px] sm:text-lg leading-relaxed text-muted2">
-            Latecomers AI helps you find a practical career path, understand why it fits, and follow a step-by-step roadmap to move from confusion to action.
-          </p>
-          <div className="mt-3 sm:mt-7 flex flex-wrap items-center gap-2 sm:gap-6">
-            <button onClick={startJourney} className="inline-flex items-center gap-1.5 rounded-lg sm:rounded-2xl bg-gradient-to-r from-brand-800 to-brand px-3 sm:px-6 py-2 sm:py-4 text-[10px] sm:text-base font-bold text-white transition hover:from-brand-700 hover:to-brand-500">
-              Take the career quiz <ArrowRight size={12} className="sm:hidden" /><ArrowRight size={18} className="hidden sm:block" />
-            </button>
-            <a href="#how" className="inline-flex items-center gap-1 px-1 py-2 text-[10px] sm:text-base font-extrabold text-ink transition hover:text-brand">
-              See how it works <ArrowRight size={12} className="sm:hidden" /><ArrowRight size={18} className="hidden sm:block" />
-            </a>
+      <section className="relative overflow-hidden bg-[linear-gradient(180deg,#fff_0%,#fff_55%,#FCF8FF_100%)]">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(560px_320px_at_74%_12%,rgba(236,72,153,0.11),transparent_62%),radial-gradient(620px_360px_at_94%_24%,rgba(124,44,242,0.12),transparent_62%)]" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-7 sm:pt-12 pb-7 sm:pb-10 grid lg:grid-cols-[0.92fr_1.08fr] gap-8 lg:gap-10 items-center">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full bg-pink-50 px-3 py-2 text-[11px] sm:text-sm font-extrabold text-brand shadow-[0_10px_28px_rgba(124,44,242,0.08)]">
+              <Star size={14} className="fill-pink-500 text-pink-500" />
+              AI-Powered Career Guidance
+            </span>
+            <h1 className="mt-5 font-heading text-[2.35rem] sm:text-5xl lg:text-[4rem] font-black leading-[1.08] text-ink">
+              You Are Not Late.
+              <span className="block">You Just Need the</span>
+              <span className="block">Right <span className="premium-text-gradient">Career Map.</span></span>
+            </h1>
+            <p className="mt-5 max-w-xl text-sm sm:text-lg leading-relaxed text-ink/82">
+              Get AI-powered career suggestions, step-by-step roadmaps, and the right skills to build a future you'll love.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <button onClick={startJourney} className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-600 to-brand px-5 sm:px-7 py-3 text-sm sm:text-base font-extrabold text-white shadow-brand transition hover:from-brand-700 hover:to-pink-500">
+                Take the Career Quiz <ArrowRight size={17} />
+              </button>
+              <a href="#how" className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-5 sm:px-7 py-3 text-sm sm:text-base font-extrabold text-ink transition hover:border-brand hover:text-brand">
+                <Play size={15} className="fill-ink" /> Watch How It Works
+              </a>
+            </div>
+            <div className="mt-7 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl">
+              {[
+                ["AI-Powered Matching", Sparkles],
+                ["Personalized Roadmaps", Map],
+                ["Affordable Guidance", IndianRupee],
+                ["For Every Background", Users],
+              ].map(([label, Icon]) => (
+                <div key={label} className="flex items-center gap-2 text-[11px] sm:text-xs font-extrabold text-ink">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-100 text-brand">
+                    <Icon size={16} />
+                  </span>
+                  <span className="leading-tight">{label}</span>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="mt-3 sm:mt-8 flex flex-wrap items-center gap-x-2.5 sm:gap-x-6 gap-y-1 text-[9px] sm:text-sm font-medium text-muted2">
-            {["Starts at ₹9", "Switcher-friendly", "Takes 5 min"].map((item) => (
-              <span key={item} className="inline-flex items-center gap-1">
-                <CheckCircle2 size={11} className="text-ink sm:hidden" />
-                <CheckCircle2 size={18} className="text-ink hidden sm:block" />
-                {item}
-              </span>
+
+          <div className="relative min-h-[360px] sm:min-h-[470px]">
+            <div className="absolute inset-4 sm:inset-8 rounded-full border border-dashed border-brand/20" />
+            <div className="absolute left-1/2 top-1/2 w-[230px] sm:w-[290px] -translate-x-1/2 -translate-y-1/2 rounded-[1.4rem] border border-line bg-white p-5 sm:p-6 shadow-[0_24px_65px_rgba(124,44,242,0.18)]">
+              <div className="flex items-start justify-between gap-3 text-xs font-extrabold text-ink">
+                <span>Your AI Career Match</span>
+                <span className="rounded-full bg-emerald-50 px-2 py-1 text-[10px] text-emerald-700">95% Match</span>
+              </div>
+              <div className="mt-6 text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand to-pink-500 text-white shadow-brand">
+                  <Palette size={32} />
+                </div>
+                <h2 className="mt-4 font-heading text-xl sm:text-2xl font-black text-ink">UI/UX Designer</h2>
+                <div className="mt-3 inline-flex rounded-lg bg-brand-100 px-3 py-1 text-[11px] font-extrabold text-brand-800">
+                  Creative - High Growth - In Demand
+                </div>
+              </div>
+              <div className="mt-5 space-y-2.5">
+                <p className="text-xs font-black text-ink">Why this career?</p>
+                {["Great fit for your personality", "High demand in the market", "Good growth & future scope"].map((item) => (
+                  <p key={item} className="flex items-center gap-2 text-xs font-semibold text-ink/78">
+                    <CheckCircle2 size={14} className="text-emerald-500" />
+                    {item}
+                  </p>
+                ))}
+              </div>
+              <button onClick={startJourney} className="mt-5 w-full rounded-lg bg-gradient-to-r from-brand-600 to-brand py-3 text-sm font-extrabold text-white shadow-brand">
+                View Full Roadmap
+              </button>
+            </div>
+
+            {heroPills.map(([label, Icon, position]) => (
+              <div key={label} className={`absolute hidden sm:flex ${position} items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-[0_16px_40px_rgba(124,44,242,0.14)] border border-line`}>
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 text-brand">
+                  <Icon size={21} />
+                </span>
+                <span className="max-w-[118px] text-xs font-black leading-tight text-ink">{label}</span>
+              </div>
             ))}
           </div>
         </div>
 
-        <HeroIllustration />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-7 sm:pb-9">
+          <h2 className="text-center font-heading text-lg sm:text-xl font-black text-ink">Popular Career Paths</h2>
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 xl:grid-cols-12 gap-3">
+            {popularCareers.map(([title, tag1, tag2, Icon, gradient]) => (
+              <Link key={title} to="/careers-explore" className="rounded-lg border border-line bg-white p-3 text-center shadow-[0_10px_30px_rgba(22,7,65,0.045)] transition hover:-translate-y-0.5 hover:shadow-soft">
+                <span className={`mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${gradient} text-white`}>
+                  <Icon size={24} />
+                </span>
+                <h3 className="mt-3 min-h-[34px] text-xs font-black leading-tight text-ink">{title}</h3>
+                <div className="mt-2 flex flex-wrap justify-center gap-1 text-[9px] font-bold text-muted2">
+                  <span>{tag1}</span>
+                  <span>{tag2}</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-5 text-center">
+            <Link to="/careers-explore" className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-600 to-brand px-7 py-3 text-sm font-extrabold text-white shadow-brand">
+              Explore 50+ Careers <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 sm:pb-12">
+          <div className="rounded-2xl bg-brand-50 px-4 py-5 sm:px-7 sm:py-6">
+            <h2 className="text-center font-heading text-lg sm:text-xl font-black text-ink">Who Is This For?</h2>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {audiences.map(([title, text, Icon]) => (
+                <div key={title} className="flex items-center gap-3 lg:border-r lg:border-line last:border-r-0 lg:pr-4">
+                  <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-white text-brand shadow-[0_12px_32px_rgba(124,44,242,0.12)]">
+                    <Icon size={30} />
+                  </span>
+                  <span>
+                    <h3 className="font-heading text-sm font-black text-ink">{title}</h3>
+                    <p className="mt-1 text-xs leading-relaxed text-ink/78">{text}</p>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
       <JourneyCard />
-
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 sm:pb-16">
-        <p className="text-xs font-extrabold tracking-[0.22em] text-brand uppercase">Who is this for?</p>
-        <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink mt-2">Built for people the system forgot.</h2>
-        <p className="text-sm sm:text-base text-muted2 mt-3 max-w-3xl leading-relaxed">
-          Most career platforms speak to perfect freshers. Latecomers AI is for people who have lived a little, worked a little, struggled a little, and now want a real next step.
-        </p>
-        <div className="mt-5 sm:mt-6 grid gap-2.5 sm:gap-4 grid-cols-1 md:grid-cols-2">
-          {audiences.map(([title, text, Icon]) => (
-            <div key={title} className="flex gap-3 sm:gap-4 rounded-xl sm:rounded-2xl border border-line bg-white p-3 sm:p-4 shadow-[0_10px_28px_rgba(6,27,79,0.04)] transition hover:-translate-y-0.5 hover:shadow-soft">
-              <div className="flex h-10 w-10 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-brand text-white shadow-brand">
-                <Icon size={20} className="sm:hidden" />
-                <Icon size={26} className="hidden sm:block" />
-              </div>
-              <div>
-                <h3 className="font-heading font-extrabold text-sm sm:text-lg text-ink leading-tight">{title}</h3>
-                <p className="text-xs sm:text-sm text-ink/82 mt-0.5 sm:mt-1 leading-relaxed">{text}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       <section id="how" className="bg-white border-y border-line py-10 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 210 50% 98%;
-    --foreground: 222 86% 17%;
+    --background: 280 100% 99%;
+    --foreground: 259 80% 14%;
     --card: 0 0% 100%;
     --card-foreground: 240 1% 17%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 1% 17%;
-    --primary: 197 90% 44%;
+    --primary: 263 89% 56%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 202 70% 96%;
-    --secondary-foreground: 222 86% 17%;
-    --muted: 210 36% 96%;
-    --muted-foreground: 214 16% 42%;
-    --accent: 198 75% 96%;
-    --accent-foreground: 197 90% 34%;
+    --secondary: 282 100% 97%;
+    --secondary-foreground: 259 80% 14%;
+    --muted: 280 38% 96%;
+    --muted-foreground: 259 13% 41%;
+    --accent: 309 90% 96%;
+    --accent-foreground: 316 82% 48%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 211 35% 92%;
-    --input: 211 35% 92%;
-    --ring: 197 90% 44%;
+    --border: 276 42% 93%;
+    --input: 276 42% 93%;
+    --ring: 263 89% 56%;
     --radius: 0.75rem;
   }
 }
@@ -41,10 +41,10 @@ body {
   padding: 0;
   font-family: "DM Sans", "Plus Jakarta Sans", system-ui, sans-serif;
   background:
-    radial-gradient(900px 500px at -8% -10%, rgba(11, 155, 212, 0.10), transparent 50%),
-    radial-gradient(740px 420px at 108% 0%, rgba(6, 27, 79, 0.08), transparent 52%),
-    linear-gradient(180deg, #FBFCFE 0%, #F5F8FC 100%);
-  color: #061B4F;
+    radial-gradient(900px 500px at -8% -10%, rgba(236, 72, 153, 0.10), transparent 50%),
+    radial-gradient(740px 420px at 108% 0%, rgba(124, 44, 242, 0.12), transparent 52%),
+    linear-gradient(180deg, #FFFCFF 0%, #FAF6FF 100%);
+  color: #160741;
   min-height: 100%;
   height: auto;
   line-height: 1.45;
@@ -73,25 +73,25 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Logo gradient */
 .cc-logo-gradient {
-  background: linear-gradient(135deg, #061B4F 0%, #073D73 48%, #0B9BD4 100%);
+  background: linear-gradient(135deg, #160741 0%, #35108F 48%, #EC4899 100%);
 }
 
 .latecomers-mark {
   clip-path: polygon(37% 8%, 83% 0, 72% 100%, 18% 100%, 27% 27%, 0 39%);
-  background: linear-gradient(145deg, #16A7DE 0%, #087CAF 48%, #061B4F 100%);
+  background: linear-gradient(145deg, #EC4899 0%, #7C2CF2 48%, #160741 100%);
 }
 
 .brand-orb {
   background:
     radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.1) 40%, transparent 58%),
-    linear-gradient(145deg, #18AEE3 0%, #0B9BD4 42%, #061B4F 100%);
-  box-shadow: 0 18px 42px rgba(11, 155, 212, 0.24), inset 0 -6px 14px rgba(0, 0, 0, 0.08);
+    linear-gradient(145deg, #EC4899 0%, #7C2CF2 42%, #160741 100%);
+  box-shadow: 0 18px 42px rgba(124, 44, 242, 0.24), inset 0 -6px 14px rgba(0, 0, 0, 0.08);
 }
 
 .glass-card {
   background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(227, 234, 242, 0.9);
-  box-shadow: 0 18px 50px rgba(6, 27, 79, 0.08);
+  border: 1px solid rgba(236, 228, 245, 0.9);
+  box-shadow: 0 18px 50px rgba(22, 7, 65, 0.08);
   backdrop-filter: blur(16px);
 }
 
@@ -107,11 +107,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .premium-gradient {
-  background: linear-gradient(135deg, #061B4F 0%, #073D73 54%, #0B9BD4 100%);
+  background: linear-gradient(135deg, #5A18D6 0%, #7C2CF2 54%, #EC4899 100%);
 }
 
 .premium-text-gradient {
-  background: linear-gradient(135deg, #061B4F 0%, #087CAF 48%, #0B9BD4 100%);
+  background: linear-gradient(135deg, #160741 0%, #7C2CF2 48%, #EC4899 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -127,7 +127,7 @@ h1, h2, h3, h4, h5, h6 {
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(11, 155, 212, 0.42), rgba(6, 27, 79, 0.24));
+  background: linear-gradient(135deg, rgba(124, 44, 242, 0.42), rgba(236, 72, 153, 0.24));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -137,12 +137,12 @@ h1, h2, h3, h4, h5, h6 {
 /* Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #CDECF8; border-radius: 8px; }
-::-webkit-scrollbar-thumb:hover { background: #8CD8F1; }
+::-webkit-scrollbar-thumb { background: #EBD7FF; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #D8B4FE; }
 
 /* Chat typing indicator */
 .typing-dot {
-  width: 8px; height: 8px; background: #0B9BD4; border-radius: 999px; display: inline-block;
+  width: 8px; height: 8px; background: #7C2CF2; border-radius: 999px; display: inline-block;
   animation: bounce-dot 1.4s infinite ease-in-out both;
 }
 .typing-dot:nth-child(1){ animation-delay: -0.32s; }
@@ -152,7 +152,7 @@ h1, h2, h3, h4, h5, h6 {
   display: block;
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #0B9BD4, #061B4F);
+  background: linear-gradient(90deg, #EC4899, #7C2CF2);
   animation: chat-progress 2.4s ease-in-out infinite;
 }
 
@@ -172,7 +172,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .assistant-heading {
   margin: 0.85rem 0 0.4rem;
-  color: #061B4F;
+  color: #160741;
   font-family: "Plus Jakarta Sans", "Outfit", system-ui, sans-serif;
   font-size: 0.98rem;
   font-weight: 800;
@@ -203,7 +203,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 5px;
   height: 5px;
   border-radius: 999px;
-  background: #0B9BD4;
+  background: #7C2CF2;
 }
 
 .typing-caret {
@@ -213,7 +213,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: 2px;
   vertical-align: -0.18rem;
   border-radius: 999px;
-  background: #0B9BD4;
+  background: #7C2CF2;
   animation: caret-blink 0.9s steps(2, start) infinite;
 }
 
@@ -261,14 +261,14 @@ h1, h2, h3, h4, h5, h6 {
   100% { background-position: 200% 0; }
 }
 .skeleton-shimmer {
-  background: linear-gradient(90deg, #EAF6FC 25%, #F7FAFD 50%, #EAF6FC 75%);
+  background: linear-gradient(90deg, #F5EAFF 25%, #FCF8FF 50%, #F5EAFF 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
 
 .ai-suggestions-box {
-  background: linear-gradient(135deg, #F7FAFD 0%, #EAF6FC 100%);
-  border: 1px solid #CDECF8;
+  background: linear-gradient(135deg, #FCF8FF 0%, #F5EAFF 100%);
+  border: 1px solid #EBD7FF;
   border-radius: 1rem;
   padding: 0.875rem 1rem;
 }
@@ -288,6 +288,6 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 999px;
   font-size: 0.7rem;
   font-weight: 700;
-  color: #061B4F;
-  background: #EAF6FC;
+  color: #160741;
+  background: #F5EAFF;
 }
