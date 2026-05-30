@@ -69,9 +69,9 @@ const stories = [
 function SectionHeading({ eyebrow, title, text, light = false }) {
   return (
     <div className="max-w-3xl">
-      <p className={`text-xs font-black uppercase tracking-[0.28em] ${light ? "text-yellow-300" : "text-pink-500"}`}>{eyebrow}</p>
-      <h2 className={`mt-3 font-heading text-3xl sm:text-4xl font-black leading-tight ${light ? "text-white" : "text-ink"}`}>{title}</h2>
-      {text && <p className={`mt-4 text-sm sm:text-base leading-relaxed ${light ? "text-white/72" : "text-muted2"}`}>{text}</p>}
+      <p className={`text-[11px] font-black uppercase tracking-[0.26em] sm:text-xs ${light ? "text-yellow-300" : "text-pink-500"}`}>{eyebrow}</p>
+      <h2 className={`mt-3 font-heading text-2xl font-black leading-tight sm:text-4xl ${light ? "text-white" : "text-ink"}`}>{title}</h2>
+      {text && <p className={`mt-3 text-sm leading-relaxed sm:mt-4 sm:text-base ${light ? "text-white/72" : "text-muted2"}`}>{text}</p>}
     </div>
   );
 }
@@ -108,40 +108,40 @@ export default function Landing() {
         ]}
       />
 
-      <section className="bg-[#F6F1FF]">
-        <div className="mx-auto grid max-w-[1440px] gap-8 px-4 py-12 sm:px-8 lg:grid-cols-[0.92fr_1.08fr] lg:px-20 lg:py-20">
-          <div className="flex max-w-[610px] flex-col justify-center">
-            <span className="w-fit rounded-full bg-pink-100 px-4 py-2 text-xs font-black text-pink-600">
+      <section className="overflow-hidden bg-[#F6F1FF]">
+        <div className="mx-auto grid max-w-[1440px] gap-8 px-4 py-10 sm:px-8 lg:grid-cols-[0.94fr_1.06fr] lg:px-20 lg:py-16">
+          <div className="flex max-w-[640px] flex-col justify-center">
+            <span className="w-fit max-w-full rounded-full bg-pink-100 px-4 py-2 text-[11px] font-black text-pink-600 sm:text-xs">
               + For late starters, BPO workers and confused graduates
             </span>
-            <h1 className="mt-7 font-heading text-4xl font-black leading-[1.05] text-ink sm:text-[3.55rem] lg:text-[3.65rem] xl:text-[4rem]">
+            <h1 className="mt-7 font-heading text-[2.35rem] font-black leading-[1.07] text-ink min-[390px]:text-[2.55rem] sm:text-[3.05rem] lg:text-[3rem] xl:text-[3.2rem]">
               You are not late.
               <span className="block">You just need</span>
               <span className="block">
                 the <span className="text-brand underline decoration-pink-400 decoration-4 underline-offset-4">right career map.</span>
               </span>
             </h1>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted2">
+            <p className="mt-5 max-w-xl text-sm leading-relaxed text-muted2 sm:text-base">
               Latecomers AI helps you find a practical career path, understand why it fits, and follow a step-by-step roadmap to move from confusion to action.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <button onClick={startJourney} className="rounded-lg bg-brand px-6 py-3 text-sm font-black text-white">
+              <button onClick={startJourney} className="rounded-lg bg-brand px-5 py-3 text-sm font-black text-white sm:px-6">
                 Take the career quiz <ArrowRight className="inline-block" size={16} />
               </button>
-              <a href="#how" className="rounded-lg border border-brand/40 bg-white px-6 py-3 text-sm font-black text-brand">
+              <a href="#how" className="rounded-lg border border-brand/40 bg-white px-5 py-3 text-sm font-black text-brand sm:px-6">
                 See how it works <ArrowRight className="inline-block" size={16} />
               </a>
             </div>
             <div className="mt-7 flex flex-wrap gap-3">
               {["Starts at Rs 9", "Switcher-friendly", "Takes 5 min"].map((item) => (
-                <span key={item} className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2">
+                <span key={item} className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-3.5 py-2 text-xs font-bold text-muted2">
                   <CheckCircle2 size={15} className="text-emerald-500" /> {item}
                 </span>
               ))}
             </div>
           </div>
 
-          <div className="relative min-h-[430px] overflow-hidden">
+          <div className="relative min-h-[390px] overflow-hidden lg:min-h-[420px]">
             <div className="absolute left-[23%] top-[12%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Cabin Crew</div>
             <div className="absolute left-[27%] top-[23%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">Cybersecurity Analyst</div>
             <div className="absolute left-[20%] top-[34%] hidden rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 lg:block">Mehendi Artist</div>
@@ -158,7 +158,7 @@ export default function Landing() {
             <div className="absolute right-[3%] top-[92%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Medical Coder</div>
 
             <div className="absolute left-[54%] top-[10%] hidden rounded-full bg-pink-500 px-4 py-2 text-xs font-black text-white lg:block">+ AI-Powered Match</div>
-            <div className="mx-auto mt-2 w-full max-w-[300px] rounded-2xl border border-line bg-white p-4 lg:absolute lg:left-[43%] lg:top-[18%]">
+            <div className="mx-auto mt-2 w-full max-w-[300px] rounded-2xl border border-line bg-white p-4 lg:absolute lg:left-[43%] lg:top-[15%]">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-yellow-100 text-ink">
                   <Target size={20} />
@@ -190,7 +190,7 @@ export default function Landing() {
           <div className="mx-auto grid max-w-4xl grid-cols-2 gap-5 px-4 text-center sm:grid-cols-5">
             {stats.map(([value, label]) => (
               <div key={label}>
-                <p className="font-heading text-2xl font-black text-yellow-300">{value}</p>
+                <p className="font-heading text-[1.7rem] font-black text-yellow-300 sm:text-2xl">{value}</p>
                 <p className="mt-1 text-[10px] font-bold uppercase tracking-wide text-white/60">{label}</p>
               </div>
             ))}
@@ -198,14 +198,14 @@ export default function Landing() {
         </div>
       </section>
 
-      <section id="how" className="bg-brand-50 py-16 sm:py-20">
+      <section id="how" className="bg-brand-50 py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading eyebrow="How it works" title="From confused to career-ready in 4 steps." text="Personalized guidance. Practical roadmap. Real results for people like you." />
-          <div className="mt-12 grid gap-5 md:grid-cols-4">
+          <div className="mt-8 grid gap-4 sm:mt-12 md:grid-cols-4">
             {steps.map(([title, text, Icon], index) => (
-              <div key={title} className="rounded-2xl border border-line bg-white p-6">
-                <div className="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-brand-100 text-xs font-black text-brand">0{index + 1}</div>
-                <Icon size={30} className="mb-5 text-ink" />
+              <div key={title} className="rounded-2xl border border-line bg-white p-4 sm:p-6">
+                <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg bg-brand-100 text-xs font-black text-brand sm:mb-5">0{index + 1}</div>
+                <Icon size={26} className="mb-4 text-ink sm:mb-5 sm:h-[30px] sm:w-[30px]" />
                 <h3 className="font-heading text-base font-black text-ink">{title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted2">{text}</p>
               </div>
@@ -214,17 +214,17 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="bg-white py-16 sm:py-20">
+      <section className="bg-white py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading eyebrow="Who is this for?" title="Built for people the system forgot." text="Most career platforms speak to perfect freshers. Latecomers AI is for people who have lived a little, worked a little, struggled a little, and now want a real next step." />
-          <div className="mt-12 grid gap-5 md:grid-cols-2">
+          <div className="mt-8 grid gap-4 sm:mt-12 md:grid-cols-2">
             {audiences.map(([title, text, Icon]) => (
-              <div key={title} className="flex gap-5 rounded-2xl border border-line bg-brand-50 p-6">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white text-brand">
-                  <Icon size={24} />
+              <div key={title} className="flex gap-4 rounded-2xl border border-line bg-brand-50 p-4 sm:gap-5 sm:p-6">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-brand sm:h-12 sm:w-12">
+                  <Icon size={21} className="sm:h-6 sm:w-6" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-lg font-black text-ink">{title}</h3>
+                  <h3 className="font-heading text-base font-black text-ink sm:text-lg">{title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted2">{text}</p>
                 </div>
               </div>
@@ -233,19 +233,19 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-brand-900 py-16 text-white sm:py-20">
+      <section className="relative overflow-hidden bg-brand-900 py-12 text-white sm:py-16">
         <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-pink-500/20" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading eyebrow="Career tracks" title="40+ paths. Real job titles. No fluff." text="From mainstream tech roles to hidden-gem careers - we map paths that match your actual background, not just your dream." light />
-          <div className="mt-12 grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+          <div className="mt-8 grid gap-4 sm:mt-12 md:grid-cols-3 lg:grid-cols-4">
             {careerTracks.map(([title, category, text, tag, Icon]) => (
-              <Link key={title} to="/careers-explore" className="rounded-2xl border border-white/12 bg-white/6 p-5">
-                <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 text-brand">
+              <Link key={title} to="/careers-explore" className="rounded-2xl border border-white/12 bg-white/6 p-4 sm:p-5">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 text-brand sm:mb-5">
                   <Icon size={21} />
                 </div>
                 <p className="text-[11px] font-black uppercase tracking-widest text-white/42">{category}</p>
                 <h3 className="mt-2 font-heading text-base font-black text-white">{title}</h3>
-                <p className="mt-2 min-h-[56px] text-sm leading-relaxed text-white/62">{text}</p>
+                <p className="mt-2 text-sm leading-relaxed text-white/62 sm:min-h-[56px]">{text}</p>
                 <span className="mt-4 inline-flex rounded-full bg-white/10 px-2.5 py-1 text-[10px] font-black uppercase text-yellow-200">{tag}</span>
               </Link>
             ))}
@@ -253,10 +253,10 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="bg-brand-50 py-16 sm:py-20">
+      <section className="bg-brand-50 py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading eyebrow="From the blog" title="Real talk. No career jargon." text="Honest guides written for people who are figuring it out, not for people who already have it figured out." />
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          <div className="mt-8 grid gap-5 sm:mt-12 lg:grid-cols-3">
             {blogs.map(([category, title, text, date, Icon, bg]) => (
               <Link key={title} to="/blog" className="overflow-hidden rounded-2xl border border-line bg-white">
                 <div className={`flex h-44 items-center justify-center ${bg}`}>
@@ -277,10 +277,10 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="bg-white py-16 sm:py-20">
+      <section className="bg-white py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading eyebrow="Real stories" title="Real People. Real Switches." text="From BPO floors to careers they never imagined. Here's what our users say." />
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+          <div className="mt-8 grid gap-5 sm:mt-12 lg:grid-cols-3">
             {stories.map(([name, role, text, initials]) => (
               <div key={name} className="rounded-2xl border border-line bg-white p-6">
                 <div className="text-yellow-400">*****</div>
@@ -298,11 +298,11 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-brand py-20 text-center text-white">
+      <section className="relative overflow-hidden bg-brand py-14 text-center text-white sm:py-20">
         <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-white/10" />
         <div className="pointer-events-none absolute -right-20 -bottom-20 h-72 w-72 rounded-full bg-pink-500/20" />
         <div className="relative mx-auto max-w-3xl px-4">
-          <h2 className="font-heading text-4xl font-black leading-tight sm:text-5xl">Your next career chapter starts with one quiz.</h2>
+          <h2 className="font-heading text-3xl font-black leading-tight sm:text-5xl">Your next career chapter starts with one quiz.</h2>
           <p className="mt-5 text-base font-semibold text-white/76">Join 12,000+ late starters who found their direction. Takes 5 minutes. Starts at Rs 9.</p>
           <button onClick={startJourney} className="mt-9 rounded-xl bg-white px-8 py-4 text-sm font-black text-brand">
             Take the free career quiz <ArrowRight className="inline" size={16} />
