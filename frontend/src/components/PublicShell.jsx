@@ -22,7 +22,7 @@ export function PublicNav() {
   const start = () => navigate(isAuthenticated ? "/dashboard" : "/signin");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line/80 bg-white/92 backdrop-blur-2xl shadow-[0_8px_26px_rgba(22,7,65,0.035)]">
+    <header className="sticky top-0 z-40 border-b border-line/80 bg-white/92 backdrop-blur-2xl">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-[58px] sm:h-[76px] flex items-center justify-between gap-2 sm:gap-3">
         <Link to="/" aria-label="Latecomers AI home" className="shrink-0 flex items-center">
           <Logo size={50} compact />
@@ -39,7 +39,7 @@ export function PublicNav() {
                 key={item.to}
                 to={item.to}
                 className={`px-4 py-2 rounded-full transition ${
-                  location.pathname === item.to ? "bg-brand text-white shadow-brand" : "hover:text-brand hover:bg-brand-50"
+                  location.pathname === item.to ? "bg-brand text-white" : "hover:text-brand hover:bg-brand-50"
                 }`}
               >
                 {item.label}
@@ -51,7 +51,7 @@ export function PublicNav() {
         <div className="flex items-center gap-2">
           <button
             onClick={start}
-            className="inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-600 to-brand hover:from-brand-700 hover:to-pink-500 text-white font-bold text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg transition whitespace-nowrap shadow-brand"
+            className="inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-600 to-brand hover:from-brand-700 hover:to-pink-500 text-white font-bold text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg transition whitespace-nowrap"
           >
             <span className="hidden min-[390px]:inline">Take the Career Quiz</span>
             <span className="min-[390px]:hidden">Quiz</span>

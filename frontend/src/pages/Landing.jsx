@@ -98,9 +98,9 @@ const heroPills = [
 function JourneyCard() {
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-1 sm:-mt-2 pb-8 sm:pb-14">
-      <div className="rounded-2xl sm:rounded-[2rem] border border-line bg-white p-3.5 sm:p-8 lg:p-10 shadow-soft">
+      <div className="rounded-2xl sm:rounded-[2rem] border border-line bg-white p-3.5 sm:p-8 lg:p-10">
         <div className="text-center">
-          <h2 className="font-heading text-lg sm:text-3xl font-extrabold text-ink">Your Career Journey Starts Here</h2>
+          <h2 className="font-heading text-lg sm:text-3xl font-extrabold text-ink/90">Your Career Journey Starts Here</h2>
           <p className="mt-1.5 text-xs sm:text-base font-semibold text-muted2">Personalized guidance - Practical roadmap - Real results</p>
         </div>
         <div className="mt-5 sm:mt-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-4">
@@ -110,11 +110,11 @@ function JourneyCard() {
                 <ArrowRight className="absolute right-[-20px] top-12 hidden text-brand lg:block" size={34} strokeWidth={2.4} />
               )}
               <div className="mx-auto flex h-16 w-16 sm:h-28 sm:w-28 items-center justify-center rounded-full bg-brand-50">
-                <Icon size={32} className="text-brand-800 sm:hidden" strokeWidth={1.8} />
-                <Icon size={58} className="text-brand-800 hidden sm:block" strokeWidth={1.8} />
+                <Icon size={32} className="text-brand-700 sm:hidden" strokeWidth={1.8} />
+                <Icon size={58} className="text-brand-700 hidden sm:block" strokeWidth={1.8} />
               </div>
-              <h3 className="mt-2.5 sm:mt-5 font-heading text-xs sm:text-lg font-extrabold text-ink">{title}</h3>
-              <p className="mx-auto mt-1 sm:mt-2 max-w-[220px] text-[10px] sm:text-sm leading-relaxed text-ink/82">{text}</p>
+              <h3 className="mt-2.5 sm:mt-5 font-heading text-xs sm:text-lg font-extrabold text-ink/90">{title}</h3>
+              <p className="mx-auto mt-1 sm:mt-2 max-w-[220px] text-[10px] sm:text-sm leading-relaxed text-muted2">{text}</p>
             </div>
           ))}
         </div>
@@ -159,7 +159,7 @@ export default function Landing() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(560px_320px_at_74%_12%,rgba(236,72,153,0.11),transparent_62%),radial-gradient(620px_360px_at_94%_24%,rgba(124,44,242,0.12),transparent_62%)]" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-12 pb-5 sm:pb-10 grid lg:grid-cols-[0.82fr_1.18fr] gap-4 sm:gap-8 lg:gap-10 items-center">
           <div className="lg:max-w-[560px]">
-            <span className="inline-flex items-center gap-2 rounded-full bg-pink-50 px-3 py-1.5 sm:py-2 text-[10px] sm:text-sm font-extrabold text-brand shadow-[0_10px_28px_rgba(124,44,242,0.08)]">
+            <span className="inline-flex items-center gap-2 rounded-full bg-pink-50 px-3 py-1.5 sm:py-2 text-[10px] sm:text-sm font-extrabold text-brand">
               <Star size={14} className="fill-pink-500 text-pink-500" />
               AI-Powered Career Guidance
             </span>
@@ -172,7 +172,7 @@ export default function Landing() {
               Get AI-powered career suggestions, step-by-step roadmaps, and the right skills to build a future you'll love.
             </p>
             <div className="mt-4 sm:mt-6 flex flex-wrap items-center gap-2.5 sm:gap-3">
-              <button onClick={startJourney} className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-600 to-brand px-4 sm:px-7 py-2.5 sm:py-3 text-xs sm:text-base font-extrabold text-white shadow-brand transition hover:from-brand-700 hover:to-pink-500">
+              <button onClick={startJourney} className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-600 to-brand px-4 sm:px-7 py-2.5 sm:py-3 text-xs sm:text-base font-extrabold text-white transition hover:from-brand-700 hover:to-pink-500">
                 Take the Career Quiz <ArrowRight size={17} />
               </button>
               <a href="#how" className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 sm:px-7 py-2.5 sm:py-3 text-xs sm:text-base font-extrabold text-ink transition hover:border-brand hover:text-brand">
@@ -201,66 +201,66 @@ export default function Landing() {
             <div className="absolute inset-8 hidden rounded-full border border-dashed border-brand/20 sm:block" />
             <div className="mx-auto mb-2.5 grid max-w-[300px] grid-cols-2 gap-2 sm:hidden">
               {heroPills.map(([label, Icon]) => (
-                <div key={label} className="flex items-center gap-2 rounded-xl border border-line bg-white px-2 py-2 shadow-[0_10px_24px_rgba(124,44,242,0.10)]">
+                <div key={label} className="flex items-center gap-2 rounded-xl border border-line bg-white px-2 py-2">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-100 text-brand">
                     <Icon size={14} />
                   </span>
-                  <span className="text-[9.5px] font-black leading-tight text-ink">{label}</span>
+                  <span className="text-[9.5px] font-black leading-tight text-ink/90">{label}</span>
                 </div>
               ))}
             </div>
-            <div className="relative mx-auto w-full max-w-[224px] rounded-[1rem] border border-line bg-white p-2.5 shadow-[0_18px_42px_rgba(124,44,242,0.16)] sm:absolute sm:left-1/2 sm:top-1/2 sm:w-[258px] sm:max-w-none sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[1.35rem] sm:p-4 sm:shadow-[0_24px_65px_rgba(124,44,242,0.18)] lg:w-[270px] lg:p-5">
-              <div className="flex items-start justify-between gap-2 text-[10px] sm:text-xs font-extrabold text-ink">
+            <div className="relative mx-auto w-full max-w-[224px] rounded-[1rem] border border-line bg-white p-2.5 sm:absolute sm:left-1/2 sm:top-1/2 sm:w-[258px] sm:max-w-none sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[1.35rem] sm:p-4 lg:w-[270px] lg:p-5">
+              <div className="flex items-start justify-between gap-2 text-[10px] sm:text-xs font-extrabold text-ink/90">
                 <span>Your AI Career Match</span>
                 <span className="rounded-full bg-emerald-50 px-2 py-1 text-[9px] sm:text-[10px] text-emerald-700">95% Match</span>
               </div>
               <div className="mt-2.5 sm:mt-4 lg:mt-5 text-center">
-                <div className="mx-auto flex h-9 w-9 sm:h-12 sm:w-12 lg:h-14 lg:w-14 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-brand to-pink-500 text-white shadow-brand">
+                <div className="mx-auto flex h-9 w-9 sm:h-12 sm:w-12 lg:h-14 lg:w-14 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-brand to-pink-500 text-white">
                   <Palette size={20} className="sm:hidden" />
                   <Palette size={24} className="hidden sm:block lg:hidden" />
                   <Palette size={28} className="hidden lg:block" />
                 </div>
-                <h2 className="mt-2 sm:mt-3 font-heading text-[15px] sm:text-xl lg:text-[1.35rem] font-black text-ink">UI/UX Designer</h2>
-                <div className="mt-1.5 sm:mt-2 inline-flex rounded-lg bg-brand-100 px-2.5 sm:px-3 py-1 text-[9px] sm:text-[10.5px] font-extrabold text-brand-800">
+                <h2 className="mt-2 sm:mt-3 font-heading text-[15px] sm:text-xl lg:text-[1.35rem] font-black text-ink/90">UI/UX Designer</h2>
+                <div className="mt-1.5 sm:mt-2 inline-flex rounded-lg bg-brand-100 px-2.5 sm:px-3 py-1 text-[9px] sm:text-[10.5px] font-extrabold text-brand-700">
                   Creative - High Growth - In Demand
                 </div>
               </div>
               <div className="mt-2.5 sm:mt-3 lg:mt-4 space-y-1.5 sm:space-y-2">
-                <p className="text-[10px] sm:text-xs font-black text-ink">Why this career?</p>
+                <p className="text-[10px] sm:text-xs font-black text-ink/90">Why this career?</p>
                 {["Great fit for your personality", "High demand in the market", "Good growth & future scope"].map((item) => (
-                  <p key={item} className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-semibold text-ink/78">
+                  <p key={item} className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-semibold text-muted2">
                     <CheckCircle2 size={12} className="shrink-0 text-emerald-500 sm:hidden" />
                     <CheckCircle2 size={14} className="hidden shrink-0 text-emerald-500 sm:block" />
                     {item}
                   </p>
                 ))}
               </div>
-              <button onClick={startJourney} className="mt-2.5 sm:mt-3 lg:mt-4 w-full rounded-lg bg-gradient-to-r from-brand-600 to-brand py-2 sm:py-2.5 text-xs sm:text-sm font-extrabold text-white shadow-brand">
+              <button onClick={startJourney} className="mt-2.5 sm:mt-3 lg:mt-4 w-full rounded-lg bg-gradient-to-r from-brand-500 to-brand py-2 sm:py-2.5 text-xs sm:text-sm font-extrabold text-white">
                 View Full Roadmap
               </button>
             </div>
 
             {heroPills.map(([label, Icon, position]) => (
-              <div key={label} className={`absolute hidden sm:flex ${position} items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-[0_16px_40px_rgba(124,44,242,0.14)] border border-line`}>
+              <div key={label} className={`absolute hidden sm:flex ${position} items-center gap-3 rounded-2xl bg-white px-4 py-3 border border-line`}>
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 text-brand">
                   <Icon size={21} />
                 </span>
-                <span className="max-w-[118px] text-xs font-black leading-tight text-ink">{label}</span>
+                <span className="max-w-[118px] text-xs font-black leading-tight text-ink/90">{label}</span>
               </div>
             ))}
           </div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-7 sm:pb-9">
-          <h2 className="text-center font-heading text-xl sm:text-xl font-black text-ink">Popular Career Paths</h2>
+          <h2 className="text-center font-heading text-xl sm:text-xl font-black text-ink/90">Popular Career Paths</h2>
           <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 xl:grid-cols-12 gap-2.5 sm:gap-3">
             {popularCareers.map(([title, tag1, tag2, Icon, gradient]) => (
-              <Link key={title} to="/careers-explore" className="rounded-lg border border-line bg-white p-2.5 sm:p-3 text-center shadow-[0_10px_30px_rgba(22,7,65,0.045)] transition hover:-translate-y-0.5 hover:shadow-soft">
+              <Link key={title} to="/careers-explore" className="rounded-lg border border-line bg-white p-2.5 sm:p-3 text-center transition hover:-translate-y-0.5">
                 <span className={`mx-auto flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br ${gradient} text-white`}>
                   <Icon size={18} className="sm:hidden" />
                   <Icon size={24} className="hidden sm:block" />
                 </span>
-                <h3 className="mt-2 sm:mt-3 min-h-[28px] sm:min-h-[34px] text-[11px] sm:text-xs font-black leading-tight text-ink">{title}</h3>
+                <h3 className="mt-2 sm:mt-3 min-h-[28px] sm:min-h-[34px] text-[11px] sm:text-xs font-black leading-tight text-ink/90">{title}</h3>
                 <div className="mt-1.5 sm:mt-2 flex flex-wrap justify-center gap-1 text-[8.5px] sm:text-[9px] font-bold text-muted2">
                   <span>{tag1}</span>
                   <span>{tag2}</span>
@@ -269,7 +269,7 @@ export default function Landing() {
             ))}
           </div>
           <div className="mt-5 text-center">
-            <Link to="/careers-explore" className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-600 to-brand px-7 py-3 text-sm font-extrabold text-white shadow-brand">
+            <Link to="/careers-explore" className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-600 to-brand px-7 py-3 text-sm font-extrabold text-white">
               Explore 50+ Careers <ArrowRight size={16} />
             </Link>
           </div>
@@ -277,16 +277,16 @@ export default function Landing() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 sm:pb-12">
           <div className="rounded-2xl bg-brand-50 px-4 py-5 sm:px-7 sm:py-6">
-            <h2 className="text-center font-heading text-lg sm:text-xl font-black text-ink">Who Is This For?</h2>
+            <h2 className="text-center font-heading text-lg sm:text-xl font-black text-ink/90">Who Is This For?</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {audiences.map(([title, text, Icon]) => (
                 <div key={title} className="flex items-center gap-3 lg:border-r lg:border-line last:border-r-0 lg:pr-4">
-                  <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-white text-brand shadow-[0_12px_32px_rgba(124,44,242,0.12)]">
+                  <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-white text-brand border border-line">
                     <Icon size={30} />
                   </span>
                   <span>
-                    <h3 className="font-heading text-sm font-black text-ink">{title}</h3>
-                    <p className="mt-1 text-xs leading-relaxed text-ink/78">{text}</p>
+                    <h3 className="font-heading text-sm font-black text-ink/90">{title}</h3>
+                    <p className="mt-1 text-xs leading-relaxed text-muted2">{text}</p>
                   </span>
                 </div>
               ))}
@@ -300,12 +300,12 @@ export default function Landing() {
       <section id="how" className="bg-white border-y border-line py-10 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-extrabold tracking-[0.22em] text-brand uppercase">How it works</p>
-          <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink mt-2">From confused to career-ready in 4 steps.</h2>
+          <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink/90 mt-2">From confused to career-ready in 4 steps.</h2>
           <div className="mt-7 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {steps.map(([title, text], index) => (
-              <div key={title} className="bg-brand-50 border border-line rounded-2xl p-4 hover:-translate-y-1 hover:shadow-soft transition">
-                <div className="w-8 h-8 rounded-full bg-ink text-white flex items-center justify-center text-sm font-bold">{index + 1}</div>
-                <h3 className="font-heading font-bold text-sm text-ink mt-3 leading-tight">{title}</h3>
+              <div key={title} className="bg-brand-50 border border-line rounded-2xl p-4 hover:-translate-y-1 transition">
+                <div className="w-8 h-8 rounded-full bg-brand-800 text-white flex items-center justify-center text-sm font-bold">{index + 1}</div>
+                <h3 className="font-heading font-bold text-sm text-ink/90 mt-3 leading-tight">{title}</h3>
                 <p className="text-xs text-muted2 mt-2 leading-relaxed">{text}</p>
               </div>
             ))}
@@ -316,14 +316,14 @@ export default function Landing() {
       <section className="bg-brand-50 py-10 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-extrabold tracking-[0.22em] text-brand uppercase">What you get</p>
-          <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink mt-2">Everything you need to move forward.</h2>
+          <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink/90 mt-2">Everything you need to move forward.</h2>
           <div className="mt-7 grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {features.map(([title, Icon]) => (
-              <div key={title} className="bg-white border border-line rounded-2xl p-4 flex items-center gap-3 hover:-translate-y-1 hover:shadow-soft transition">
+              <div key={title} className="bg-white border border-line rounded-2xl p-4 flex items-center gap-3 hover:-translate-y-1 transition">
                 <div className="w-10 h-10 rounded-2xl bg-brand text-white flex items-center justify-center shrink-0">
                   <Icon size={18} />
                 </div>
-                <p className="font-heading font-bold text-sm text-ink">{title}</p>
+                <p className="font-heading font-bold text-sm text-ink/90">{title}</p>
               </div>
             ))}
           </div>
@@ -331,7 +331,7 @@ export default function Landing() {
       </section>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 text-center">
-        <div className="premium-gradient rounded-3xl p-6 sm:p-10 text-white shadow-brand">
+        <div className="premium-gradient rounded-3xl p-6 sm:p-10 text-white">
           <Headphones className="mx-auto text-white" size={28} />
           <h2 className="font-heading font-extrabold text-2xl sm:text-4xl mt-3">Late but not lost.</h2>
           <p className="text-sm sm:text-base text-white/82 mt-2 max-w-xl mx-auto">Start with one honest quiz. Leave with a direction you can actually follow.</p>
