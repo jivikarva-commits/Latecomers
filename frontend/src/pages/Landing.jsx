@@ -2,124 +2,77 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
-  BarChart3,
-  BookOpen,
-  Brain,
-  BriefcaseBusiness,
-  Building2,
-  Calculator,
+  Briefcase,
   CheckCircle2,
   ClipboardCheck,
-  Cloud,
-  Code2,
-  FileSpreadsheet,
   GraduationCap,
-  Headphones,
-  HeartPulse,
-  IndianRupee,
-  LineChart,
-  Map,
   MapPinned,
-  Megaphone,
-  MessageCircle,
-  Mic,
-  Palette,
-  Play,
-  Repeat2,
   ShieldCheck,
-  Sparkles,
-  Star,
   Target,
   Trophy,
-  User,
-  UserCheck,
   Users,
-  WalletCards,
 } from "lucide-react";
 import PublicShell from "../components/PublicShell";
 import { useAuth } from "../context/AuthContext";
 import SEO from "../components/SEO";
 import { faqSchema, organizationSchema, softwareAppSchema, websiteSchema } from "../lib/seoSchemas";
 
-const audiences = [
-  ["Late Starters", "Starting your journey after a break or later in life.", User],
-  ["Job Switchers", "Want to switch your career to something better.", Repeat2],
-  ["Graduates", "Confused about what to do after 12th or graduation.", GraduationCap],
-  ["Confused Professionals", "Not sure if you're on the right path.", UserCheck],
-];
-
-const features = [
-  ["Career Match Score", Brain],
-  ["Step-by-Step Roadmap", Map],
-  ["Institute Search", Building2],
-  ["Scholarship Finder", GraduationCap],
-  ["Mock Interviews", Mic],
-  ["AI Career Chat", MessageCircle],
+const stats = [
+  ["12,000+", "Quizzes taken"],
+  ["40+", "Career paths"],
+  ["Rs 9", "Starting price"],
+  ["4.8", "Avg. rating"],
+  ["5 min", "To complete quiz"],
 ];
 
 const steps = [
-  ["Tell us where you are", "Answer a simple quiz about education, work history, strengths, interests, and goals."],
-  ["Get a realistic match", "See careers that fit your current profile, salary goals, learning style, and confidence level."],
-  ["Follow your roadmap", "Build skills month by month with courses, projects, institutes, and interview preparation."],
-  ["Move with proof", "Practice answers, save options, compare paths, and apply with a story that makes sense."],
+  ["Tell us where you are", "Answer a simple quiz about your education, work history, strengths, interests, and goals.", Target],
+  ["Get a realistic match", "See careers that fit your current profile, salary goals, learning style, and confidence level.", MapPinned],
+  ["Follow your roadmap", "Build skills month by month with courses, projects, institutes, and interview preparation.", ClipboardCheck],
+  ["Move with proof", "Practice answers, save options, compare paths, and apply with a story that actually makes sense.", Trophy],
 ];
 
-const journey = [
-  ["Discover Yourself", "Answer a few simple questions about your background, interests, and goals.", Target],
-  ["Get Your Career Map", "Receive AI-powered career recommendations tailored for your unique journey.", MapPinned],
-  ["Follow Your Roadmap", "Understand the skills, steps, and resources to reach your goal faster.", ClipboardCheck],
-  ["Achieve Your Goals", "Build confidence, switch smarter, and grow in a career that truly fits.", Trophy],
+const audiences = [
+  ["BPO & Telecallers", "Turn communication, patience, and CRM discipline into customer success, sales, operations, or support roles that actually value your experience.", Users],
+  ["Backoffice & Data Entry", "Move from repetitive tasks into analytics, operations, MIS, QA, or process leadership. Your attention to detail is a superpower waiting to be unlocked.", Briefcase],
+  ["Graduates With No Direction", "Convert your degree into a practical roadmap instead of wasting months comparing random courses online and still feeling lost.", GraduationCap],
+  ["Career Switchers", "Use your past experience as a bridge into a better-fit career path, not as a burden. Every year you've worked counts.", ArrowRight],
 ];
 
-const popularCareers = [
-  ["UI/UX Designer", "Design", "High Demand", Palette, "from-purple-500 to-violet-700"],
-  ["Data Analyst", "Analytics", "High Growth", BarChart3, "from-violet-400 to-fuchsia-600"],
-  ["DevOps Engineer", "IT & Cloud", "High Salary", Cloud, "from-brand-400 to-violet-700"],
-  ["Cybersecurity Analyst", "Security", "High Growth", ShieldCheck, "from-purple-500 to-violet-800"],
-  ["Makeup Artist", "Creative", "Flexible", Sparkles, "from-pink-400 to-fuchsia-600"],
-  ["Cloud Engineer", "IT & Cloud", "High Salary", Cloud, "from-fuchsia-400 to-brand-700"],
-  ["Medical Coder", "Healthcare", "Stable", HeartPulse, "from-purple-500 to-pink-500"],
-  ["CA Foundation", "Commerce", "Elite Path", Calculator, "from-emerald-400 to-teal-600"],
-  ["B.Com / BAF", "Accounts", "Degree Track", BookOpen, "from-amber-400 to-orange-600"],
-  ["BBA / BMS", "Management", "Business", BriefcaseBusiness, "from-indigo-400 to-purple-600"],
-  ["Financial Modeling", "Finance", "High Value", LineChart, "from-lime-400 to-emerald-600"],
-  ["Tally + GST", "Accounting", "Job Ready", FileSpreadsheet, "from-rose-400 to-pink-600"],
+const careerTracks = [
+  ["Full Stack Developer", "Tech", "Build web apps, earn Rs 6-18 LPA. BCA/BSc or self-taught both welcome.", "Hot", Briefcase],
+  ["Cybersecurity Analyst", "Tech", "Protect companies from hackers. High demand, ethical hacking certs open doors fast.", "Booming", ShieldCheck],
+  ["DevOps Engineer", "Tech", "Automate deployments, manage cloud infra. Great switch for IT support backgrounds.", "Great switch", ClipboardCheck],
+  ["Data Analyst", "Analytics", "Turn spreadsheets into insights. Excel, SQL and Power BI is all you need to start.", "High demand", Target],
+  ["Cabin Crew / Air Hostess", "Aviation", "Customer service background is your biggest advantage. Airlines hire year-round.", "Growing", Users],
+  ["Airport Ground Staff", "Aviation", "Check-in, boarding, cargo handling. Stable government and private roles available.", "Always open", Briefcase],
+  ["Mehendi Artist", "Hidden gem", "Freelance, events, bridal bookings, Rs 500-Rs 5000 per session. Low investment.", "Underrated", Trophy],
+  ["Makeup Artist", "Hidden gem", "Bridal, film, TV, fashion. Three month course and you can freelance immediately.", "Hidden gem", GraduationCap],
+  ["UI/UX Designer", "Creative tech", "Design apps and websites. Figma is free to learn, portfolio matters more than degree.", "Creative", MapPinned],
+  ["Social Media Manager", "Marketing", "Run brand pages, create content strategy. BPO communication skills transfer well.", "Fast start", Users],
+  ["Medical Coder / Biller", "Healthcare", "Work-from-home friendly US healthcare sector. Three month training path.", "Stable", ClipboardCheck],
+  ["SSC / Banking Officer", "Government", "UPSC, SSC CGL, IBPS. Structured 6-12 month prep roadmaps with clear exams.", "Secure", ShieldCheck],
 ];
 
-const heroPills = [
-  ["Full Stack Developer", Code2, "left-[5%] top-[9%]"],
-  ["Cybersecurity Analyst", ShieldCheck, "left-0 top-[40%]"],
-  ["Medical Coder", HeartPulse, "left-[10%] bottom-[14%]"],
-  ["Social Media Manager", Megaphone, "right-0 top-[12%]"],
-  ["Finance Analyst", WalletCards, "right-[3%] top-[42%]"],
-  ["Data Analyst", BarChart3, "right-[7%] bottom-[12%]"],
+const blogs = [
+  ["Tech careers", "How a BPO agent became a Cybersecurity Analyst in 11 months", "Rohan had zero coding experience. Here's the exact path he took - certifications, costs, and timeline included.", "May 22, 2025", ShieldCheck, "bg-violet-100"],
+  ["Hidden gems", "Making Rs 80,000/month as a freelance Makeup Artist - is it real?", "We spoke to 5 makeup artists across Tier 1 and Tier 2 cities. The numbers might surprise you.", "May 15, 2025", GraduationCap, "bg-pink-100"],
+  ["For graduates", "Stop doing random courses. Here's how to actually pick the right one", "Most graduates waste 6-12 months on courses that don't lead anywhere. Here's a 3-question framework.", "May 8, 2025", MapPinned, "bg-yellow-100"],
 ];
 
-function JourneyCard() {
+const stories = [
+  ["Priya Sharma", "BPO -> Digital Marketing, Pune", "I was stuck in BPO for 4 years thinking this was my life. Latecomers showed me a path into digital marketing. Within 8 months I switched and doubled my salary.", "PS"],
+  ["Rahul Kulkarni", "Confused Graduate -> Healthcare Ops, Nagpur", "I graduated in 2021 with no idea what to do. The career quiz was shockingly accurate. Now I'm training for a hospital admin role with a clear 6-month plan.", "RK"],
+  ["Anjali Mehta", "Back-office -> Data Analyst, Mumbai", "The roadmap was so practical - exact courses, timelines, even which certifications are worth it. I stopped feeling overwhelmed and started taking real steps.", "AM"],
+];
+
+function SectionHeading({ eyebrow, title, text, light = false }) {
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-1 sm:-mt-2 pb-8 sm:pb-14">
-      <div className="rounded-2xl sm:rounded-[2rem] border border-line bg-white p-3.5 sm:p-8 lg:p-10">
-        <div className="text-center">
-          <h2 className="font-heading text-lg sm:text-3xl font-extrabold text-ink/90">Your Career Journey Starts Here</h2>
-          <p className="mt-1.5 text-xs sm:text-base font-semibold text-muted2">Personalized guidance - Practical roadmap - Real results</p>
-        </div>
-        <div className="mt-5 sm:mt-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-4">
-          {journey.map(([title, text, Icon], index) => (
-            <div key={title} className="relative text-center">
-              {index < journey.length - 1 && (
-                <ArrowRight className="absolute right-[-20px] top-12 hidden text-brand lg:block" size={34} strokeWidth={2.4} />
-              )}
-              <div className="mx-auto flex h-16 w-16 sm:h-28 sm:w-28 items-center justify-center rounded-full bg-brand-50">
-                <Icon size={32} className="text-brand-700 sm:hidden" strokeWidth={1.8} />
-                <Icon size={58} className="text-brand-700 hidden sm:block" strokeWidth={1.8} />
-              </div>
-              <h3 className="mt-2.5 sm:mt-5 font-heading text-xs sm:text-lg font-extrabold text-ink/90">{title}</h3>
-              <p className="mx-auto mt-1 sm:mt-2 max-w-[220px] text-[10px] sm:text-sm leading-relaxed text-muted2">{text}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+    <div className="max-w-3xl">
+      <p className={`text-xs font-black uppercase tracking-[0.28em] ${light ? "text-yellow-300" : "text-pink-500"}`}>{eyebrow}</p>
+      <h2 className={`mt-3 font-heading text-3xl sm:text-4xl font-black leading-tight ${light ? "text-white" : "text-ink"}`}>{title}</h2>
+      {text && <p className={`mt-4 text-sm sm:text-base leading-relaxed ${light ? "text-white/72" : "text-muted2"}`}>{text}</p>}
+    </div>
   );
 }
 
@@ -155,194 +108,200 @@ export default function Landing() {
         ]}
       />
 
-      <section className="relative overflow-hidden bg-[linear-gradient(180deg,#fff_0%,#fff_55%,#FCF8FF_100%)]">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(560px_320px_at_74%_12%,rgba(236,72,153,0.11),transparent_62%),radial-gradient(620px_360px_at_94%_24%,rgba(124,44,242,0.12),transparent_62%)]" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-12 pb-5 sm:pb-10 grid lg:grid-cols-[0.82fr_1.18fr] gap-4 sm:gap-8 lg:gap-10 items-center">
-          <div className="lg:max-w-[560px]">
-            <span className="inline-flex items-center gap-2 rounded-full bg-pink-50 px-3 py-1.5 sm:py-2 text-[10px] sm:text-sm font-extrabold text-brand">
-              <Star size={14} className="fill-pink-500 text-pink-500" />
-              AI-Powered Career Guidance
+      <section className="bg-[#F6F1FF]">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_1.08fr] lg:px-8 lg:py-20">
+          <div className="flex flex-col justify-center">
+            <span className="w-fit rounded-full bg-pink-100 px-4 py-2 text-xs font-black text-pink-600">
+              + For late starters, BPO workers and confused graduates
             </span>
-            <h1 className="mt-3 sm:mt-5 font-heading text-[1.82rem] min-[390px]:text-[2rem] sm:text-5xl lg:text-[3.25rem] xl:text-[3.6rem] font-black leading-[1.08] lg:leading-[1.04] text-ink">
-              You Are Not Late.
-              <span className="block">You Just Need the Right</span>
-              <span className="block premium-text-gradient">Career Map.</span>
+            <h1 className="mt-7 font-heading text-4xl font-black leading-[1.05] text-ink sm:text-6xl">
+              You are not late.
+              <span className="block">You just need</span>
+              <span className="block">
+                the <span className="text-brand underline decoration-pink-400 decoration-4 underline-offset-4">right career map.</span>
+              </span>
             </h1>
-            <p className="mt-3 sm:mt-5 max-w-xl text-[13px] sm:text-lg leading-relaxed text-ink/82">
-              Get AI-powered career suggestions, step-by-step roadmaps, and the right skills to build a future you'll love.
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted2">
+              Latecomers AI helps you find a practical career path, understand why it fits, and follow a step-by-step roadmap to move from confusion to action.
             </p>
-            <div className="mt-4 sm:mt-6 flex flex-wrap items-center gap-2.5 sm:gap-3">
-              <button onClick={startJourney} className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-600 to-brand px-4 sm:px-7 py-2.5 sm:py-3 text-xs sm:text-base font-extrabold text-white transition hover:from-brand-700 hover:to-pink-500">
-                Take the Career Quiz <ArrowRight size={17} />
+            <div className="mt-8 flex flex-wrap gap-3">
+              <button onClick={startJourney} className="rounded-lg bg-brand px-6 py-3 text-sm font-black text-white">
+                Take the career quiz <ArrowRight className="inline-block" size={16} />
               </button>
-              <a href="#how" className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 sm:px-7 py-2.5 sm:py-3 text-xs sm:text-base font-extrabold text-ink transition hover:border-brand hover:text-brand">
-                <Play size={15} className="fill-ink" /> Watch How It Works
+              <a href="#how" className="rounded-lg border border-brand/40 bg-white px-6 py-3 text-sm font-black text-brand">
+                See how it works <ArrowRight className="inline-block" size={16} />
               </a>
             </div>
-            <div className="mt-4 sm:mt-6 grid grid-cols-2 sm:grid-cols-4 gap-x-2.5 sm:gap-x-3 gap-y-2.5 sm:gap-y-3 max-w-2xl">
-              {[
-                ["AI-Powered Matching", Sparkles],
-                ["Personalized Roadmaps", Map],
-                ["Affordable Guidance", IndianRupee],
-                ["For Every Background", Users],
-              ].map(([label, Icon]) => (
-                <div key={label} className="flex items-center gap-2 text-[10px] min-[390px]:text-[11px] sm:text-xs font-extrabold text-ink">
-                  <span className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg bg-brand-100 text-brand">
-                    <Icon size={14} className="sm:hidden" />
-                    <Icon size={16} className="hidden sm:block" />
-                  </span>
-                  <span className="leading-tight">{label}</span>
-                </div>
+            <div className="mt-7 flex flex-wrap gap-3">
+              {["Starts at Rs 9", "Switcher-friendly", "Takes 5 min"].map((item) => (
+                <span key={item} className="inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2">
+                  <CheckCircle2 size={15} className="text-emerald-500" /> {item}
+                </span>
               ))}
             </div>
           </div>
 
-          <div className="relative min-h-0 sm:min-h-[430px] lg:min-h-[470px]">
-            <div className="absolute inset-8 hidden rounded-full border border-dashed border-brand/20 sm:block" />
-            <div className="mx-auto mb-2.5 grid max-w-[300px] grid-cols-2 gap-2 sm:hidden">
-              {heroPills.map(([label, Icon]) => (
-                <div key={label} className="flex items-center gap-2 rounded-xl border border-line bg-white px-2 py-2">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-100 text-brand">
-                    <Icon size={14} />
-                  </span>
-                  <span className="text-[9.5px] font-black leading-tight text-ink/90">{label}</span>
+          <div className="relative min-h-[420px] overflow-hidden">
+            <div className="absolute left-[42%] top-[16%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Cabin Crew</div>
+            <div className="absolute left-[48%] top-[28%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">Cybersecurity Analyst</div>
+            <div className="absolute left-[40%] top-[40%] hidden rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 lg:block">Mehendi Artist</div>
+            <div className="absolute left-[46%] top-[52%] hidden rounded-full bg-yellow-100 px-4 py-2 text-xs font-bold text-yellow-800 lg:block">Makeup Artist</div>
+            <div className="absolute left-[43%] top-[66%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">Cloud Engineer</div>
+            <div className="absolute right-0 top-[16%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">DevOps Engineer</div>
+            <div className="absolute right-[2%] top-[29%] hidden rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 lg:block">Airport Ground Staff</div>
+            <div className="absolute right-[1%] top-[42%] hidden rounded-full bg-yellow-100 px-4 py-2 text-xs font-bold text-yellow-800 lg:block">Data Analyst</div>
+            <div className="absolute right-[4%] top-[56%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Social Media Manager</div>
+            <div className="absolute right-[5%] top-[70%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">Full Stack Developer</div>
+
+            <div className="mx-auto mt-2 w-full max-w-[330px] rounded-2xl border border-line bg-white p-5 lg:absolute lg:left-[44%] lg:top-[23%]">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-yellow-100 text-ink">
+                  <Target size={22} />
                 </div>
-              ))}
-            </div>
-            <div className="relative mx-auto w-full max-w-[224px] rounded-[1rem] border border-line bg-white p-2.5 sm:absolute sm:left-1/2 sm:top-1/2 sm:w-[258px] sm:max-w-none sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[1.35rem] sm:p-4 lg:w-[270px] lg:p-5">
-              <div className="flex items-start justify-between gap-2 text-[10px] sm:text-xs font-extrabold text-ink/90">
-                <span>Your AI Career Match</span>
-                <span className="rounded-full bg-emerald-50 px-2 py-1 text-[9px] sm:text-[10px] text-emerald-700">95% Match</span>
-              </div>
-              <div className="mt-2.5 sm:mt-4 lg:mt-5 text-center">
-                <div className="mx-auto flex h-9 w-9 sm:h-12 sm:w-12 lg:h-14 lg:w-14 items-center justify-center rounded-xl sm:rounded-2xl bg-gradient-to-br from-brand to-pink-500 text-white">
-                  <Palette size={20} className="sm:hidden" />
-                  <Palette size={24} className="hidden sm:block lg:hidden" />
-                  <Palette size={28} className="hidden lg:block" />
-                </div>
-                <h2 className="mt-2 sm:mt-3 font-heading text-[15px] sm:text-xl lg:text-[1.35rem] font-black text-ink/90">UI/UX Designer</h2>
-                <div className="mt-1.5 sm:mt-2 inline-flex rounded-lg bg-brand-100 px-2.5 sm:px-3 py-1 text-[9px] sm:text-[10.5px] font-extrabold text-brand-700">
-                  Creative - High Growth - In Demand
+                <div>
+                  <p className="font-heading text-base font-black text-ink">Your Career Match</p>
+                  <p className="text-xs text-muted2">Based on your profile</p>
                 </div>
               </div>
-              <div className="mt-2.5 sm:mt-3 lg:mt-4 space-y-1.5 sm:space-y-2">
-                <p className="text-[10px] sm:text-xs font-black text-ink/90">Why this career?</p>
-                {["Great fit for your personality", "High demand in the market", "Good growth & future scope"].map((item) => (
-                  <p key={item} className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-semibold text-muted2">
-                    <CheckCircle2 size={12} className="shrink-0 text-emerald-500 sm:hidden" />
-                    <CheckCircle2 size={14} className="hidden shrink-0 text-emerald-500 sm:block" />
-                    {item}
-                  </p>
+              <div className="mt-5 space-y-3">
+                {[
+                  ["Cybersecurity Analyst", "94% match", true],
+                  ["DevOps Engineer", "88% match"],
+                  ["Data Analyst", "81% match"],
+                  ["Full Stack Developer", "75% match"],
+                  ["Mehendi Artist (Freelance)", "70% match"],
+                ].map(([title, score, active]) => (
+                  <div key={title} className={`flex items-center justify-between rounded-xl border px-3 py-3 text-xs font-black ${active ? "border-brand bg-brand text-white" : "border-line bg-brand-50 text-ink"}`}>
+                    <span>{title}</span>
+                    <span className={`rounded-full px-2 py-1 text-[10px] ${active ? "bg-yellow-300 text-ink" : "bg-emerald-100 text-emerald-700"}`}>{score}</span>
+                  </div>
                 ))}
               </div>
-              <button onClick={startJourney} className="mt-2.5 sm:mt-3 lg:mt-4 w-full rounded-lg bg-gradient-to-r from-brand-500 to-brand py-2 sm:py-2.5 text-xs sm:text-sm font-extrabold text-white">
-                View Full Roadmap
-              </button>
             </div>
+          </div>
+        </div>
 
-            {heroPills.map(([label, Icon, position]) => (
-              <div key={label} className={`absolute hidden sm:flex ${position} items-center gap-3 rounded-2xl bg-white px-4 py-3 border border-line`}>
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 text-brand">
-                  <Icon size={21} />
-                </span>
-                <span className="max-w-[118px] text-xs font-black leading-tight text-ink/90">{label}</span>
+        <div className="bg-brand-900 py-5 text-white">
+          <div className="mx-auto grid max-w-4xl grid-cols-2 gap-5 px-4 text-center sm:grid-cols-5">
+            {stats.map(([value, label]) => (
+              <div key={label}>
+                <p className="font-heading text-2xl font-black text-yellow-300">{value}</p>
+                <p className="mt-1 text-[10px] font-bold uppercase tracking-wide text-white/60">{label}</p>
               </div>
             ))}
           </div>
         </div>
+      </section>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-7 sm:pb-9">
-          <h2 className="text-center font-heading text-xl sm:text-xl font-black text-ink/90">Popular Career Paths</h2>
-          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 xl:grid-cols-12 gap-2.5 sm:gap-3">
-            {popularCareers.map(([title, tag1, tag2, Icon, gradient]) => (
-              <Link key={title} to="/careers-explore" className="rounded-lg border border-line bg-white p-2.5 sm:p-3 text-center transition hover:-translate-y-0.5">
-                <span className={`mx-auto flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br ${gradient} text-white`}>
-                  <Icon size={18} className="sm:hidden" />
-                  <Icon size={24} className="hidden sm:block" />
-                </span>
-                <h3 className="mt-2 sm:mt-3 min-h-[28px] sm:min-h-[34px] text-[11px] sm:text-xs font-black leading-tight text-ink/90">{title}</h3>
-                <div className="mt-1.5 sm:mt-2 flex flex-wrap justify-center gap-1 text-[8.5px] sm:text-[9px] font-bold text-muted2">
-                  <span>{tag1}</span>
-                  <span>{tag2}</span>
+      <section id="how" className="bg-brand-50 py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeading eyebrow="How it works" title="From confused to career-ready in 4 steps." text="Personalized guidance. Practical roadmap. Real results for people like you." />
+          <div className="mt-12 grid gap-5 md:grid-cols-4">
+            {steps.map(([title, text, Icon], index) => (
+              <div key={title} className="rounded-2xl border border-line bg-white p-6">
+                <div className="mb-5 flex h-9 w-9 items-center justify-center rounded-lg bg-brand-100 text-xs font-black text-brand">0{index + 1}</div>
+                <Icon size={30} className="mb-5 text-ink" />
+                <h3 className="font-heading text-base font-black text-ink">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted2">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeading eyebrow="Who is this for?" title="Built for people the system forgot." text="Most career platforms speak to perfect freshers. Latecomers AI is for people who have lived a little, worked a little, struggled a little, and now want a real next step." />
+          <div className="mt-12 grid gap-5 md:grid-cols-2">
+            {audiences.map(([title, text, Icon]) => (
+              <div key={title} className="flex gap-5 rounded-2xl border border-line bg-brand-50 p-6">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white text-brand">
+                  <Icon size={24} />
+                </div>
+                <div>
+                  <h3 className="font-heading text-lg font-black text-ink">{title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted2">{text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden bg-brand-900 py-16 text-white sm:py-20">
+        <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-pink-500/20" />
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeading eyebrow="Career tracks" title="40+ paths. Real job titles. No fluff." text="From mainstream tech roles to hidden-gem careers - we map paths that match your actual background, not just your dream." light />
+          <div className="mt-12 grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {careerTracks.map(([title, category, text, tag, Icon]) => (
+              <Link key={title} to="/careers-explore" className="rounded-2xl border border-white/12 bg-white/6 p-5">
+                <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 text-brand">
+                  <Icon size={21} />
+                </div>
+                <p className="text-[11px] font-black uppercase tracking-widest text-white/42">{category}</p>
+                <h3 className="mt-2 font-heading text-base font-black text-white">{title}</h3>
+                <p className="mt-2 min-h-[56px] text-sm leading-relaxed text-white/62">{text}</p>
+                <span className="mt-4 inline-flex rounded-full bg-white/10 px-2.5 py-1 text-[10px] font-black uppercase text-yellow-200">{tag}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-brand-50 py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeading eyebrow="From the blog" title="Real talk. No career jargon." text="Honest guides written for people who are figuring it out, not for people who already have it figured out." />
+          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+            {blogs.map(([category, title, text, date, Icon, bg]) => (
+              <Link key={title} to="/blog" className="overflow-hidden rounded-2xl border border-line bg-white">
+                <div className={`flex h-44 items-center justify-center ${bg}`}>
+                  <Icon size={48} className="text-ink" />
+                </div>
+                <div className="p-6">
+                  <span className="rounded-full bg-brand-100 px-3 py-1 text-[10px] font-black uppercase text-brand">{category}</span>
+                  <h3 className="mt-4 font-heading text-lg font-black leading-snug text-ink">{title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-muted2">{text}</p>
+                  <div className="mt-6 flex items-center justify-between text-xs font-bold text-muted2">
+                    <span>{date}</span>
+                    <span className="text-brand">Read <ArrowRight className="inline" size={13} /></span>
+                  </div>
                 </div>
               </Link>
             ))}
           </div>
-          <div className="mt-5 text-center">
-            <Link to="/careers-explore" className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-brand-600 to-brand px-7 py-3 text-sm font-extrabold text-white">
-              Explore 50+ Careers <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 sm:pb-12">
-          <div className="rounded-2xl bg-brand-50 px-4 py-5 sm:px-7 sm:py-6">
-            <h2 className="text-center font-heading text-lg sm:text-xl font-black text-ink/90">Who Is This For?</h2>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {audiences.map(([title, text, Icon]) => (
-                <div key={title} className="flex items-center gap-3 lg:border-r lg:border-line last:border-r-0 lg:pr-4">
-                  <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-white text-brand border border-line">
-                    <Icon size={30} />
-                  </span>
-                  <span>
-                    <h3 className="font-heading text-sm font-black text-ink/90">{title}</h3>
-                    <p className="mt-1 text-xs leading-relaxed text-muted2">{text}</p>
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
-      <JourneyCard />
-
-      <section id="how" className="bg-white border-y border-line py-10 sm:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-xs font-extrabold tracking-[0.22em] text-brand uppercase">How it works</p>
-          <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink/90 mt-2">From confused to career-ready in 4 steps.</h2>
-          <div className="mt-7 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-            {steps.map(([title, text], index) => (
-              <div key={title} className="bg-brand-50 border border-line rounded-2xl p-4 hover:-translate-y-1 transition">
-                <div className="w-8 h-8 rounded-full bg-brand-800 text-white flex items-center justify-center text-sm font-bold">{index + 1}</div>
-                <h3 className="font-heading font-bold text-sm text-ink/90 mt-3 leading-tight">{title}</h3>
-                <p className="text-xs text-muted2 mt-2 leading-relaxed">{text}</p>
+      <section className="bg-white py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeading eyebrow="Real stories" title="Real People. Real Switches." text="From BPO floors to careers they never imagined. Here's what our users say." />
+          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+            {stories.map(([name, role, text, initials]) => (
+              <div key={name} className="rounded-2xl border border-line bg-white p-6">
+                <div className="text-yellow-400">*****</div>
+                <p className="mt-4 text-sm leading-relaxed text-ink">{text}</p>
+                <div className="mt-6 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-sm font-black text-white">{initials}</div>
+                  <div>
+                    <p className="font-heading text-sm font-black text-ink">{name}</p>
+                    <p className="text-xs text-muted2">{role}</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-brand-50 py-10 sm:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-xs font-extrabold tracking-[0.22em] text-brand uppercase">What you get</p>
-          <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink/90 mt-2">Everything you need to move forward.</h2>
-          <div className="mt-7 grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-            {features.map(([title, Icon]) => (
-              <div key={title} className="bg-white border border-line rounded-2xl p-4 flex items-center gap-3 hover:-translate-y-1 transition">
-                <div className="w-10 h-10 rounded-2xl bg-brand text-white flex items-center justify-center shrink-0">
-                  <Icon size={18} />
-                </div>
-                <p className="font-heading font-bold text-sm text-ink/90">{title}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 text-center">
-        <div className="premium-gradient rounded-3xl p-6 sm:p-10 text-white">
-          <Headphones className="mx-auto text-white" size={28} />
-          <h2 className="font-heading font-extrabold text-2xl sm:text-4xl mt-3">Late but not lost.</h2>
-          <p className="text-sm sm:text-base text-white/82 mt-2 max-w-xl mx-auto">Start with one honest quiz. Leave with a direction you can actually follow.</p>
-          <div className="mt-5 flex justify-center gap-2.5 flex-wrap">
-            <button onClick={startJourney} className="inline-flex items-center gap-2 bg-white text-ink font-semibold text-sm px-5 py-3 rounded-full">
-              Start now <ArrowRight size={16} />
-            </button>
-            <Link to="/pricing" className="inline-flex items-center gap-2 bg-white/10 border border-white/25 text-white font-semibold text-sm px-5 py-3 rounded-full">
-              View plans
-            </Link>
-          </div>
+      <section className="relative overflow-hidden bg-brand py-20 text-center text-white">
+        <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-white/10" />
+        <div className="pointer-events-none absolute -right-20 -bottom-20 h-72 w-72 rounded-full bg-pink-500/20" />
+        <div className="relative mx-auto max-w-3xl px-4">
+          <h2 className="font-heading text-4xl font-black leading-tight sm:text-5xl">Your next career chapter starts with one quiz.</h2>
+          <p className="mt-5 text-base font-semibold text-white/76">Join 12,000+ late starters who found their direction. Takes 5 minutes. Starts at Rs 9.</p>
+          <button onClick={startJourney} className="mt-9 rounded-xl bg-white px-8 py-4 text-sm font-black text-brand">
+            Take the free career quiz <ArrowRight className="inline" size={16} />
+          </button>
         </div>
       </section>
     </PublicShell>
