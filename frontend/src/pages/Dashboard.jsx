@@ -201,7 +201,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="mt-3 sm:mt-5 glass-card rounded-2xl sm:rounded-3xl p-3 sm:p-5" data-testid="career-match-card">
+      <div className="mt-3 sm:mt-5 rounded-2xl sm:rounded-3xl border border-line bg-white p-3 sm:p-5" data-testid="career-match-card">
         <p className="text-[10px] sm:text-xs font-semibold text-muted2 uppercase tracking-wider mb-2">Your Career Match Score</p>
         <div className="grid grid-cols-[1fr_1fr] sm:grid-cols-2 gap-2 sm:gap-4 items-center">
           <div className="flex flex-col gap-1">
@@ -234,7 +234,7 @@ export default function Dashboard() {
                 <p className="text-[10px] sm:text-sm text-muted2 mt-0.5">Complete the career quiz to see your score.</p>
                 <button
                   onClick={() => navigate("/onboarding")}
-                  className="mt-1.5 inline-flex items-center gap-1.5 bg-brand text-white font-semibold px-3 py-2 rounded-full text-xs sm:text-sm shadow-brand w-fit"
+                  className="mt-1.5 inline-flex items-center gap-1.5 bg-brand text-white font-semibold px-3 py-2 rounded-full text-xs sm:text-sm w-fit"
                 >
                   <Sparkles size={13} /> Take Quiz
                 </button>
@@ -266,7 +266,7 @@ export default function Dashboard() {
       {loadingCareers ? (
         <div className="mt-2.5 flex gap-2.5 sm:gap-4 overflow-hidden -mx-4 px-4 sm:mx-0 sm:px-0">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="surface-gradient rounded-2xl border border-line p-3 sm:p-5 min-w-[200px] sm:min-w-[280px] shrink-0">
+            <div key={i} className="bg-white rounded-2xl border border-line p-3 sm:p-5 min-w-[200px] sm:min-w-[280px] shrink-0">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-xl skeleton-shimmer shrink-0" />
                 <div className="flex-1 min-w-0">
@@ -288,7 +288,7 @@ export default function Dashboard() {
               <Link
                 to={`/careers/${c.slug}`}
                 key={c.career_id || c.slug}
-                className="surface-gradient rounded-2xl p-3 sm:p-4 border border-line elevated-card hover:shadow-md transition snap-start shrink-0 w-full sm:w-[300px]"
+                className="bg-white rounded-2xl p-3 sm:p-4 border border-line transition snap-start shrink-0 w-full sm:w-[300px]"
                 style={{ marginRight: isLast ? 2 : 0 }}
                 data-testid={`dashboard-career-card-${c.slug}`}
               >
@@ -369,7 +369,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div className="mt-4 sm:mt-7 glass-card rounded-2xl sm:rounded-3xl p-3 sm:p-6" data-testid="dashboard-roadmap-card">
+      <div className="mt-4 sm:mt-7 rounded-2xl sm:rounded-3xl border border-line bg-white p-3 sm:p-6" data-testid="dashboard-roadmap-card">
         <div className="flex items-center justify-between gap-2">
           <h2 className="font-heading font-bold text-sm sm:text-xl text-ink">Your Personalized Roadmap</h2>
           <Link to="/roadmap" className="text-[11px] sm:text-sm font-semibold text-brand whitespace-nowrap">
@@ -411,7 +411,7 @@ export default function Dashboard() {
           <Link
             key={a.to}
             to={a.to}
-            className="surface-gradient rounded-xl sm:rounded-2xl border border-line p-3 sm:p-4 flex flex-col items-center justify-center text-center hover:bg-brand-50 transition"
+            className="bg-white rounded-xl sm:rounded-2xl border border-line p-3 sm:p-4 flex flex-col items-center justify-center text-center hover:bg-brand-50 transition"
             data-testid={a.id}
           >
             <a.icon size={20} className="text-brand mb-1.5 sm:mb-2" />

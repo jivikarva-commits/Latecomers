@@ -32,8 +32,8 @@ export default function BottomTabBar() {
               <div
                 className={`relative -mt-5 w-12 h-12 rounded-full flex items-center justify-center border-4 border-white transition ${
                   isActive
-                    ? "bg-gradient-to-br from-brand to-pink-500 text-white shadow-[0_12px_26px_rgba(124,44,242,0.24)]"
-                    : "bg-brand-100 text-brand shadow-[0_8px_20px_rgba(124,44,242,0.14)]"
+                    ? "bg-gradient-to-br from-brand to-pink-500 text-white"
+                    : "bg-brand-100 text-brand"
                 }`}
               >
                 <t.icon size={21} />
