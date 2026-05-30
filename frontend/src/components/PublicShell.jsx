@@ -39,7 +39,7 @@ export function PublicNav() {
                 key={item.to}
                 to={item.to}
                 className={`px-4 py-2 rounded-full transition ${
-                  location.pathname === item.to ? "bg-brand text-white" : "hover:text-brand hover:bg-brand-50"
+                  location.pathname === item.to ? "text-brand" : "hover:text-brand hover:bg-brand-50"
                 }`}
               >
                 {item.label}

@@ -109,12 +109,12 @@ export default function Landing() {
       />
 
       <section className="bg-[#F6F1FF]">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_1.08fr] lg:px-8 lg:py-20">
-          <div className="flex flex-col justify-center">
+        <div className="mx-auto grid max-w-[1440px] gap-8 px-4 py-12 sm:px-8 lg:grid-cols-[0.92fr_1.08fr] lg:px-20 lg:py-20">
+          <div className="flex max-w-[610px] flex-col justify-center">
             <span className="w-fit rounded-full bg-pink-100 px-4 py-2 text-xs font-black text-pink-600">
               + For late starters, BPO workers and confused graduates
             </span>
-            <h1 className="mt-7 font-heading text-4xl font-black leading-[1.05] text-ink sm:text-6xl">
+            <h1 className="mt-7 font-heading text-4xl font-black leading-[1.05] text-ink sm:text-[3.55rem] lg:text-[3.65rem] xl:text-[4rem]">
               You are not late.
               <span className="block">You just need</span>
               <span className="block">
@@ -141,29 +141,34 @@ export default function Landing() {
             </div>
           </div>
 
-          <div className="relative min-h-[420px] overflow-hidden">
-            <div className="absolute left-[42%] top-[16%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Cabin Crew</div>
-            <div className="absolute left-[48%] top-[28%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">Cybersecurity Analyst</div>
-            <div className="absolute left-[40%] top-[40%] hidden rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 lg:block">Mehendi Artist</div>
-            <div className="absolute left-[46%] top-[52%] hidden rounded-full bg-yellow-100 px-4 py-2 text-xs font-bold text-yellow-800 lg:block">Makeup Artist</div>
-            <div className="absolute left-[43%] top-[66%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">Cloud Engineer</div>
-            <div className="absolute right-0 top-[16%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">DevOps Engineer</div>
-            <div className="absolute right-[2%] top-[29%] hidden rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 lg:block">Airport Ground Staff</div>
-            <div className="absolute right-[1%] top-[42%] hidden rounded-full bg-yellow-100 px-4 py-2 text-xs font-bold text-yellow-800 lg:block">Data Analyst</div>
-            <div className="absolute right-[4%] top-[56%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Social Media Manager</div>
-            <div className="absolute right-[5%] top-[70%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">Full Stack Developer</div>
+          <div className="relative min-h-[430px] overflow-hidden">
+            <div className="absolute left-[23%] top-[12%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Cabin Crew</div>
+            <div className="absolute left-[27%] top-[23%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">Cybersecurity Analyst</div>
+            <div className="absolute left-[20%] top-[34%] hidden rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 lg:block">Mehendi Artist</div>
+            <div className="absolute left-[29%] top-[46%] hidden rounded-full bg-yellow-100 px-4 py-2 text-xs font-bold text-yellow-800 lg:block">Makeup Artist</div>
+            <div className="absolute left-[22%] top-[59%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">Cloud Engineer</div>
+            <div className="absolute left-[28%] top-[72%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Product Photographer</div>
+            <div className="absolute left-[24%] top-[84%] hidden rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 lg:block">UI/UX Designer</div>
+            <div className="absolute right-[2%] top-[12%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">DevOps Engineer</div>
+            <div className="absolute right-[0%] top-[25%] hidden rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 lg:block">Airport Ground Staff</div>
+            <div className="absolute right-[2%] top-[39%] hidden rounded-full bg-yellow-100 px-4 py-2 text-xs font-bold text-yellow-800 lg:block">Data Analyst</div>
+            <div className="absolute right-[3%] top-[54%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Social Media Manager</div>
+            <div className="absolute right-[7%] top-[67%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">Full Stack Developer</div>
+            <div className="absolute right-[6%] top-[80%] hidden rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 lg:block">Loan Processing Officer</div>
+            <div className="absolute right-[3%] top-[92%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Medical Coder</div>
 
-            <div className="mx-auto mt-2 w-full max-w-[330px] rounded-2xl border border-line bg-white p-5 lg:absolute lg:left-[44%] lg:top-[23%]">
+            <div className="absolute left-[54%] top-[10%] hidden rounded-full bg-pink-500 px-4 py-2 text-xs font-black text-white lg:block">+ AI-Powered Match</div>
+            <div className="mx-auto mt-2 w-full max-w-[300px] rounded-2xl border border-line bg-white p-4 lg:absolute lg:left-[43%] lg:top-[18%]">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-yellow-100 text-ink">
-                  <Target size={22} />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-yellow-100 text-ink">
+                  <Target size={20} />
                 </div>
                 <div>
-                  <p className="font-heading text-base font-black text-ink">Your Career Match</p>
+                  <p className="font-heading text-sm font-black text-ink">Your Career Match</p>
                   <p className="text-xs text-muted2">Based on your profile</p>
                 </div>
               </div>
-              <div className="mt-5 space-y-3">
+              <div className="mt-4 space-y-2.5">
                 {[
                   ["Cybersecurity Analyst", "94% match", true],
                   ["DevOps Engineer", "88% match"],
@@ -171,7 +176,7 @@ export default function Landing() {
                   ["Full Stack Developer", "75% match"],
                   ["Mehendi Artist (Freelance)", "70% match"],
                 ].map(([title, score, active]) => (
-                  <div key={title} className={`flex items-center justify-between rounded-xl border px-3 py-3 text-xs font-black ${active ? "border-brand bg-brand text-white" : "border-line bg-brand-50 text-ink"}`}>
+                  <div key={title} className={`flex items-center justify-between rounded-xl border px-3 py-2.5 text-[11px] font-black ${active ? "border-brand bg-brand text-white" : "border-line bg-brand-50 text-ink"}`}>
                     <span>{title}</span>
                     <span className={`rounded-full px-2 py-1 text-[10px] ${active ? "bg-yellow-300 text-ink" : "bg-emerald-100 text-emerald-700"}`}>{score}</span>
                   </div>
