@@ -295,7 +295,7 @@ export default function ProfileSetup() {
               <button
                 onClick={submit}
                 disabled={submitting}
-                className="w-full inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-600 disabled:opacity-50 text-white font-bold px-6 py-3.5 rounded-xl transition shadow-brand"
+                className="w-full inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-600 disabled:opacity-50 text-white font-bold px-6 py-3.5 rounded-xl transition"
                 data-testid="start-quiz-cta"
               >
                 <Sparkles size={16} /> {submitting ? "Saving…" : "Start the Career Quiz"} <ArrowRight size={16} />

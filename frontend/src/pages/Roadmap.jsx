@@ -46,7 +46,10 @@ export default function Roadmap() {
   const { user } = useAuth();
   const storedSlug = localStorage.getItem("last_roadmap_career_slug") || "";
   const storedTitle = localStorage.getItem("last_roadmap_career_title") || "";
-  const defaultSlug = user?.lastRoadmapCareerSlug || storedSlug || user?.top_career_matches?.[0]?.careerSlug || "";
+  // Priority: localStorage (set on every career open) → user.lastRoadmapCareerSlug → top match
+  // localStorage is most recent because CareerReportPage updates it the moment a career page mounts,
+  // even when the AI roadmap is served from cache (which doesn't update user.lastRoadmapCareerSlug).
+  const defaultSlug = storedSlug || user?.lastRoadmapCareerSlug || user?.top_career_matches?.[0]?.careerSlug || "";
 
   const [slug, setSlug] = useState(defaultSlug);
   const [careers, setCareers] = useState([]);
@@ -77,9 +80,11 @@ export default function Roadmap() {
   }, []);
 
   useEffect(() => {
-    if (slug) return;
-    const nextSlug = user?.lastRoadmapCareerSlug || localStorage.getItem("last_roadmap_career_slug") || user?.top_career_matches?.[0]?.careerSlug;
-    if (nextSlug) {
+    // Sync to latest opened career: localStorage > user.lastRoadmapCareerSlug > top match
+    // Always update (don't bail on existing slug) so changing the active career on /careers/:slug
+    // immediately reflects when user navigates back to /roadmap.
+    const nextSlug = localStorage.getItem("last_roadmap_career_slug") || user?.lastRoadmapCareerSlug || user?.top_career_matches?.[0]?.careerSlug;
+    if (nextSlug && nextSlug !== slug) {
       setSlug(nextSlug);
       const match = careers.find((c) => c.slug === nextSlug);
       if (match) setSearchText(match.title);
@@ -244,7 +249,7 @@ export default function Roadmap() {
           <button
             onClick={generate}
             disabled={loading || !slug}
-            className="inline-flex items-center justify-center gap-1.5 bg-brand hover:bg-brand-600 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl shadow-brand disabled:opacity-60 shrink-0"
+            className="inline-flex items-center justify-center gap-1.5 bg-brand hover:bg-brand-600 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl disabled:opacity-60 shrink-0"
             data-testid="generate-roadmap-button"
           >
             <Sparkles size={14} /> {loading ? "Generating..." : "Generate Roadmap"}
@@ -489,7 +494,7 @@ function _LegacyRoadmapBlock({ stages, summary, loadingPage, slug, openStage, se
             <p className="font-heading font-bold text-xs sm:text-sm text-ink">Ready to Start?</p>
             <p className="text-[10px] sm:text-xs text-muted2 mt-0.5">Begin with Stage 1 and follow each action item step by step.</p>
           </div>
-          <button onClick={() => setOpenStage(0)} className="inline-flex items-center gap-1 bg-brand text-white font-semibold text-[11px] sm:text-sm px-3 py-2 rounded-full shadow-brand shrink-0">
+          <button onClick={() => setOpenStage(0)} className="inline-flex items-center gap-1 bg-brand text-white font-semibold text-[11px] sm:text-sm px-3 py-2 rounded-full shrink-0">
             Start <ArrowRight size={13} />
           </button>
         </div>
