@@ -291,3 +291,28 @@ h1, h2, h3, h4, h5, h6 {
   color: #160741;
   background: #F5EAFF;
 }
+
+/* Print / PDF export styles for Career Report */
+@media print {
+  body.print-report-mode {
+    background: white !important;
+  }
+  body.print-report-mode .no-print,
+  body.print-report-mode header,
+  body.print-report-mode aside,
+  body.print-report-mode nav,
+  body.print-report-mode [data-testid="bottom-tab-bar"],
+  body.print-report-mode .sticky {
+    display: none !important;
+  }
+  body.print-report-mode .shadow-sm,
+  body.print-report-mode .shadow-xl,
+  body.print-report-mode .shadow-brand {
+    box-shadow: none !important;
+  }
+  body.print-report-mode section,
+  body.print-report-mode .rounded-2xl {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}

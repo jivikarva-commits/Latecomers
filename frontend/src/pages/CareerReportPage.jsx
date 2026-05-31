@@ -16,12 +16,10 @@ import {
   RefreshCw,
   Rocket,
   Search,
-  Share2,
   Sparkles,
   Star,
   Target,
   TrendingUp,
-  Wrench,
   FolderOpen,
   ClipboardList,
   Clock,
@@ -139,18 +137,25 @@ function buildCourseMonths(stages) {
   return chunked;
 }
 
-function buildAITools(stages) {
+function buildAITools(stages, career) {
   const items = getStageItems(stages, "tools");
-  const defaults = ["ChatGPT", "Claude AI", "Midjourney", "Canva AI", "Notion AI"];
-  const list = (items.length ? items : defaults).slice(0, 5);
-  return list.map((raw) => {
-    const [name, useCase] = String(raw).split(/[—–\-:]/).map((s) => s.trim());
-    return {
-      name: name || raw,
-      usedFor: useCase || "Productivity & content workflows",
-      bestFor: "Speed, quality, and automation",
-    };
-  });
+  if (items.length) {
+    return items.slice(0, 5).map((raw) => {
+      const [name, useCase] = String(raw).split(/[—–\-:]/).map((s) => s.trim());
+      return {
+        name: name || raw,
+        usedFor: useCase || "Productivity & content workflows",
+        bestFor: "Speed, quality, and automation",
+      };
+    });
+  }
+  // Field-curated fallback
+  const curated = FIELD_AI_TOOLS[detectField(career)] || FIELD_AI_TOOLS.default;
+  return curated.slice(0, 5).map((t) => ({
+    name: t.name,
+    usedFor: t.category,
+    bestFor: "Speed, quality, and automation",
+  }));
 }
 
 function buildProjects(stages, title) {
@@ -291,6 +296,194 @@ const TABS = [
   { id: "insights", label: "Insights", icon: BarChart3 },
 ];
 
+// --- Field detection + curated insights (industries + AI tools) ---
+function detectField(career) {
+  const blob = `${career?.title || ""} ${career?.category || ""} ${career?.field || ""} ${(career?.tags || []).join(" ")}`.toLowerCase();
+  if (/(video|motion|film|animation|vfx|cinemat|photograph|editor|reels|director)/.test(blob)) return "video";
+  if (/(graphic|visual|ui|ux|product design|illustrat|brand)/.test(blob)) return "design";
+  if (/(developer|engineer|software|backend|frontend|full.?stack|devops|cloud|cyber|security|sysadmin|network)/.test(blob)) return "tech";
+  if (/(data|analyst|scientist|ml |machine learning|ai engineer|sql|tableau|power bi)/.test(blob)) return "data";
+  if (/(marketing|seo|content|copy|social media|crm|sales|growth|affiliate|brand strategist)/.test(blob)) return "marketing";
+  if (/(finance|account|tax|investment|banking|ca |cma|cs |acca|cfa|sap|financial)/.test(blob)) return "finance";
+  if (/(law|advocate|judge|legal|paralegal)/.test(blob)) return "law";
+  if (/(mba|hr|operations|management|consultant)/.test(blob)) return "management";
+  if (/(government|civil services|ssc|upsc|ips|ias|defense|railway|police|psu|bank po)/.test(blob)) return "government";
+  if (/(health|nurse|pharm|medical|coder|biller|lab tech|radiology|nutrition|physio)/.test(blob)) return "healthcare";
+  if (/(language|translator|interpret|teacher|tourism|embassy|subtitler)/.test(blob)) return "languages";
+  if (/(aviation|cabin crew|airline|airport|hotel|hospitality|cruise|event)/.test(blob)) return "aviation";
+  if (/(blockchain|web3|drone|ev |iot|robotics)/.test(blob)) return "emerging";
+  if (/(makeup|mehendi|hair|nail|electrician|technician|repair|cctv|fitness|yoga)/.test(blob)) return "trade";
+  return "default";
+}
+
+const FIELD_INDUSTRIES = {
+  video: ["Film & OTT", "Advertising", "Social Media", "Gaming Studios", "News & Media", "YouTube Creators"],
+  design: ["SaaS Product", "E-commerce", "Advertising Agencies", "Edtech", "Fintech", "D2C Brands"],
+  tech: ["SaaS Product", "Fintech", "E-commerce", "Edtech", "Healthtech", "IT Services"],
+  data: ["Fintech", "E-commerce", "Banking", "Consulting", "Healthtech", "SaaS Analytics"],
+  marketing: ["D2C Brands", "Agencies", "E-commerce", "Edtech", "Media Houses", "Startups"],
+  finance: ["Banks", "NBFCs", "Investment Firms", "Big 4 (Audit)", "Insurance", "MNC Finance"],
+  law: ["Corporate Law Firms", "Judiciary", "Banking & Compliance", "Govt Departments", "Real Estate", "Legaltech"],
+  management: ["Consulting", "FMCG", "Banking", "Tech Companies", "Manufacturing", "Retail"],
+  government: ["Govt Ministries", "PSUs", "Regulatory Bodies", "Railways", "Defense", "State Govts"],
+  healthcare: ["Hospitals", "Pharma", "Health Insurance", "Diagnostics", "Healthtech", "Medical Devices"],
+  languages: ["BPOs & KPOs", "Embassies", "Translation Agencies", "Tourism", "OTT Subtitling", "MNC Support"],
+  aviation: ["Airlines", "Airports", "Hotels", "Travel Tech", "Cruise Lines", "Event Management"],
+  emerging: ["Web3 Startups", "Drone Services", "EV Manufacturers", "IoT Product Cos", "Robotics R&D", "Smart Cities"],
+  trade: ["Salons & Spas", "Wedding Industry", "Local Businesses", "Building & Construction", "Auto Workshops", "Freelance"],
+  default: ["Startups", "MNCs", "Service Companies", "Product Companies", "Agencies", "Consulting"],
+};
+
+const FIELD_AI_TOOLS = {
+  video: [
+    { name: "Adobe Premiere Pro", category: "Editing" },
+    { name: "After Effects", category: "Motion" },
+    { name: "DaVinci Resolve", category: "Color" },
+    { name: "CapCut", category: "Reels" },
+    { name: "Runway ML", category: "AI Video" },
+    { name: "Descript", category: "AI Audio" },
+  ],
+  design: [
+    { name: "Figma", category: "Design" },
+    { name: "Adobe Photoshop", category: "Design" },
+    { name: "Adobe Illustrator", category: "Vector" },
+    { name: "Midjourney", category: "AI Art" },
+    { name: "Canva", category: "Layouts" },
+    { name: "ChatGPT", category: "Copy" },
+  ],
+  tech: [
+    { name: "GitHub Copilot", category: "AI Coding" },
+    { name: "Cursor", category: "AI IDE" },
+    { name: "ChatGPT", category: "AI Assistant" },
+    { name: "Claude", category: "AI Assistant" },
+    { name: "Postman AI", category: "API" },
+    { name: "Notion AI", category: "Docs" },
+  ],
+  data: [
+    { name: "ChatGPT", category: "Analysis" },
+    { name: "Claude", category: "Analysis" },
+    { name: "Tableau AI", category: "Viz" },
+    { name: "Power BI Copilot", category: "Viz" },
+    { name: "Python + Pandas", category: "Core" },
+    { name: "Hex / Deepnote", category: "Notebooks" },
+  ],
+  marketing: [
+    { name: "ChatGPT", category: "Copy" },
+    { name: "Jasper", category: "Long-form" },
+    { name: "Copy.ai", category: "Ads" },
+    { name: "Canva AI", category: "Creatives" },
+    { name: "Buffer / Hootsuite", category: "Scheduling" },
+    { name: "SurferSEO", category: "SEO" },
+  ],
+  finance: [
+    { name: "Excel Copilot", category: "Modeling" },
+    { name: "ChatGPT", category: "Research" },
+    { name: "Bloomberg Terminal", category: "Markets" },
+    { name: "Tally / Zoho Books", category: "Accounting" },
+    { name: "Power BI", category: "Dashboards" },
+    { name: "Notion AI", category: "Notes" },
+  ],
+  law: [
+    { name: "ChatGPT", category: "Drafting" },
+    { name: "Claude", category: "Long Docs" },
+    { name: "Manupatra / SCC", category: "Research" },
+    { name: "DocuSign", category: "E-sign" },
+    { name: "Notion", category: "Case Notes" },
+    { name: "Grammarly", category: "Editing" },
+  ],
+  management: [
+    { name: "ChatGPT", category: "Frameworks" },
+    { name: "Claude", category: "Strategy" },
+    { name: "Notion AI", category: "Docs" },
+    { name: "Miro", category: "Whiteboard" },
+    { name: "Excel / Sheets", category: "Models" },
+    { name: "Slack AI", category: "Comms" },
+  ],
+  government: [
+    { name: "Testbook", category: "Mock Tests" },
+    { name: "Adda247", category: "Prep" },
+    { name: "Unacademy", category: "Live Classes" },
+    { name: "ChatGPT", category: "Doubt Solver" },
+    { name: "PIB / PRS India", category: "Current Affairs" },
+    { name: "Notion", category: "Notes" },
+  ],
+  healthcare: [
+    { name: "ChatGPT", category: "Reference" },
+    { name: "UpToDate", category: "Clinical" },
+    { name: "ICD-10 / CPT Coders", category: "Coding" },
+    { name: "Practo / 1mg", category: "Tele-health" },
+    { name: "Excel", category: "Reports" },
+    { name: "Notion", category: "Logs" },
+  ],
+  languages: [
+    { name: "DeepL", category: "Translation" },
+    { name: "ChatGPT", category: "Practice" },
+    { name: "Duolingo", category: "Learning" },
+    { name: "Anki", category: "Flashcards" },
+    { name: "Otter.ai", category: "Transcription" },
+    { name: "Grammarly", category: "Editing" },
+  ],
+  aviation: [
+    { name: "Amadeus", category: "GDS" },
+    { name: "Sabre", category: "GDS" },
+    { name: "Opera PMS", category: "Hotel" },
+    { name: "ChatGPT", category: "Etiquette" },
+    { name: "Duolingo", category: "Language" },
+    { name: "Canva", category: "Comms" },
+  ],
+  emerging: [
+    { name: "ChatGPT", category: "Assistant" },
+    { name: "GitHub Copilot", category: "AI Coding" },
+    { name: "Hardhat / Foundry", category: "Web3" },
+    { name: "DJI Fly", category: "Drone" },
+    { name: "Arduino IDE", category: "IoT" },
+    { name: "ROS", category: "Robotics" },
+  ],
+  trade: [
+    { name: "Pinterest", category: "Inspiration" },
+    { name: "Instagram", category: "Marketing" },
+    { name: "WhatsApp Business", category: "Clients" },
+    { name: "YouTube", category: "Learning" },
+    { name: "Canva", category: "Posters" },
+    { name: "ChatGPT", category: "Captions" },
+  ],
+  default: [
+    { name: "ChatGPT", category: "Assistant" },
+    { name: "Claude", category: "Assistant" },
+    { name: "Notion AI", category: "Docs" },
+    { name: "Canva", category: "Visuals" },
+    { name: "Google Gemini", category: "Search" },
+    { name: "Grammarly", category: "Writing" },
+  ],
+};
+
+function getCuratedIndustries(career, fromInsights) {
+  if (Array.isArray(fromInsights) && fromInsights.length >= 3) {
+    // Filter out generic ones that don't fit creative/tech-specific careers
+    const field = detectField(career);
+    const blocklist = field === "video" || field === "design"
+      ? new Set(["healthcare", "government"])
+      : new Set();
+    const cleaned = fromInsights.filter((x) => !blocklist.has(String(x).toLowerCase()));
+    if (cleaned.length >= 3) return cleaned.slice(0, 6);
+  }
+  return FIELD_INDUSTRIES[detectField(career)] || FIELD_INDUSTRIES.default;
+}
+
+function getCuratedAITools(career, fromInsights) {
+  if (Array.isArray(fromInsights) && fromInsights.length > 0) {
+    // If existing data looks like placeholders ("Industry Tools", "Collaboration Tools"), discard
+    const looksGeneric = fromInsights.every((t) => {
+      const n = typeof t === "string" ? t : t?.name || "";
+      return /industry tools|collaboration tools|career tools|general tools/i.test(n);
+    });
+    if (!looksGeneric) {
+      return fromInsights.map((t) => (typeof t === "string" ? { name: t } : t)).slice(0, 6);
+    }
+  }
+  return FIELD_AI_TOOLS[detectField(career)] || FIELD_AI_TOOLS.default;
+}
+
 function deriveActivities(career) {
   const workAreas = career?.overviewDetails?.workAreas;
   if (Array.isArray(workAreas) && workAreas.length) {
@@ -419,6 +612,29 @@ export default function CareerReportPage() {
     return () => { mounted = false; };
   }, [career?.slug]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // PDF download via browser print (works on all browsers, no extra deps)
+  const downloadPDF = () => {
+    try {
+      // Switch to report tab so all sections are in DOM
+      setTab("report");
+      // small delay to allow render
+      setTimeout(() => {
+        document.body.classList.add("print-report-mode");
+        window.print();
+        // Cleanup after print dialog closes
+        const cleanup = () => {
+          document.body.classList.remove("print-report-mode");
+          window.removeEventListener("afterprint", cleanup);
+        };
+        window.addEventListener("afterprint", cleanup);
+        // Safety fallback
+        setTimeout(cleanup, 4000);
+      }, 250);
+    } catch (e) {
+      toast.error("Couldn't open print dialog. Try Ctrl+P.");
+    }
+  };
+
   const retry = async () => {
     if (!career?.slug) return navigate("/careers-explore");
     setStatus("loading");
@@ -444,7 +660,7 @@ export default function CareerReportPage() {
   const educationPaths = useMemo(() => buildEducationPaths(stages, career?.title || "this career"), [stages, career?.title]);
   const skillStages = useMemo(() => buildSkillStages(stages, career?.title || "this career"), [stages, career?.title]);
   const courseMonths = useMemo(() => buildCourseMonths(stages), [stages]);
-  const aiTools = useMemo(() => buildAITools(stages), [stages]);
+  const aiTools = useMemo(() => buildAITools(stages, career), [stages, career]);
   const projects = useMemo(() => buildProjects(stages, career?.title || "career"), [stages, career?.title]);
   const placement = useMemo(() => buildPlacement(stages), [stages]);
   const jobs = useMemo(() => buildJobs(stages, career?.jobs, career?.title || "Role", career?.avgSalary), [stages, career]);
@@ -489,12 +705,9 @@ export default function CareerReportPage() {
               <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-black text-ink mt-1.5">{career?.title}</h1>
               <p className="mt-2 text-sm text-muted2 max-w-2xl leading-relaxed">{career?.description}</p>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <button className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2.5 text-xs sm:text-sm font-bold text-white">
+            <div className="flex flex-wrap gap-2 no-print">
+              <button onClick={downloadPDF} className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2.5 text-xs sm:text-sm font-bold text-white hover:bg-brand-700 transition">
                 <Download size={14} /> Download PDF
-              </button>
-              <button className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 py-2.5 text-xs sm:text-sm font-bold text-ink">
-                <Share2 size={14} /> Share
               </button>
             </div>
           </div>
@@ -508,7 +721,7 @@ export default function CareerReportPage() {
         </div>
 
         {/* Tab strip */}
-        <div className="rounded-2xl border border-line bg-white p-1.5 flex gap-1 overflow-x-auto no-scrollbar">
+        <div className="no-print rounded-2xl border border-line bg-white p-1.5 flex gap-1 overflow-x-auto no-scrollbar">
           {TABS.map((t) => {
             const TIcon = t.icon;
             const active = tab === t.id;
@@ -600,8 +813,8 @@ export default function CareerReportPage() {
             {(() => {
               const insights = career?.insights || {};
               const countries = parseCountries(insights.topCountries);
-              const industries = (insights.topIndustries || career?.tags || []).slice(0, 6);
-              const aiTools = (insights.aiTools || []).slice(0, 8);
+              const industries = getCuratedIndustries(career, insights.topIndustries || career?.tags);
+              const aiTools = getCuratedAITools(career, insights.aiTools);
               return (
                 <>
                   <div className="rounded-2xl border border-line bg-white p-4 sm:p-5 shadow-sm">
@@ -647,23 +860,20 @@ export default function CareerReportPage() {
 
                   <div className="rounded-2xl border border-line bg-white p-4 sm:p-5 shadow-sm">
                     <p className="font-heading text-base font-black text-ink">AI Tools for {career?.title}</p>
+                    <p className="text-[12.5px] text-muted2 mt-1">Curated tools used by working professionals in this field.</p>
                     <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                      {(aiTools.length ? aiTools : aiTools).length === 0 ? (
-                        <p className="text-sm text-muted2 col-span-full">Generating AI tools list — open Report tab for the latest.</p>
-                      ) : (
-                        aiTools.map((tool) => {
-                          const t = typeof tool === "string" ? { name: tool } : tool;
-                          return (
-                            <div key={t.name} className="rounded-xl border border-line bg-[#FAFAFE] p-3 flex items-center gap-2.5">
-                              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-50 text-brand text-[10px] font-black">{t.name.slice(0, 2).toUpperCase()}</span>
-                              <div className="min-w-0">
-                                <p className="font-semibold text-[13px] text-ink truncate">{t.name}</p>
-                                {t.category && <p className="text-[11px] text-muted2">{t.category}</p>}
-                              </div>
+                      {aiTools.map((tool) => {
+                        const t = typeof tool === "string" ? { name: tool } : tool;
+                        return (
+                          <div key={t.name} className="rounded-xl border border-line bg-[#FAFAFE] p-3 flex items-center gap-2.5">
+                            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-50 text-brand text-[10px] font-black shrink-0">{t.name.slice(0, 2).toUpperCase()}</span>
+                            <div className="min-w-0">
+                              <p className="font-semibold text-[13px] text-ink truncate">{t.name}</p>
+                              {t.category && <p className="text-[11px] text-muted2">{t.category}</p>}
                             </div>
-                          );
-                        })
-                      )}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </>
@@ -833,7 +1043,7 @@ export default function CareerReportPage() {
         )}
 
         {tab === "report" && (
-          <div className="text-center py-6">
+          <div className="no-print text-center py-6">
             <button onClick={retry} disabled={generating} className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 hover:text-brand hover:border-brand transition disabled:opacity-50">
               <RefreshCw size={13} className={generating ? "animate-spin" : ""} />
               {generating ? "Regenerating…" : "Regenerate report with fresh AI"}
