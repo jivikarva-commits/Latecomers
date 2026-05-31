@@ -1100,6 +1100,103 @@ async def get_user_roadmap(career_slug: str, request: Request, user=Depends(curr
     raise HTTPException(404, "No roadmap available; generate one first.")
 
 
+# ---------- Career Insights (AI-generated, cached on career doc) ----------
+def _is_valid_insights(data: Any) -> bool:
+    if not isinstance(data, dict):
+        return False
+    req = ["overview", "activities", "topIndustries", "topAITools", "topCountries", "marketDemand"]
+    if not all(k in data for k in req):
+        return False
+    if not isinstance(data["activities"], list) or len(data["activities"]) < 3:
+        return False
+    if not isinstance(data["topIndustries"], list) or len(data["topIndustries"]) < 3:
+        return False
+    if not isinstance(data["topAITools"], list) or len(data["topAITools"]) < 3:
+        return False
+    return True
+
+
+@router.get("/insights/{career_slug}")
+async def get_career_insights(career_slug: str, request: Request, user=Depends(current_user)):
+    """Return AI-generated insights for a career. Cached on the career doc.
+
+    Response shape: { overview, activities[], topIndustries[], topAITools[{name,category}],
+                      topCountries[], marketDemand, growthPct, openPositions }
+    """
+    resolved_slug = ROADMAP_SLUG_ALIASES.get(career_slug, career_slug)
+    career = await db(request).careers.find_one({"slug": resolved_slug}, {"_id": 0})
+    if not career:
+        raise HTTPException(404, "Career not found")
+
+    # Cached?
+    cached = (career.get("aiGeneratedDetails") or {}).get("insights")
+    if _is_valid_insights(cached):
+        return cached
+
+    title = career.get("title") or career_slug.replace("-", " ").title()
+    description = career.get("description") or career.get("overview") or ""
+    prompt = f"""Generate detailed career insights for **{title}** in India.
+
+Context: {description}
+
+Return ONLY valid JSON (no markdown, no commentary). Be SPECIFIC to {title} — do not give generic answers.
+
+{{
+  "overview": "2-3 sentence plain-English explanation of what a {title} actually does day-to-day in India",
+  "activities": ["specific activity 1 a {title} does", "specific activity 2", "specific activity 3", "specific activity 4"],
+  "topIndustries": ["industry 1 that hires {title}", "industry 2", "industry 3", "industry 4", "industry 5", "industry 6"],
+  "topAITools": [
+    {{"name": "Real tool 1 used by {title}", "category": "what it's used for"}},
+    {{"name": "Real tool 2", "category": "category"}},
+    {{"name": "Real tool 3", "category": "category"}},
+    {{"name": "Real tool 4", "category": "category"}},
+    {{"name": "Real tool 5", "category": "category"}},
+    {{"name": "Real tool 6", "category": "category"}}
+  ],
+  "topCountries": ["IN", "US", "GB", "AE"],
+  "marketDemand": "High / Moderate-to-High / Booming etc. (one short phrase)",
+  "growthPct": 15,
+  "openPositions": "10,000+ on Naukri/LinkedIn (or a realistic India-specific estimate)"
+}}
+
+Rules:
+- Tools must be REAL software/platforms actually used by {title} professionals (not "Industry Tools" or generic names).
+- Industries must be specific verticals where {title} are actually hired (not vague terms like "Government" or "Healthcare" unless that career truly fits).
+- Activities must describe concrete daily tasks, not abstract phrases.
+- Use India-relevant context (salary, hiring platforms, company examples)."""
+
+    text = None
+    try:
+        text = await ask_claude(prompt, max_tokens=1200, json_only=True)
+        data = extract_json(text)
+        if not _is_valid_insights(data):
+            raise ValueError("AI insights validation failed")
+    except Exception as e:
+        logger.error(f"insights LLM error for {resolved_slug}: {e} | response length: {len(text) if text else 0}")
+        raise HTTPException(500, "AI insights generation failed. Please try again.")
+
+    # Cache on the career doc (shared across all users)
+    await db(request).careers.update_one(
+        {"slug": resolved_slug},
+        {"$set": {
+            "aiGeneratedDetails.insights": data,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }},
+    )
+    return data
+
+
+@router.post("/insights/{career_slug}/refresh")
+async def refresh_career_insights(career_slug: str, request: Request, user=Depends(current_user)):
+    """Force-regenerate insights (clears cache then calls get_career_insights logic)."""
+    resolved_slug = ROADMAP_SLUG_ALIASES.get(career_slug, career_slug)
+    await db(request).careers.update_one(
+        {"slug": resolved_slug},
+        {"$unset": {"aiGeneratedDetails.insights": ""}},
+    )
+    return await get_career_insights(career_slug, request, user)
+
+
 # ---------- AI Chat ----------
 def _small_list(values: Any, limit: int = 6):
     if not isinstance(values, list):

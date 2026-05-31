@@ -458,21 +458,24 @@ const FIELD_AI_TOOLS = {
 };
 
 function getCuratedIndustries(career, fromInsights) {
-  if (Array.isArray(fromInsights) && fromInsights.length >= 3) {
-    // Filter out generic ones that don't fit creative/tech-specific careers
-    const field = detectField(career);
-    const blocklist = field === "video" || field === "design"
-      ? new Set(["healthcare", "government"])
-      : new Set();
-    const cleaned = fromInsights.filter((x) => !blocklist.has(String(x).toLowerCase()));
-    if (cleaned.length >= 3) return cleaned.slice(0, 6);
+  const field = detectField(career);
+  // For any known field, ALWAYS use curated list (backend data is too generic).
+  if (field !== "default") {
+    return FIELD_INDUSTRIES[field];
   }
-  return FIELD_INDUSTRIES[detectField(career)] || FIELD_INDUSTRIES.default;
+  // Only for unknown fields, fall back to backend list if it has 3+ items.
+  if (Array.isArray(fromInsights) && fromInsights.length >= 3) {
+    return fromInsights.slice(0, 6);
+  }
+  return FIELD_INDUSTRIES.default;
 }
 
 function getCuratedAITools(career, fromInsights) {
+  const field = detectField(career);
+  if (field !== "default") {
+    return FIELD_AI_TOOLS[field];
+  }
   if (Array.isArray(fromInsights) && fromInsights.length > 0) {
-    // If existing data looks like placeholders ("Industry Tools", "Collaboration Tools"), discard
     const looksGeneric = fromInsights.every((t) => {
       const n = typeof t === "string" ? t : t?.name || "";
       return /industry tools|collaboration tools|career tools|general tools/i.test(n);
@@ -481,7 +484,7 @@ function getCuratedAITools(career, fromInsights) {
       return fromInsights.map((t) => (typeof t === "string" ? { name: t } : t)).slice(0, 6);
     }
   }
-  return FIELD_AI_TOOLS[detectField(career)] || FIELD_AI_TOOLS.default;
+  return FIELD_AI_TOOLS.default;
 }
 
 function deriveActivities(career) {
@@ -523,6 +526,8 @@ export default function CareerReportPage() {
 
   const [career, setCareer] = useState(null);
   const [report, setReport] = useState(null); // AI roadmap data { stages, totalDuration }
+  const [aiInsights, setAiInsights] = useState(null); // AI-generated insights
+  const [insightsLoading, setInsightsLoading] = useState(false);
   const [status, setStatus] = useState("loading"); // loading | ready | error
   const [errorMsg, setErrorMsg] = useState("");
   const [generating, setGenerating] = useState(false);
@@ -611,6 +616,44 @@ export default function CareerReportPage() {
     })();
     return () => { mounted = false; };
   }, [career?.slug]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fetch AI insights on demand (lazy: when user opens Overview or Insights tab)
+  useEffect(() => {
+    if (!career?.slug) return;
+    if (aiInsights) return;
+    if (tab !== "overview" && tab !== "insights") return;
+    let cancelled = false;
+    (async () => {
+      setInsightsLoading(true);
+      try {
+        const { data } = await api.get(`/ai/insights/${career.slug}`);
+        if (!cancelled && data) setAiInsights(data);
+      } catch (e) {
+        if (!cancelled) {
+          // 500 means AI failed — show curated fallback (handled by getCurated* helpers)
+          console.warn("AI insights failed, using curated fallback", e?.response?.data?.detail || e?.message);
+        }
+      } finally {
+        if (!cancelled) setInsightsLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [tab, career?.slug, aiInsights]);
+
+  const regenerateInsights = async () => {
+    if (!career?.slug) return;
+    setInsightsLoading(true);
+    setAiInsights(null);
+    try {
+      const { data } = await api.post(`/ai/insights/${career.slug}/refresh`);
+      if (data) setAiInsights(data);
+      toast.success("Insights regenerated with fresh AI data");
+    } catch (e) {
+      toast.error(e?.response?.data?.detail || "Couldn't regenerate insights");
+    } finally {
+      setInsightsLoading(false);
+    }
+  };
 
   // PDF download via browser print (works on all browsers, no extra deps)
   const downloadPDF = () => {
@@ -744,10 +787,18 @@ export default function CareerReportPage() {
           <div className="space-y-4 sm:space-y-6">
             {(() => {
               const aiMatch = (user?.top_career_matches || []).find((m) => m.careerSlug === career?.slug);
-              const activities = deriveActivities(career);
+              const activities = aiInsights?.activities?.length ? aiInsights.activities : deriveActivities(career);
+              const overviewText = aiInsights?.overview || career?.overview || career?.description;
               const topSkills = (career?.skills || []).slice(0, 8);
               return (
                 <>
+                  {insightsLoading && !aiInsights && (
+                    <div className="rounded-xl border border-brand/20 bg-brand-50 p-3 flex items-center gap-2 text-[12.5px] text-brand">
+                      <Sparkles size={14} className="animate-pulse" />
+                      Generating AI insights for {career?.title}…
+                    </div>
+                  )}
+
                   {aiMatch?.reasons?.length > 0 && (
                     <div className="rounded-2xl border border-line bg-white p-4 sm:p-5 shadow-sm">
                       <div className="flex items-center gap-2 mb-3">
@@ -767,7 +818,7 @@ export default function CareerReportPage() {
 
                   <div className="rounded-2xl border border-line bg-white p-4 sm:p-5 shadow-sm">
                     <p className="font-heading text-base sm:text-lg font-black text-ink">What does a {career?.title} do?</p>
-                    <p className="mt-2 text-sm text-muted2 leading-relaxed">{career?.overview || career?.description}</p>
+                    <p className="mt-2 text-sm text-muted2 leading-relaxed">{overviewText}</p>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-4">
                       {activities.map((a, i) => {
                         const iconSet = [Target, Search, BarChart3, Lightbulb];
@@ -812,28 +863,42 @@ export default function CareerReportPage() {
           <div className="space-y-4 sm:space-y-6">
             {(() => {
               const insights = career?.insights || {};
-              const countries = parseCountries(insights.topCountries);
-              const industries = getCuratedIndustries(career, insights.topIndustries || career?.tags);
-              const aiTools = getCuratedAITools(career, insights.aiTools);
+              // Prefer AI-generated insights; fall back to backend/curated data
+              const countries = parseCountries(aiInsights?.topCountries || insights.topCountries);
+              const industries = aiInsights?.topIndustries?.length
+                ? aiInsights.topIndustries.slice(0, 6)
+                : getCuratedIndustries(career, insights.topIndustries || career?.tags);
+              const aiTools = aiInsights?.topAITools?.length
+                ? aiInsights.topAITools
+                : getCuratedAITools(career, insights.aiTools);
+              const marketDemand = aiInsights?.marketDemand || insights.globalDemand || demand;
+              const growthPct = aiInsights?.growthPct || asNumber(career?.jobGrowth5Y, 12);
+              const openPositions = aiInsights?.openPositions || insights.openPositions || "10,000+";
               return (
                 <>
                   <div className="rounded-2xl border border-line bg-white p-4 sm:p-5 shadow-sm">
                     <div className="flex items-center gap-2 mb-3">
                       <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-50 text-brand"><Globe size={15} /></span>
                       <p className="font-heading text-sm sm:text-base font-black text-ink">Market Demand</p>
+                      {aiInsights && <span className="ml-auto text-[10px] font-bold uppercase tracking-wide text-brand">AI generated</span>}
+                      {insightsLoading && !aiInsights && (
+                        <span className="ml-auto inline-flex items-center gap-1 text-[11px] text-brand font-bold">
+                          <Sparkles size={11} className="animate-pulse" /> Generating…
+                        </span>
+                      )}
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                       <div className="rounded-xl border border-emerald-100 bg-emerald-50 p-3">
                         <p className="text-[10px] font-bold uppercase tracking-wide text-emerald-700">Global Demand</p>
-                        <p className="font-heading text-sm font-black text-emerald-700 mt-1">{insights.globalDemand || demand}</p>
+                        <p className="font-heading text-sm font-black text-emerald-700 mt-1">{marketDemand}</p>
                       </div>
                       <div className="rounded-xl border border-brand/20 bg-brand-50 p-3">
                         <p className="text-[10px] font-bold uppercase tracking-wide text-brand">Growth (5Y)</p>
-                        <p className="font-heading text-lg font-black text-brand mt-1">{asNumber(career?.jobGrowth5Y, 12)}%</p>
+                        <p className="font-heading text-lg font-black text-brand mt-1">{growthPct}%</p>
                       </div>
                       <div className="rounded-xl border border-brand/20 bg-brand-50 p-3">
                         <p className="text-[10px] font-bold uppercase tracking-wide text-brand">Open Positions</p>
-                        <p className="font-heading text-sm font-black text-ink mt-1">{insights.openPositions || "10,000+"}</p>
+                        <p className="font-heading text-sm font-black text-ink mt-1">{openPositions}</p>
                       </div>
                       <div className="rounded-xl border border-line bg-[#FAFAFE] p-3">
                         <p className="text-[10px] font-bold uppercase tracking-wide text-muted2">Top Countries</p>
@@ -859,8 +924,11 @@ export default function CareerReportPage() {
                   </div>
 
                   <div className="rounded-2xl border border-line bg-white p-4 sm:p-5 shadow-sm">
-                    <p className="font-heading text-base font-black text-ink">AI Tools for {career?.title}</p>
-                    <p className="text-[12.5px] text-muted2 mt-1">Curated tools used by working professionals in this field.</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-heading text-base font-black text-ink">AI Tools for {career?.title}</p>
+                      {aiInsights && <span className="ml-auto text-[10px] font-bold uppercase tracking-wide text-brand">AI generated</span>}
+                    </div>
+                    <p className="text-[12.5px] text-muted2 mt-1">Real software & platforms used by working professionals in this field.</p>
                     <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                       {aiTools.map((tool) => {
                         const t = typeof tool === "string" ? { name: tool } : tool;
@@ -879,6 +947,13 @@ export default function CareerReportPage() {
                 </>
               );
             })()}
+
+            <div className="no-print text-center py-2">
+              <button onClick={regenerateInsights} disabled={insightsLoading} className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 hover:text-brand hover:border-brand transition disabled:opacity-50">
+                <RefreshCw size={13} className={insightsLoading ? "animate-spin" : ""} />
+                {insightsLoading ? "Regenerating…" : "Regenerate insights with fresh AI"}
+              </button>
+            </div>
           </div>
         )}
 
