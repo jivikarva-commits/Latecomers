@@ -77,8 +77,9 @@ export default function Roadmap() {
   }, []);
 
   useEffect(() => {
+    if (slug) return;
     const nextSlug = user?.lastRoadmapCareerSlug || localStorage.getItem("last_roadmap_career_slug") || user?.top_career_matches?.[0]?.careerSlug;
-    if (nextSlug && nextSlug !== slug) {
+    if (nextSlug) {
       setSlug(nextSlug);
       const match = careers.find((c) => c.slug === nextSlug);
       if (match) setSearchText(match.title);
@@ -161,6 +162,10 @@ export default function Roadmap() {
     setSearchText(career.title);
     localStorage.setItem("last_roadmap_career_slug", career.slug);
     localStorage.setItem("last_roadmap_career_title", career.title);
+    localStorage.setItem("active_institute_course", career.title);
+    window.dispatchEvent(new CustomEvent("latecomers:institute-course-change", {
+      detail: { course: career.title },
+    }));
     setShowSuggestions(false);
   };
 
@@ -173,6 +178,10 @@ export default function Roadmap() {
       if (selectedCareer) {
         localStorage.setItem("last_roadmap_career_slug", selectedCareer.slug);
         localStorage.setItem("last_roadmap_career_title", selectedCareer.title);
+        localStorage.setItem("active_institute_course", selectedCareer.title);
+        window.dispatchEvent(new CustomEvent("latecomers:institute-course-change", {
+          detail: { course: selectedCareer.title },
+        }));
       }
       toast.success("Roadmap generated with specific action items!");
       setOpenStage(0);

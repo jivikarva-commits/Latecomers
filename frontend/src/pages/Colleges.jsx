@@ -140,7 +140,7 @@ export default function Colleges() {
   const locationPromptedRef = useRef(false);
 
   useEffect(() => {
-    const storedCourse = localStorage.getItem("active_institute_course") || localStorage.getItem("last_roadmap_career_title") || "";
+    const storedCourse = localStorage.getItem("last_roadmap_career_title") || localStorage.getItem("active_institute_course") || "";
     if (storedCourse && !courseQuery) setCourseQuery(storedCourse);
     if (user?.profile?.location && !locationQuery) setLocationQuery(user.profile.location);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -148,7 +148,7 @@ export default function Colleges() {
 
   useEffect(() => {
     const handler = (event) => {
-      const nextCourse = event.detail?.course || localStorage.getItem("active_institute_course") || "";
+      const nextCourse = event.detail?.course || localStorage.getItem("last_roadmap_career_title") || localStorage.getItem("active_institute_course") || "";
       if (nextCourse) setCourseQuery(nextCourse);
     };
     window.addEventListener("latecomers:institute-course-change", handler);

@@ -548,6 +548,12 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
   // 1) Load base career info + sync Roadmap/Institutes tabs
   useEffect(() => {
     let mounted = true;
+    setCareer(null);
+    setReport(null);
+    setAiInsights(null);
+    setStatus("loading");
+    setErrorMsg("");
+    setTab("report");
     (async () => {
       try {
         const { data } = await api.get(`/careers/${slug}`);
