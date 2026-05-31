@@ -22,6 +22,8 @@ import {
   TrendingUp,
   FolderOpen,
   ClipboardList,
+  ChevronDown,
+  ChevronUp,
   Clock,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
@@ -234,19 +236,28 @@ function StatCard({ icon: Icon, label, value, sub, color }) {
 }
 
 function SectionShell({ type, children }) {
+  const [open, setOpen] = useState(false);
   const meta = SECTION_META[type];
   const Icon = meta.icon;
   return (
-    <section className="rounded-2xl border border-line bg-white p-4 sm:p-6 shadow-sm">
-      <div className="flex items-center gap-2.5 mb-4 sm:mb-5">
-        <span className="flex h-9 w-9 items-center justify-center rounded-xl" style={{ background: meta.bg, color: meta.color }}>
+    <section className="overflow-hidden rounded-2xl border border-line bg-white shadow-sm">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="flex w-full items-center gap-2.5 p-4 text-left sm:p-5"
+        aria-expanded={open}
+      >
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style={{ background: meta.bg, color: meta.color }}>
           <Icon size={18} />
         </span>
-        <h2 className="font-heading text-base sm:text-lg font-black text-ink">
+        <h2 className="min-w-0 flex-1 font-heading text-base sm:text-lg font-black text-ink">
           <span style={{ color: meta.color }}>{meta.num}.</span> {meta.title}
         </h2>
-      </div>
-      {children}
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand">
+          {open ? <ChevronUp size={17} /> : <ChevronDown size={17} />}
+        </span>
+      </button>
+      {open && <div className="border-t border-line px-4 pb-4 pt-4 sm:px-6 sm:pb-6">{children}</div>}
     </section>
   );
 }
@@ -655,26 +666,122 @@ export default function CareerReportPage() {
     }
   };
 
-  // PDF download via browser print (works on all browsers, no extra deps)
-  const downloadPDF = () => {
+  const downloadPDF = async () => {
     try {
-      // Switch to report tab so all sections are in DOM
-      setTab("report");
-      // small delay to allow render
-      setTimeout(() => {
-        document.body.classList.add("print-report-mode");
-        window.print();
-        // Cleanup after print dialog closes
-        const cleanup = () => {
-          document.body.classList.remove("print-report-mode");
-          window.removeEventListener("afterprint", cleanup);
-        };
-        window.addEventListener("afterprint", cleanup);
-        // Safety fallback
-        setTimeout(cleanup, 4000);
-      }, 250);
+      const { jsPDF } = await import("jspdf");
+      const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
+      const pageW = doc.internal.pageSize.getWidth();
+      const pageH = doc.internal.pageSize.getHeight();
+      const margin = 46;
+      const usableW = pageW - margin * 2;
+      let y = margin;
+
+      const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
+      const filename = `${clean(career?.title || "career-report").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "career-report"}-latecomers-report.pdf`;
+      const addPageIfNeeded = (height = 40) => {
+        if (y + height > pageH - margin) {
+          doc.addPage();
+          y = margin;
+        }
+      };
+      const writeWrapped = (text, size = 10, color = [76, 72, 99], indent = 0, gap = 12) => {
+        const lines = doc.splitTextToSize(clean(text), usableW - indent);
+        addPageIfNeeded(lines.length * (size + 4) + gap);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(size);
+        doc.setTextColor(...color);
+        doc.text(lines, margin + indent, y);
+        y += lines.length * (size + 4) + gap;
+      };
+      const section = (title) => {
+        addPageIfNeeded(52);
+        y += 8;
+        doc.setFillColor(243, 238, 255);
+        doc.roundedRect(margin, y - 18, usableW, 30, 8, 8, "F");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(13);
+        doc.setTextColor(32, 13, 76);
+        doc.text(title, margin + 12, y + 2);
+        y += 28;
+      };
+      const bullet = (text) => writeWrapped(`- ${text}`, 9.5, [76, 72, 99], 10, 7);
+      const smallTitle = (text) => {
+        addPageIfNeeded(24);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(10.5);
+        doc.setTextColor(16, 7, 54);
+        doc.text(clean(text), margin, y);
+        y += 15;
+      };
+
+      doc.setFillColor(248, 246, 255);
+      doc.rect(0, 0, pageW, pageH, "F");
+      doc.setTextColor(124, 44, 242);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.text("LATECOMERS AI CAREER REPORT", margin, y);
+      y += 26;
+      doc.setTextColor(16, 7, 54);
+      doc.setFontSize(26);
+      doc.text(doc.splitTextToSize(clean(career?.title || "Career Report"), usableW), margin, y);
+      y += 38;
+      writeWrapped(career?.description || `Personalized roadmap for ${career?.title || "this career"}.`, 11, [76, 72, 99], 0, 16);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11);
+      doc.setTextColor(124, 44, 242);
+      doc.text(`Match: ${matchScore}%`, margin, y);
+      doc.text(`Salary: Rs ${salaryMin}-${salaryMax} LPA`, margin + 120, y);
+      doc.text(`Demand: ${demand}`, margin + 285, y);
+      y += 26;
+
+      section("1. Education");
+      educationPaths.forEach((path) => {
+        smallTitle(`${path.heading}${path.tag ? ` (${path.tag})` : ""} - ${path.duration}`);
+        writeWrapped(path.body, 9.5, [76, 72, 99], 10, 8);
+      });
+
+      section("2. Skills to Master");
+      skillStages.forEach((stage) => {
+        smallTitle(stage.title);
+        stage.items.forEach(bullet);
+      });
+
+      section("3. Courses Step by Step");
+      courseMonths.forEach((month) => {
+        smallTitle(`${month.month}: ${month.title}`);
+        month.items.forEach(bullet);
+      });
+
+      section("4. AI Tools");
+      aiTools.forEach((tool) => bullet(`${tool.name}: ${tool.usedFor}. Best for ${tool.bestFor}.`));
+
+      section("5. Portfolio Projects");
+      projects.forEach((p) => bullet(`${p.title} (${p.difficulty}) - Skills: ${p.skills}`));
+
+      section("6. Placement Preparation");
+      smallTitle("Resume Checklist");
+      placement.resume.forEach(bullet);
+      smallTitle("Top Interview Questions");
+      placement.interviewQs.forEach(bullet);
+      smallTitle("Remember");
+      writeWrapped(placement.remember, 9.5, [76, 72, 99], 10, 8);
+
+      section("7. Jobs You Can Apply For");
+      jobs.forEach((job) => bullet(`${job.title} - ${job.salary} - ${job.level}. Skills: ${job.skills}`));
+
+      const pages = doc.getNumberOfPages();
+      for (let i = 1; i <= pages; i += 1) {
+        doc.setPage(i);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8);
+        doc.setTextColor(120, 116, 140);
+        doc.text(`Latecomers AI - Page ${i} of ${pages}`, margin, pageH - 24);
+      }
+      doc.save(filename);
+      toast.success("PDF downloaded");
     } catch (e) {
-      toast.error("Couldn't open print dialog. Try Ctrl+P.");
+      console.error("PDF generation failed:", e);
+      toast.error("Couldn't generate PDF. Please try again.");
     }
   };
 
@@ -698,7 +805,7 @@ export default function CareerReportPage() {
     }
   };
 
-  const stages = report?.stages || [];
+  const stages = useMemo(() => report?.stages || [], [report?.stages]);
 
   const educationPaths = useMemo(() => buildEducationPaths(stages, career?.title || "this career"), [stages, career?.title]);
   const skillStages = useMemo(() => buildSkillStages(stages, career?.title || "this career"), [stages, career?.title]);
