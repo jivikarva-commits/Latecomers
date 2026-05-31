@@ -1444,20 +1444,50 @@ class ProfileCompleteIn(BaseModel):
     name: str
     gender: str  # "Male" | "Female" | "Other" | "Prefer not to say"
     phoneNumber: str  # E.164 ideal, but accept raw digits
+    educationLevel: str  # see VALID_EDU_LEVELS below
+    stream: Optional[str] = None  # required if level is 12th / college / graduate
     # isPhoneVerified set to False for now; OTP flow added later
 
     def normalized_phone(self) -> str:
         digits = "".join(ch for ch in self.phoneNumber if ch.isdigit() or ch == "+")
         return digits
 
+
+VALID_EDU_LEVELS = {
+    "Class 10 passed",
+    "Class 12 passed",
+    "Currently in college",
+    "Graduate / Postgraduate",
+    "Working professional",
+    "No formal degree / Dropped out",
+}
+
+VALID_STREAMS = {
+    "Science PCM",
+    "Science PCB",
+    "Commerce",
+    "Arts/Humanities",
+    "Engineering/Diploma",
+    "Other",
+}
+
+STREAM_REQUIRED_LEVELS = {
+    "Class 12 passed",
+    "Currently in college",
+    "Graduate / Postgraduate",
+}
+
+
 @router.post("/me/profile/complete")
 async def complete_profile(payload: ProfileCompleteIn, request: Request, user=Depends(current_user)):
-    """Save name/gender/phone after Google login. Marks isProfileCompleted=True.
+    """Save identity + education after Google login. Marks isProfileCompleted=True.
     isPhoneVerified stays False until OTP flow is added later.
     """
     name = (payload.name or "").strip()
     gender = (payload.gender or "").strip()
     phone = payload.normalized_phone()
+    edu_level = (payload.educationLevel or "").strip()
+    stream = (payload.stream or "").strip() or None
 
     if len(name) < 2:
         raise HTTPException(400, "Name must be at least 2 characters")
@@ -1466,6 +1496,11 @@ async def complete_profile(payload: ProfileCompleteIn, request: Request, user=De
     digits_only = "".join(ch for ch in phone if ch.isdigit())
     if len(digits_only) < 10 or len(digits_only) > 15:
         raise HTTPException(400, "Phone number must be 10-15 digits")
+    if edu_level not in VALID_EDU_LEVELS:
+        raise HTTPException(400, "Invalid education level")
+    if edu_level in STREAM_REQUIRED_LEVELS:
+        if not stream or stream not in VALID_STREAMS:
+            raise HTTPException(400, "Stream/subject is required for this education level")
 
     update = {
         "name": name,
@@ -1473,8 +1508,11 @@ async def complete_profile(payload: ProfileCompleteIn, request: Request, user=De
         "phoneNumber": phone,
         "isPhoneVerified": user.get("isPhoneVerified", False),
         "isProfileCompleted": True,
+        "profile.educationLevel": edu_level,
         "updated_at": datetime.now(timezone.utc).isoformat(),
     }
+    if stream:
+        update["profile.stream"] = stream
     await db(request).users.update_one({"user_id": user["user_id"]}, {"$set": update})
     return await db(request).users.find_one({"user_id": user["user_id"]}, {"_id": 0})
 
