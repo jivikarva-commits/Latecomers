@@ -5,6 +5,7 @@ import {
   Code2, GraduationCap, Layers3, Rocket, Search, Sparkles, Target,
   Wrench, FolderOpen, Award, MapPin,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import BackToTopButton from "../components/BackToTopButton";
@@ -191,6 +192,20 @@ export default function Roadmap() {
         <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold">
           <CheckCircle2 size={13} /> Top match: {topMatch.careerSlug?.replace(/-/g, " ")} ({topMatch.matchPercent}%)
         </div>
+      )}
+
+      {slug && (
+        <Link
+          to={`/careers/${slug}`}
+          className="mt-3 sm:mt-4 flex items-center gap-3 rounded-2xl bg-gradient-to-r from-brand-600 to-brand text-white px-4 sm:px-5 py-3 sm:py-4 shadow-brand hover:from-brand-700 hover:to-pink-500 transition"
+        >
+          <Sparkles size={18} className="shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="font-heading font-black text-sm sm:text-base">View Full Career Report</p>
+            <p className="text-[11px] sm:text-xs text-white/85 truncate">Open the full 7-section report — Education, Skills, Courses, AI Tools, Projects, Placement & Jobs</p>
+          </div>
+          <ArrowRight size={18} className="shrink-0" />
+        </Link>
       )}
 
       {/* Search bar with autocomplete */}

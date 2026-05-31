@@ -3,16 +3,22 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   AlertCircle,
   ArrowLeft,
+  BarChart3,
   Bot,
   Briefcase,
   CheckCircle2,
   Download,
+  Globe,
   GraduationCap,
   IndianRupee,
+  LayoutGrid,
+  Lightbulb,
   RefreshCw,
   Rocket,
+  Search,
   Share2,
   Sparkles,
+  Star,
   Target,
   TrendingUp,
   Wrench,
@@ -20,6 +26,7 @@ import {
   ClipboardList,
   Clock,
 } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 import { api } from "../lib/api";
 import { toast } from "sonner";
 import SEO from "../components/SEO";
@@ -278,15 +285,55 @@ function ErrorState({ message, onRetry }) {
   );
 }
 
+const TABS = [
+  { id: "report", label: "Report", icon: LayoutGrid },
+  { id: "overview", label: "Overview", icon: Sparkles },
+  { id: "insights", label: "Insights", icon: BarChart3 },
+];
+
+function deriveActivities(career) {
+  const workAreas = career?.overviewDetails?.workAreas;
+  if (Array.isArray(workAreas) && workAreas.length) {
+    return workAreas.map((a) => a.title || a).filter(Boolean).slice(0, 4);
+  }
+  const fromSkills = (career?.skills || []).map((s) => s.name).slice(0, 4);
+  if (fromSkills.length >= 4) return fromSkills;
+  return [...fromSkills, "Problem solving", "Execution", "Communication", "Growth"].slice(0, 4);
+}
+
+function parseCountries(raw) {
+  const fallback = [
+    { code: "IN", name: "India", flag: "🇮🇳" },
+    { code: "US", name: "United States", flag: "🇺🇸" },
+    { code: "GB", name: "United Kingdom", flag: "🇬🇧" },
+    { code: "CA", name: "Canada", flag: "🇨🇦" },
+  ];
+  if (!raw) return fallback;
+  const codeMap = { india: "IN", us: "US", usa: "US", uk: "GB", canada: "CA", germany: "DE", australia: "AU", singapore: "SG", uae: "AE" };
+  const nameMap = { IN: "India", US: "United States", GB: "United Kingdom", CA: "Canada", DE: "Germany", AU: "Australia", SG: "Singapore", AE: "UAE" };
+  const list = (Array.isArray(raw) ? raw : String(raw).split(/[,;|]/))
+    .map((x) => String(x).trim())
+    .filter(Boolean)
+    .map((x) => {
+      const code = /^[a-z]{2}$/i.test(x) ? x.toUpperCase() : codeMap[x.toLowerCase()];
+      if (!code) return null;
+      return { code, name: nameMap[code] || x, flag: String.fromCodePoint(...code.split("").map((c) => c.charCodeAt(0) + 127397)) };
+    })
+    .filter(Boolean);
+  return list.length ? list.slice(0, 4) : fallback;
+}
+
 export default function CareerReportPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [career, setCareer] = useState(null);
   const [report, setReport] = useState(null); // AI roadmap data { stages, totalDuration }
   const [status, setStatus] = useState("loading"); // loading | ready | error
   const [errorMsg, setErrorMsg] = useState("");
   const [generating, setGenerating] = useState(false);
+  const [tab, setTab] = useState("report");
 
   // 1) Load base career info + sync Roadmap/Institutes tabs
   useEffect(() => {
@@ -460,6 +507,175 @@ export default function CareerReportPage() {
           </div>
         </div>
 
+        {/* Tab strip */}
+        <div className="rounded-2xl border border-line bg-white p-1.5 flex gap-1 overflow-x-auto no-scrollbar">
+          {TABS.map((t) => {
+            const TIcon = t.icon;
+            const active = tab === t.id;
+            return (
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id)}
+                className={`inline-flex items-center gap-1.5 rounded-xl px-3 sm:px-4 py-2 text-xs sm:text-sm font-bold whitespace-nowrap transition ${
+                  active ? "bg-brand text-white shadow-sm" : "text-muted2 hover:text-ink"
+                }`}
+              >
+                <TIcon size={14} /> {t.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* OVERVIEW tab */}
+        {tab === "overview" && (
+          <div className="space-y-4 sm:space-y-6">
+            {(() => {
+              const aiMatch = (user?.top_career_matches || []).find((m) => m.careerSlug === career?.slug);
+              const activities = deriveActivities(career);
+              const topSkills = (career?.skills || []).slice(0, 8);
+              return (
+                <>
+                  {aiMatch?.reasons?.length > 0 && (
+                    <div className="rounded-2xl border border-line bg-white p-4 sm:p-5 shadow-sm">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600"><Star size={15} /></span>
+                        <p className="font-heading text-sm sm:text-base font-black text-ink">Why this fits you</p>
+                        <span className="ml-auto rounded-full bg-emerald-100 text-emerald-700 text-[11px] font-bold px-2.5 py-0.5">{aiMatch.matchPercent}% match</span>
+                      </div>
+                      <ul className="space-y-2">
+                        {aiMatch.reasons.map((r, i) => (
+                          <li key={i} className="flex items-start gap-2 text-[13px] text-ink">
+                            <CheckCircle2 size={14} className="text-emerald-500 shrink-0 mt-0.5" /> {r}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  <div className="rounded-2xl border border-line bg-white p-4 sm:p-5 shadow-sm">
+                    <p className="font-heading text-base sm:text-lg font-black text-ink">What does a {career?.title} do?</p>
+                    <p className="mt-2 text-sm text-muted2 leading-relaxed">{career?.overview || career?.description}</p>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-4">
+                      {activities.map((a, i) => {
+                        const iconSet = [Target, Search, BarChart3, Lightbulb];
+                        const Icon = iconSet[i % iconSet.length];
+                        return (
+                          <div key={a} className="rounded-xl border border-line bg-[#FAFAFE] p-3 text-center">
+                            <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-brand-50 text-brand mb-1.5"><Icon size={15} /></span>
+                            <p className="text-[12px] font-semibold text-ink leading-tight">{a}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {topSkills.length > 0 && (
+                    <div className="rounded-2xl border border-line bg-white p-4 sm:p-5 shadow-sm">
+                      <p className="font-heading text-base font-black text-ink">Top Skills</p>
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {topSkills.map((s) => (
+                          <span key={s.name} className="rounded-full border border-brand/30 bg-brand-50 text-brand text-[12px] font-bold px-3 py-1">{s.name}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <button onClick={() => navigate("/ai-chat", { state: { careerSlug: career?.slug, careerTitle: career?.title } })} className="w-full rounded-2xl border border-brand/30 bg-brand-50 p-4 flex items-center gap-3 hover:bg-brand-100 transition">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl cc-logo-gradient text-white"><Bot size={18} /></span>
+                    <div className="flex-1 text-left">
+                      <p className="font-heading text-sm font-black text-ink">Have questions about {career?.title}?</p>
+                      <p className="text-[12px] text-muted2 mt-0.5">Open AI chat with this career context attached.</p>
+                    </div>
+                    <span className="text-brand text-sm font-bold">Ask AI →</span>
+                  </button>
+                </>
+              );
+            })()}
+          </div>
+        )}
+
+        {/* INSIGHTS tab */}
+        {tab === "insights" && (
+          <div className="space-y-4 sm:space-y-6">
+            {(() => {
+              const insights = career?.insights || {};
+              const countries = parseCountries(insights.topCountries);
+              const industries = (insights.topIndustries || career?.tags || []).slice(0, 6);
+              const aiTools = (insights.aiTools || []).slice(0, 8);
+              return (
+                <>
+                  <div className="rounded-2xl border border-line bg-white p-4 sm:p-5 shadow-sm">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-50 text-brand"><Globe size={15} /></span>
+                      <p className="font-heading text-sm sm:text-base font-black text-ink">Market Demand</p>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                      <div className="rounded-xl border border-emerald-100 bg-emerald-50 p-3">
+                        <p className="text-[10px] font-bold uppercase tracking-wide text-emerald-700">Global Demand</p>
+                        <p className="font-heading text-sm font-black text-emerald-700 mt-1">{insights.globalDemand || demand}</p>
+                      </div>
+                      <div className="rounded-xl border border-brand/20 bg-brand-50 p-3">
+                        <p className="text-[10px] font-bold uppercase tracking-wide text-brand">Growth (5Y)</p>
+                        <p className="font-heading text-lg font-black text-brand mt-1">{asNumber(career?.jobGrowth5Y, 12)}%</p>
+                      </div>
+                      <div className="rounded-xl border border-brand/20 bg-brand-50 p-3">
+                        <p className="text-[10px] font-bold uppercase tracking-wide text-brand">Open Positions</p>
+                        <p className="font-heading text-sm font-black text-ink mt-1">{insights.openPositions || "10,000+"}</p>
+                      </div>
+                      <div className="rounded-xl border border-line bg-[#FAFAFE] p-3">
+                        <p className="text-[10px] font-bold uppercase tracking-wide text-muted2">Top Countries</p>
+                        <div className="flex flex-wrap gap-1 mt-1.5">
+                          {countries.map((c) => (
+                            <span key={c.code} className="inline-flex items-center gap-1 rounded-full border border-line bg-white text-[11px] font-semibold text-ink px-2 py-0.5">{c.flag} {c.name}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    {industries.length > 0 && (
+                      <div className="mt-4">
+                        <p className="text-[10px] font-bold uppercase tracking-wide text-muted2 mb-2">Top Industries</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {industries.map((i) => (
+                            <span key={i} className="inline-flex items-center gap-1 rounded-full border border-line bg-white text-[12px] font-semibold text-ink px-2.5 py-0.5">
+                              <Briefcase size={11} className="text-brand" /> {i}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="rounded-2xl border border-line bg-white p-4 sm:p-5 shadow-sm">
+                    <p className="font-heading text-base font-black text-ink">AI Tools for {career?.title}</p>
+                    <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                      {(aiTools.length ? aiTools : aiTools).length === 0 ? (
+                        <p className="text-sm text-muted2 col-span-full">Generating AI tools list — open Report tab for the latest.</p>
+                      ) : (
+                        aiTools.map((tool) => {
+                          const t = typeof tool === "string" ? { name: tool } : tool;
+                          return (
+                            <div key={t.name} className="rounded-xl border border-line bg-[#FAFAFE] p-3 flex items-center gap-2.5">
+                              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-50 text-brand text-[10px] font-black">{t.name.slice(0, 2).toUpperCase()}</span>
+                              <div className="min-w-0">
+                                <p className="font-semibold text-[13px] text-ink truncate">{t.name}</p>
+                                {t.category && <p className="text-[11px] text-muted2">{t.category}</p>}
+                              </div>
+                            </div>
+                          );
+                        })
+                      )}
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+        )}
+
+        {/* REPORT tab (default) */}
+        {tab === "report" && (
+          <div className="space-y-4 sm:space-y-6">
+
         {/* 1. Education */}
         <SectionShell type="education">
           <p className="text-sm text-muted2 mb-4">You can become a <span className="font-bold text-ink">{career?.title}</span> through different education paths. Choose what suits you best.</p>
@@ -613,12 +829,17 @@ export default function CareerReportPage() {
           </div>
         </SectionShell>
 
-        <div className="text-center py-6">
-          <button onClick={retry} disabled={generating} className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 hover:text-brand hover:border-brand transition disabled:opacity-50">
-            <RefreshCw size={13} className={generating ? "animate-spin" : ""} />
-            {generating ? "Regenerating…" : "Regenerate report with fresh AI"}
-          </button>
-        </div>
+          </div>
+        )}
+
+        {tab === "report" && (
+          <div className="text-center py-6">
+            <button onClick={retry} disabled={generating} className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 hover:text-brand hover:border-brand transition disabled:opacity-50">
+              <RefreshCw size={13} className={generating ? "animate-spin" : ""} />
+              {generating ? "Regenerating…" : "Regenerate report with fresh AI"}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
