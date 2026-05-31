@@ -1308,7 +1308,6 @@ async def reverse_geocode_location(payload: ReverseGeocodeRequest, request: Requ
                     "latlng": f"{payload.lat},{payload.lng}",
                     "key": maps_key,
                     "language": "en",
-                    "result_type": "locality|administrative_area_level_3|administrative_area_level_2",
                 },
             )
         if response.status_code >= 400:
@@ -1317,27 +1316,44 @@ async def reverse_geocode_location(payload: ReverseGeocodeRequest, request: Requ
         results = data.get("results") or []
         if not results:
             return {"location": "", "message": "We could not detect your city. Please enter it manually."}
-        selected = results[0]
+        best = {"city": "", "state": "", "formatted": results[0].get("formatted_address", ""), "score": -1}
         for result in results:
             components = result.get("address_components") or []
-            if any(
-                any(t in (component.get("types") or []) for t in ("locality", "administrative_area_level_3"))
-                for component in components
-            ):
-                selected = result
-                break
-        components = selected.get("address_components") or []
-        city = ""
-        state = ""
-        for component in components:
-            types = component.get("types") or []
-            if not city and any(t in types for t in ("locality", "postal_town", "administrative_area_level_3", "administrative_area_level_2")):
-                city = component.get("long_name") or ""
-            if not state and "administrative_area_level_1" in types:
-                state = component.get("long_name") or ""
-        location = city or selected.get("formatted_address", "").split(",")[0].strip()
-        label = ", ".join([part for part in [location, state] if part])
-        return {"location": label or location, "formattedAddress": selected.get("formatted_address")}
+            city = ""
+            state = ""
+            country = ""
+            score = 0
+            for component in components:
+                types = component.get("types") or []
+                if not city and "locality" in types:
+                    city = component.get("long_name") or ""
+                    score = max(score, 5)
+                if not city and "postal_town" in types:
+                    city = component.get("long_name") or ""
+                    score = max(score, 4)
+                if not city and "administrative_area_level_3" in types:
+                    city = component.get("long_name") or ""
+                    score = max(score, 3)
+                if not city and "administrative_area_level_2" in types:
+                    city = component.get("long_name") or ""
+                    score = max(score, 2)
+                if not state and "administrative_area_level_1" in types:
+                    state = component.get("long_name") or ""
+                if not country and "country" in types:
+                    country = component.get("short_name") or component.get("long_name") or ""
+            if str(country).upper() == "IN":
+                score += 10
+            if city and score > best["score"]:
+                best = {
+                    "city": city,
+                    "state": state,
+                    "formatted": result.get("formatted_address", ""),
+                    "score": score,
+                }
+
+        location = best["city"] or best["formatted"].split(",")[0].strip()
+        label = ", ".join([part for part in [location, best["state"]] if part])
+        return {"location": label or location, "formattedAddress": best["formatted"]}
     except HTTPException:
         raise
     except Exception as exc:

@@ -138,6 +138,7 @@ export default function Colleges() {
   const [detectingLocation, setDetectingLocation] = useState(false);
   const autoSearchKeyRef = useRef("");
   const locationPromptedRef = useRef(false);
+  const locationRetryRef = useRef(false);
 
   useEffect(() => {
     const storedCourse = localStorage.getItem("last_roadmap_career_title") || localStorage.getItem("active_institute_course") || "";
@@ -203,6 +204,7 @@ export default function Colleges() {
       console.warn("[Geo] permission query unsupported:", e);
     }
     setDetectingLocation(true);
+    locationRetryRef.current = false;
     setLocationMessage("Asking your browser for location access…");
     console.log("[Geo] Requesting current position…");
 
@@ -242,6 +244,42 @@ export default function Colleges() {
       },
       (err) => {
         console.error("[Geo] getCurrentPosition error:", err.code, err.message);
+        if (err.code !== 1 && !locationRetryRef.current) {
+          locationRetryRef.current = true;
+          setLocationMessage("Location was slow. Retrying with GPS...");
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const { latitude: lat, longitude: lng } = position.coords;
+              let city = null;
+              try {
+                const { data } = await api.post("/colleges/reverse-geocode", { lat, lng });
+                if (data?.location) city = data.location;
+              } catch (_) {
+                city = await fallbackReverseGeocode(lat, lng);
+              }
+              if (!city) city = await fallbackReverseGeocode(lat, lng);
+              if (!city) city = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+              setLocationQuery(city);
+              setLocationMessage(`Detected: ${city}`);
+              toast.success(`Location detected: ${city}`);
+              setDetectingLocation(false);
+            },
+            (retryErr) => {
+              console.error("[Geo] retry getCurrentPosition error:", retryErr.code, retryErr.message);
+              setDetectingLocation(false);
+              const messages = {
+                1: "Permission denied. Allow location for latecomers.in in browser site settings, or type your city manually.",
+                2: "Position unavailable. Check your device GPS or type your city manually.",
+                3: "Location request timed out. Try again or type your city manually.",
+              };
+              const msg = messages[retryErr.code] || `Location error (${retryErr.code}): ${retryErr.message}`;
+              setLocationMessage(msg);
+              toast.error(msg);
+            },
+            { enableHighAccuracy: true, timeout: 25000, maximumAge: 0 }
+          );
+          return;
+        }
         setDetectingLocation(false);
         const messages = {
           1: "Permission denied. Click the 🔒 icon next to URL to allow location, or type your city manually.",
@@ -252,7 +290,7 @@ export default function Colleges() {
         setLocationMessage(msg);
         toast.error(msg);
       },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 5 * 60 * 1000 }
+      { enableHighAccuracy: false, timeout: 30000, maximumAge: 10 * 60 * 1000 }
     );
   }, [detectingLocation]);
 
