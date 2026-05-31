@@ -571,6 +571,7 @@ const QUESTIONS = [
       { value: "Backoffice or data entry experience", label: "Backoffice or data entry experience" },
       { value: "Fresh graduate figuring out career", label: "Fresh graduate figuring out career" },
       { value: "Fresher with no work experience", label: "Fresher with no work experience" },
+      { value: "None of the above", label: "None of the above" },
     ],
   },
   {

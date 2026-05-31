@@ -53,6 +53,68 @@ def _location_key(location: str) -> str:
     return re.sub(r"\s+", " ", location.strip().lower())
 
 
+FOREIGN_LOCATION_MARKERS = {
+    " usa",
+    "united states",
+    " virginia",
+    " washington",
+    " california",
+    " canada",
+    " united kingdom",
+    " australia",
+}
+
+INDIA_LOCATION_MARKERS = {
+    " india",
+    " maharashtra",
+    " delhi",
+    " karnataka",
+    " tamil nadu",
+    " telangana",
+    " gujarat",
+    " rajasthan",
+    " uttar pradesh",
+    " madhya pradesh",
+    " west bengal",
+    " haryana",
+    " punjab",
+    " kerala",
+    " odisha",
+    " bihar",
+    " assam",
+    " uttarakhand",
+    " puducherry",
+}
+
+
+def _location_match_terms(location: str) -> List[str]:
+    primary = re.split(r"[,|/]", location or "")[0].strip().lower()
+    terms: List[str] = []
+    if len(primary) >= 3:
+        terms.append(primary)
+    terms.extend(part for part in re.split(r"[^a-z0-9]+", primary) if len(part) >= 3)
+    seen = set()
+    return [term for term in terms if not (term in seen or seen.add(term))]
+
+
+def _looks_indian_location(item: Dict, location: str) -> bool:
+    haystack = " ".join(
+        str(item.get(key) or "")
+        for key in ("address", "formattedAddress", "location", "city", "state", "searchedLocation")
+    ).lower()
+    if any(marker in f" {haystack}" for marker in FOREIGN_LOCATION_MARKERS):
+        return False
+
+    has_country = any(marker in f" {haystack}" for marker in INDIA_LOCATION_MARKERS)
+    terms = _location_match_terms(location)
+    has_city = not terms or any(term in haystack for term in terms)
+    return has_country and has_city
+
+
+def _filter_colleges_for_location(items: List[Dict], location: str) -> List[Dict]:
+    return [item for item in items if _looks_indian_location(item, location)]
+
+
 def _log_college_error(location: str, context: str, error: Exception) -> None:
     logger.error(
         "College search error context=%s location=%s timestamp=%s error=%s",
@@ -272,6 +334,7 @@ async def _store_college_results(request: Request, results: List[Dict], location
 
 
 async def _supplement_college_results(request: Request, results: List[Dict], location: str, course: str, limit: int = 10) -> List[Dict]:
+    results = _filter_colleges_for_location(results, location)
     if len(results) >= limit:
         return results[:limit]
     additions = []
@@ -303,14 +366,14 @@ async def _supplement_college_results(request: Request, results: List[Dict], loc
             }
         ]
     stored = await db(request).colleges.find(flt, {"_id": 0}).limit(limit * 2).to_list(limit * 2)
-    additions.extend(stored)
+    additions.extend(_filter_colleges_for_location(stored, location))
     if len(results) + len(additions) < limit:
         cache_docs = await db(request).colleges_cache.find(
             {"searchedLocation": {"$regex": location_regex, "$options": "i"}},
             {"_id": 0},
         ).sort("cachedAt", -1).limit(5).to_list(5)
         for cache in cache_docs:
-            additions.extend(cache.get("results") or [])
+            additions.extend(_filter_colleges_for_location(cache.get("results") or [], location))
     return _dedupe_colleges([*results, *additions])[:limit]
 
 
@@ -1079,19 +1142,19 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
 
     if course:
         queries = [
-            f"{course} colleges in {location}",
-            f"{course} institutes in {location}",
-            f"{course} coaching center {location}",
-            f"best {course} training institute near {location}",
-            f"{course} classes academy {location}",
+            f"{course} colleges in {location}, India",
+            f"{course} institutes in {location}, India",
+            f"{course} coaching center {location}, India",
+            f"best {course} training institute near {location}, India",
+            f"{course} classes academy {location}, India",
         ]
     else:
         queries = [
-            f"{location} engineering medical colleges",
-            f"{location} commerce arts law colleges",
-            f"{location} coaching institute skill development center",
-            f"{location} job oriented courses institutes",
-            f"{location} professional training academy",
+            f"{location}, India engineering medical colleges",
+            f"{location}, India commerce arts law colleges",
+            f"{location}, India coaching institute skill development center",
+            f"{location}, India job oriented courses institutes",
+            f"{location}, India professional training academy",
         ]
 
     try:
@@ -1104,6 +1167,17 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
                 place_id = place.get("id")
                 if place_id and place_id not in places_by_id:
                     places_by_id[place_id] = place
+
+            location_places = _filter_colleges_for_location(
+                [_normalize_google_place(place) for place in places_by_id.values()],
+                location,
+            )
+            allowed_place_ids = {item.get("placeId") for item in location_places if item.get("placeId")}
+            places_by_id = {
+                place_id: place
+                for place_id, place in places_by_id.items()
+                if place_id in allowed_place_ids
+            }
 
             top_places = sorted(
                 places_by_id.values(),
@@ -1149,6 +1223,7 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
             _log_college_error(location, f"google_place_details:{place.get('id')}", details)
             details = {}
         raw_results.append(_normalize_google_place(place, details))
+    raw_results = _filter_colleges_for_location(raw_results, location)
 
     course_context = f" for '{course}' programs" if course else ""
     prompt = f"""You are an Indian college/institute research assistant. Here are institutes
@@ -1184,6 +1259,7 @@ googleMapsLink (construct as https://maps.google.com/?q={{name}}+{{address}})
             for idx, item in enumerate(parsed[:15])
             if isinstance(item, dict)
         ]
+        normalized = _filter_colleges_for_location(normalized, location)
         if normalized:
             results = normalized
         else:
@@ -1228,7 +1304,12 @@ async def reverse_geocode_location(payload: ReverseGeocodeRequest, request: Requ
         async with httpx.AsyncClient(timeout=15.0) as client:
             response = await client.get(
                 GOOGLE_GEOCODE_URL,
-                params={"latlng": f"{payload.lat},{payload.lng}", "key": maps_key, "language": "en"},
+                params={
+                    "latlng": f"{payload.lat},{payload.lng}",
+                    "key": maps_key,
+                    "language": "en",
+                    "result_type": "locality|administrative_area_level_3|administrative_area_level_2",
+                },
             )
         if response.status_code >= 400:
             raise HTTPException(502, "Failed to detect your city.")
@@ -1236,7 +1317,16 @@ async def reverse_geocode_location(payload: ReverseGeocodeRequest, request: Requ
         results = data.get("results") or []
         if not results:
             return {"location": "", "message": "We could not detect your city. Please enter it manually."}
-        components = results[0].get("address_components") or []
+        selected = results[0]
+        for result in results:
+            components = result.get("address_components") or []
+            if any(
+                any(t in (component.get("types") or []) for t in ("locality", "administrative_area_level_3"))
+                for component in components
+            ):
+                selected = result
+                break
+        components = selected.get("address_components") or []
         city = ""
         state = ""
         for component in components:
@@ -1245,9 +1335,9 @@ async def reverse_geocode_location(payload: ReverseGeocodeRequest, request: Requ
                 city = component.get("long_name") or ""
             if not state and "administrative_area_level_1" in types:
                 state = component.get("long_name") or ""
-        location = city or results[0].get("formatted_address", "").split(",")[0].strip()
+        location = city or selected.get("formatted_address", "").split(",")[0].strip()
         label = ", ".join([part for part in [location, state] if part])
-        return {"location": label or location, "formattedAddress": results[0].get("formatted_address")}
+        return {"location": label or location, "formattedAddress": selected.get("formatted_address")}
     except HTTPException:
         raise
     except Exception as exc:
