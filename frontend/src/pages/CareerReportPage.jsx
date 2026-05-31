@@ -288,7 +288,7 @@ export default function CareerReportPage() {
   const [errorMsg, setErrorMsg] = useState("");
   const [generating, setGenerating] = useState(false);
 
-  // 1) Load base career info
+  // 1) Load base career info + sync Roadmap/Institutes tabs
   useEffect(() => {
     let mounted = true;
     (async () => {
@@ -296,6 +296,21 @@ export default function CareerReportPage() {
         const { data } = await api.get(`/careers/${slug}`);
         if (!mounted) return;
         setCareer(data);
+
+        // Sync with Roadmap & Institutes pages (localStorage + custom events)
+        const resolvedSlug = data.slug || slug;
+        const resolvedTitle = data.title || "";
+        try {
+          localStorage.setItem("last_roadmap_career_slug", resolvedSlug);
+          localStorage.setItem("last_roadmap_career_title", resolvedTitle);
+          localStorage.setItem("active_institute_course", resolvedTitle);
+        } catch (_) { /* ignore quota */ }
+        window.dispatchEvent(new CustomEvent("latecomers:roadmap-career-change", {
+          detail: { slug: resolvedSlug, title: resolvedTitle },
+        }));
+        window.dispatchEvent(new CustomEvent("latecomers:institute-course-change", {
+          detail: { course: resolvedTitle },
+        }));
       } catch (e) {
         setErrorMsg(e?.response?.data?.detail || "Career not found.");
         setStatus("error");
