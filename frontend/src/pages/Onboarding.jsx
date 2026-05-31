@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import Logo from "../components/Logo";
 
 // ─── 15 Career Profiling Questions (all static — no AI generation) ──────────
-const QUESTIONS = [
+/* Legacy quiz removed from runtime. Kept here temporarily for diff context.
   {
     id: "q1", section: "Who Are You?", sectionNum: 1,
     question: "What is your highest level of education?",
@@ -169,6 +169,294 @@ const QUESTIONS = [
       "I want to start my own business",
     ],
   },
+*/
+
+const QUESTIONS = [
+  {
+    id: "q1",
+    section: "Who Are You?",
+    sectionIndex: 1,
+    sectionDescription: "Let's start with a few basics about your background.",
+    question: "What is your highest level of education?",
+    type: "single",
+    autoAdvance: true,
+    profileKey: "educationLevel",
+    options: [
+      { value: "Class 10 passed", label: "Class 10 passed" },
+      { value: "Class 12 passed", label: "Class 12 passed" },
+      { value: "Currently in college", label: "Currently in college" },
+      { value: "Graduate / Postgraduate", label: "Graduate / Postgraduate" },
+      { value: "Working professional", label: "Working professional (any degree)" },
+      { value: "No formal degree / Dropped out", label: "No formal degree / Dropped out" },
+    ],
+  },
+  {
+    id: "q2",
+    section: "Who Are You?",
+    sectionIndex: 1,
+    question: "What is your current situation?",
+    type: "single",
+    autoAdvance: true,
+    profileKey: "currentSituation",
+    options: [
+      { value: "Still studying", label: "Still studying (school or college)" },
+      { value: "Just finished, exploring options", label: "Just finished studies, exploring options" },
+      { value: "Working, want to switch career", label: "Working, want to switch career" },
+      { value: "Working, want to upskill", label: "Working, want to upskill in same field" },
+      { value: "Took a break, re-entering", label: "Took a break, re-entering career" },
+    ],
+  },
+  {
+    id: "q3",
+    section: "Who Are You?",
+    sectionIndex: 1,
+    question: "What was your main subject area in school or college?",
+    type: "single",
+    autoAdvance: true,
+    profileKey: "subjectBackground",
+    skipIf: { questionId: "q1", answer: "No formal degree / Dropped out" },
+    options: [
+      { value: "Science PCM", label: "Science - Maths / Physics / Chemistry (PCM)" },
+      { value: "Science PCB", label: "Science - Biology / Chemistry (PCB)" },
+      { value: "Commerce", label: "Commerce / Accounts / Business" },
+      { value: "Arts/Humanities", label: "Arts / Humanities / Social Science" },
+      { value: "Engineering/Diploma", label: "Engineering / Diploma / ITI" },
+      { value: "Other", label: "Other / Not sure / Not applicable" },
+    ],
+  },
+  {
+    id: "q4",
+    section: "Interests & Personality",
+    sectionIndex: 2,
+    sectionDescription: "Tell us what excites you - this is the most important section.",
+    question: "Which of these activities do you genuinely enjoy?",
+    type: "multi",
+    autoAdvance: false,
+    min: 1,
+    max: 3,
+    hint: "Select up to 3",
+    profileKey: "activities",
+    options: [
+      { value: "Solving puzzles / coding / logical problems", label: "Solving puzzles / coding / logical problems" },
+      { value: "Drawing, designing, or making creative things", label: "Drawing, designing, or making creative things" },
+      { value: "Teaching, explaining, or helping others learn", label: "Teaching, explaining, or helping others learn" },
+      { value: "Talking to people / selling / convincing", label: "Talking to people / selling / convincing" },
+      { value: "Working with tools, machines, or electronics", label: "Working with tools, machines, or electronics" },
+      { value: "Writing, storytelling, or content creation", label: "Writing, storytelling, or content creation" },
+      { value: "Beauty, fitness, wellness, or cooking", label: "Beauty, fitness, wellness, or cooking" },
+      { value: "Managing teams, planning, or leading", label: "Managing teams, planning, or leading" },
+      { value: "Playing or making games / digital content", label: "Playing or making games / digital content" },
+      { value: "Travelling, hosting, or serving customers", label: "Travelling, hosting, or serving customers" },
+      { value: "Learning or speaking foreign languages", label: "Learning or speaking foreign languages" },
+    ],
+  },
+  {
+    id: "q5",
+    section: "Interests & Personality",
+    sectionIndex: 2,
+    question: "What kind of work environment suits you best?",
+    type: "single",
+    autoAdvance: true,
+    profileKey: "workEnvironment",
+    options: [
+      { value: "Desk / computer work", label: "Desk / computer-based (technical or analytical work)" },
+      { value: "Creative / remote", label: "Creative studio or work-from-anywhere" },
+      { value: "On-field / hands-on", label: "On-the-field or hands-on physical work" },
+      { value: "In front of people", label: "In front of people - teaching, presenting, or serving" },
+      { value: "Structured office", label: "Office-based - structured, team-oriented" },
+    ],
+  },
+  {
+    id: "q6",
+    section: "Interests & Personality",
+    sectionIndex: 2,
+    question: "Which best describes your personality?",
+    type: "single",
+    autoAdvance: true,
+    profileKey: "personality",
+    options: [
+      { value: "Creative", label: "Creative & artistic - I think visually and love making things" },
+      { value: "Logical", label: "Logical & analytical - I love data, systems, and problem-solving" },
+      { value: "Social", label: "Social & communicative - I'm great with people and languages" },
+      { value: "Entrepreneurial", label: "Entrepreneurial & ambitious - I want to build my own thing" },
+      { value: "Disciplined", label: "Disciplined & consistent - I prefer structured, reliable paths" },
+      { value: "Caring", label: "Caring & service-oriented - I want to help or heal people" },
+    ],
+  },
+  {
+    id: "q7",
+    section: "Interests & Personality",
+    sectionIndex: 2,
+    question: "What topics do you genuinely enjoy learning about?",
+    type: "multi",
+    autoAdvance: false,
+    min: 1,
+    max: 3,
+    hint: "Select up to 3",
+    profileKey: "favouriteTopics",
+    options: [
+      { value: "Computers / software / coding", label: "Computers, software, or coding" },
+      { value: "Data / numbers / analytics", label: "Data, numbers, or business analytics" },
+      { value: "Art / animation / gaming / visual media", label: "Art, animation, gaming, or visual media" },
+      { value: "Finance / accounting / stock markets", label: "Finance, accounting, or stock markets" },
+      { value: "Human body / health / medicine", label: "Human body, health, or medicine" },
+      { value: "Law / politics / government", label: "Law, politics, or government" },
+      { value: "Foreign languages / international cultures", label: "Foreign languages or international cultures" },
+      { value: "Beauty / fashion / fitness / wellness", label: "Beauty, fashion, fitness, or wellness" },
+      { value: "Photography / films / storytelling", label: "Photography, films, or storytelling" },
+      { value: "Machines / electronics / engineering", label: "Machines, electronics, or engineering" },
+      { value: "Marketing / social media / content", label: "Marketing, social media, or content" },
+    ],
+  },
+  {
+    id: "q8",
+    section: "Career Goals",
+    sectionIndex: 3,
+    sectionDescription: "What do you want from your career?",
+    question: "What matters most to you in a career?",
+    type: "single",
+    autoAdvance: true,
+    profileKey: "careerPriority",
+    options: [
+      { value: "High salary", label: "High salary / financial independence" },
+      { value: "Job security", label: "Job security and stability" },
+      { value: "Creative freedom", label: "Creative freedom - doing work I love" },
+      { value: "Quick income", label: "Quick income - earning within months" },
+      { value: "Own business", label: "Building my own business or freelancing" },
+      { value: "Help people", label: "Helping people / making a social impact" },
+      { value: "International career", label: "Working internationally or travelling for work" },
+    ],
+  },
+  {
+    id: "q9",
+    section: "Career Goals",
+    sectionIndex: 3,
+    question: "How soon do you want to start earning a good income?",
+    type: "single",
+    autoAdvance: true,
+    profileKey: "incomeTimeline",
+    options: [
+      { value: "3-6 months", label: "Within 3-6 months (short course / skill-based)" },
+      { value: "1 year", label: "Within 1 year" },
+      { value: "1-3 years", label: "1-3 years is fine (certification or degree)" },
+      { value: "3-5 years", label: "3-5 years is okay (CA / Engineering / Law / MBA)" },
+    ],
+  },
+  {
+    id: "q10",
+    section: "Field of Interest",
+    sectionIndex: 4,
+    sectionDescription: "Which world do you want to work in?",
+    question: "Which field excites you the most?",
+    type: "single",
+    autoAdvance: true,
+    profileKey: "fieldInterest",
+    options: [
+      { value: "IT/Software/Coding", label: "IT / Software / Coding", category: "IT / Software / Tech" },
+      { value: "Data Science/AI/Analytics", label: "Data Science / AI / Analytics", category: "Data & AI" },
+      { value: "Cybersecurity", label: "Cybersecurity", category: "Cybersecurity" },
+      { value: "Cloud/DevOps/Infrastructure", label: "Cloud & Infrastructure (AWS / DevOps / Networking)", category: "Cloud & Infrastructure" },
+      { value: "Design/UI-UX/Graphics", label: "Design / UI-UX / Graphic Arts", category: "Design / Creative / Media" },
+      { value: "Animation/Gaming/VFX", label: "Animation / Gaming / VFX", category: "Animation / VFX / Gaming" },
+      { value: "Photography/Film/Cinema", label: "Photography / Film / Cinematography", category: "Photography & Film Making" },
+      { value: "Digital Marketing/Content", label: "Digital Marketing / Content Creation", category: "Digital Marketing" },
+      { value: "Finance/Accounting/Stocks", label: "Finance / Accounting / Stock Market", category: "Finance / Commerce" },
+      { value: "Healthcare/Medical", label: "Healthcare / Medical Allied", category: "Healthcare & Medical Allied" },
+      { value: "Beauty/Fashion/Wellness", label: "Beauty / Fashion / Fitness / Wellness", category: "Beauty / Wellness" },
+      { value: "Languages/International", label: "Languages / International Careers / Tourism", category: "Language" },
+      { value: "Aviation/Hospitality/Travel", label: "Aviation / Hospitality / Travel", category: "Aviation & Hospitality" },
+      { value: "Government/Civil Services", label: "Government Exams / Civil Services", category: "Government Exam" },
+      { value: "Law/MBA/Management", label: "Law / MBA / Management", category: "Law & Management" },
+      { value: "Vocational/Trades/Repair", label: "Vocational Skills / Trades / Repair Work", category: "Vocational / Skill" },
+      { value: "Emerging Tech", label: "Emerging Tech (Blockchain / EV / Robotics / IoT / Drone)", category: "Emerging Technology" },
+      { value: "Freelance/Entrepreneurship", label: "Freelancing / Entrepreneurship / Startups", category: "High-Income Freelance" },
+    ],
+  },
+  {
+    id: "q11",
+    section: "Practical Factors",
+    sectionIndex: 5,
+    sectionDescription: "Let's factor in exams, budget, and learning style.",
+    question: "Are you open to any of these specific exam paths?",
+    type: "single",
+    autoAdvance: true,
+    profileKey: "examInterest",
+    options: [
+      { value: "Not targeting any exam", label: "Not targeting any exam" },
+      { value: "Banking / SSC / Railways", label: "Banking / SSC / Railways" },
+      { value: "UPSC / MPSC / State PSC", label: "UPSC / MPSC / State PSC" },
+      { value: "Defense / NDA / CDS / Police", label: "Defense / NDA / CDS / Police" },
+      { value: "CA / CMA / CS", label: "CA / CMA / CS" },
+      { value: "MBA entrance", label: "MBA entrance (CAT / XAT / SNAP)" },
+      { value: "CLAT / Law entrance", label: "CLAT / Law entrance" },
+    ],
+  },
+  {
+    id: "q12",
+    section: "Practical Factors",
+    sectionIndex: 5,
+    question: "What is your budget for courses and upskilling?",
+    type: "single",
+    autoAdvance: true,
+    profileKey: "budget",
+    options: [
+      { value: "Free only", label: "Free only (YouTube / free resources)" },
+      { value: "Under Rs 20,000", label: "Under Rs 20,000" },
+      { value: "Rs 20,000 - Rs 50,000", label: "Rs 20,000 - Rs 50,000" },
+      { value: "Rs 50,000 - Rs 1 lakh", label: "Rs 50,000 - Rs 1 lakh" },
+      { value: "Above Rs 1 lakh", label: "Above Rs 1 lakh (college / full degree)" },
+    ],
+  },
+  {
+    id: "q13",
+    section: "Practical Factors",
+    sectionIndex: 5,
+    question: "How do you prefer to learn?",
+    type: "single",
+    autoAdvance: true,
+    profileKey: "learningPreference",
+    options: [
+      { value: "Online self-paced", label: "Online - recorded / self-paced (watch anytime)" },
+      { value: "Online live", label: "Online - live classes with a teacher" },
+      { value: "Offline classroom", label: "Offline - physical classroom / institute" },
+      { value: "Hybrid", label: "Hybrid (mix of online + offline)" },
+      { value: "On-the-job", label: "On-the-job / apprenticeship / internship" },
+    ],
+  },
+  {
+    id: "q14",
+    section: "Challenges & Identity",
+    sectionIndex: 6,
+    sectionDescription: "Last two questions - what should the roadmap account for?",
+    question: "What is your biggest challenge right now?",
+    type: "single",
+    autoAdvance: true,
+    profileKey: "biggestChallenge",
+    options: [
+      { value: "I don't know what career to choose", label: "I don't know what career to choose" },
+      { value: "Financial pressure / limited budget", label: "Financial pressure / limited budget" },
+      { value: "I lack confidence or feel behind others", label: "I lack confidence or feel behind others" },
+      { value: "Family pressure to choose a specific path", label: "Family pressure to choose a specific path" },
+      { value: "My English isn't strong", label: "My English isn't strong" },
+      { value: "Too many options, can't decide", label: "Too many options, can't decide" },
+      { value: "I have a gap in education or work history", label: "I have a gap in education or work history" },
+    ],
+  },
+  {
+    id: "q15",
+    section: "Challenges & Identity",
+    sectionIndex: 6,
+    question: "One last thing - where are you located?",
+    type: "single",
+    autoAdvance: true,
+    profileKey: "location",
+    options: [
+      { value: "Metro city", label: "Metro city (Mumbai, Delhi, Bengaluru, Hyderabad, Chennai, Pune, Kolkata)" },
+      { value: "Tier 2 city", label: "Tier 2 city (Jaipur, Lucknow, Indore, Nagpur, Surat, etc.)" },
+      { value: "Tier 3 / rural", label: "Tier 3 / small town / rural area" },
+      { value: "Outside India", label: "Outside India / planning to go abroad" },
+    ],
+  },
 ];
 
 const TOTAL = QUESTIONS.length; // 15
@@ -215,6 +503,22 @@ function OptionChip({ label, selected, onClick, multiSelect }) {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
+function optionValue(option) {
+  return typeof option === "string" ? option : option.value;
+}
+
+function optionLabel(option) {
+  return typeof option === "string" ? option : option.label;
+}
+
+function shouldSkipQuestion(question, answers) {
+  if (!question?.skipIf) return false;
+  const actual = answers[question.skipIf.questionId];
+  return Array.isArray(actual)
+    ? actual.includes(question.skipIf.answer)
+    : actual === question.skipIf.answer;
+}
+
 export default function Onboarding() {
   const { user, refresh } = useAuth();
   const navigate = useNavigate();
@@ -226,15 +530,17 @@ export default function Onboarding() {
   const [loadingMsgIdx, setLoadingMsgIdx] = useState(0);
   const [advancing, setAdvancing] = useState(false);
 
-  const q = QUESTIONS[currentQ];
+  const visibleQuestions = QUESTIONS.filter((question) => !shouldSkipQuestion(question, answers));
+  const visibleTotal = visibleQuestions.length;
+  const q = visibleQuestions[currentQ] || visibleQuestions[visibleTotal - 1];
   const isMulti = q?.type === "multi";
   const currentAnswer = answers[q?.id];
   const isSelected = (option) =>
     isMulti
-      ? Array.isArray(currentAnswer) && currentAnswer.includes(option)
-      : currentAnswer === option;
+      ? Array.isArray(currentAnswer) && currentAnswer.includes(optionValue(option))
+      : currentAnswer === optionValue(option);
   const hasAnswer = isMulti
-    ? Array.isArray(currentAnswer) && currentAnswer.length > 0
+    ? Array.isArray(currentAnswer) && currentAnswer.length >= (q?.min || 1)
     : !!currentAnswer;
 
   // Cycle loading messages
@@ -256,24 +562,25 @@ export default function Onboarding() {
   const selectOption = useCallback(
     (option) => {
       if (advancing) return;
+      const value = optionValue(option);
       if (isMulti) {
         setAnswers((prev) => {
           const curr = Array.isArray(prev[q.id]) ? prev[q.id] : [];
           const set = new Set(curr);
-          if (set.has(option)) {
-            set.delete(option);
+          if (set.has(value)) {
+            set.delete(value);
           } else {
             if (set.size >= (q.max || 1)) return prev;
-            set.add(option);
+            set.add(value);
           }
           return { ...prev, [q.id]: Array.from(set) };
         });
       } else {
-        setAnswers((prev) => ({ ...prev, [q.id]: option }));
+        setAnswers((prev) => ({ ...prev, [q.id]: value }));
         setAdvancing(true);
         setTimeout(() => {
           setAdvancing(false);
-          advanceToNext({ forcedAnswer: option });
+          advanceToNext({ forcedAnswer: value });
         }, 280);
       }
     },
@@ -290,7 +597,7 @@ export default function Onboarding() {
 
       const mergedAnswers = forcedAnswer !== undefined ? { ...answers, [q.id]: forcedAnswer } : answers;
 
-      if (currentQ < TOTAL - 1) {
+      if (currentQ < visibleTotal - 1) {
         setCurrentQ(currentQ + 1);
       } else {
         // Last question done → submit for AI analysis
@@ -298,11 +605,11 @@ export default function Onboarding() {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentQ, answers, q, isMulti]
+    [currentQ, answers, q, isMulti, visibleTotal]
   );
 
   const goBack = () => {
-    if (currentQ > 0) setCurrentQ((n) => n - 1);
+    if (currentQ > 0) setCurrentQ((n) => Math.max(0, n - 1));
     else setPhase("welcome");
   };
 
@@ -310,7 +617,7 @@ export default function Onboarding() {
   const submitForAnalysis = async (finalAnswers = answers) => {
     setPhase("analyzing");
 
-    const answersPayload = QUESTIONS.map((qq) => ({
+    const answersPayload = QUESTIONS.filter((qq) => !shouldSkipQuestion(qq, finalAnswers)).map((qq) => ({
       questionId: qq.id,
       question: qq.question,
       answer: finalAnswers[qq.id] ?? "",
@@ -395,7 +702,7 @@ export default function Onboarding() {
             {ANALYZING_MESSAGES[loadingMsgIdx]}
           </h2>
           <p className="text-muted2 mt-2 text-sm">
-            AI is analyzing your {TOTAL} answers to find your best career matches.
+            AI is analyzing your answers to find your best career matches.
           </p>
           {/* Animated progress bar */}
           <div className="mt-8 h-2 bg-brand-100 rounded-full overflow-hidden relative">
@@ -413,7 +720,7 @@ export default function Onboarding() {
   }
 
   // ── Quiz screen ─────────────────────────────────────────────────────────────
-  const progressPct = ((currentQ + 1) / TOTAL) * 100;
+  const progressPct = ((currentQ + 1) / visibleTotal) * 100;
 
   return (
     <div className="min-h-screen bg-brand-50" data-testid="onboarding-page">
@@ -431,7 +738,7 @@ export default function Onboarding() {
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-xs font-semibold text-brand">{q?.section}</span>
               <span className="text-xs text-muted2">
-                {currentQ + 1} / {TOTAL}
+                {currentQ + 1} / {visibleTotal}
               </span>
             </div>
             <div className="h-2 bg-brand-100 rounded-full overflow-hidden">
@@ -463,8 +770,8 @@ export default function Onboarding() {
           <div className="flex flex-wrap gap-2.5 pl-0 sm:pl-13">
             {q?.options.map((option) => (
               <OptionChip
-                key={option}
-                label={option}
+                key={optionValue(option)}
+                label={optionLabel(option)}
                 selected={isSelected(option)}
                 onClick={() => selectOption(option)}
                 multiSelect={isMulti}
@@ -480,7 +787,7 @@ export default function Onboarding() {
                 disabled={!hasAnswer}
                 className="inline-flex items-center gap-2 bg-brand hover:bg-brand-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold px-6 py-3 rounded-full transition"
               >
-                {currentQ === TOTAL - 1 ? (
+                {currentQ === visibleTotal - 1 ? (
                   <>
                     <Sparkles size={16} /> Analyze My Profile
                   </>
@@ -496,7 +803,7 @@ export default function Onboarding() {
 
         {/* Section dots */}
         <div className="flex items-center justify-center gap-2 mt-5">
-          {Array.from({ length: TOTAL }).map((_, i) => (
+          {Array.from({ length: visibleTotal }).map((_, i) => (
             <div
               key={i}
               className={`rounded-full transition-all ${

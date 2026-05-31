@@ -250,12 +250,23 @@ def _preferred_career_keywords(answers: List[dict]) -> List[List[str]]:
     text = json.dumps(answers, ensure_ascii=False).lower()
     tech = any(word in text for word in ["tech", "coding", "software", "data", "ai", "cloud", "cyber", "it/software"])
     govt = any(word in text for word in ["government", "upsc", "mpsc", "ssc", "railway", "defense", "defence", "banking", "civil services"])
-    creative = any(word in text for word in ["design", "creative", "animation", "gaming", "editing"])
-    quick_income = any(word in text for word in ["3-6 months", "quick job-ready", "fast income"])
+    creative = any(word in text for word in ["design", "creative", "animation", "gaming", "editing", "photography", "film"])
+    quick_income = any(word in text for word in ["3-6 months", "quick job-ready", "fast income", "quick income"])
     freelance = any(word in text for word in ["freelance", "entrepreneurship", "own business", "startup"])
+    language = any(word in text for word in ["foreign language", "languages/international", "international career", "outside india", "tourism"])
+    beauty = any(word in text for word in ["beauty", "wellness", "fitness", "makeup", "fashion"])
+    aviation = any(word in text for word in ["aviation", "hospitality", "travelling", "travel", "hosting", "cabin crew"])
+    emerging = any(word in text for word in ["emerging tech", "blockchain", "robotics", "iot", "drone", "ev technology"])
+    vocational = any(word in text for word in ["vocational", "tools", "machines", "electronics", "repair", "hands-on", "on-the-job"])
+
+    field_category = _primary_category_from_answers(answers)
+    if field_category:
+        groups = [_keywords_for_category(field_category)]
+    else:
+        groups = []
 
     if "commerce" in text:
-        groups = [
+        groups += [
             ["chartered accountant", "ca", "accountant"],
             ["business analyst"],
             ["financial analyst", "finance"],
@@ -267,7 +278,7 @@ def _preferred_career_keywords(answers: List[dict]) -> List[List[str]]:
             ["entrepreneur", "startup founder"],
         ]
     elif "pcb" in text or "biology" in text or "medical" in text or "healthcare" in text:
-        groups = [
+        groups += [
             ["doctor", "mbbs"],
             ["pharmacist"],
             ["nurse"],
@@ -278,7 +289,7 @@ def _preferred_career_keywords(answers: List[dict]) -> List[List[str]]:
             ["biotech", "biotechnologist"],
         ]
     elif "pcm" in text or "science" in text or "engineering" in text:
-        groups = [
+        groups += [
             ["software developer", "full stack"],
             ["data scientist"],
             ["ai ml", "machine learning"],
@@ -289,7 +300,7 @@ def _preferred_career_keywords(answers: List[dict]) -> List[List[str]]:
             ["iot engineer"],
         ]
     elif "arts" in text or "humanities" in text:
-        groups = [
+        groups += [
             ["lawyer"],
             ["upsc", "ias"],
             ["hr manager"],
@@ -300,7 +311,7 @@ def _preferred_career_keywords(answers: List[dict]) -> List[List[str]]:
             ["translator", "interpreter"],
         ]
     else:
-        groups = [
+        groups += [
             ["business analyst"],
             ["data scientist"],
             ["software developer"],
@@ -321,7 +332,71 @@ def _preferred_career_keywords(answers: List[dict]) -> List[List[str]]:
         groups.insert(0, ["freelance", "digital marketing", "video editor", "graphic designer", "tally"])
     if freelance:
         groups.insert(0, ["freelance", "entrepreneur", "shopify", "wordpress", "saas"])
+    if language:
+        groups.insert(0, ["translator", "interpreter", "german", "japanese", "french", "tourism", "embassy"])
+    if beauty:
+        groups.insert(0, ["makeup", "yoga", "fitness", "hair", "nail", "spa"])
+    if aviation:
+        groups.insert(0, ["cabin crew", "airport", "aviation", "hotel", "cruise"])
+    if emerging:
+        groups.insert(0, ["blockchain", "crypto", "web3", "drone", "ev", "robotics", "iot"])
+    if vocational:
+        groups.insert(0, ["electrician", "repair", "technician", "cctv", "cnc", "interior"])
     return groups
+
+
+FIELD_INTEREST_TO_CATEGORY = {
+    "IT/Software/Coding": "IT / Software / Tech",
+    "Data Science/AI/Analytics": "Data & AI",
+    "Cybersecurity": "Cybersecurity",
+    "Cloud/DevOps/Infrastructure": "Cloud & Infrastructure",
+    "Design/UI-UX/Graphics": "Design / Creative / Media",
+    "Animation/Gaming/VFX": "Animation / VFX / Gaming",
+    "Photography/Film/Cinema": "Photography & Film Making",
+    "Digital Marketing/Content": "Digital Marketing",
+    "Finance/Accounting/Stocks": "Finance / Commerce",
+    "Healthcare/Medical": "Healthcare & Medical Allied",
+    "Beauty/Fashion/Wellness": "Beauty / Wellness",
+    "Languages/International": "Language",
+    "Aviation/Hospitality/Travel": "Aviation & Hospitality",
+    "Government/Civil Services": "Government Exam",
+    "Law/MBA/Management": "Law & Management",
+    "Vocational/Trades/Repair": "Vocational / Skill",
+    "Emerging Tech": "Emerging Technology",
+    "Freelance/Entrepreneurship": "High-Income Freelance",
+}
+
+
+def _answer_map(answers: List[dict]) -> Dict[str, Any]:
+    return {item.get("questionId"): item.get("answer") for item in answers if item.get("questionId")}
+
+
+def _primary_category_from_answers(answers: List[dict]) -> Optional[str]:
+    value = _answer_map(answers).get("q10")
+    return FIELD_INTEREST_TO_CATEGORY.get(value)
+
+
+def _keywords_for_category(category: str) -> List[str]:
+    return {
+        "IT / Software / Tech": ["full stack", "frontend", "backend", "python", "java", "mobile app", "software"],
+        "Data & AI": ["data", "analytics", "ai", "machine learning", "power bi", "tableau", "sql", "excel"],
+        "Cybersecurity": ["security", "hacking", "penetration", "soc", "forensics", "malware", "kali"],
+        "Cloud & Infrastructure": ["aws", "azure", "google cloud", "devops", "docker", "kubernetes", "linux", "networking"],
+        "Design / Creative / Media": ["graphic", "ui", "ux", "product design", "video", "motion"],
+        "Animation / VFX / Gaming": ["animation", "vfx", "game", "unity", "unreal", "character", "ar", "vr"],
+        "Photography & Film Making": ["photography", "cinematography", "film", "direction", "drone photography"],
+        "Digital Marketing": ["digital marketing"],
+        "Finance / Commerce": ["tally", "gst", "income tax", "sap", "financial", "investment", "stock", "ca", "cma", "cseet", "acca", "cfa"],
+        "Healthcare & Medical Allied": ["lab", "nutrition", "nursing", "physiotherapy", "pharmacy", "medical", "radiology"],
+        "Beauty / Wellness": ["makeup", "yoga", "fitness", "hair", "nail", "spa"],
+        "Language": ["translator", "interpreter", "language", "german", "japanese", "french", "spanish", "korean", "mandarin", "arabic", "embassy", "tourism", "teaching"],
+        "Aviation & Hospitality": ["cabin", "airport", "aviation", "hotel", "cruise"],
+        "Government Exam": ["upsc", "mpsc", "banking", "ssc", "railways", "defense", "police"],
+        "Law & Management": ["clat", "judiciary", "llb", "cat", "mba", "xat", "snap", "nmat"],
+        "Vocational / Skill": ["electrician", "technician", "repair", "cctv", "cnc", "interior"],
+        "Emerging Technology": ["blockchain", "crypto", "web3", "drone", "ev", "robotics", "iot"],
+        "High-Income Freelance": ["web design", "wordpress", "shopify", "freelance", "copywriting", "seo"],
+    }.get(category, [category.lower()])
 
 
 def _career_public_fields(career: dict, match_percent: int, why_match: Optional[List[str]] = None) -> dict:
@@ -346,6 +421,17 @@ def _career_public_fields(career: dict, match_percent: int, why_match: Optional[
 def _pick_fallback_careers(careers: List[dict], answers: List[dict], used_slugs: Optional[set] = None) -> List[dict]:
     used_slugs = used_slugs or set()
     picked = []
+    primary_category = _primary_category_from_answers(answers)
+    if primary_category:
+        for career in careers:
+            slug = career.get("slug")
+            category = career.get("category") or career.get("field")
+            if slug and slug not in used_slugs and category == primary_category:
+                picked.append(career)
+                used_slugs.add(slug)
+                if len(picked) >= 5:
+                    break
+
     for keywords in _preferred_career_keywords(answers):
         for career in careers:
             slug = career.get("slug")
@@ -358,7 +444,7 @@ def _pick_fallback_careers(careers: List[dict], answers: List[dict], used_slugs:
         if slug and slug not in used_slugs:
             picked.append(career)
             used_slugs.add(slug)
-        if len(picked) >= 8:
+        if len(picked) >= 9:
             break
     return picked
 
@@ -380,6 +466,7 @@ def _normalize_career_analysis(data: dict, careers: List[dict], answers: List[di
         "summary": data.get("summary") or "Your recommendations are personalized from your education stream, interests, and goals.",
         "topCareers": [],
         "additionalCareers": [],
+        "secondaryCareers": [],
     }
 
     def add_ai_career(item: dict, target: list, default_percent: int, include_why: bool):
@@ -389,8 +476,13 @@ def _normalize_career_analysis(data: dict, careers: List[dict], answers: List[di
             return
         used_slugs.add(slug)
         match = int(item.get("matchPercent") or default_percent)
-        match = max(81, match) if include_why else min(79, max(60, match))
-        why = item.get("whyMatch") if include_why and isinstance(item.get("whyMatch"), list) else None
+        match = max(80, min(95, match)) if include_why else min(79, max(60, match))
+        why = None
+        if include_why:
+            if isinstance(item.get("whyMatch"), list):
+                why = item.get("whyMatch")
+            elif isinstance(item.get("reasons"), list):
+                why = item.get("reasons")
         normalized_item = _career_public_fields(career, match, why)
         if item.get("title"):
             normalized_item["title"] = item["title"]
@@ -401,28 +493,29 @@ def _normalize_career_analysis(data: dict, careers: List[dict], answers: List[di
         target.append(normalized_item)
 
     for item in data.get("topCareers") or []:
-        if len(normalized["topCareers"]) >= 3:
+        if len(normalized["topCareers"]) >= 5:
             break
         if isinstance(item, dict):
             add_ai_career(item, normalized["topCareers"], 86, True)
 
-    for item in data.get("additionalCareers") or []:
-        if len(normalized["additionalCareers"]) >= 5:
+    secondary_source = data.get("secondaryCareers") or data.get("additionalCareers") or []
+    for item in secondary_source:
+        if len(normalized["additionalCareers"]) >= 4:
             break
         if isinstance(item, dict):
             add_ai_career(item, normalized["additionalCareers"], 72, False)
 
     fallbacks = _pick_fallback_careers(careers, answers, used_slugs)
     for career in fallbacks:
-        if len(normalized["topCareers"]) < 3:
-            percent = [92, 88, 84][len(normalized["topCareers"])]
+        if len(normalized["topCareers"]) < 5:
+            percent = [92, 89, 86, 84, 82][len(normalized["topCareers"])]
             normalized["topCareers"].append(_career_public_fields(career, percent))
             used_slugs.add(career["slug"])
-        elif len(normalized["additionalCareers"]) < 5:
-            percent = [78, 75, 72, 69, 66][len(normalized["additionalCareers"])]
+        elif len(normalized["additionalCareers"]) < 4:
+            percent = [78, 75, 72, 69][len(normalized["additionalCareers"])]
             normalized["additionalCareers"].append(_career_public_fields(career, percent))
             used_slugs.add(career["slug"])
-        if len(normalized["topCareers"]) == 3 and len(normalized["additionalCareers"]) == 5:
+        if len(normalized["topCareers"]) == 5 and len(normalized["additionalCareers"]) == 4:
             break
 
     if not normalized["overallScore"]:
@@ -432,6 +525,7 @@ def _normalize_career_analysis(data: dict, careers: List[dict], answers: List[di
         if not value:
             normalized["scores"][key] = max(60, min(95, normalized["overallScore"] + (len(key) % 7) - 3))
 
+    normalized["secondaryCareers"] = normalized["additionalCareers"]
     return normalized
 
 
@@ -457,6 +551,150 @@ async def _update_user_matches(request: Request, user_id: str, data: dict):
             }
         },
     )
+
+
+ONBOARDING_SYSTEM_PROMPT = """You are a career guidance AI for Indian students and late starters.
+Analyze quiz answers and return career recommendations as structured JSON.
+Rules:
+- Only use career slugs from the approved catalog provided.
+- Always return minimum 5 topCareers and minimum 4 secondaryCareers.
+- Match scores: topCareers = 80-95%, secondaryCareers = 60-79%.
+- Never return markdown, never add text outside the JSON object.
+- Personalize whyMatch reasons using the user's actual answer values."""
+
+
+def _career_catalog_by_category(careers: List[dict]) -> Dict[str, List[str]]:
+    grouped: Dict[str, List[str]] = {}
+    for career in careers:
+        category = career.get("category") or career.get("field") or "Other"
+        slug = career.get("slug")
+        if slug:
+            grouped.setdefault(category, []).append(slug)
+    return {category: sorted(slugs) for category, slugs in sorted(grouped.items())}
+
+
+def _build_onboarding_user_prompt(answers: List[dict], careers: List[dict]) -> str:
+    ans = _answer_map(answers)
+
+    def a(qid: str) -> str:
+        value = ans.get(qid, "")
+        return ", ".join(value) if isinstance(value, list) else str(value or "")
+
+    catalog_json = json.dumps(_career_catalog_by_category(careers), ensure_ascii=False, indent=2)
+    return f"""Analyze this Indian student/professional's quiz answers and return career matches.
+
+=== USER PROFILE ===
+Education Level: {a("q1")}
+Current Situation: {a("q2")}
+Subject Background: {a("q3")}
+Activities They Enjoy (multi): {a("q4")}
+Preferred Work Environment: {a("q5")}
+Personality Type: {a("q6")}
+Topics They Like Learning (multi): {a("q7")}
+Top Career Priority: {a("q8")}
+Income Timeline: {a("q9")}
+Field of Interest (PRIMARY SIGNAL): {a("q10")}
+Exam Interest: {a("q11")}
+Learning Budget: {a("q12")}
+Learning Preference: {a("q13")}
+Biggest Challenge: {a("q14")}
+Location: {a("q15")}
+
+=== APPROVED CAREER CATALOG (use ONLY these slugs) ===
+{catalog_json}
+
+=== SCORING RULES ===
+RULE 1 - PRIMARY FIELD TRIGGER:
+q10 maps to one primary career category. Careers in the matched primary category get 85-95% scores.
+- IT/Software/Coding -> IT / Software / Tech
+- Data Science/AI/Analytics -> Data & AI
+- Cybersecurity -> Cybersecurity
+- Cloud/DevOps/Infrastructure -> Cloud & Infrastructure
+- Design/UI-UX/Graphics -> Design / Creative / Media
+- Animation/Gaming/VFX -> Animation / VFX / Gaming
+- Photography/Film/Cinema -> Photography & Film Making
+- Digital Marketing/Content -> Digital Marketing
+- Finance/Accounting/Stocks -> Finance / Commerce
+- Healthcare/Medical -> Healthcare & Medical Allied
+- Beauty/Fashion/Wellness -> Beauty / Wellness
+- Languages/International -> Language
+- Aviation/Hospitality/Travel -> Aviation & Hospitality
+- Government/Civil Services -> Government Exam
+- Law/MBA/Management -> Law & Management
+- Vocational/Trades/Repair -> Vocational / Skill
+- Emerging Tech -> Emerging Technology
+- Freelance/Entrepreneurship -> High-Income Freelance
+
+RULE 2 - SECONDARY PERSONALITY AND ACTIVITY TRIGGERS:
+- Social personality boosts Language, Aviation & Hospitality.
+- Creative personality boosts Design, Animation, Photography, Beauty.
+- Logical personality boosts IT, Data, Cybersecurity, Cloud.
+- Entrepreneurial personality boosts Freelance and Emerging Technology.
+- Caring personality boosts Healthcare and Beauty/Wellness.
+- Disciplined personality boosts Government, Finance, Law.
+- Language activities/topics boost Language.
+- Beauty/fitness/wellness activities/topics boost Beauty / Wellness.
+- Travelling/hosting/customer service boosts Aviation & Hospitality.
+- Tools/machines/electronics boosts Vocational / Skill.
+- Photography/films/storytelling boosts Photography & Film Making.
+- International career or Outside India boosts Language and Aviation.
+- Tier 3 / rural boosts Vocational, Government, and online-friendly careers.
+
+RULE 3 - PRACTICAL FILTERS:
+- Free only or Under Rs 20,000 prefers low-cost/free learning paths.
+- 3-6 months prefers skill-based and short-course careers.
+- On-the-job learning boosts Vocational, Aviation, Healthcare, Beauty.
+- Specific exam interest boosts matching Government, Finance, Law, or Management careers.
+
+Return ONLY this valid JSON shape:
+{{
+  "overallScore": 85,
+  "scores": {{
+    "skills": 87,
+    "interests": 91,
+    "goals": 88,
+    "values": 82,
+    "personality": 85
+  }},
+  "summary": "2-3 sentence personalized summary mentioning specific answers and direction",
+  "topCareers": [
+    {{
+      "title": "Career Title",
+      "matchPercent": 92,
+      "slug": "exact-approved-slug",
+      "tags": ["tag1", "tag2", "tag3"],
+      "shortDescription": "one line description",
+      "avgSalaryMin": 7,
+      "avgSalaryMax": 16,
+      "jobGrowth": 18,
+      "demand": "High",
+      "whyMatch": [
+        "Specific reason based on their answers",
+        "Specific reason based on their interests",
+        "Specific reason based on their goals"
+      ]
+    }}
+  ],
+  "secondaryCareers": [
+    {{
+      "title": "Career Title",
+      "matchPercent": 72,
+      "slug": "exact-approved-slug",
+      "tags": ["tag1", "tag2", "tag3"],
+      "shortDescription": "one line description",
+      "avgSalaryMin": 3,
+      "avgSalaryMax": 10,
+      "jobGrowth": 12,
+      "demand": "High"
+    }}
+  ]
+}}
+
+Output requirements:
+- topCareers must contain at least 5 careers sorted by matchPercent descending.
+- secondaryCareers must contain at least 4 careers with 60-79% match.
+- Use ONLY slugs from the approved catalog above.
+- Never invent slugs, categories, or unavailable careers."""
 
 
 @router.post("/onboarding/analyze")
@@ -592,8 +830,15 @@ additionalCareers must have exactly 5 more careers (60-79% match).
 Total 8 career recommendations always.
 Slugs MUST match existing career slugs from the available careers list exactly."""
 
+    prompt = _build_onboarding_user_prompt(all_quiz_answers, careers)
+
     try:
-        text = await ask_claude(prompt, max_tokens=3200, json_only=True)
+        text = await ask_claude(
+            prompt,
+            system_prompt=ONBOARDING_SYSTEM_PROMPT,
+            max_tokens=4000,
+            json_only=True,
+        )
         data = _normalize_career_analysis(extract_json(text), careers, all_quiz_answers)
     except Exception as e:
         logger.error(f"Onboarding analysis LLM error: {e}")
@@ -611,21 +856,24 @@ Slugs MUST match existing career slugs from the available careers list exactly."
         return ans_map.get(qid, "")
 
     profile_extra = {}
-    if _ans("q1"):  profile_extra["educationLevel"]     = _ans("q1")
-    if _ans("q2"):  profile_extra["stream"]              = _ans("q2")
-    if _ans("q3"):  profile_extra["currentSituation"]    = _ans("q3")
-    if _ans("q4"):  profile_extra["subjects"]            = _ans("q4") if isinstance(_ans("q4"), list) else [_ans("q4")]
-    if _ans("q5"):  profile_extra["activities"]          = _ans("q5") if isinstance(_ans("q5"), list) else [_ans("q5")]
-    if _ans("q6"):  profile_extra["workType"]            = _ans("q6")
-    if _ans("q7"):  profile_extra["personality"]         = _ans("q7")
+    if _ans("q1"):  profile_extra["educationLevel"]      = _ans("q1")
+    if _ans("q2"):  profile_extra["currentSituation"]    = _ans("q2")
+    if _ans("q3"):  profile_extra["subjectBackground"]   = _ans("q3")
+    if _ans("q3"):  profile_extra["stream"]              = _ans("q3")
+    if _ans("q4"):  profile_extra["activities"]          = _ans("q4") if isinstance(_ans("q4"), list) else [_ans("q4")]
+    if _ans("q5"):  profile_extra["workEnvironment"]     = _ans("q5")
+    if _ans("q6"):  profile_extra["personality"]         = _ans("q6")
+    if _ans("q7"):  profile_extra["favouriteTopics"]     = _ans("q7") if isinstance(_ans("q7"), list) else [_ans("q7")]
     if _ans("q8"):  profile_extra["careerGoal"]          = _ans("q8")
+    if _ans("q8"):  profile_extra["careerPriority"]      = _ans("q8")
     if _ans("q9"):  profile_extra["incomeTimeline"]      = _ans("q9")
     if _ans("q10"): profile_extra["fieldInterest"]       = _ans("q10")
+    if _ans("q11"): profile_extra["examInterest"]        = _ans("q11")
     if _ans("q11"): profile_extra["govtExamInterest"]    = _ans("q11")
     if _ans("q12"): profile_extra["budget"]              = _ans("q12")
     if _ans("q13"): profile_extra["learningPreference"]  = _ans("q13")
     if _ans("q14"): profile_extra["biggestChallenge"]    = _ans("q14")
-    if _ans("q15"): profile_extra["careerIdentity"]      = _ans("q15")
+    if _ans("q15"): profile_extra["location"]            = _ans("q15")
     profile_extra["onboardingSummary"] = data.get("summary", "")
 
     # Build the $set dict
