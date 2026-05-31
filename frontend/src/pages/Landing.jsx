@@ -109,8 +109,8 @@ export default function Landing() {
       />
 
       <section className="overflow-hidden bg-[#F6F1FF]">
-        <div className="mx-auto grid max-w-[1440px] gap-6 px-4 py-8 sm:px-8 lg:grid-cols-[0.94fr_1.06fr] lg:px-20 lg:py-14">
-          <div className="flex max-w-[570px] flex-col justify-center">
+        <div className="mx-auto grid max-w-[1440px] gap-6 px-4 py-8 sm:px-8 lg:grid-cols-[0.92fr_1.08fr] lg:px-16 lg:py-10">
+          <div className="flex max-w-[570px] flex-col justify-start lg:pt-2">
             <span className="w-fit max-w-full rounded-full bg-pink-100 px-3 py-1.5 text-[10px] font-black text-pink-600 sm:px-4 sm:py-2 sm:text-xs">
               + For late starters, BPO workers and confused graduates
             </span>
@@ -141,27 +141,27 @@ export default function Landing() {
             </div>
           </div>
 
-          <div className="relative min-h-[350px] overflow-hidden lg:min-h-[560px]">
-            <div className="absolute left-[2%] top-[4%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Cabin Crew</div>
-            <div className="absolute left-[6%] top-[15%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">Cybersecurity Analyst</div>
-            <div className="absolute left-[0%] top-[27%] hidden rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 lg:block">Mehendi Artist</div>
-            <div className="absolute left-[8%] top-[39%] hidden rounded-full bg-yellow-100 px-4 py-2 text-xs font-bold text-yellow-800 lg:block">Makeup Artist</div>
-            <div className="absolute left-[2%] top-[51%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">Cloud Engineer</div>
-            <div className="absolute left-[7%] top-[63%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Product Photographer</div>
-            <div className="absolute left-[3%] top-[75%] hidden rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 lg:block">UI/UX Designer</div>
-            <div className="absolute left-[6%] top-[87%] hidden rounded-full bg-yellow-100 px-4 py-2 text-xs font-bold text-yellow-800 lg:block">EdTech Trainer</div>
+          <div className="relative min-h-[350px] lg:min-h-[500px]">
+            <div className="absolute left-[1%] top-[4%] hidden whitespace-nowrap rounded-full bg-pink-100 px-3 py-1.5 text-[11px] font-bold text-pink-700 lg:block">Cabin Crew</div>
+            <div className="absolute left-[1%] top-[16%] hidden whitespace-nowrap rounded-full border border-line bg-white px-3 py-1.5 text-[11px] font-bold text-muted2 lg:block">Cybersecurity Analyst</div>
+            <div className="absolute left-[1%] top-[28%] hidden whitespace-nowrap rounded-full bg-emerald-100 px-3 py-1.5 text-[11px] font-bold text-emerald-700 lg:block">Mehendi Artist</div>
+            <div className="absolute left-[1%] top-[40%] hidden whitespace-nowrap rounded-full bg-yellow-100 px-3 py-1.5 text-[11px] font-bold text-yellow-800 lg:block">Makeup Artist</div>
+            <div className="absolute left-[1%] top-[52%] hidden whitespace-nowrap rounded-full border border-line bg-white px-3 py-1.5 text-[11px] font-bold text-muted2 lg:block">Cloud Engineer</div>
+            <div className="absolute left-[1%] top-[64%] hidden whitespace-nowrap rounded-full bg-pink-100 px-3 py-1.5 text-[11px] font-bold text-pink-700 lg:block">Product Photographer</div>
+            <div className="absolute left-[1%] top-[76%] hidden whitespace-nowrap rounded-full bg-emerald-100 px-3 py-1.5 text-[11px] font-bold text-emerald-700 lg:block">UI/UX Designer</div>
+            <div className="absolute left-[1%] top-[88%] hidden whitespace-nowrap rounded-full bg-yellow-100 px-3 py-1.5 text-[11px] font-bold text-yellow-800 lg:block">EdTech Trainer</div>
 
-            <div className="absolute right-[2%] top-[4%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">DevOps Engineer</div>
-            <div className="absolute right-[0%] top-[15%] hidden rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 lg:block">Airport Ground Staff</div>
-            <div className="absolute right-[6%] top-[27%] hidden rounded-full bg-yellow-100 px-4 py-2 text-xs font-bold text-yellow-800 lg:block">Data Analyst</div>
-            <div className="absolute right-[2%] top-[39%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Social Media Manager</div>
-            <div className="absolute right-[4%] top-[51%] hidden rounded-full border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 lg:block">Full Stack Developer</div>
-            <div className="absolute right-[1%] top-[63%] hidden rounded-full bg-emerald-100 px-4 py-2 text-xs font-bold text-emerald-700 lg:block">Loan Processing Officer</div>
-            <div className="absolute right-[5%] top-[75%] hidden rounded-full bg-yellow-100 px-4 py-2 text-xs font-bold text-yellow-800 lg:block">Podcast Producer</div>
-            <div className="absolute right-[3%] top-[87%] hidden rounded-full bg-pink-100 px-4 py-2 text-xs font-bold text-pink-700 lg:block">Medical Coder</div>
+            <div className="absolute right-[1%] top-[4%] hidden whitespace-nowrap rounded-full border border-line bg-white px-3 py-1.5 text-[11px] font-bold text-muted2 lg:block">DevOps Engineer</div>
+            <div className="absolute right-[1%] top-[16%] hidden whitespace-nowrap rounded-full bg-emerald-100 px-3 py-1.5 text-[11px] font-bold text-emerald-700 lg:block">Airport Ground Staff</div>
+            <div className="absolute right-[1%] top-[28%] hidden whitespace-nowrap rounded-full bg-yellow-100 px-3 py-1.5 text-[11px] font-bold text-yellow-800 lg:block">Data Analyst</div>
+            <div className="absolute right-[1%] top-[40%] hidden whitespace-nowrap rounded-full bg-pink-100 px-3 py-1.5 text-[11px] font-bold text-pink-700 lg:block">Social Media Manager</div>
+            <div className="absolute right-[1%] top-[52%] hidden whitespace-nowrap rounded-full border border-line bg-white px-3 py-1.5 text-[11px] font-bold text-muted2 lg:block">Full Stack Developer</div>
+            <div className="absolute right-[1%] top-[64%] hidden whitespace-nowrap rounded-full bg-emerald-100 px-3 py-1.5 text-[11px] font-bold text-emerald-700 lg:block">Loan Processing Officer</div>
+            <div className="absolute right-[1%] top-[76%] hidden whitespace-nowrap rounded-full bg-yellow-100 px-3 py-1.5 text-[11px] font-bold text-yellow-800 lg:block">Podcast Producer</div>
+            <div className="absolute right-[1%] top-[88%] hidden whitespace-nowrap rounded-full bg-pink-100 px-3 py-1.5 text-[11px] font-bold text-pink-700 lg:block">Medical Coder</div>
 
-            <div className="absolute left-1/2 top-[3%] hidden -translate-x-1/2 rounded-full bg-pink-500 px-4 py-2 text-xs font-black text-white lg:block">+ AI-Powered Match</div>
-            <div className="mx-auto mt-2 w-full max-w-[280px] rounded-2xl border border-line bg-white p-3.5 shadow-xl lg:absolute lg:left-1/2 lg:top-[10%] lg:mt-0 lg:-translate-x-1/2">
+            <div className="absolute left-1/2 top-[2%] z-10 hidden -translate-x-1/2 whitespace-nowrap rounded-full bg-pink-500 px-3 py-1.5 text-[11px] font-black text-white lg:block">+ AI-Powered Match</div>
+            <div className="mx-auto mt-2 w-full max-w-[260px] rounded-2xl border border-line bg-white p-3.5 shadow-xl lg:absolute lg:left-1/2 lg:top-[9%] lg:mt-0 lg:-translate-x-1/2">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-yellow-100 text-ink">
                   <Target size={20} />
