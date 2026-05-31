@@ -175,6 +175,29 @@ export const CAREER_CATEGORIES = [
     ],
   },
   {
+    key: "law-mgmt",
+    label: "Law & Management",
+    subsections: [
+      {
+        title: "Law",
+        roles: [
+          "Lawyer / Advocate",
+          "Corporate Lawyer",
+          "Judge (Judiciary)",
+        ],
+      },
+      {
+        title: "MBA Tracks",
+        roles: [
+          "MBA — Marketing Manager",
+          "MBA — Finance Manager",
+          "MBA — HR Manager",
+          "MBA — Operations Manager",
+        ],
+      },
+    ],
+  },
+  {
     key: "healthcare",
     label: "Healthcare",
     subsections: [
@@ -225,6 +248,23 @@ export const CAREER_CATEGORIES = [
           "F&B Manager",
           "Event Manager",
           "Cruise Line Hospitality Staff",
+        ],
+      },
+    ],
+  },
+  {
+    key: "emerging",
+    label: "Emerging Tech",
+    subsections: [
+      {
+        title: "Future-ready Roles",
+        roles: [
+          "Blockchain Developer",
+          "Web3 Developer",
+          "Drone Pilot / Operator",
+          "EV Technician / Engineer",
+          "IoT Engineer",
+          "Robotics Engineer",
         ],
       },
     ],
