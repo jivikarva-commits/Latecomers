@@ -29,6 +29,7 @@ import Scholarships from "./pages/Scholarships";
 import MockInterview from "./pages/MockInterview";
 import AIChat from "./pages/AIChat";
 import Profile from "./pages/Profile";
+import ProfileSetup from "./pages/ProfileSetup";
 
 function App() {
   return (
@@ -47,6 +48,8 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/for-institutes" element={<ForInstitutes />} />
             <Route path="/onboarding/payment" element={<Pricing />} />
+
+            <Route path="/profile-setup" element={<ProtectedRoute><ProfileSetup /></ProtectedRoute>} />
 
             <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
               <Route path="/dashboard" element={<Dashboard />} />

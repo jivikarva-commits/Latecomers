@@ -19,9 +19,14 @@ export default function ProtectedRoute({ children }) {
     return <Navigate to="/signin" state={{ from: location }} replace />;
   }
 
-  // Logged in but onboarding not completed →  force onboarding
-  // (allow access to /onboarding itself so they can complete it)
-  if (!user.onboarded && location.pathname !== "/onboarding") {
+  // Logged in but profile (name/gender/phone) not completed → force profile setup
+  // (allow access to /profile-setup itself so they can complete it)
+  if (!user.isProfileCompleted && location.pathname !== "/profile-setup") {
+    return <Navigate to="/profile-setup" replace />;
+  }
+
+  // Profile complete but onboarding (quiz) not completed → force onboarding
+  if (user.isProfileCompleted && !user.onboarded && location.pathname !== "/onboarding") {
     return <Navigate to="/onboarding" replace />;
   }
 

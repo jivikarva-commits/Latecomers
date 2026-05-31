@@ -1439,6 +1439,46 @@ async def update_profile(payload: ProfileIn, request: Request, user=Depends(curr
     return await db(request).users.find_one({"user_id": user["user_id"]}, {"_id": 0})
 
 
+# ---------- Profile completion (post Google login, pre quiz) ----------
+class ProfileCompleteIn(BaseModel):
+    name: str
+    gender: str  # "Male" | "Female" | "Other" | "Prefer not to say"
+    phoneNumber: str  # E.164 ideal, but accept raw digits
+    # isPhoneVerified set to False for now; OTP flow added later
+
+    def normalized_phone(self) -> str:
+        digits = "".join(ch for ch in self.phoneNumber if ch.isdigit() or ch == "+")
+        return digits
+
+@router.post("/me/profile/complete")
+async def complete_profile(payload: ProfileCompleteIn, request: Request, user=Depends(current_user)):
+    """Save name/gender/phone after Google login. Marks isProfileCompleted=True.
+    isPhoneVerified stays False until OTP flow is added later.
+    """
+    name = (payload.name or "").strip()
+    gender = (payload.gender or "").strip()
+    phone = payload.normalized_phone()
+
+    if len(name) < 2:
+        raise HTTPException(400, "Name must be at least 2 characters")
+    if gender not in {"Male", "Female", "Other", "Prefer not to say"}:
+        raise HTTPException(400, "Invalid gender value")
+    digits_only = "".join(ch for ch in phone if ch.isdigit())
+    if len(digits_only) < 10 or len(digits_only) > 15:
+        raise HTTPException(400, "Phone number must be 10-15 digits")
+
+    update = {
+        "name": name,
+        "gender": gender,
+        "phoneNumber": phone,
+        "isPhoneVerified": user.get("isPhoneVerified", False),
+        "isProfileCompleted": True,
+        "updated_at": datetime.now(timezone.utc).isoformat(),
+    }
+    await db(request).users.update_one({"user_id": user["user_id"]}, {"$set": update})
+    return await db(request).users.find_one({"user_id": user["user_id"]}, {"_id": 0})
+
+
 class SaveItem(BaseModel):
     kind: str  # "careers" | "colleges" | "scholarships"
     item_id: str
