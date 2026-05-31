@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import BackToTopButton from "../components/BackToTopButton";
+import CareerReportPage from "./CareerReportPage";
 
 const STAGE_COLORS = ["#7C3AED", "#10B981", "#0EA5E9", "#8B5CF6", "#F97316", "#EC4899"];
 const STAGE_ICONS = [GraduationCap, Target, BookOpen, Bot, FolderOpen, Briefcase];
@@ -194,19 +195,6 @@ export default function Roadmap() {
         </div>
       )}
 
-      {slug && (
-        <Link
-          to={`/careers/${slug}`}
-          className="mt-3 sm:mt-4 flex items-center gap-3 rounded-2xl bg-gradient-to-r from-brand-600 to-brand text-white px-4 sm:px-5 py-3 sm:py-4 shadow-brand hover:from-brand-700 hover:to-pink-500 transition"
-        >
-          <Sparkles size={18} className="shrink-0" />
-          <div className="flex-1 min-w-0">
-            <p className="font-heading font-black text-sm sm:text-base">View Full Career Report</p>
-            <p className="text-[11px] sm:text-xs text-white/85 truncate">Open the full 7-section report — Education, Skills, Courses, AI Tools, Projects, Placement & Jobs</p>
-          </div>
-          <ArrowRight size={18} className="shrink-0" />
-        </Link>
-      )}
 
       {/* Search bar with autocomplete */}
       <div className="mt-3 sm:mt-4 glass-card rounded-2xl p-3 sm:p-4">
@@ -270,6 +258,30 @@ export default function Roadmap() {
         )}
       </div>
 
+      {/* Embedded shared career report (same UI as /careers/:slug page) */}
+      {slug && (
+        <div className="mt-4 sm:mt-6 -mx-4 sm:-mx-6 lg:-mx-8">
+          <CareerReportPage slug={slug} embedded />
+        </div>
+      )}
+
+      {!slug && !loadingPage && (
+        <div className="mt-6 glass-card rounded-2xl p-6 text-center">
+          <Search size={28} className="mx-auto text-muted2 mb-2" />
+          <p className="font-heading font-bold text-sm sm:text-base text-ink">Search for a career to get started</p>
+          <p className="text-xs text-muted2 mt-1">Type a career name above and select it to load your full report and roadmap.</p>
+        </div>
+      )}
+
+      <BackToTopButton />
+    </div>
+  );
+}
+
+// LEGACY (unused) — preserved for reference but never rendered
+function _LegacyRoadmapBlock({ stages, summary, loadingPage, slug, openStage, setOpenStage }) {
+  return (
+    <>
       {/* Overview stats */}
       {stages.length > 0 && (
         <>
@@ -473,7 +485,6 @@ export default function Roadmap() {
           </button>
         </div>
       )}
-      <BackToTopButton />
-    </div>
+    </>
   );
 }

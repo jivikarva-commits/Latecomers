@@ -530,8 +530,9 @@ function parseCountries(raw) {
   return list.length ? list.slice(0, 4) : fallback;
 }
 
-export default function CareerReportPage() {
-  const { slug } = useParams();
+export default function CareerReportPage({ slug: propSlug, embedded = false }) {
+  const params = useParams();
+  const slug = propSlug || params.slug;
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -830,21 +831,23 @@ export default function CareerReportPage() {
   const demand = career?.demand || "High";
 
   return (
-    <div className="min-h-screen bg-[#F8F6FF]">
-      <SEO title={`${career?.title || "Career"} - Latecomers AI Report`} description={`Personalized career report for ${career?.title}.`} path={`/careers/${slug}`} />
+    <div className={embedded ? "" : "min-h-screen bg-[#F8F6FF]"}>
+      {!embedded && <SEO title={`${career?.title || "Career"} - Latecomers AI Report`} description={`Personalized career report for ${career?.title}.`} path={`/careers/${slug}`} />}
 
-      {/* Sticky back bar */}
-      <div className="sticky top-0 z-20 border-b border-line bg-white/95 backdrop-blur">
-        <div className="max-w-6xl mx-auto flex items-center gap-2 px-4 sm:px-6 lg:px-8 py-2.5">
-          <button onClick={() => navigate(-1)} className="p-1.5 -ml-1.5 text-ink"><ArrowLeft size={18} /></button>
-          <p className="flex-1 font-heading font-bold text-sm sm:text-base text-ink truncate">{career?.title}</p>
-          {generating && (
-            <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs text-brand font-bold">
-              <Sparkles size={12} className="animate-pulse" /> Updating…
-            </span>
-          )}
+      {/* Sticky back bar — hidden in embedded mode */}
+      {!embedded && (
+        <div className="sticky top-0 z-20 border-b border-line bg-white/95 backdrop-blur">
+          <div className="max-w-6xl mx-auto flex items-center gap-2 px-4 sm:px-6 lg:px-8 py-2.5">
+            <button onClick={() => navigate(-1)} className="p-1.5 -ml-1.5 text-ink"><ArrowLeft size={18} /></button>
+            <p className="flex-1 font-heading font-bold text-sm sm:text-base text-ink truncate">{career?.title}</p>
+            {generating && (
+              <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs text-brand font-bold">
+                <Sparkles size={12} className="animate-pulse" /> Updating…
+              </span>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-4 sm:space-y-6">
         {/* Hero / report header */}
