@@ -65,8 +65,8 @@ function CategoryNav() {
     <div ref={containerRef} className="border-t border-brand-900/40 bg-brand-900">
       {/* Desktop */}
       <div className="hidden lg:block relative">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-center gap-1 overflow-x-auto no-scrollbar py-2" onMouseLeave={scheduleClose}>
+        <div className="mx-auto w-full max-w-[1440px] px-2 xl:px-6">
+          <div className="flex w-full items-center justify-between gap-0.5 py-2" onMouseLeave={scheduleClose}>
             {CAREER_CATEGORIES.map((cat) => {
               const isOpen = openKey === cat.key;
               return (
@@ -80,7 +80,7 @@ function CategoryNav() {
                     setOpenKey(cat.key);
                   }}
                   onClick={() => setOpenKey(isOpen ? null : cat.key)}
-                  className={`inline-flex shrink-0 items-center gap-1 whitespace-nowrap px-3 py-1.5 rounded-full text-[12px] font-bold uppercase leading-none tracking-wide transition ${
+                  className={`inline-flex shrink-0 items-center gap-0.5 whitespace-nowrap rounded-full px-1.5 py-1.5 text-[9.5px] font-bold uppercase leading-none tracking-normal transition xl:gap-1 xl:px-2.5 xl:text-[11px] ${
                     isOpen ? "bg-yellow-300 text-brand-900" : "text-white hover:text-yellow-300 hover:bg-white/10"
                   }`}
                 >
