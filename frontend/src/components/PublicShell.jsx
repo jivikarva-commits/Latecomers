@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import Logo from "./Logo";
 import { useAuth } from "../context/AuthContext";
+import { CAREER_CATEGORIES } from "../data/careerCategories";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -14,6 +15,137 @@ const navItems = [
   { to: "/for-institutes", label: "For Institutes" },
   { to: "/contact", label: "Contact" },
 ];
+
+function roleHref(role) {
+  return `/careers-explore?search=${encodeURIComponent(role)}`;
+}
+
+function CategoryNav() {
+  const [openKey, setOpenKey] = useState(null);
+  const containerRef = useRef(null);
+  const location = useLocation();
+  const closeTimer = useRef(null);
+
+  // Close on route change
+  useEffect(() => {
+    setOpenKey(null);
+  }, [location.pathname, location.search]);
+
+  // Close on ESC + outside click
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape") setOpenKey(null);
+    };
+    const onClick = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setOpenKey(null);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("mousedown", onClick);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("mousedown", onClick);
+    };
+  }, []);
+
+  const scheduleClose = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setOpenKey(null), 150);
+  };
+  const cancelClose = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+  };
+
+  const activeCategory = CAREER_CATEGORIES.find((c) => c.key === openKey);
+  const subColCount = activeCategory ? Math.min(activeCategory.subsections.length, 4) : 0;
+  const gridCols = { 1: "grid-cols-1", 2: "grid-cols-2", 3: "grid-cols-3", 4: "grid-cols-4" }[subColCount] || "grid-cols-4";
+
+  return (
+    <div ref={containerRef} className="border-t border-line/60 bg-white/92">
+      {/* Desktop */}
+      <div className="hidden lg:block relative">
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <div className="flex items-center justify-center gap-1 py-2" onMouseLeave={scheduleClose}>
+            {CAREER_CATEGORIES.map((cat) => {
+              const isOpen = openKey === cat.key;
+              return (
+                <button
+                  key={cat.key}
+                  type="button"
+                  aria-expanded={isOpen}
+                  aria-controls={`mega-${cat.key}`}
+                  onMouseEnter={() => {
+                    cancelClose();
+                    setOpenKey(cat.key);
+                  }}
+                  onClick={() => setOpenKey(isOpen ? null : cat.key)}
+                  className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wide transition ${
+                    isOpen ? "bg-brand-50 text-brand" : "text-ink hover:text-brand hover:bg-brand-50"
+                  }`}
+                >
+                  {cat.label}
+                  <ChevronDown size={13} className={`transition ${isOpen ? "rotate-180" : ""}`} />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {activeCategory && (
+          <div
+            id={`mega-${activeCategory.key}`}
+            className="absolute left-0 right-0 top-full z-30 px-4 lg:px-8"
+            onMouseEnter={cancelClose}
+            onMouseLeave={scheduleClose}
+          >
+            <div className="max-w-7xl mx-auto mt-1">
+              <div className="rounded-2xl border border-line bg-white p-5 shadow-2xl">
+                <div className={`grid gap-5 ${gridCols}`}>
+                  {activeCategory.subsections.map((sub) => (
+                    <div key={sub.title} className="min-w-0">
+                      <p className="font-heading text-[12px] font-black text-ink mb-2.5 pb-2 border-b border-line">
+                        {sub.title}
+                      </p>
+                      <ul className="space-y-1.5">
+                        {sub.roles.map((role) => (
+                          <li key={role}>
+                            <Link
+                              to={roleHref(role)}
+                              className="block text-[12px] text-muted2 hover:text-brand transition truncate"
+                              onClick={() => setOpenKey(null)}
+                            >
+                              {role}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Mobile: horizontal scroll chips → direct to careers-explore filtered */}
+      <nav className="lg:hidden px-3 py-2 overflow-x-auto no-scrollbar">
+        <div className="flex gap-2 min-w-max">
+          {CAREER_CATEGORIES.map((cat) => (
+            <Link
+              key={cat.key}
+              to={`/careers-explore?field=${cat.key}`}
+              className="px-2.5 py-1.5 rounded-full bg-brand-50 border border-brand/20 text-[10.5px] font-bold uppercase tracking-wide text-brand whitespace-nowrap"
+            >
+              {cat.label}
+            </Link>
+          ))}
+        </div>
+      </nav>
+    </div>
+  );
+}
 
 export function PublicNav() {
   const navigate = useNavigate();
@@ -86,6 +218,8 @@ export function PublicNav() {
           )}
         </div>
       </nav>
+
+      <CategoryNav />
     </header>
   );
 }
