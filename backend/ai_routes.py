@@ -346,6 +346,34 @@ def _preferred_career_keywords(answers: List[dict]) -> List[List[str]]:
 
 
 FIELD_INTEREST_TO_CATEGORY = {
+    "Building an app or website": "IT / Software / Tech",
+    "Working with numbers and spreadsheets": "Finance / Commerce",
+    "Designing something that looks great": "Design / Creative / Media",
+    "Maths or Accounts": "Finance / Commerce",
+    "English or Communication": "Language",
+    "Computer Science": "IT / Software / Tech",
+    "Business Studies or Economics": "Law & Management",
+    "Arts or Drawing": "Design / Creative / Media",
+    "Learning to code": "IT / Software / Tech",
+    "Starting a small business": "High-Income Freelance",
+    "Creating videos, writing, or design": "Design / Creative / Media",
+    "Studying for a government exam": "Government Exam",
+    "Improving English or communication": "Language",
+    "Technical problems": "IT / Software / Tech",
+    "People problems": "Aviation & Hospitality",
+    "Business problems": "Law & Management",
+    "Creative problems": "Design / Creative / Media",
+    "MS Excel": "Data & AI",
+    "Customer service communication": "Aviation & Hospitality",
+    "Data entry typing": "Finance / Commerce",
+    "Social media basics": "Digital Marketing",
+    "Basic coding knowledge": "IT / Software / Tech",
+    "Writing content creation": "Digital Marketing",
+    "Solving code or data at a laptop": "Data & AI",
+    "Presenting strategy in meetings": "Law & Management",
+    "Creating content design or videos": "Design / Creative / Media",
+    "Meeting clients and selling": "Digital Marketing",
+    "Preparing reports and spreadsheets": "Finance / Commerce",
     "IT/Software/Coding": "IT / Software / Tech",
     "Data Science/AI/Analytics": "Data & AI",
     "Cybersecurity": "Cybersecurity",
@@ -372,8 +400,15 @@ def _answer_map(answers: List[dict]) -> Dict[str, Any]:
 
 
 def _primary_category_from_answers(answers: List[dict]) -> Optional[str]:
-    value = _answer_map(answers).get("q10")
-    return FIELD_INTEREST_TO_CATEGORY.get(value)
+    answer_map = _answer_map(answers)
+    for qid in ("q2", "q4", "q5", "q6", "q24", "q28", "q10"):
+        value = answer_map.get(qid)
+        values = value if isinstance(value, list) else [value]
+        for item in values:
+            category = FIELD_INTEREST_TO_CATEGORY.get(item)
+            if category:
+                return category
+    return None
 
 
 def _keywords_for_category(category: str) -> List[str]:
@@ -584,67 +619,58 @@ def _build_onboarding_user_prompt(answers: List[dict], careers: List[dict]) -> s
     return f"""Analyze this Indian student/professional's quiz answers and return career matches.
 
 === USER PROFILE ===
-Education Level: {a("q1")}
-Current Situation: {a("q2")}
-Subject Background: {a("q3")}
-Activities They Enjoy (multi): {a("q4")}
-Preferred Work Environment: {a("q5")}
-Personality Type: {a("q6")}
-Topics They Like Learning (multi): {a("q7")}
-Top Career Priority: {a("q8")}
-Income Timeline: {a("q9")}
-Field of Interest (PRIMARY SIGNAL): {a("q10")}
-Exam Interest: {a("q11")}
-Learning Budget: {a("q12")}
-Learning Preference: {a("q13")}
-Biggest Challenge: {a("q14")}
-Location: {a("q15")}
+Natural interest: {a("q1")}
+Satisfying activity: {a("q2")}
+Technical comfort: {a("q3")}
+Favorite subject: {a("q4")}
+Side project choice: {a("q5")}
+Problem style: {a("q6")}
+Work environment: {a("q7")}
+Deadline style: {a("q8")}
+Computer comfort: {a("q9")}
+Team response: {a("q10")}
+Learning preference: {a("q11")}
+Personality: {a("q12")}
+Decision style: {a("q13")}
+Speaking comfort: {a("q14")}
+Repetition style: {a("q15")}
+Career identity: {a("q16")}
+Career priority: {a("q17")}
+Security need: {a("q18")}
+Business preference: {a("q19")}
+Purpose need: {a("q20")}
+English level: {a("q21")}
+Numbers comfort: {a("q22")}
+Software exposure: {a("q23")}
+Existing skills: {a("q24")}
+Problem-solving ability: {a("q25")}
+Current situation: {a("q26")}
+Biggest blocker: {a("q27")}
+Ideal workday (PRIMARY SIGNAL): {a("q28")}
+Target monthly salary: {a("q29")}
+Career timeline: {a("q30")}
 
 === APPROVED CAREER CATALOG (use ONLY these slugs) ===
 {catalog_json}
 
 === SCORING RULES ===
 RULE 1 - PRIMARY FIELD TRIGGER:
-q10 maps to one primary career category. Careers in the matched primary category get 85-95% scores.
-- IT/Software/Coding -> IT / Software / Tech
-- Data Science/AI/Analytics -> Data & AI
-- Cybersecurity -> Cybersecurity
-- Cloud/DevOps/Infrastructure -> Cloud & Infrastructure
-- Design/UI-UX/Graphics -> Design / Creative / Media
-- Animation/Gaming/VFX -> Animation / VFX / Gaming
-- Photography/Film/Cinema -> Photography & Film Making
-- Digital Marketing/Content -> Digital Marketing
-- Finance/Accounting/Stocks -> Finance / Commerce
-- Healthcare/Medical -> Healthcare & Medical Allied
-- Beauty/Fashion/Wellness -> Beauty / Wellness
-- Languages/International -> Language
-- Aviation/Hospitality/Travel -> Aviation & Hospitality
-- Government/Civil Services -> Government Exam
-- Law/MBA/Management -> Law & Management
-- Vocational/Trades/Repair -> Vocational / Skill
-- Emerging Tech -> Emerging Technology
-- Freelance/Entrepreneurship -> High-Income Freelance
+Use q2, q4, q5, q6, q24, and especially q28 to identify the primary career category.
+Careers in that primary category should get 85-95% scores when skills and timeline also fit.
 
 RULE 2 - SECONDARY PERSONALITY AND ACTIVITY TRIGGERS:
-- Social personality boosts Language, Aviation & Hospitality.
-- Creative personality boosts Design, Animation, Photography, Beauty.
-- Logical personality boosts IT, Data, Cybersecurity, Cloud.
-- Entrepreneurial personality boosts Freelance and Emerging Technology.
-- Caring personality boosts Healthcare and Beauty/Wellness.
-- Disciplined personality boosts Government, Finance, Law.
-- Language activities/topics boost Language.
-- Beauty/fitness/wellness activities/topics boost Beauty / Wellness.
-- Travelling/hosting/customer service boosts Aviation & Hospitality.
-- Tools/machines/electronics boosts Vocational / Skill.
-- Photography/films/storytelling boosts Photography & Film Making.
-- International career or Outside India boosts Language and Aviation.
-- Tier 3 / rural boosts Vocational, Government, and online-friendly careers.
+- Technical/building answers boost IT, Data, Cybersecurity, Cloud, and Emerging Tech.
+- Numbers/spreadsheet answers boost Finance, Accounting, Data, and Business Analytics.
+- Creative/content/design answers boost Design, Digital Marketing, Animation, Photography, and Film.
+- People/customer/speaking answers boost Aviation, Hospitality, Sales, Language, and Marketing.
+- Government exam answers boost Government, Banking, SSC, Railway, Defence, and Police paths.
+- Business/leadership answers boost Management, MBA, Operations, and Entrepreneurship.
 
 RULE 3 - PRACTICAL FILTERS:
-- Free only or Under Rs 20,000 prefers low-cost/free learning paths.
-- 3-6 months prefers skill-based and short-course careers.
-- On-the-job learning boosts Vocational, Aviation, Healthcare, Beauty.
-- Specific exam interest boosts matching Government, Finance, Law, or Management careers.
+- Weak English should prefer roles with a clear communication-improvement roadmap, not reject people-facing careers automatically.
+- Fast 3-6 month timeline prefers skill-based and short-certification careers.
+- Target salary should affect roadmap ambition but must not force only elite careers.
+- Existing skills should be referenced directly in whyMatch.
 
 Return ONLY this valid JSON shape:
 {{
@@ -703,7 +729,7 @@ async def analyze_onboarding(
     request: Request,
     user=Depends(current_user),
 ):
-    """Analyze 15 onboarding answers via Claude and save career match results."""
+    """Analyze onboarding answers via Claude and save career match results."""
 
     # Fetch available careers to ground the model
     careers = await db(request).careers.find({}, {"_id": 0}).to_list(300)
@@ -765,7 +791,7 @@ Rules:
     all_quiz_answers = [a.model_dump() for a in payload.answers]
     prompt = f"""You are an expert Indian career counselor with deep knowledge of the Indian education system, job market, and career paths.
 
-A student has completed a 15-question career assessment quiz. Analyze ALL their answers holistically and provide personalized career recommendations.
+A student has completed a 30-question career assessment quiz. Analyze ALL their answers holistically and provide personalized career recommendations.
 
 Student Quiz Answers:
 {json.dumps(all_quiz_answers, ensure_ascii=False)}
@@ -856,24 +882,39 @@ Slugs MUST match existing career slugs from the available careers list exactly."
         return ans_map.get(qid, "")
 
     profile_extra = {}
-    if _ans("q1"):  profile_extra["educationLevel"]      = _ans("q1")
-    if _ans("q2"):  profile_extra["currentSituation"]    = _ans("q2")
-    if _ans("q3"):  profile_extra["subjectBackground"]   = _ans("q3")
-    if _ans("q3"):  profile_extra["stream"]              = _ans("q3")
-    if _ans("q4"):  profile_extra["activities"]          = _ans("q4") if isinstance(_ans("q4"), list) else [_ans("q4")]
-    if _ans("q5"):  profile_extra["workEnvironment"]     = _ans("q5")
-    if _ans("q6"):  profile_extra["personality"]         = _ans("q6")
-    if _ans("q7"):  profile_extra["favouriteTopics"]     = _ans("q7") if isinstance(_ans("q7"), list) else [_ans("q7")]
-    if _ans("q8"):  profile_extra["careerGoal"]          = _ans("q8")
-    if _ans("q8"):  profile_extra["careerPriority"]      = _ans("q8")
-    if _ans("q9"):  profile_extra["incomeTimeline"]      = _ans("q9")
-    if _ans("q10"): profile_extra["fieldInterest"]       = _ans("q10")
-    if _ans("q11"): profile_extra["examInterest"]        = _ans("q11")
-    if _ans("q11"): profile_extra["govtExamInterest"]    = _ans("q11")
-    if _ans("q12"): profile_extra["budget"]              = _ans("q12")
-    if _ans("q13"): profile_extra["learningPreference"]  = _ans("q13")
-    if _ans("q14"): profile_extra["biggestChallenge"]    = _ans("q14")
-    if _ans("q15"): profile_extra["location"]            = _ans("q15")
+    if _ans("q1"):  profile_extra["naturalInterest"]     = _ans("q1")
+    if _ans("q2"):  profile_extra["activityInterest"]    = _ans("q2")
+    if _ans("q3"):  profile_extra["technicalComfort"]    = _ans("q3")
+    if _ans("q4"):  profile_extra["subjectBackground"]   = _ans("q4")
+    if _ans("q4"):  profile_extra["stream"]              = _ans("q4")
+    if _ans("q5"):  profile_extra["sideProject"]         = _ans("q5")
+    if _ans("q6"):  profile_extra["problemStyle"]        = _ans("q6")
+    if _ans("q7"):  profile_extra["workEnvironment"]     = _ans("q7")
+    if _ans("q8"):  profile_extra["deadlineStyle"]       = _ans("q8")
+    if _ans("q9"):  profile_extra["computerComfort"]     = _ans("q9")
+    if _ans("q10"): profile_extra["teamResponse"]        = _ans("q10")
+    if _ans("q11"): profile_extra["learningPreference"]  = _ans("q11")
+    if _ans("q12"): profile_extra["personality"]         = _ans("q12")
+    if _ans("q13"): profile_extra["decisionStyle"]       = _ans("q13")
+    if _ans("q14"): profile_extra["speakingComfort"]     = _ans("q14")
+    if _ans("q15"): profile_extra["repetitionStyle"]     = _ans("q15")
+    if _ans("q16"): profile_extra["careerIdentity"]      = _ans("q16")
+    if _ans("q17"): profile_extra["careerGoal"]          = _ans("q17")
+    if _ans("q17"): profile_extra["careerPriority"]      = _ans("q17")
+    if _ans("q18"): profile_extra["securityNeed"]        = _ans("q18")
+    if _ans("q19"): profile_extra["businessPreference"]  = _ans("q19")
+    if _ans("q20"): profile_extra["purposeNeed"]         = _ans("q20")
+    if _ans("q21"): profile_extra["englishLevel"]        = _ans("q21")
+    if _ans("q22"): profile_extra["numbersComfort"]      = _ans("q22")
+    if _ans("q23"): profile_extra["softwareExposure"]    = _ans("q23")
+    if _ans("q24"): profile_extra["existingSkills"]      = _ans("q24") if isinstance(_ans("q24"), list) else [_ans("q24")]
+    if _ans("q25"): profile_extra["problemSolving"]      = _ans("q25")
+    if _ans("q26"): profile_extra["currentSituation"]    = _ans("q26")
+    if _ans("q27"): profile_extra["biggestChallenge"]    = _ans("q27")
+    if _ans("q28"): profile_extra["fieldInterest"]       = _ans("q28")
+    if _ans("q28"): profile_extra["idealWorkday"]        = _ans("q28")
+    if _ans("q29"): profile_extra["targetSalary"]        = _ans("q29")
+    if _ans("q30"): profile_extra["incomeTimeline"]      = _ans("q30")
     profile_extra["onboardingSummary"] = data.get("summary", "")
 
     # Build the $set dict
