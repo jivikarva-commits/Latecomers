@@ -396,6 +396,29 @@ class ReverseGeocodeRequest(BaseModel):
     lng: float
 
 
+async def _free_reverse_geocode(lat: float, lng: float) -> Dict[str, str]:
+    async with httpx.AsyncClient(timeout=12.0) as client:
+        response = await client.get(
+            "https://api.bigdatacloud.net/data/reverse-geocode-client",
+            params={"latitude": lat, "longitude": lng, "localityLanguage": "en"},
+        )
+    if response.status_code >= 400:
+        return {"location": "", "formattedAddress": ""}
+    data = response.json()
+    city = (
+        data.get("city")
+        or data.get("locality")
+        or ((data.get("localityInfo") or {}).get("administrative") or [{}])[-1].get("name")
+        or ""
+    )
+    state = data.get("principalSubdivision") or ""
+    country = data.get("countryCode") or data.get("countryName") or ""
+    if str(country).upper() not in {"IN", "INDIA"}:
+        return {"location": "", "formattedAddress": data.get("locality") or ""}
+    label = ", ".join([part for part in [city, state] if part])
+    return {"location": label or city, "formattedAddress": data.get("locality") or label}
+
+
 CATALOG_BY_SLUG = {career["slug"]: career for career in DYNAMIC_CAREERS}
 LEGACY_CAREER_SLUG_MAP = {
     "software-developer": "full-stack-development",
@@ -1299,6 +1322,9 @@ googleMapsLink (construct as https://maps.google.com/?q={{name}}+{{address}})
 async def reverse_geocode_location(payload: ReverseGeocodeRequest, request: Request):
     maps_key = os.environ.get("GOOGLE_MAPS_API_KEY", "").strip()
     if not maps_key:
+        fallback = await _free_reverse_geocode(payload.lat, payload.lng)
+        if fallback.get("location"):
+            return fallback
         raise HTTPException(503, "Location detection is temporarily unavailable.")
     try:
         async with httpx.AsyncClient(timeout=15.0) as client:
@@ -1311,10 +1337,20 @@ async def reverse_geocode_location(payload: ReverseGeocodeRequest, request: Requ
                 },
             )
         if response.status_code >= 400:
+            fallback = await _free_reverse_geocode(payload.lat, payload.lng)
+            if fallback.get("location"):
+                return fallback
             raise HTTPException(502, "Failed to detect your city.")
         data = response.json()
+        if data.get("status") not in (None, "OK"):
+            fallback = await _free_reverse_geocode(payload.lat, payload.lng)
+            if fallback.get("location"):
+                return fallback
         results = data.get("results") or []
         if not results:
+            fallback = await _free_reverse_geocode(payload.lat, payload.lng)
+            if fallback.get("location"):
+                return fallback
             return {"location": "", "message": "We could not detect your city. Please enter it manually."}
         best = {"city": "", "state": "", "formatted": results[0].get("formatted_address", ""), "score": -1}
         for result in results:
