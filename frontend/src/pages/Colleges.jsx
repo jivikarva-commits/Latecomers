@@ -209,10 +209,13 @@ export default function Colleges() {
     );
   }, [detectingLocation]);
 
+  // Auto-detect on mount, but only if no location is already filled (from profile or storage)
   useEffect(() => {
     if (locationPromptedRef.current) return;
+    if (locationQuery.trim()) return; // Already have a location
     locationPromptedRef.current = true;
     requestLocationAccess();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestLocationAccess]);
 
   const handleSearch = async () => {
@@ -260,7 +263,8 @@ export default function Colleges() {
     const normalizedCourse = courseQuery.trim();
     if (!normalizedLocation || !normalizedCourse || locationLoading) return;
     const key = `${normalizedCourse}|${normalizedLocation}`;
-    if (autoSearchKeyRef.current === key || locationResults.length > 0) return;
+    // Re-search if course OR location changed, even if old results exist
+    if (autoSearchKeyRef.current === key) return;
     autoSearchKeyRef.current = key;
     handleSearch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -327,10 +331,29 @@ export default function Colleges() {
 
       {/* Search section — Course + Location + Button */}
       <div className="mt-5 glass-card rounded-3xl p-4 sm:p-5">
-        <div className="flex items-center gap-2 mb-3">
-          <LocateFixed size={16} className="text-brand" />
-          <p className="font-heading font-bold text-ink text-sm sm:text-base">Search Institutes</p>
+        <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
+          <div className="flex items-center gap-2">
+            <LocateFixed size={16} className="text-brand" />
+            <p className="font-heading font-bold text-ink text-sm sm:text-base">Search Institutes</p>
+          </div>
+          <button
+            type="button"
+            onClick={requestLocationAccess}
+            disabled={detectingLocation}
+            className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 border border-brand/30 text-brand text-[11px] sm:text-xs font-bold px-3 py-1.5 hover:bg-brand-100 disabled:opacity-60 transition"
+            data-testid="detect-location-cta"
+          >
+            <Navigation size={12} className={detectingLocation ? "animate-pulse" : ""} />
+            {detectingLocation ? "Detecting your city…" : locationQuery ? "Re-detect location" : "Use my current location"}
+          </button>
         </div>
+        {courseQuery.trim() && (
+          <div className="mb-2.5 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold px-2.5 py-1">
+            <GraduationCap size={11} />
+            <span>Course auto-filled: {courseQuery.trim()}</span>
+            <button onClick={() => setCourseQuery("")} className="ml-1 text-emerald-600 hover:text-emerald-800" aria-label="Clear course">×</button>
+          </div>
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] gap-2">
           <div className="relative">
             <GraduationCap size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted2" />
