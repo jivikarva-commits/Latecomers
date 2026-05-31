@@ -159,53 +159,100 @@ export default function Colleges() {
     };
   }, []);
 
+  // Free client-side reverse geocode fallback (no API key needed).
+  // Used if backend /colleges/reverse-geocode returns empty or fails.
+  const fallbackReverseGeocode = async (lat, lng) => {
+    try {
+      const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`;
+      const res = await fetch(url);
+      if (!res.ok) return null;
+      const data = await res.json();
+      const city = data.city || data.locality || data.localityInfo?.administrative?.[3]?.name;
+      const state = data.principalSubdivision;
+      const parts = [city, state].filter(Boolean);
+      return parts.length ? parts.join(", ") : null;
+    } catch (err) {
+      console.warn("[Geo] BigDataCloud fallback failed:", err);
+      return null;
+    }
+  };
+
   const requestLocationAccess = useCallback(async () => {
     if (detectingLocation) return;
     if (!navigator.geolocation) {
       setLocationMessage("Location access is not supported. Please enter your city manually.");
+      toast.error("Browser doesn't support geolocation");
       return;
     }
     if (!window.isSecureContext) {
       setLocationMessage("Browser location works only on HTTPS or localhost. Please enter your city manually.");
+      toast.error("HTTPS required for location detection");
       return;
     }
     try {
       if (navigator.permissions?.query) {
         const permission = await navigator.permissions.query({ name: "geolocation" });
+        console.log("[Geo] Permission state:", permission.state);
         if (permission.state === "denied") {
           setLocationMessage("Location permission is blocked in browser settings. Allow it for this site or enter your city manually.");
+          toast.error("Location blocked in browser settings. Click the 🔒/ⓘ icon next to URL to allow.");
           return;
         }
       }
-    } catch {
-      // Some browsers do not support querying geolocation permission; request normally.
+    } catch (e) {
+      console.warn("[Geo] permission query unsupported:", e);
     }
     setDetectingLocation(true);
-    setLocationMessage("Please allow location access to find institutes near you, or enter your city manually.");
+    setLocationMessage("Asking your browser for location access…");
+    console.log("[Geo] Requesting current position…");
+
     navigator.geolocation.getCurrentPosition(
       async (position) => {
+        const { latitude: lat, longitude: lng } = position.coords;
+        console.log("[Geo] Got coords:", lat, lng);
+        setLocationMessage(`Got your coords (${lat.toFixed(3)}, ${lng.toFixed(3)}) — resolving city…`);
+
+        // 1) Try backend (uses Google Maps API on EC2)
+        let city = null;
         try {
-          const { data } = await api.post("/colleges/reverse-geocode", {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-          if (data.location) {
-            setLocationQuery(data.location);
-            setLocationMessage(`Detected your location: ${data.location}`);
-          } else {
-            setLocationMessage(data.message || "Please enter your city manually.");
-          }
+          const { data } = await api.post("/colleges/reverse-geocode", { lat, lng });
+          console.log("[Geo] Backend response:", data);
+          if (data?.location) city = data.location;
         } catch (error) {
-          setLocationMessage(error?.response?.data?.detail || "Could not detect your city. Please enter it manually.");
-        } finally {
-          setDetectingLocation(false);
+          console.warn("[Geo] Backend reverse-geocode failed:", error?.response?.status, error?.response?.data || error?.message);
         }
-      },
-      () => {
+
+        // 2) Fallback: free client-side reverse geocoding
+        if (!city) {
+          console.log("[Geo] Trying BigDataCloud fallback…");
+          city = await fallbackReverseGeocode(lat, lng);
+          if (city) console.log("[Geo] Fallback resolved city:", city);
+        }
+
+        // 3) Last resort — show coords as the location string (still searchable)
+        if (!city) {
+          city = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+          console.warn("[Geo] Both services failed — using raw coords");
+        }
+
+        setLocationQuery(city);
+        setLocationMessage(`📍 Detected: ${city}`);
+        toast.success(`Location detected: ${city}`);
         setDetectingLocation(false);
-        setLocationMessage("Location permission was denied or dismissed. Please enter your city manually.");
       },
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 10 * 60 * 1000 }
+      (err) => {
+        console.error("[Geo] getCurrentPosition error:", err.code, err.message);
+        setDetectingLocation(false);
+        const messages = {
+          1: "Permission denied. Click the 🔒 icon next to URL to allow location, or type your city manually.",
+          2: "Position unavailable. Check your device GPS or type your city manually.",
+          3: "Location request timed out. Try again or type your city manually.",
+        };
+        const msg = messages[err.code] || `Location error (${err.code}): ${err.message}`;
+        setLocationMessage(msg);
+        toast.error(msg);
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 5 * 60 * 1000 }
     );
   }, [detectingLocation]);
 
