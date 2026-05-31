@@ -38,7 +38,7 @@ export default function CareersExplore() {
           ),
         ]}
       />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
+      <main className="w-full px-4 sm:px-6 lg:px-10 py-8 sm:py-16">
         <p className="text-[10px] sm:text-xs font-bold tracking-[0.25em] text-brand uppercase">Career Options</p>
         <div className="mt-2 flex flex-col lg:flex-row lg:items-end justify-between gap-4">
           <div>
@@ -56,7 +56,7 @@ export default function CareersExplore() {
           </div>
         </div>
 
-        <div className="mt-5 sm:mt-8 grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4">
+        <div className="mt-5 sm:mt-8 grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4">
           {filtered.map((career) => (
             <Link key={career.slug} to={`/careers/${career.slug}`} className="surface-gradient border border-line rounded-xl sm:rounded-2xl p-3 sm:p-4 hover:shadow-soft transition">
               <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-brand-50 text-brand flex items-center justify-center">
