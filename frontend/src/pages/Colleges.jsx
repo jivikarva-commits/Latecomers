@@ -477,7 +477,16 @@ export default function Colleges() {
             className="inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl disabled:opacity-60 shrink-0"
             data-testid="search-institutes-button"
           >
-            <Search size={14} /> {locationLoading ? "Searching..." : detectingLocation ? "Detecting..." : "Search"}
+            {locationLoading ? (
+              <>
+                <span className="h-4 w-4 rounded-full border-2 border-white/40 border-t-white animate-spin" />
+                Searching
+              </>
+            ) : (
+              <>
+                <Search size={14} /> {detectingLocation ? "Detecting..." : "Search"}
+              </>
+            )}
           </button>
         </div>
         {locationMessage && <p className="text-xs text-muted2 mt-2">{locationMessage}</p>}
@@ -491,14 +500,29 @@ export default function Colleges() {
         )}
 
         {locationLoading && (
-          <div className="mt-4 space-y-2">
-            <div className="flex items-center gap-2 text-sm font-semibold text-brand">
-              <span className="w-4 h-4 border-2 border-brand-200 border-t-brand rounded-full animate-spin" />
-              Searching institutes{courseQuery.trim() ? ` for ${courseQuery.trim()}` : ""} near {locationQuery.trim()}...
+          <div className="mt-4 rounded-2xl border border-brand/15 bg-white p-4 sm:p-5">
+            <div className="flex items-start gap-3">
+              <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand">
+                <span className="h-4 w-4 rounded-full border-2 border-brand-200 border-t-brand animate-spin" />
+              </span>
+              <div className="min-w-0">
+                <p className="font-heading text-sm sm:text-base font-bold text-ink">Finding nearby institutes</p>
+                <p className="mt-0.5 text-xs sm:text-sm text-muted2 leading-relaxed">
+                  {courseQuery.trim() || "Selected course"} near {locationQuery.trim() || "your city"}
+                </p>
+              </div>
             </div>
-            <div className="h-5 w-2/3 rounded skeleton-shimmer" />
-            <div className="h-16 w-full rounded skeleton-shimmer" />
-            <div className="h-16 w-full rounded skeleton-shimmer" />
+            <div className="mt-4 grid gap-3">
+              {[0, 1, 2].map((item) => (
+                <div key={item} className="flex items-center gap-3 rounded-xl border border-line bg-[#FAFAFE] p-3">
+                  <div className="h-10 w-10 shrink-0 rounded-xl skeleton-shimmer" />
+                  <div className="min-w-0 flex-1">
+                    <div className="h-3.5 w-2/3 rounded skeleton-shimmer" />
+                    <div className="mt-2 h-3 w-full rounded skeleton-shimmer" />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
