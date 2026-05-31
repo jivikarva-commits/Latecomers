@@ -62,7 +62,7 @@ function CategoryNav() {
   const gridCols = { 1: "grid-cols-1", 2: "grid-cols-2", 3: "grid-cols-3", 4: "grid-cols-4" }[subColCount] || "grid-cols-4";
 
   return (
-    <div ref={containerRef} className="border-t border-line/60 bg-white/92">
+    <div ref={containerRef} className="border-t border-brand-900/40 bg-brand-900">
       {/* Desktop */}
       <div className="hidden lg:block relative">
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
@@ -81,7 +81,7 @@ function CategoryNav() {
                   }}
                   onClick={() => setOpenKey(isOpen ? null : cat.key)}
                   className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wide transition ${
-                    isOpen ? "bg-brand-50 text-brand" : "text-ink hover:text-brand hover:bg-brand-50"
+                    isOpen ? "bg-yellow-300 text-brand-900" : "text-white hover:text-yellow-300 hover:bg-white/10"
                   }`}
                 >
                   {cat.label}
@@ -136,7 +136,7 @@ function CategoryNav() {
             <Link
               key={cat.key}
               to={`/careers-explore?field=${cat.key}`}
-              className="px-2.5 py-1.5 rounded-full bg-brand-50 border border-brand/20 text-[10.5px] font-bold uppercase tracking-wide text-brand whitespace-nowrap"
+              className="px-2.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-[10.5px] font-bold uppercase tracking-wide text-white whitespace-nowrap"
             >
               {cat.label}
             </Link>
