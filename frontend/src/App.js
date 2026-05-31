@@ -22,6 +22,7 @@ import CareerTestQuestions from "./pages/CareerTestQuestions";
 import CareerTestResults from "./pages/CareerTestResults";
 import Careers from "./pages/Careers";
 import CareerDetail from "./pages/CareerDetail";
+import CareerReportPage from "./pages/CareerReportPage";
 import Roadmap from "./pages/Roadmap";
 import Colleges from "./pages/Colleges";
 import Scholarships from "./pages/Scholarships";
@@ -56,7 +57,8 @@ function App() {
               <Route path="/career-test/questions" element={<CareerTestQuestions />} />
               <Route path="/career-test/results" element={<CareerTestResults />} />
               <Route path="/careers" element={<Careers />} />
-              <Route path="/careers/:slug" element={<CareerDetail />} />
+              <Route path="/careers/:slug" element={<CareerReportPage />} />
+              <Route path="/careers-legacy/:slug" element={<CareerDetail />} />
               <Route path="/roadmap" element={<Roadmap />} />
               <Route path="/colleges" element={<Colleges />} />
               <Route path="/institutes" element={<Colleges />} />
