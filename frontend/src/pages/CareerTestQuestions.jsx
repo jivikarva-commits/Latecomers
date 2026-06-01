@@ -67,17 +67,8 @@ export default function CareerTestQuestions() {
     setSubmitting(true);
     const payload = buildPayload();
     setPendingPayload(payload);
-    try {
-      await api.get("/subscriptions/quiz-access");
-      await generateResult(payload);
-    } catch (e) {
-      if (e?.response?.status === 402) {
-        setShowPaywall(true);
-      } else {
-        toast.error(e?.response?.data?.detail || "Please complete payment to generate your result.");
-      }
-      setSubmitting(false);
-    }
+    setShowPaywall(true);
+    setSubmitting(false);
   };
 
   if (generating) {
