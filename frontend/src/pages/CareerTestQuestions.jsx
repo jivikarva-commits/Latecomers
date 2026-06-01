@@ -1,16 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, BadgeCheck, ShieldCheck, X, Lightbulb } from "lucide-react";
+import { ArrowLeft, ArrowRight, BadgeCheck, ShieldCheck, X, Lightbulb, Sparkles } from "lucide-react";
 import { api } from "../lib/api";
 import { toast } from "sonner";
 import HeroIllustration from "../components/HeroIllustration";
 import { ClipboardCheck } from "lucide-react";
+import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
 
 export default function CareerTestQuestions() {
   const [questions, setQuestions] = useState([]);
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState({});
   const [submitting, setSubmitting] = useState(false);
+  const [generating, setGenerating] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [pendingPayload, setPendingPayload] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,25 +32,68 @@ export default function CareerTestQuestions() {
   };
   const prev = () => idx > 0 && setIdx(idx - 1);
 
-  const submit = async () => {
-    setSubmitting(true);
+  const buildPayload = () => ({
+    answers: questions.map((qq) => ({
+      questionId: qq.question_id,
+      answer: answers[qq.question_id] || "A",
+      category: qq.category,
+    })),
+  });
+
+  const generateResult = async (payload) => {
+    setGenerating(true);
+    setShowPaywall(false);
     try {
-      const payload = {
-        answers: questions.map((qq) => ({
-          questionId: qq.question_id,
-          answer: answers[qq.question_id] || "A",
-          category: qq.category,
-        })),
-      };
-      const { data } = await api.post("/ai/career-test/score", payload);
-      toast.success("AI scoring complete!");
-      navigate("/career-test/results", { state: { result: data, showSubscription: true } });
+      await api.post("/ai/career-test/score", payload);
+      toast.success("AI result generated.");
+      navigate("/dashboard", { replace: true, state: { quizCompleted: true } });
     } catch (e) {
+      if (e?.response?.status === 402) {
+        setPendingPayload(payload);
+        setShowPaywall(true);
+        return;
+      }
       toast.error(e?.response?.data?.detail || "Scoring failed");
     } finally {
+      setGenerating(false);
       setSubmitting(false);
     }
   };
+
+  const submit = async () => {
+    setSubmitting(true);
+    const payload = buildPayload();
+    setPendingPayload(payload);
+    try {
+      await api.get("/subscriptions/quiz-access");
+      await generateResult(payload);
+    } catch (e) {
+      if (e?.response?.status === 402) {
+        setShowPaywall(true);
+      } else {
+        toast.error(e?.response?.data?.detail || "Please complete payment to generate your result.");
+      }
+      setSubmitting(false);
+    }
+  };
+
+  if (generating) {
+    return (
+      <div className="min-h-[70dvh] flex items-center justify-center p-6" data-testid="career-test-generating">
+        <div className="w-full max-w-xl text-center">
+          <div className="mx-auto h-20 w-20 rounded-full cc-logo-gradient text-white flex items-center justify-center">
+            <Sparkles size={34} />
+          </div>
+          <h1 className="mt-7 font-heading text-2xl sm:text-3xl font-black text-ink">Building your personalized roadmap...</h1>
+          <p className="mt-2 text-sm text-muted2">AI is analyzing your answers to find your best career matches.</p>
+          <div className="mx-auto mt-8 h-2 w-full max-w-md overflow-hidden rounded-full bg-brand-50">
+            <div className="h-full w-4/5 rounded-full bg-brand animate-pulse" />
+          </div>
+          <p className="mt-4 text-xs text-muted2">Building your Career Match Score & Top Recommendations...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!q) {
     return <div className="p-6 text-center text-muted2">Loading questions…</div>;
@@ -142,7 +189,7 @@ export default function CareerTestQuestions() {
             className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full bg-brand hover:bg-brand-600 text-white text-xs font-semibold shadow-brand disabled:opacity-50"
             data-testid="question-next"
           >
-            {submitting ? "Scoring..." : idx === questions.length - 1 ? "Submit" : "Next"} <ArrowRight size={14} />
+            {submitting ? "Checking..." : idx === questions.length - 1 ? "Submit" : "Next"} <ArrowRight size={14} />
           </button>
         </div>
       </div>
@@ -150,6 +197,16 @@ export default function CareerTestQuestions() {
       <p className="text-center text-xs text-muted2 mt-5 inline-flex items-center gap-1.5 justify-center w-full">
         <ShieldCheck size={14} className="text-brand" /> Your answers are private and secure.
       </p>
+      <PremiumSubscriptionModal
+        open={showPaywall}
+        lockClose
+        initialPlan="starter_offer"
+        title="Unlock your AI career result"
+        subtitle="New user offer: pay Rs 9 today. The Rs 99 starter plan is discounted for your first quiz result."
+        onSuccess={() => {
+          if (pendingPayload) generateResult(pendingPayload);
+        }}
+      />
     </div>
   );
 }

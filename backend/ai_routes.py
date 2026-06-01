@@ -1067,6 +1067,8 @@ class ScoreRequest(BaseModel):
 
 @router.post("/career-test/score")
 async def score_test(payload: ScoreRequest, request: Request, user=Depends(current_user)):
+    ensure_quiz_result_access(user)
+
     # Fetch career titles to ground the model
     careers = await db(request).careers.find({}, {"_id": 0, "slug": 1, "title": 1}).to_list(300)
     career_list = ", ".join([f"{c['title']} ({c['slug']})" for c in careers])
