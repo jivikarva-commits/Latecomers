@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Sparkles, Lock } from "lucide-reac
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import Logo from "../components/Logo";
+import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
 
 // ─── 15 Career Profiling Questions (all static — no AI generation) ──────────
 /* Legacy quiz removed from runtime. Kept here temporarily for diff context.
@@ -709,6 +710,8 @@ export default function Onboarding() {
   const [answers, setAnswers] = useState({});
   const [loadingMsgIdx, setLoadingMsgIdx] = useState(0);
   const [advancing, setAdvancing] = useState(false);
+  const [pendingAnswersPayload, setPendingAnswersPayload] = useState(null);
+  const [showPaywall, setShowPaywall] = useState(false);
 
   const visibleQuestions = QUESTIONS.filter((question) => !shouldSkipQuestion(question, answers));
   const visibleTotal = visibleQuestions.length;
@@ -795,25 +798,31 @@ export default function Onboarding() {
 
   // ── Submit to AI for analysis ──────────────────────────────────────────────
   const submitForAnalysis = async (finalAnswers = answers) => {
-    setPhase("analyzing");
-
     const answersPayload = QUESTIONS.filter((qq) => !shouldSkipQuestion(qq, finalAnswers)).map((qq) => ({
       questionId: qq.id,
       question: qq.question,
       answer: finalAnswers[qq.id] ?? "",
     }));
+    setPendingAnswersPayload(answersPayload);
+    setShowPaywall(true);
+  };
 
+  const runPaidAnalysis = async (answersPayload = pendingAnswersPayload) => {
+    if (!answersPayload) return;
+    setShowPaywall(false);
+    setPhase("analyzing");
     try {
       await api.post("/ai/onboarding/analyze", { answers: answersPayload });
       await refresh();
       navigate("/dashboard", { replace: true });
     } catch (e) {
       console.error("Onboarding AI analysis failed:", e);
-      try {
-        await api.put("/me/profile", { onboarded: true });
-        await refresh();
-      } catch {}
-      navigate("/dashboard", { replace: true });
+      if (e?.response?.status === 402) {
+        setPhase("quiz");
+        setShowPaywall(true);
+        return;
+      }
+      setPhase("quiz");
     }
   };
 
@@ -997,6 +1006,14 @@ export default function Onboarding() {
           ))}
         </div>
       </div>
+      <PremiumSubscriptionModal
+        open={showPaywall}
+        lockClose
+        initialPlan="starter_offer"
+        title="Unlock your AI career result"
+        subtitle="New user offer: pay Rs 9 today. The Rs 99 starter plan is discounted for your first quiz result."
+        onSuccess={() => runPaidAnalysis()}
+      />
     </div>
   );
 }

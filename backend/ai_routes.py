@@ -731,6 +731,7 @@ async def analyze_onboarding(
     user=Depends(current_user),
 ):
     """Analyze onboarding answers via Claude and save career match results."""
+    ensure_quiz_result_access(user)
 
     # Fetch available careers to ground the model
     careers = await db(request).careers.find({}, {"_id": 0}).to_list(300)
