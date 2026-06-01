@@ -8,6 +8,7 @@ import {
   CheckCircle2, ChevronRight, Download, Heart, MapPin, Rocket,
   Share2, Sparkles, Star, Target, TrendingUp, User, Zap,
 } from "lucide-react";
+import BrandClockMark from "../components/BrandClockMark";
 
 const SCORE_COLORS = ["#5B4FE9", "#22C55E", "#3B82F6", "#F97316", "#EC4899", "#8B5CF6"];
 const SCORE_ICONS = [Heart, Star, User, Briefcase, Zap, Target];
@@ -101,7 +102,9 @@ export default function CareerTestResults() {
     return (
       <div className="min-h-[70dvh] p-4 flex items-center justify-center">
         <div className="max-w-md rounded-3xl border border-line bg-white p-6 text-center">
-          <Sparkles size={28} className="mx-auto text-brand" />
+          <div className="mx-auto h-10 w-10 rounded-xl cc-logo-gradient text-white flex items-center justify-center">
+            <BrandClockMark size={24} />
+          </div>
           <h1 className="mt-3 font-heading text-2xl font-black text-ink">Your report is ready</h1>
           <p className="mt-2 text-sm text-muted2">Choose a plan to unlock your AI career result, roadmap, institutes, and interview practice.</p>
           <button onClick={() => setShowPaywall(true)} className="mt-5 w-full rounded-xl bg-brand px-5 py-3 text-sm font-bold text-white">
@@ -169,7 +172,7 @@ export default function CareerTestResults() {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-1">
             <div className="w-7 h-7 rounded-lg cc-logo-gradient flex items-center justify-center text-white">
-              <Sparkles size={13} />
+              <BrandClockMark size={16} />
             </div>
             <span className="font-heading font-bold text-sm text-ink">AI Analysis Complete</span>
           </div>

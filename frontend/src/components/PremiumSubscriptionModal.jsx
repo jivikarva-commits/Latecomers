@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { CheckCircle2, Lock, MessageCircle, Mic, Route, Search, Sparkles, X } from "lucide-react";
+import { CheckCircle2, MessageCircle, Mic, Route, Search, Sparkles, X } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
+import BrandClockMark from "./BrandClockMark";
 
 const fallbackPlans = [
   {
@@ -170,7 +171,7 @@ export default function PremiumSubscriptionModal({
         <div className="p-4 sm:p-7">
           <div className="text-center max-w-2xl mx-auto">
             <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl cc-logo-gradient text-white">
-              <Lock size={21} />
+              <BrandClockMark size={28} animated={offerOnly} />
             </div>
             <p className="text-[10px] font-black uppercase tracking-[0.22em] text-brand">Premium access</p>
             <h2 className="font-heading text-2xl sm:text-4xl font-black text-ink mt-1">{title}</h2>

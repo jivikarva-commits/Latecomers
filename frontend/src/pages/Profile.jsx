@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { LogOut, Award, Building2, Briefcase, Sparkles, ArrowRight, CheckCircle2, Pencil, Save } from "lucide-react";
 import { api } from "../lib/api";
 import { toast } from "sonner";
+import BrandClockMark from "../components/BrandClockMark";
 
 const EDUCATION_OPTIONS = ["School Student", "12th Pass", "Undergraduate", "Graduate", "Postgraduate"];
 const STREAM_OPTIONS = ["Science", "Commerce", "Arts", "Management", "Law", "Medical", "Engineering"];
@@ -150,7 +151,7 @@ export default function Profile() {
       ) : (
         <div className="bg-brand-50 rounded-3xl border border-brand-100 p-5 flex items-center gap-4">
           <div className="w-12 h-12 rounded-2xl cc-logo-gradient text-white flex items-center justify-center shrink-0">
-            <Sparkles size={22} />
+            <BrandClockMark size={28} />
           </div>
           <div className="flex-1">
             <p className="font-semibold text-ink text-sm">Complete your career profile</p>

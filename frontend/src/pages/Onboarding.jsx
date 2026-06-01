@@ -5,6 +5,7 @@ import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import Logo from "../components/Logo";
 import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
+import BrandClockMark from "../components/BrandClockMark";
 
 // ─── 15 Career Profiling Questions (all static — no AI generation) ──────────
 /* Legacy quiz removed from runtime. Kept here temporarily for diff context.
@@ -657,7 +658,7 @@ function AIBubble({ children }) {
   return (
     <div className="flex items-start gap-3">
       <div className="w-10 h-10 rounded-full cc-logo-gradient flex items-center justify-center shrink-0 text-white text-xs font-bold shadow-sm">
-        AI
+        <BrandClockMark size={23} />
       </div>
       <div className="bg-brand-50 border border-brand-100 rounded-2xl rounded-tl-sm px-5 py-4 flex-1">
         {children}
@@ -837,8 +838,8 @@ export default function Onboarding() {
             <Logo />
           </div>
           <div className="bg-white rounded-3xl border border-line shadow-soft p-8 text-center">
-            <div className="w-16 h-16 rounded-full cc-logo-gradient flex items-center justify-center mx-auto mb-5 shadow-brand text-white text-lg font-bold">
-              AI
+            <div className="w-16 h-16 rounded-full cc-logo-gradient flex items-center justify-center mx-auto mb-5 shadow-brand text-white">
+              <BrandClockMark size={36} />
             </div>
             <h1 className="font-heading font-extrabold text-2xl text-ink">
               Hi {user?.name?.split(" ")[0] || "there"}! 👋
@@ -884,8 +885,8 @@ export default function Onboarding() {
     return (
       <div className="min-h-screen bg-brand-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full text-center">
-          <div className="w-20 h-20 rounded-full cc-logo-gradient flex items-center justify-center mx-auto mb-6 shadow-brand">
-            <Sparkles size={30} className="text-white animate-pulse" />
+          <div className="w-20 h-20 rounded-full cc-logo-gradient flex items-center justify-center mx-auto mb-6 shadow-brand text-white">
+            <BrandClockMark size={43} animated />
           </div>
           <h2 className="font-heading font-extrabold text-2xl text-ink">
             {ANALYZING_MESSAGES[loadingMsgIdx]}

@@ -76,6 +76,34 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(135deg, #160741 0%, #35108F 48%, #EC4899 100%);
 }
 
+.latecomers-clock-mark {
+  display: block;
+  color: currentColor;
+}
+
+.latecomers-clock-mark .clock-ring,
+.latecomers-clock-mark .clock-needle {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.latecomers-clock-mark.is-animated .clock-ring {
+  animation: latecomers-clock-spin 2.8s linear infinite;
+}
+
+.latecomers-clock-mark.is-animated .clock-needle {
+  animation: latecomers-clock-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes latecomers-clock-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes latecomers-clock-pulse {
+  0%, 100% { transform: scale(0.94) rotate(-6deg); opacity: 0.9; }
+  50% { transform: scale(1.08) rotate(7deg); opacity: 1; }
+}
+
 .latecomers-mark {
   clip-path: polygon(37% 8%, 83% 0, 72% 100%, 18% 100%, 27% 27%, 0 39%);
   background: linear-gradient(145deg, #EC4899 0%, #7C2CF2 48%, #160741 100%);

@@ -2,7 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../lib/api";
 import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
-import { ArrowLeft, Bot, History, Mic, MoreVertical, Plus, Send } from "lucide-react";
+import { ArrowLeft, History, Mic, MoreVertical, Plus, Send } from "lucide-react";
+import BrandClockMark from "../components/BrandClockMark";
 
 const generationSteps = ["Understanding your question", "Finding the useful details", "Organizing a clear answer"];
 
@@ -35,7 +36,7 @@ function TypingDots() {
 function AssistantAvatar() {
   return (
     <div className="w-9 h-9 rounded-full cc-logo-gradient flex items-center justify-center text-white shrink-0">
-      <Bot size={16} />
+      <BrandClockMark size={21} />
     </div>
   );
 }

@@ -30,6 +30,7 @@ import { useAuth } from "../context/AuthContext";
 import { api } from "../lib/api";
 import { toast } from "sonner";
 import SEO from "../components/SEO";
+import BrandClockMark from "../components/BrandClockMark";
 
 const SECTION_ORDER = ["education", "skills", "courses", "tools", "projects", "placement", "jobs"];
 
@@ -267,8 +268,8 @@ function LoadingSkeleton({ title }) {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <div className="rounded-2xl border border-line bg-white p-5 sm:p-7 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl cc-logo-gradient flex items-center justify-center shadow-brand">
-            <Bot size={22} className="text-white animate-pulse" />
+          <div className="w-12 h-12 rounded-2xl cc-logo-gradient flex items-center justify-center shadow-brand text-white">
+            <BrandClockMark size={28} animated />
           </div>
           <div>
             <p className="text-[11px] font-bold uppercase tracking-widest text-brand">Generating your report</p>
@@ -961,7 +962,7 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
                   )}
 
                   <button onClick={() => navigate("/ai-chat", { state: { careerSlug: career?.slug, careerTitle: career?.title } })} className="w-full rounded-2xl border border-brand/30 bg-brand-50 p-4 flex items-center gap-3 hover:bg-brand-100 transition">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl cc-logo-gradient text-white"><Bot size={18} /></span>
+                    <span className="flex h-10 w-10 items-center justify-center rounded-xl cc-logo-gradient text-white"><BrandClockMark size={23} /></span>
                     <div className="flex-1 text-left">
                       <p className="font-heading text-sm font-black text-ink">Have questions about {career?.title}?</p>
                       <p className="text-[12px] text-muted2 mt-0.5">Open AI chat with this career context attached.</p>

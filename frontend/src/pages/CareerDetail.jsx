@@ -34,6 +34,7 @@ import {
   Users,
   Wrench,
 } from "lucide-react";
+import BrandClockMark from "../components/BrandClockMark";
 
 // Icon cache to avoid import * as Icons
 const iconCache = {
@@ -660,8 +661,8 @@ function getSkillCategory(name = "") {
 function AskAiCta({ title, body, color, onClick }) {
   return (
     <div className="bg-brand-50 border border-brand-100 rounded-2xl p-3 sm:p-4 flex items-center gap-2.5">
-      <div className="w-9 h-9 rounded-xl cc-logo-gradient flex items-center justify-center shrink-0 shadow-brand">
-        <Bot size={15} className="text-white" />
+      <div className="w-9 h-9 rounded-xl cc-logo-gradient flex items-center justify-center shrink-0 shadow-brand text-white">
+        <BrandClockMark size={20} />
       </div>
       <div className="flex-1 min-w-0">
         <p className="font-heading font-bold text-xs sm:text-sm text-ink">{title}</p>
@@ -863,7 +864,7 @@ export default function CareerDetail() {
                 <div className="relative w-24 h-24 mx-auto lg:mx-0">
                   <div className="absolute inset-0 rounded-[2rem] cc-logo-gradient opacity-20 animate-ping" />
                   <div className="absolute inset-2 rounded-[1.65rem] cc-logo-gradient text-white flex items-center justify-center shadow-brand">
-                    <Bot size={34} />
+                    <BrandClockMark size={42} animated />
                   </div>
                   <div
                     className="absolute -right-2 -bottom-1 w-11 h-11 rounded-2xl bg-white border border-line flex items-center justify-center shadow-soft"

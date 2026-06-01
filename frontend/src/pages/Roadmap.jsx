@@ -10,6 +10,7 @@ import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import BackToTopButton from "../components/BackToTopButton";
 import CareerReportPage from "./CareerReportPage";
+import BrandClockMark from "../components/BrandClockMark";
 
 const STAGE_COLORS = ["#7C3AED", "#10B981", "#0EA5E9", "#8B5CF6", "#F97316", "#EC4899"];
 const STAGE_ICONS = [GraduationCap, Target, BookOpen, Bot, FolderOpen, Briefcase];
@@ -252,7 +253,7 @@ export default function Roadmap() {
             className="inline-flex items-center justify-center gap-1.5 bg-brand hover:bg-brand-600 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-xl disabled:opacity-60 shrink-0"
             data-testid="generate-roadmap-button"
           >
-            <Sparkles size={14} /> {loading ? "Generating..." : "Generate Roadmap"}
+            {loading ? <BrandClockMark size={14} animated /> : <Sparkles size={14} />} {loading ? "Generating..." : "Generate Roadmap"}
           </button>
         </div>
         {selectedCareer && !loading && (
@@ -264,7 +265,9 @@ export default function Roadmap() {
         )}
         {loading && (
           <div className="mt-3 flex items-center gap-3 px-1">
-            <span className="w-4 h-4 border-2 border-brand-200 border-t-brand rounded-full animate-spin shrink-0" />
+            <span className="w-5 h-5 rounded-full cc-logo-gradient text-white flex items-center justify-center shrink-0">
+              <BrandClockMark size={13} animated />
+            </span>
             <p className="text-xs sm:text-sm font-semibold text-brand animate-pulse">
               Crafting your personalized roadmap{selectedCareer ? ` for ${selectedCareer.title}` : ""}...
             </p>

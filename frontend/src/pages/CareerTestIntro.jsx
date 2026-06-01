@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import {
   ArrowLeft, ArrowRight, Brain, Target, BarChart3, Map as MapIcon,
   CheckCircle2, Clock, Layers3, Zap, Heart, Star, User, Briefcase,
-  Bookmark, ShieldCheck, Bot,
+  Bookmark, ShieldCheck,
 } from "lucide-react";
 import HeroIllustration from "../components/HeroIllustration";
 import { useNavigate } from "react-router-dom";
+import BrandClockMark from "../components/BrandClockMark";
 
 const Pill = ({ icon: Icon, color, title, desc }) => (
   <div className="bg-white rounded-2xl border border-line p-4 text-center">
@@ -118,7 +119,7 @@ export default function CareerTestIntro() {
       {/* CTA */}
       <div className="mt-6 bg-brand-50 rounded-3xl p-4 sm:p-5 flex items-center gap-4">
         <div className="w-14 h-14 rounded-full cc-logo-gradient text-white flex items-center justify-center shrink-0">
-          <Bot size={26} />
+          <BrandClockMark size={32} />
         </div>
         <div className="flex-1 min-w-0">
           <p className="font-heading font-bold text-sm sm:text-base text-ink">Ready to find your perfect career?</p>

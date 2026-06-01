@@ -6,6 +6,7 @@ import SEO from "../components/SEO";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../lib/api";
 import { toast } from "sonner";
+import BrandClockMark from "../components/BrandClockMark";
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
@@ -126,7 +127,9 @@ export default function SignIn() {
           <div className="mt-7 flex justify-center" ref={btnContainerRef} data-testid="signin-google-button">
             {signingIn ? (
               <div className="w-full flex flex-col items-center gap-3 py-2">
-                <div className="w-8 h-8 border-3 border-brand-200 border-t-brand rounded-full animate-spin" />
+                <div className="w-9 h-9 rounded-full cc-logo-gradient text-white flex items-center justify-center">
+                  <BrandClockMark size={20} animated />
+                </div>
                 <p className="text-sm text-muted2">Signing you in…</p>
               </div>
             ) : (

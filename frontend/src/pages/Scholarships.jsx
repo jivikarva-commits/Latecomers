@@ -3,12 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import {
   ArrowLeft, Search, Filter, Bookmark, Sparkles, Calendar, GraduationCap,
-  Wallet, Users, Building2, ArrowRight, ShieldCheck, ChevronDown, ClipboardList,
+  Wallet, Users, Building2, ArrowRight, ShieldCheck, ChevronDown,
 } from "lucide-react";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import HeroIllustration from "../components/HeroIllustration";
 import BackToTopButton from "../components/BackToTopButton";
+import BrandClockMark from "../components/BrandClockMark";
 
 const TYPES = ["All", "Merit", "Need-Based", "Government", "Girls"];
 
@@ -220,7 +221,7 @@ export default function Scholarships() {
       {/* Find My Matches CTA */}
       <div className="mt-5 glass-card rounded-3xl p-4 sm:p-5 flex items-center gap-4">
         <div className="w-12 h-12 rounded-2xl cc-logo-gradient text-white flex items-center justify-center shrink-0">
-          <ClipboardList size={22} />
+          <BrandClockMark size={28} animated={matching} />
         </div>
         <div className="flex-1 min-w-0">
           <p className="font-heading font-bold text-sm sm:text-base text-ink">Find scholarships that match your profile</p>

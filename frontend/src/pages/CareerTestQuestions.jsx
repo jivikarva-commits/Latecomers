@@ -7,6 +7,7 @@ import HeroIllustration from "../components/HeroIllustration";
 import { ClipboardCheck } from "lucide-react";
 import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
 import { useAuth } from "../context/AuthContext";
+import BrandClockMark from "../components/BrandClockMark";
 
 export default function CareerTestQuestions() {
   const [questions, setQuestions] = useState([]);
@@ -76,7 +77,7 @@ export default function CareerTestQuestions() {
       <div className="min-h-[70dvh] flex items-center justify-center p-6" data-testid="career-test-generating">
         <div className="w-full max-w-xl text-center">
           <div className="mx-auto h-20 w-20 rounded-full cc-logo-gradient text-white flex items-center justify-center">
-            <Sparkles size={34} />
+            <BrandClockMark size={43} animated />
           </div>
           <h1 className="mt-7 font-heading text-2xl sm:text-3xl font-black text-ink">Building your personalized roadmap...</h1>
           <p className="mt-2 text-sm text-muted2">AI is analyzing your answers to find your best career matches.</p>
