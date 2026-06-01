@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { api } from "../lib/api";
+import { useAuth } from "../context/AuthContext";
+import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
 import {
   ArrowLeft, ArrowRight, Award, BarChart3, BookOpen, Briefcase,
   CheckCircle2, ChevronRight, Download, Heart, MapPin, Rocket,
@@ -47,13 +49,25 @@ function OverallDonut({ value }) {
 export default function CareerTestResults() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const { refresh } = useAuth();
   const [data, setData] = useState(state?.result || null);
+  const [accessChecked, setAccessChecked] = useState(false);
+  const [hasAccess, setHasAccess] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(!!state?.showSubscription);
 
   useEffect(() => {
-    if (!data) {
-      api.get("/ai/career-test/latest").then(({ data: d }) => setData(d));
-    }
-  }, [data]);
+    api.get("/subscriptions/quiz-access")
+      .then(() => {
+        setHasAccess(true);
+        setShowPaywall(false);
+        if (!data) api.get("/ai/career-test/latest").then(({ data: d }) => setData(d));
+      })
+      .catch(() => {
+        setHasAccess(false);
+        setShowPaywall(true);
+      })
+      .finally(() => setAccessChecked(true));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const scores = useMemo(() => {
     if (!data?.scores) return [];
@@ -66,6 +80,52 @@ export default function CareerTestResults() {
   }, [data?.scores]);
 
   const topMatches = data?.topMatches || [];
+
+  if (!accessChecked) {
+    return (
+      <div className="p-4 sm:p-6 max-w-4xl mx-auto">
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="glass-card rounded-2xl p-4">
+              <div className="h-4 w-32 rounded skeleton-shimmer" />
+              <div className="h-3 w-full rounded skeleton-shimmer mt-2" />
+              <div className="h-10 w-full rounded skeleton-shimmer mt-3" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (!hasAccess) {
+    return (
+      <div className="min-h-[70dvh] p-4 flex items-center justify-center">
+        <div className="max-w-md rounded-3xl border border-line bg-white p-6 text-center">
+          <Sparkles size={28} className="mx-auto text-brand" />
+          <h1 className="mt-3 font-heading text-2xl font-black text-ink">Your report is ready</h1>
+          <p className="mt-2 text-sm text-muted2">Choose a plan to unlock your AI career result, roadmap, institutes, and interview practice.</p>
+          <button onClick={() => setShowPaywall(true)} className="mt-5 w-full rounded-xl bg-brand px-5 py-3 text-sm font-bold text-white">
+            View plans
+          </button>
+        </div>
+        <PremiumSubscriptionModal
+          open={showPaywall}
+          lockClose
+          title="Your quiz result is ready"
+          subtitle="Unlock your result with a paid plan. Starter offer is available for a limited time."
+          onSuccess={async () => {
+            await refresh();
+            setHasAccess(true);
+            setShowPaywall(false);
+            if (!data) {
+              const latest = await api.get("/ai/career-test/latest");
+              setData(latest.data);
+            }
+          }}
+        />
+      </div>
+    );
+  }
 
   if (!data || !data.summary) {
     return (

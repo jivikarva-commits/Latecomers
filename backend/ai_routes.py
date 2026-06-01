@@ -11,6 +11,7 @@ from pydantic import BaseModel
 
 from auth_routes import current_user
 from llm_client import ask_claude, extract_json, llm_status
+from subscription_utils import consume_feature, ensure_quiz_result_access, ensure_feature_available
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/ai", tags=["ai"])
@@ -1137,6 +1138,7 @@ Provide exactly 5 topMatches sorted by matchPercent desc.
 
 @router.get("/career-test/latest")
 async def latest_result(request: Request, user=Depends(current_user)):
+    ensure_quiz_result_access(user)
     rec = await db(request).test_results.find_one(
         {"user_id": user["user_id"]}, {"_id": 0}, sort=[("completed_at", -1)]
     )
@@ -1573,6 +1575,7 @@ class ChatRequest(BaseModel):
 
 @router.post("/chat")
 async def chat(payload: ChatRequest, request: Request, user=Depends(current_user)):
+    ensure_feature_available(user, "ai_chat")
     chat_id = payload.chat_id or str(uuid.uuid4())
     chat_doc = await db(request).chats.find_one({"chat_id": chat_id, "user_id": user["user_id"]}, {"_id": 0})
     latest_test = await db(request).test_results.find_one(
@@ -1661,6 +1664,7 @@ Each suggestion max 8 words."""
             }
         )
 
+    await consume_feature(request, user, "ai_chat")
     return {"chat_id": chat_id, "reply": reply, "suggestions": quick}
 
 
@@ -1695,6 +1699,7 @@ class MockSetup(BaseModel):
 
 @router.post("/mock-interview/start")
 async def mock_start(payload: MockSetup, request: Request, user=Depends(current_user)):
+    ensure_feature_available(user, "mock_interview")
     prompt = f"""Generate 5 mock interview questions for an Indian student.
 Role: {payload.role}
 Type: {payload.interview_type}
@@ -1719,6 +1724,7 @@ Return STRICT JSON: {{"questions": [{{"q": "...", "hint": "..."}}]}}
             "created_at": datetime.now(timezone.utc).isoformat(),
         }
     )
+    await consume_feature(request, user, "mock_interview")
     return {
         "session_id": session_id,
         "setup": payload.model_dump(),

@@ -15,6 +15,7 @@ from pydantic import BaseModel
 from auth_routes import current_user
 from career_catalog import ALLOWED_CAREER_SLUGS, DYNAMIC_CAREERS, FIELD_META, slugify
 from llm_client import ask_claude, extract_json
+from subscription_utils import consume_feature, ensure_feature_available
 
 router = APIRouter(tags=["data"])
 logger = logging.getLogger(__name__)
@@ -1121,7 +1122,8 @@ async def list_colleges(
 
 
 @router.post("/colleges/search")
-async def search_colleges_from_web(payload: CollegeSearchRequest, request: Request):
+async def search_colleges_from_web(payload: CollegeSearchRequest, request: Request, user=Depends(current_user)):
+    ensure_feature_available(user, "institute_search")
     location = payload.location.strip()
     if len(location) < 2:
         raise HTTPException(400, "Enter a valid location.")
@@ -1149,6 +1151,7 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
 
     if cache:
         cached_results = await _supplement_college_results(request, cache.get("results", []), cache.get("searchedLocation") or location, course, 10)
+        await consume_feature(request, user, "institute_search")
         return {
             "location": cache.get("searchedLocation") or location,
             "course": course,
@@ -1308,6 +1311,7 @@ googleMapsLink (construct as https://maps.google.com/?q={{name}}+{{address}})
         },
         upsert=True,
     )
+    await consume_feature(request, user, "institute_search")
     return {
         "location": location,
         "course": course,
@@ -1698,47 +1702,7 @@ class MockSubscribeIn(BaseModel):
 
 @router.post("/me/mock-subscribe")
 async def mock_subscribe(payload: MockSubscribeIn, request: Request, user=Depends(current_user)):
-    plan_key = payload.plan.lower().strip()
-    if plan_key not in PLAN_LIMITS:
-        raise HTTPException(400, "Invalid plan")
-    now = datetime.now(timezone.utc).isoformat()
-    subscription = {
-        "provider": "mock",
-        "status": "active",
-        "plan": plan_key,
-        "planName": PLAN_LIMITS[plan_key]["name"],
-        "price": PLAN_LIMITS[plan_key]["price"],
-        "currency": "INR",
-        "startedAt": now,
-        "note": "Mock subscription. Replace with Razorpay verification later.",
-    }
-    usage = {
-        "limits": {
-            "aiChats": PLAN_LIMITS[plan_key]["aiChats"],
-            "mockInterviews": PLAN_LIMITS[plan_key]["mockInterviews"],
-            "instituteSearches": PLAN_LIMITS[plan_key]["instituteSearches"],
-            "roadmaps": PLAN_LIMITS[plan_key]["roadmaps"],
-        },
-        "used": {
-            "aiChats": 0,
-            "mockInterviews": 0,
-            "instituteSearches": 0,
-            "roadmaps": 0,
-        },
-        "periodStartedAt": now,
-    }
-    await db(request).users.update_one(
-        {"user_id": user["user_id"]},
-        {
-            "$set": {
-                "subscription": subscription,
-                "usage": usage,
-                "updated_at": now,
-            }
-        },
-    )
-    updated = await db(request).users.find_one({"user_id": user["user_id"]}, {"_id": 0})
-    return {"ok": True, "user": updated, "subscription": subscription, "usage": usage}
+    raise HTTPException(410, "Mock subscriptions are disabled. Use Razorpay checkout.")
 
 
 @router.post("/me/save")

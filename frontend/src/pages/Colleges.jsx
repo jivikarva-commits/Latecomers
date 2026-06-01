@@ -9,6 +9,7 @@ import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import HeroIllustration from "../components/HeroIllustration";
 import BackToTopButton from "../components/BackToTopButton";
+import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
 
 const CATEGORIES = ["All", "Engineering", "Medical", "Management", "Commerce", "Law", "Coaching", "Skill"];
 
@@ -136,6 +137,7 @@ export default function Colleges() {
   const [searchedLocation, setSearchedLocation] = useState("");
   const [searchedCourse, setSearchedCourse] = useState("");
   const [detectingLocation, setDetectingLocation] = useState(false);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
   const autoSearchKeyRef = useRef("");
   const locationPromptedRef = useRef(false);
   const locationRetryRef = useRef(false);
@@ -337,6 +339,11 @@ export default function Colleges() {
         );
       }
     } catch (e) {
+      if (e?.response?.status === 402) {
+        setUpgradeOpen(true);
+        setLocationMessage("Upgrade your plan to continue institute searches.");
+        return;
+      }
       setLocationMessage(e?.response?.data?.detail || "Search temporarily unavailable. Please try again.");
     } finally {
       setLocationLoading(false);
@@ -635,6 +642,13 @@ export default function Colleges() {
       </div>
 
       <BackToTopButton />
+      <PremiumSubscriptionModal
+        open={upgradeOpen}
+        onClose={() => setUpgradeOpen(false)}
+        title="Upgrade for institute search"
+        subtitle="Your institute search limit is over. Upgrade to search more colleges and training institutes."
+        onSuccess={() => setUpgradeOpen(false)}
+      />
     </div>
   );
 }

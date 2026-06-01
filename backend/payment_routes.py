@@ -1,0 +1,299 @@
+"""Razorpay subscription and payment routes."""
+import json
+import os
+import uuid
+from collections import defaultdict
+from datetime import datetime, timezone
+from typing import Dict
+
+import httpx
+from fastapi import APIRouter, Depends, HTTPException, Request
+from pydantic import BaseModel
+
+from auth_routes import current_user
+from subscription_utils import (
+    PLAN_CONFIG,
+    active_subscription,
+    build_subscription_record,
+    current_usage,
+    db,
+    ensure_quiz_result_access,
+    iso_now,
+    public_plan_list,
+    subscription_features,
+    verify_razorpay_signature,
+    verify_webhook_signature,
+)
+
+router = APIRouter(tags=["payments"])
+
+
+class OrderIn(BaseModel):
+    plan: str
+
+
+class VerifyIn(BaseModel):
+    plan: str
+    razorpay_order_id: str
+    razorpay_payment_id: str
+    razorpay_signature: str
+
+
+def razorpay_keys():
+    key_id = os.environ.get("RAZORPAY_KEY_ID", "").strip()
+    key_secret = os.environ.get("RAZORPAY_KEY_SECRET", "").strip()
+    if not key_id or not key_secret:
+        raise HTTPException(503, "Razorpay is not configured on the server.")
+    return key_id, key_secret
+
+
+def admin_emails():
+    return {email.strip().lower() for email in os.environ.get("ADMIN_EMAILS", "").split(",") if email.strip()}
+
+
+def require_admin(user: Dict):
+    allowed = admin_emails()
+    if not allowed or (user.get("email") or "").lower() not in allowed:
+        raise HTTPException(403, "Admin access required.")
+
+
+@router.get("/subscriptions/plans")
+async def list_subscription_plans():
+    return {"plans": public_plan_list()}
+
+
+@router.get("/subscriptions/me")
+async def my_subscription(user=Depends(current_user)):
+    return {
+        "subscription": active_subscription(user),
+        "features": subscription_features(user),
+        "usage": current_usage(user),
+        "hasQuizResultAccess": bool(subscription_features(user).get("quizResultAccess")),
+    }
+
+
+@router.get("/subscriptions/quiz-access")
+async def quiz_access(user=Depends(current_user)):
+    ensure_quiz_result_access(user)
+    return {"ok": True}
+
+
+@router.post("/payments/razorpay/order")
+async def create_razorpay_order(payload: OrderIn, request: Request, user=Depends(current_user)):
+    if payload.plan not in PLAN_CONFIG:
+        raise HTTPException(400, "Invalid plan selected.")
+    key_id, key_secret = razorpay_keys()
+    plan = PLAN_CONFIG[payload.plan]
+    receipt = f"latecomers_{user['user_id']}_{uuid.uuid4().hex[:8]}"
+    order_payload = {
+        "amount": int(plan["amount"] * 100),
+        "currency": plan["currency"],
+        "receipt": receipt,
+        "notes": {
+            "userId": user["user_id"],
+            "email": user.get("email", ""),
+            "plan": payload.plan,
+        },
+    }
+    async with httpx.AsyncClient(timeout=20.0, auth=(key_id, key_secret)) as client:
+        response = await client.post("https://api.razorpay.com/v1/orders", json=order_payload)
+    if response.status_code >= 400:
+        await db(request).payments.insert_one(
+            {
+                "userId": user["user_id"],
+                "userEmail": user.get("email"),
+                "selectedPlanName": plan["name"],
+                "plan": payload.plan,
+                "originalPrice": plan["originalPrice"],
+                "paidAmount": plan["amount"],
+                "paymentStatus": "order_failed",
+                "error": response.text[:500],
+                "createdAt": iso_now(),
+            }
+        )
+        raise HTTPException(502, "Could not create Razorpay order. Please try again.")
+    order = response.json()
+    await db(request).payments.insert_one(
+        {
+            "userId": user["user_id"],
+            "userEmail": user.get("email"),
+            "selectedPlanName": plan["name"],
+            "plan": payload.plan,
+            "originalPrice": plan["originalPrice"],
+            "paidAmount": plan["amount"],
+            "currency": plan["currency"],
+            "razorpayOrderId": order.get("id"),
+            "paymentStatus": "created",
+            "createdAt": iso_now(),
+        }
+    )
+    return {
+        "keyId": key_id,
+        "orderId": order.get("id"),
+        "amount": order.get("amount"),
+        "currency": order.get("currency"),
+        "plan": {
+            "key": plan["key"],
+            "name": plan["name"],
+            "amount": plan["amount"],
+            "originalPrice": plan["originalPrice"],
+        },
+        "user": {"name": user.get("name"), "email": user.get("email")},
+    }
+
+
+@router.post("/payments/razorpay/verify")
+async def verify_payment(payload: VerifyIn, request: Request, user=Depends(current_user)):
+    if payload.plan not in PLAN_CONFIG:
+        raise HTTPException(400, "Invalid plan selected.")
+    order_doc = await db(request).payments.find_one(
+        {
+            "razorpayOrderId": payload.razorpay_order_id,
+            "userId": user["user_id"],
+            "plan": payload.plan,
+        },
+        {"_id": 0},
+    )
+    if not order_doc:
+        raise HTTPException(404, "Payment order was not found for this user.")
+    _, key_secret = razorpay_keys()
+    if not verify_razorpay_signature(
+        payload.razorpay_order_id,
+        payload.razorpay_payment_id,
+        payload.razorpay_signature,
+        key_secret,
+    ):
+        await db(request).payments.update_one(
+            {"razorpayOrderId": payload.razorpay_order_id},
+            {"$set": {"paymentStatus": "signature_failed", "updatedAt": iso_now()}},
+            upsert=True,
+        )
+        raise HTTPException(400, "Payment verification failed.")
+
+    sub_record = build_subscription_record(
+        user,
+        payload.plan,
+        payload.razorpay_order_id,
+        payload.razorpay_payment_id,
+        "paid",
+    )
+    subscription_doc = {**sub_record, "status": "active", "createdAt": iso_now()}
+    await db(request).subscriptions.insert_one(subscription_doc)
+    await db(request).payments.update_one(
+        {"razorpayOrderId": payload.razorpay_order_id},
+        {
+            "$set": {
+                **sub_record,
+                "paymentStatus": "paid",
+                "updatedAt": iso_now(),
+            }
+        },
+        upsert=True,
+    )
+    await db(request).users.update_one(
+        {"user_id": user["user_id"]},
+        {
+            "$set": {
+                "subscription": {
+                    "provider": "razorpay",
+                    "status": "active",
+                    "plan": payload.plan,
+                    "planName": PLAN_CONFIG[payload.plan]["name"],
+                    "originalPrice": PLAN_CONFIG[payload.plan]["originalPrice"],
+                    "paidAmount": PLAN_CONFIG[payload.plan]["amount"],
+                    "currency": PLAN_CONFIG[payload.plan]["currency"],
+                    "razorpayOrderId": payload.razorpay_order_id,
+                    "razorpayPaymentId": payload.razorpay_payment_id,
+                    "featureLimits": PLAN_CONFIG[payload.plan]["features"],
+                    "startedAt": sub_record["purchaseDate"],
+                    "expiresAt": sub_record["planExpiryDate"],
+                },
+                "usage": {
+                    **sub_record["featureLimits"],
+                    "periodStartedAt": sub_record["purchaseDate"],
+                },
+                "updated_at": iso_now(),
+            }
+        },
+    )
+    updated_user = await db(request).users.find_one({"user_id": user["user_id"]}, {"_id": 0})
+    return {"ok": True, "subscription": updated_user.get("subscription"), "usage": updated_user.get("usage"), "user": updated_user}
+
+
+@router.post("/payments/razorpay/webhook")
+async def razorpay_webhook(request: Request):
+    secret = os.environ.get("RAZORPAY_WEBHOOK_SECRET", "").strip()
+    body = await request.body()
+    if secret:
+        signature = request.headers.get("X-Razorpay-Signature", "")
+        if not verify_webhook_signature(body, signature, secret):
+            raise HTTPException(400, "Invalid webhook signature.")
+    event = json.loads(body.decode("utf-8") or "{}")
+    payment = ((event.get("payload") or {}).get("payment") or {}).get("entity") or {}
+    order_id = payment.get("order_id")
+    if order_id:
+        await db(request).payments.update_one(
+            {"razorpayOrderId": order_id},
+            {
+                "$set": {
+                    "webhookEvent": event.get("event"),
+                    "webhookPaymentStatus": payment.get("status"),
+                    "webhookAt": iso_now(),
+                }
+            },
+            upsert=True,
+        )
+    return {"ok": True}
+
+
+@router.get("/admin/revenue")
+async def revenue_dashboard(request: Request, user=Depends(current_user)):
+    require_admin(user)
+    payments = await db(request).payments.find({}, {"_id": 0}).sort("createdAt", -1).to_list(1000)
+    users = await db(request).users.find({"subscription.status": "active"}, {"_id": 0}).to_list(1000)
+
+    successful = [p for p in payments if p.get("paymentStatus") == "paid"]
+    failed = [p for p in payments if p.get("paymentStatus") in {"failed", "order_failed", "signature_failed"}]
+    total_money = sum(int(p.get("paidAmount") or 0) for p in successful)
+    by_plan = defaultdict(lambda: {"amount": 0, "count": 0})
+    daily = defaultdict(int)
+    monthly = defaultdict(int)
+    active_by_plan = defaultdict(int)
+
+    for p in successful:
+        plan = p.get("selectedPlanName") or p.get("plan") or "Unknown"
+        by_plan[plan]["amount"] += int(p.get("paidAmount") or 0)
+        by_plan[plan]["count"] += 1
+        dt = p.get("purchaseDate") or p.get("updatedAt") or p.get("createdAt") or ""
+        day = dt[:10] or "unknown"
+        month = dt[:7] or "unknown"
+        daily[day] += int(p.get("paidAmount") or 0)
+        monthly[month] += int(p.get("paidAmount") or 0)
+
+    for item in users:
+        active_by_plan[item.get("subscription", {}).get("planName") or "Unknown"] += 1
+
+    user_details = [
+        {
+            "userId": item.get("user_id"),
+            "email": item.get("email"),
+            "name": item.get("name"),
+            "subscription": item.get("subscription"),
+            "usage": item.get("usage"),
+        }
+        for item in users
+    ]
+
+    return {
+        "totalMoneyEarned": total_money,
+        "totalPayments": len(payments),
+        "successfulPayments": len(successful),
+        "failedPayments": len(failed),
+        "revenueByPlan": dict(by_plan),
+        "dailyRevenue": dict(sorted(daily.items())),
+        "monthlyRevenue": dict(sorted(monthly.items())),
+        "activeUsersByPlan": dict(active_by_plan),
+        "users": user_details,
+        "paymentHistory": payments[:100],
+        "generatedAt": datetime.now(timezone.utc).isoformat(),
+    }

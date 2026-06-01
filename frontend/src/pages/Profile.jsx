@@ -92,7 +92,14 @@ export default function Profile() {
   const noSavedColleges = (user?.saved_items?.colleges?.length || 0) === 0;
   const noSavedScholarships = (user?.saved_items?.scholarships?.length || 0) === 0;
   const subscription = user?.subscription;
-  const usageLimits = user?.usage?.limits;
+  const usage = user?.usage || {};
+  const featureLimits = subscription?.featureLimits || {};
+  const usageRows = [
+    ["AI Chats", featureLimits.aiQuestionsLimit ?? usage.aiQuestionsLimit, usage.aiQuestionsUsed],
+    ["Mock Tests", featureLimits.mockInterviewLimit ?? usage.mockInterviewLimit, usage.mockInterviewUsed],
+    ["Institutes", featureLimits.instituteSearchLimit ?? usage.instituteSearchLimit, usage.instituteSearchUsed],
+    ["Roadmaps", featureLimits.roadmapUnlimited ?? usage.roadmapUnlimited ? "Unlimited" : 0, 0],
+  ];
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto space-y-4" data-testid="profile-page">
@@ -190,7 +197,7 @@ export default function Profile() {
             <p className="font-heading font-bold text-ink">Subscription</p>
             <p className="text-sm text-muted2 mt-1">
               {subscription?.status === "active"
-                ? `${subscription.planName} plan active - mock ${subscription.provider} subscription`
+                ? `${subscription.planName} plan active`
                 : "No active plan yet"}
             </p>
           </div>
@@ -198,19 +205,17 @@ export default function Profile() {
             Plans <ArrowRight size={12} />
           </Link>
         </div>
-        {usageLimits && (
+        {subscription?.status === "active" && (
           <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
-            {[
-              ["AI Chats", usageLimits.aiChats],
-              ["Mock Tests", usageLimits.mockInterviews],
-              ["Institutes", usageLimits.instituteSearches],
-              ["Roadmaps", usageLimits.roadmaps],
-            ].map(([label, value]) => (
+            {usageRows.map(([label, limit, used]) => {
+              const value = limit === "Unlimited" ? "Unlimited" : `${Math.max((Number(limit) || 0) - (Number(used) || 0), 0)} left`;
+              return (
               <div key={label} className="rounded-2xl bg-brand-50 border border-line p-3">
                 <p className="font-heading font-bold text-brand">{value}</p>
                 <p className="text-[10px] text-muted2 mt-0.5">{label}</p>
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

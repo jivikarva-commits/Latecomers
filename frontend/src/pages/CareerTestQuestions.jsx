@@ -40,7 +40,7 @@ export default function CareerTestQuestions() {
       };
       const { data } = await api.post("/ai/career-test/score", payload);
       toast.success("AI scoring complete!");
-      navigate("/career-test/results", { state: { result: data } });
+      navigate("/career-test/results", { state: { result: data, showSubscription: true } });
     } catch (e) {
       toast.error(e?.response?.data?.detail || "Scoring failed");
     } finally {

@@ -2,42 +2,46 @@ import React, { useMemo, useState } from "react";
 import { CheckCircle2, MessageCircle, Mic, Route, Search, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import PublicShell from "../components/PublicShell";
-import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import SEO from "../components/SEO";
 import { breadcrumbSchema, softwareAppSchema } from "../lib/seoSchemas";
+import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
 
 const plans = [
   {
-    key: "basic",
-    name: "Basic",
+    key: "starter_offer",
+    name: "Starter Offer",
     price: 9,
-    note: "Unlock career results only",
-    featured: false,
-    limits: ["No AI chats", "Career report access", "Basic roadmap preview", "Best for first-time clarity"],
-  },
-  {
-    key: "standard",
-    name: "Standard",
-    price: 99,
-    note: "Most useful starter plan",
+    originalPrice: 99,
+    note: "Limited offer for first unlock",
     featured: true,
-    limits: ["15 AI chats", "5 mock interviews", "10 institute searches", "10 roadmaps"],
+    limits: ["Quiz result access", "Explore all careers", "5 institute searches", "Unlimited roadmap", "3 mock interviews", "No AI chat access"],
   },
   {
-    key: "premium",
-    name: "Premium",
+    key: "standard_99",
+    name: "\u20B999 Plan",
+    price: 99,
+    originalPrice: 99,
+    note: "Adds AI chat and more practice",
+    featured: false,
+    limits: ["Quiz result access", "Explore all careers", "10 institute searches", "Unlimited roadmap", "10 mock interviews", "10 AI chat questions"],
+  },
+  {
+    key: "premium_299",
+    name: "\u20B9299 Plan",
     price: 299,
+    originalPrice: 299,
     note: "For serious career switching",
     featured: false,
-    limits: ["30 AI chats", "15 mock tests", "20 institute searches", "20 roadmaps"],
+    limits: ["Quiz result access", "Explore all careers", "30 institute searches", "Unlimited roadmap", "30 mock interviews", "40 AI chat questions"],
   },
 ];
 
 export default function Pricing() {
-  const { user, refresh, setUser } = useAuth();
-  const [loadingPlan, setLoadingPlan] = useState("");
-  const activePlan = user?.subscription?.status === "active" ? user.subscription.plan : localStorage.getItem("latecomers_mock_plan");
+  const { user } = useAuth();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState("starter_offer");
+  const activePlan = user?.subscription?.status === "active" ? user.subscription.plan : "";
 
   const usageCards = useMemo(
     () => [
@@ -48,24 +52,6 @@ export default function Pricing() {
     ],
     []
   );
-
-  const subscribe = async (planKey) => {
-    setLoadingPlan(planKey);
-    try {
-      if (user) {
-        const { data } = await api.post("/me/mock-subscribe", { plan: planKey });
-        if (data.user) setUser(data.user);
-        await refresh();
-      } else {
-        localStorage.setItem("latecomers_mock_plan", planKey);
-      }
-      toast.success("Mock subscription active. Razorpay will be connected later.");
-    } catch (e) {
-      toast.error(e?.response?.data?.detail || "Could not activate mock subscription.");
-    } finally {
-      setLoadingPlan("");
-    }
-  };
 
   return (
     <PublicShell>
@@ -79,14 +65,14 @@ export default function Pricing() {
             { name: "Pricing", path: "/pricing" },
           ]),
         ]}
-        description="Choose a Latecomers AI plan: Basic ₹9, Standard ₹99, or Premium ₹299 for career results, AI chats, mock interviews, institute search, and roadmaps."
+        description="Choose a Latecomers AI plan: Starter Offer, Rs 99 Plan, or Rs 299 Plan for career results, AI chats, mock interviews, institute search, and roadmaps."
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         <div className="text-center max-w-2xl mx-auto">
           <p className="text-[10px] sm:text-xs font-bold tracking-[0.25em] text-brand uppercase">Pricing</p>
           <h1 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink mt-2">Choose your Latecomers plan.</h1>
           <p className="text-muted2 mt-2 text-sm sm:text-base">
-            Mock subscription — click any plan to activate immediately. Razorpay can be added later.
+            Secure Razorpay checkout. Your plan activates only after backend payment verification.
           </p>
         </div>
 
@@ -96,25 +82,27 @@ export default function Pricing() {
             return (
               <div key={plan.key} className={`relative rounded-2xl sm:rounded-3xl border p-4 sm:p-5 bg-white ${plan.featured ? "premium-ring shadow-brand" : "border-line shadow-soft"}`}>
                 {plan.featured && (
-                  <span className="absolute -top-2.5 left-4 px-2.5 py-0.5 rounded-full bg-brand text-white text-[10px] sm:text-xs font-bold">Recommended</span>
+                  <span className="absolute -top-2.5 left-4 px-2.5 py-0.5 rounded-full bg-pink-500 text-white text-[10px] sm:text-xs font-bold">Limited Offer</span>
                 )}
                 {isActive && (
                   <span className="absolute -top-2.5 right-4 px-2.5 py-0.5 rounded-full bg-emerald-600 text-white text-[10px] sm:text-xs font-bold">Active</span>
                 )}
                 <h2 className="font-heading font-extrabold text-lg sm:text-xl text-ink">{plan.name}</h2>
                 <p className="text-xs text-muted2 mt-0.5">{plan.note}</p>
-                <div className="mt-3 flex items-end gap-1">
-                  <span className="font-heading font-extrabold text-3xl sm:text-4xl text-ink">₹{plan.price}</span>
-                  <span className="text-muted2 pb-1 text-xs">/ mock</span>
+                <div className="mt-3 flex items-end gap-2">
+                  {plan.originalPrice !== plan.price && <span className="text-lg font-bold text-muted2 line-through pb-1">{"\u20B9"}{plan.originalPrice}</span>}
+                  <span className="font-heading font-extrabold text-3xl sm:text-4xl text-ink">{"\u20B9"}{plan.price}</span>
                 </div>
                 <button
-                  onClick={() => subscribe(plan.key)}
-                  disabled={loadingPlan === plan.key}
+                  onClick={() => {
+                    setSelectedPlan(plan.key);
+                    setModalOpen(true);
+                  }}
                   className={`mt-4 w-full inline-flex items-center justify-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold ${
                     plan.featured ? "premium-gradient text-white shadow-brand" : "bg-brand-50 text-ink border border-line"
-                  } disabled:opacity-60`}
+                  }`}
                 >
-                  <Sparkles size={14} /> {loadingPlan === plan.key ? "Activating..." : isActive ? "Subscribed" : "Subscribe"}
+                  <Sparkles size={14} /> {isActive ? "Current plan" : "Subscribe"}
                 </button>
                 <div className="mt-4 space-y-2">
                   {plan.limits.map((item) => (
@@ -140,6 +128,17 @@ export default function Pricing() {
           </div>
         </section>
       </main>
+      <PremiumSubscriptionModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Choose your Latecomers AI plan"
+        subtitle="Pay securely with Razorpay. Your subscription is activated after backend verification."
+        onSuccess={() => {
+          setModalOpen(false);
+          toast.success("Plan activated.");
+        }}
+        initialPlan={selectedPlan}
+      />
     </PublicShell>
   );
 }

@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { ArrowLeft, Mic, ChevronDown, Code2, BarChart3, History, FileText, Clock, Zap, Target, MessageSquare, FileQuestion, Play, ArrowRight, Send, MessageCircle, Bot as BotIcon } from "lucide-react";
 import HeroIllustration from "../components/HeroIllustration";
 import { useAuth } from "../context/AuthContext";
+import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
 
 const ROLES = ["Data Scientist", "Software Developer", "Product Manager", "UX Designer", "Business Analyst", "Cybersecurity Analyst", "Financial Analyst", "Marketing Manager"];
 
@@ -75,6 +76,7 @@ export default function MockInterview() {
   const [historyOpen, setHistoryOpen] = useState(false);
   const [historyList, setHistoryList] = useState([]);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   useEffect(() => {
     const topMatchSlug = user?.top_career_matches?.[0]?.careerSlug;
@@ -110,6 +112,10 @@ export default function MockInterview() {
       setShowResults(false);
       toast.success("Interview started!");
     } catch (e) {
+      if (e?.response?.status === 402) {
+        setUpgradeOpen(true);
+        return;
+      }
       toast.error(e?.response?.data?.detail || "Failed");
     } finally {
       setBusy(false);
@@ -143,6 +149,16 @@ export default function MockInterview() {
     return [...new Set(weak.map(resourceFromWeakness))].slice(0, 4);
   }, [scoredEvals]);
 
+  const upgradeModal = (
+    <PremiumSubscriptionModal
+      open={upgradeOpen}
+      onClose={() => setUpgradeOpen(false)}
+      title="Upgrade for mock interviews"
+      subtitle="Your plan has no mock interview attempts left. Upgrade to practice more interviews."
+      onSuccess={() => setUpgradeOpen(false)}
+    />
+  );
+
   if (session) {
     const hasQuestions = Array.isArray(session.questions) && session.questions.length > 0;
     if (!hasQuestions) {
@@ -155,6 +171,7 @@ export default function MockInterview() {
               Back to setup
             </button>
           </div>
+          {upgradeModal}
         </div>
       );
     }
@@ -399,6 +416,7 @@ export default function MockInterview() {
           </div>
         </>
       )}
+      {upgradeModal}
     </div>
   );
 }

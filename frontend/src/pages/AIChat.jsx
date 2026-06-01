@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../lib/api";
+import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
 import { ArrowLeft, Bot, History, Mic, MoreVertical, Plus, Send } from "lucide-react";
 
 const generationSteps = ["Understanding your question", "Finding the useful details", "Organizing a clear answer"];
@@ -176,6 +177,7 @@ export default function AIChat() {
   const [chatId, setChatId] = useState(null);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   const responseStreaming = messages.some((message) => message.streaming);
   const isGenerating = busy || responseStreaming;
@@ -270,6 +272,12 @@ export default function AIChat() {
       setBusy(false);
       revealAssistantReply(data.reply, data.suggestions || []);
     } catch (error) {
+      if (error?.response?.status === 402) {
+        setUpgradeOpen(true);
+        setMessages((prev) => prev.filter((m) => !(m.role === "user" && m.content === message)));
+        setBusy(false);
+        return;
+      }
       setMessages((prev) => [
         ...prev,
         {
@@ -388,6 +396,13 @@ export default function AIChat() {
           </div>
         </div>
       </div>
+      <PremiumSubscriptionModal
+        open={upgradeOpen}
+        onClose={() => setUpgradeOpen(false)}
+        title="Upgrade to use AI Chat"
+        subtitle={`AI Chat is available in the \u20B999 and \u20B9299 plans. Upgrade to continue asking career questions.`}
+        onSuccess={() => setUpgradeOpen(false)}
+      />
     </div>
   );
 }

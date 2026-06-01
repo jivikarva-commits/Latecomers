@@ -30,6 +30,7 @@ import MockInterview from "./pages/MockInterview";
 import AIChat from "./pages/AIChat";
 import Profile from "./pages/Profile";
 import ProfileSetup from "./pages/ProfileSetup";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
               <Route path="/mock-interview" element={<MockInterview />} />
               <Route path="/ai-chat" element={<AIChat />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/admin" element={<AdminDashboard />} />
             </Route>
           </Routes>
           <Toaster position="top-center" richColors />
