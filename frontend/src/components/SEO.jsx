@@ -35,6 +35,8 @@ export default function SEO({
   path,
   robots = "index,follow",
   jsonLd,
+  publishedTime,
+  modifiedTime,
 }) {
   useEffect(() => {
     const fullTitle = title.includes("Latecomers") ? title : `${title} | Latecomers AI`;
@@ -54,6 +56,14 @@ export default function SEO({
     upsertMeta('meta[name="twitter:description"]', { name: "twitter:description", content: description });
     upsertMeta('meta[name="twitter:image"]', { name: "twitter:image", content: imageUrl });
     upsertLink('link[rel="canonical"]', { rel: "canonical", href: canonical });
+
+    if (type === "article" && publishedTime) {
+      upsertMeta('meta[property="article:published_time"]', { property: "article:published_time", content: publishedTime });
+      upsertMeta('meta[property="article:modified_time"]', { property: "article:modified_time", content: modifiedTime || publishedTime });
+    } else {
+      document.head.querySelector('meta[property="article:published_time"]')?.remove();
+      document.head.querySelector('meta[property="article:modified_time"]')?.remove();
+    }
 
     document.head.querySelectorAll('script[data-seo-jsonld="true"]').forEach((node) => node.remove());
     const schemas = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];

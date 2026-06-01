@@ -251,7 +251,7 @@ export default function PublicShell({ children }) {
   return (
     <div className="min-h-screen bg-brand-50 font-body overflow-x-hidden scroll-smooth">
       <PublicNav />
-      {children}
+      <main id="main-content">{children}</main>
       <PublicFooter />
     </div>
   );

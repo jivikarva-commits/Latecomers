@@ -1,6 +1,8 @@
 export const BLOG_POSTS = [
   {
     slug: "career-after-bpo-in-india",
+    publishedAt: "2025-09-12",
+    updatedAt: "2025-12-04",
     title: "Career after BPO in India: practical paths that use your real experience",
     excerpt: "BPO experience can become customer success, sales, operations, QA, data analytics, or team leadership when you translate it correctly.",
     image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80",
@@ -41,6 +43,8 @@ export const BLOG_POSTS = [
   },
   {
     slug: "best-skills-to-learn-in-2026-india",
+    publishedAt: "2025-10-02",
+    updatedAt: "2026-01-08",
     title: "Best skills to learn in 2026 in India if you want a better career",
     excerpt: "The best skills are practical, portfolio-friendly, and connected to real hiring demand: AI tools, analytics, digital marketing, full stack, sales, and communication.",
     image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
@@ -80,6 +84,8 @@ export const BLOG_POSTS = [
   },
   {
     slug: "career-switch-at-30-india",
+    publishedAt: "2025-08-21",
+    updatedAt: "2025-11-18",
     title: "Career switch at 30 in India: how to restart without feeling behind",
     excerpt: "Switching careers at 30 is possible when you choose a bridge role, reuse your past experience, and build proof before applying.",
     image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
@@ -119,6 +125,8 @@ export const BLOG_POSTS = [
   },
   {
     slug: "best-careers-after-bcom",
+    publishedAt: "2025-07-15",
+    updatedAt: "2025-10-22",
     title: "Best careers after BCom for practical growth in India",
     excerpt: "BCom graduates can build strong careers in finance, analytics, taxation, marketing, operations, product, and tech-adjacent roles.",
     image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80",
@@ -158,6 +166,8 @@ export const BLOG_POSTS = [
   },
   {
     slug: "free-it-courses-in-india",
+    publishedAt: "2025-09-28",
+    updatedAt: "2026-01-12",
     title: "Free IT courses in India: how to learn without wasting money",
     excerpt: "You can start IT learning free with structured resources, but you need projects, consistency, and a clear role target.",
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80",
@@ -197,6 +207,8 @@ export const BLOG_POSTS = [
   },
   {
     slug: "first-tech-job-without-degree",
+    publishedAt: "2025-08-05",
+    updatedAt: "2025-12-19",
     title: "How to get your first tech job without a computer science degree",
     excerpt: "A CS degree helps, but it is not the only route. Build role-specific skills, visible projects, and interview confidence.",
     image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80",
@@ -236,6 +248,8 @@ export const BLOG_POSTS = [
   },
   {
     slug: "ai-careers-for-beginners-india",
+    publishedAt: "2025-10-18",
+    updatedAt: "2026-01-20",
     title: "AI careers for beginners in India: where to start without confusion",
     excerpt: "AI careers include more than machine learning engineering. Beginners can start with data, automation, prompt workflows, analytics, and AI product roles.",
     image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80",
@@ -274,6 +288,8 @@ export const BLOG_POSTS = [
   },
   {
     slug: "digital-marketing-roadmap-india",
+    publishedAt: "2025-09-04",
+    updatedAt: "2025-12-29",
     title: "Digital marketing roadmap for beginners in India",
     excerpt: "Digital marketing is a practical path for graduates and switchers who like content, numbers, psychology, and business growth.",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
@@ -312,6 +328,8 @@ export const BLOG_POSTS = [
   },
   {
     slug: "remote-jobs-in-india-for-beginners",
+    publishedAt: "2025-07-30",
+    updatedAt: "2025-11-26",
     title: "Remote jobs in India for beginners: realistic roles and how to prepare",
     excerpt: "Remote jobs are possible for beginners, but you need strong communication, visible proof, and a role that can be evaluated online.",
     image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80",

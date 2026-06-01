@@ -7,7 +7,13 @@ export function organizationSchema() {
     name: SITE_NAME,
     url: SITE_URL,
     logo: absoluteUrl("/brand/latecomers-logo.png"),
-    sameAs: [],
+    // TODO(user): replace placeholders with real official profile URLs
+    sameAs: [
+      "https://www.linkedin.com/company/latecomers-ai",
+      "https://x.com/latecomersai",
+      "https://www.instagram.com/latecomers.ai",
+      "https://www.youtube.com/@latecomersai",
+    ],
   };
 }
 
@@ -58,6 +64,8 @@ export function breadcrumbSchema(items) {
 }
 
 export function articleSchema(post) {
+  const published = post.publishedAt || "2025-09-01";
+  const updated = post.updatedAt || published;
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -65,20 +73,29 @@ export function articleSchema(post) {
     description: post.excerpt,
     image: absoluteUrl(post.image),
     url: absoluteUrl(`/blog/${post.slug}`),
+    datePublished: published,
+    dateModified: updated,
+    inLanguage: "en-IN",
     author: {
       "@type": "Organization",
       name: SITE_NAME,
+      url: SITE_URL,
     },
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,
+      url: SITE_URL,
       logo: {
         "@type": "ImageObject",
         url: absoluteUrl("/brand/latecomers-logo.png"),
       },
     },
-    mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": absoluteUrl(`/blog/${post.slug}`),
+    },
     keywords: post.keywords?.join(", "),
+    articleSection: post.category,
   };
 }
 

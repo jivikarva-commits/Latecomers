@@ -60,7 +60,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "postbuild": "node scripts/prerender-seo-pages.mjs",
+    "postbuild": "node scripts/generate-sitemap.mjs && node scripts/prerender-seo-pages.mjs",
     "test": "craco test"
   },
   "browserslist": {

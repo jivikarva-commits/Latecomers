@@ -19,6 +19,8 @@ export default function BlogDetail() {
         image={post.image}
         type="article"
         path={`/blog/${post.slug}`}
+        publishedTime={post.publishedAt}
+        modifiedTime={post.updatedAt}
         jsonLd={[
           articleSchema(post),
           breadcrumbSchema([
@@ -36,6 +38,15 @@ export default function BlogDetail() {
         <header className="mt-4 sm:mt-6">
           <p className="text-[10px] sm:text-xs font-bold tracking-[0.25em] text-brand uppercase">{post.category} · {post.readTime}</p>
           <h1 className="font-heading font-extrabold text-xl sm:text-3xl lg:text-4xl text-ink mt-2 leading-tight">{post.title}</h1>
+          {post.publishedAt && (
+            <p className="text-[11px] sm:text-xs text-muted2 mt-2">
+              <time dateTime={post.publishedAt}>Published {new Date(post.publishedAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}</time>
+              {post.updatedAt && post.updatedAt !== post.publishedAt && (
+                <> · <time dateTime={post.updatedAt}>Updated {new Date(post.updatedAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}</time></>
+              )}
+              {" · by "}<span className="font-semibold text-ink">Latecomers AI Team</span>
+            </p>
+          )}
           <p className="text-xs sm:text-base text-muted2 mt-2 sm:mt-3 leading-relaxed">{post.excerpt}</p>
           <div className="mt-3 flex flex-wrap gap-1.5">
             {post.keywords.map((keyword) => (
@@ -47,7 +58,7 @@ export default function BlogDetail() {
         </header>
 
         <figure className="mt-5 sm:mt-6 overflow-hidden rounded-xl sm:rounded-2xl border border-line bg-brand-50 shadow-soft">
-          <img src={post.image} alt={post.title} className="w-full aspect-[16/9] object-cover" loading="eager" decoding="async" />
+          <img src={post.image} alt={post.title} width="1200" height="675" className="w-full aspect-[16/9] object-cover" loading="eager" decoding="async" />
         </figure>
 
         <div className="mt-5 sm:mt-6 bg-white border border-line rounded-xl sm:rounded-2xl p-3.5 sm:p-6 shadow-soft">
