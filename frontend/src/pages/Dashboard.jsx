@@ -4,6 +4,7 @@ import { FileText, Mic, Building2, GraduationCap, Sparkles, CheckCircle2, Rotate
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import NotificationBell from "../components/NotificationBell";
+import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
 
 // Lazy load heavy recharts library — with percentage labels on each axis
 const LazyRadarChart = lazy(() =>
@@ -74,6 +75,7 @@ export default function Dashboard() {
   const [careersMap, setCareersMap] = useState({});
   const [allCareers, setAllCareers] = useState([]);
   const [loadingCareers, setLoadingCareers] = useState(true);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   // Lazy load full icon set after mount for career card icons
   const [iconsLoaded, setIconsLoaded] = useState(false);
@@ -100,12 +102,16 @@ export default function Dashboard() {
   }, []);
 
   const careerAnalysis = user?.careerAnalysis || null;
+  const hasPaidAccess =
+    user?.subscription?.status === "active" &&
+    user?.subscription?.provider === "razorpay" &&
+    !!user?.subscription?.razorpayPaymentId;
   const userMatches = useMemo(() => user?.top_career_matches || [], [user?.top_career_matches]);
   const cmScore = careerAnalysis?.scores
     ? { overall: careerAnalysis.overallScore, ...careerAnalysis.scores }
     : user?.profile?.careerMatchScore;
   const overall = careerAnalysis?.overallScore ?? cmScore?.overall ?? null;
-  const hasRealData = !!cmScore && overall !== null;
+  const hasRealData = hasPaidAccess && !!cmScore && overall !== null;
 
   useEffect(() => {
     console.log("Dashboard careerAnalysis data:", careerAnalysis);
@@ -120,7 +126,7 @@ export default function Dashboard() {
   ];
 
   const displayCareers = useMemo(() => {
-    if (careerAnalysis?.topCareers?.length > 0) {
+    if (hasPaidAccess && careerAnalysis?.topCareers?.length > 0) {
       return careerAnalysis.topCareers.map((m) => {
         const career = careersMap[m.slug] || {};
         return {
@@ -133,7 +139,7 @@ export default function Dashboard() {
         };
       });
     }
-    if (userMatches.length > 0) {
+    if (hasPaidAccess && userMatches.length > 0) {
       return userMatches
         .slice(0, 3)
         .map((m) => {
@@ -149,10 +155,10 @@ export default function Dashboard() {
       matchTags: c.tags || [],
       matchReasons: [],
     }));
-  }, [allCareers, careerAnalysis, careersMap, userMatches]);
+  }, [allCareers, careerAnalysis, careersMap, hasPaidAccess, userMatches]);
 
   const additionalCareers = useMemo(() => {
-    if (!careerAnalysis?.additionalCareers?.length) return [];
+    if (!hasPaidAccess || !careerAnalysis?.additionalCareers?.length) return [];
     return careerAnalysis.additionalCareers.map((m) => {
       const career = careersMap[m.slug] || {};
       return {
@@ -163,7 +169,7 @@ export default function Dashboard() {
         matchTags: m.tags || [],
       };
     });
-  }, [careerAnalysis, careersMap]);
+  }, [careerAnalysis, careersMap, hasPaidAccess]);
 
   const retakeQuiz = async () => {
     try {
@@ -231,12 +237,14 @@ export default function Dashboard() {
                 <p className="font-heading font-extrabold text-3xl sm:text-5xl text-brand/30 leading-none">
                   —<span className="text-xl sm:text-3xl">%</span>
                 </p>
-                <p className="text-[10px] sm:text-sm text-muted2 mt-0.5">Complete the career quiz to see your score.</p>
+                <p className="text-[10px] sm:text-sm text-muted2 mt-0.5">
+                  {cmScore && !hasPaidAccess ? "Unlock your paid plan to view your AI score." : "Complete the career quiz to see your score."}
+                </p>
                 <button
-                  onClick={() => navigate("/onboarding")}
+                  onClick={() => (cmScore && !hasPaidAccess ? setUpgradeOpen(true) : navigate("/onboarding"))}
                   className="mt-1.5 inline-flex items-center gap-1.5 bg-brand text-white font-semibold px-3 py-2 rounded-full text-xs sm:text-sm w-fit"
                 >
-                  <Sparkles size={13} /> Take Quiz
+                  <Sparkles size={13} /> {cmScore && !hasPaidAccess ? "Unlock Result" : "Take Quiz"}
                 </button>
               </>
             )}
@@ -419,6 +427,17 @@ export default function Dashboard() {
           </Link>
         ))}
       </div>
+      <PremiumSubscriptionModal
+        open={upgradeOpen}
+        onClose={() => setUpgradeOpen(false)}
+        initialPlan="starter_offer"
+        title="Unlock your AI career result"
+        subtitle="New user offer: pay Rs 9 today. The Rs 99 starter plan is discounted for your first quiz result."
+        onSuccess={async () => {
+          setUpgradeOpen(false);
+          await refresh();
+        }}
+      />
     </div>
   );
 }

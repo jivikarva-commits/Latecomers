@@ -106,6 +106,10 @@ def active_subscription(user: Dict) -> Optional[Dict]:
     sub = user.get("subscription") or {}
     if sub.get("status") != "active":
         return None
+    if sub.get("provider") != "razorpay":
+        return None
+    if not sub.get("razorpayPaymentId"):
+        return None
     expiry = parse_dt(sub.get("expiresAt"))
     if expiry and expiry < utc_now():
         return None

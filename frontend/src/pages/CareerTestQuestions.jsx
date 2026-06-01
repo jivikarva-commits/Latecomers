@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import HeroIllustration from "../components/HeroIllustration";
 import { ClipboardCheck } from "lucide-react";
 import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
+import { useAuth } from "../context/AuthContext";
 
 export default function CareerTestQuestions() {
   const [questions, setQuestions] = useState([]);
@@ -16,6 +17,7 @@ export default function CareerTestQuestions() {
   const [showPaywall, setShowPaywall] = useState(false);
   const [pendingPayload, setPendingPayload] = useState(null);
   const navigate = useNavigate();
+  const { refresh } = useAuth();
 
   useEffect(() => {
     api.get("/career-test/questions").then(({ data }) => setQuestions(data));
@@ -45,6 +47,7 @@ export default function CareerTestQuestions() {
     setShowPaywall(false);
     try {
       await api.post("/ai/career-test/score", payload);
+      await refresh();
       toast.success("AI result generated.");
       navigate("/dashboard", { replace: true, state: { quizCompleted: true } });
     } catch (e) {
