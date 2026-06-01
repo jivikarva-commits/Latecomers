@@ -197,6 +197,7 @@ export default function CareerTestQuestions() {
         initialPlan="starter_offer"
         title="Unlock your AI career result"
         subtitle="New user offer: pay Rs 9 today. The Rs 99 starter plan is discounted for your first quiz result."
+        offerOnly
         onSuccess={() => {
           if (pendingPayload) generateResult(pendingPayload);
         }}

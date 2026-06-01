@@ -82,6 +82,7 @@ export default function PremiumSubscriptionModal({
   subtitle = "Choose a plan to access your career result and continue your roadmap.",
   lockClose = false,
   initialPlan = "starter_offer",
+  offerOnly = false,
 }) {
   const { user, refresh, setUser } = useAuth();
   const [plans, setPlans] = useState(fallbackPlans);
@@ -100,12 +101,13 @@ export default function PremiumSubscriptionModal({
 
   const sortedPlans = useMemo(() => {
     const order = ["starter_offer", "standard_99", "premium_299"];
-    return [...plans].sort((a, b) => {
+    const visiblePlans = offerOnly ? plans.filter((plan) => plan.key === "starter_offer") : plans;
+    return [...visiblePlans].sort((a, b) => {
       const ai = order.indexOf(a.key);
       const bi = order.indexOf(b.key);
       return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
     });
-  }, [plans]);
+  }, [plans, offerOnly]);
 
   if (!open) return null;
 
@@ -159,7 +161,7 @@ export default function PremiumSubscriptionModal({
 
   return (
     <div className="fixed inset-0 z-[100] bg-ink/50 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5" role="dialog" aria-modal="true">
-      <div className="relative w-full max-w-5xl max-h-[92dvh] overflow-y-auto rounded-3xl bg-white border border-line">
+      <div className={`relative w-full ${offerOnly ? "max-w-lg" : "max-w-5xl"} max-h-[92dvh] overflow-y-auto rounded-3xl bg-white border border-line`}>
         {!lockClose && (
           <button onClick={onClose} className="absolute right-3 top-3 z-10 h-9 w-9 rounded-full border border-line bg-white text-muted2 flex items-center justify-center">
             <X size={18} />
@@ -175,7 +177,7 @@ export default function PremiumSubscriptionModal({
             <p className="mt-2 text-sm sm:text-base text-muted2">{subtitle}</p>
           </div>
 
-          <div className="mt-5 grid gap-3 lg:grid-cols-3">
+          <div className={`mt-5 grid gap-3 ${offerOnly ? "grid-cols-1" : "lg:grid-cols-3"}`}>
             {sortedPlans.map((plan) => {
               const featured = plan.key === "starter_offer";
               const active = activePlan === plan.key;
@@ -201,7 +203,15 @@ export default function PremiumSubscriptionModal({
                     disabled={!!loadingPlan || active}
                     className={`mt-4 w-full rounded-xl px-4 py-3 text-sm font-bold disabled:opacity-60 ${featured ? "premium-gradient text-white" : "bg-brand text-white"}`}
                   >
-                    {loadingPlan === plan.key ? "Opening checkout..." : active ? "Current plan" : plan.key === initialPlan ? "Choose this plan" : "Upgrade"}
+                    {loadingPlan === plan.key
+                      ? "Opening checkout..."
+                      : active
+                      ? "Current plan"
+                      : offerOnly && featured
+                      ? "Pay \u20B99 and generate result"
+                      : plan.key === initialPlan
+                      ? "Choose this plan"
+                      : "Upgrade"}
                   </button>
                   <div className="mt-4 space-y-2">
                     {planFeatures(plan).map((item) => (
@@ -215,20 +225,22 @@ export default function PremiumSubscriptionModal({
             })}
           </div>
 
-          <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {[
-              ["Results", Sparkles],
-              ["Institutes", Search],
-              ["Roadmaps", Route],
-              ["Interview", Mic],
-              ["AI Chat", MessageCircle],
-            ].map(([label, Icon]) => (
-              <div key={label} className="rounded-xl border border-line bg-[#FAFAFE] p-3 text-center">
-                <Icon size={17} className="mx-auto text-brand" />
-                <p className="mt-1 text-xs font-bold text-ink">{label}</p>
-              </div>
-            ))}
-          </div>
+          {!offerOnly && (
+            <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {[
+                ["Results", Sparkles],
+                ["Institutes", Search],
+                ["Roadmaps", Route],
+                ["Interview", Mic],
+                ["AI Chat", MessageCircle],
+              ].map(([label, Icon]) => (
+                <div key={label} className="rounded-xl border border-line bg-[#FAFAFE] p-3 text-center">
+                  <Icon size={17} className="mx-auto text-brand" />
+                  <p className="mt-1 text-xs font-bold text-ink">{label}</p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

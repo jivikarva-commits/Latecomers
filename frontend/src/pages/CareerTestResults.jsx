@@ -113,6 +113,7 @@ export default function CareerTestResults() {
           lockClose
           title="Your quiz result is ready"
           subtitle="Unlock your result with a paid plan. Starter offer is available for a limited time."
+          offerOnly
           onSuccess={async () => {
             await refresh();
             setHasAccess(true);
