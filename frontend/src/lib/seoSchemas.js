@@ -4,9 +4,24 @@ export function organizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
     name: SITE_NAME,
+    alternateName: ["Latecomers", "Latecomers.in"],
     url: SITE_URL,
-    logo: absoluteUrl("/brand/latecomers-logo.png"),
+    // Google Knowledge Panel / SERP logo requires a near-square image (≥112x112,
+    // PNG/JPG, file ≤5MB). Square version generated from the wide wordmark logo.
+    logo: {
+      "@type": "ImageObject",
+      url: absoluteUrl("/brand/latecomers-logo-square.png"),
+      width: 1024,
+      height: 1024,
+      caption: SITE_NAME,
+    },
+    image: absoluteUrl("/brand/latecomers-logo-square.png"),
+    description:
+      "AI-powered career guidance for late starters, BPO workers, confused graduates, and career switchers in India.",
+    foundingDate: "2025",
+    areaServed: { "@type": "Country", name: "India" },
     // TODO(user): replace placeholders with real official profile URLs
     sameAs: [
       "https://www.linkedin.com/company/latecomers-ai",
