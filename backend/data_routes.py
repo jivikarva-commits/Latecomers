@@ -43,7 +43,7 @@ GOOGLE_DETAILS_FIELDS = ",".join(
     ]
 )
 CAREER_DETAILS_TTL_DAYS = 90
-CAREER_DETAILS_PROMPT_VERSION = "career-details-full-report-v8-2026-06-03"
+CAREER_DETAILS_PROMPT_VERSION = "career-details-full-report-v9-2026-06-03"
 
 
 def db(request: Request):
@@ -669,7 +669,7 @@ def _career_details_prompt(career: Dict) -> str:
     growth = career.get("jobGrowth5Y") or 0
     tag_text = ", ".join(str(tag) for tag in tags if tag) or "None"
 
-    return f"""Create one valid compact JSON career report for Indian students.
+    return f"""Create one valid detailed JSON career report for Indian students.
 Career: {title}
 Category: {category}
 Field: {field}
@@ -682,11 +682,20 @@ Rules:
 - No generic placeholders: item1, project1, role1, Domain Fundamentals.
 - Courses section: course/topic names only. No paid/free, providers, platforms, prices, INR, fees, or duration.
 - Roadmap must have exactly 6 stages: Education, Skills To Master, Courses, AI Tools, Portfolio & Projects, Placement & Jobs.
-- Each roadmap stage needs exactly 3 concrete items for that exact career.
-- Keep arrays small: 2 skills per skill group, 1 work area, 2 job levels, 3 salary points, 3 AI tools.
-- Also generate roleReport.sections like a practical accordion report similar to a Latecomers career guide.
+- Each roadmap stage needs 5-7 concrete items for that exact career.
+- Generate rich roleReport.sections like a practical Latecomers career guide. Do not make 1-2 point sections.
 - roleReport.sections must have exactly 11 sections with titles:
   1 "What is this role?", 2 "Is this job for me?", 3 "Day-to-Day Tasks", 4 "Skills You Need to Learn", 5 "Who Is This Role For?", 6 "How to Get Started", 7 "Best Institutes for Learning {title}", 8 "Tools Used in This Role", 9 "Career Path & Salary Expectations", 10 "Where Can I Work & Who Hires Freshers?", 11 "Related Roles in {category}".
+- Section 1 must include one 80-120 word summary and 5 specific bullet points.
+- Section 3 must include 6-8 day-to-day tasks.
+- Section 4 must include 6 hard skills and 5 soft skills.
+- Section 5 must include 4 learner/user profiles with practical advice.
+- Section 6 must include 5-6 steps with action details.
+- Section 8 must include 6 tools with use cases.
+- Section 9 must include 5 salary/career steps from intern/fresher to senior/manager. Include years, salary, and body.
+- Section 10 must include employerTypes (4 objects with title/body), cities (6 Indian cities), remote, and apply (4-5 objects with title/body).
+- Section 11 must include 8 related roles.
+- Be truthful: software/developer roles must say coding required Yes; data/cloud/cyber roles Basic/Yes; non-tech roles No unless the role needs it.
 - In roleReport, avoid provider names unless they are tools/employers. Institute section should describe institute/course types, not fake institute names.
 - Return JSON only.
 
@@ -987,11 +996,11 @@ async def _generate_and_cache_career_details(request: Request, career: Dict) -> 
                 text = await ask_claude(
                     prompt,
                     system_prompt=(
-                        "You generate concise, valid JSON career reports for Indian students. "
+                        "You generate detailed, practical, valid JSON career reports for Indian students. "
                         "Return only one JSON object. No markdown. No fake institutes. "
                         "Courses must not include paid/free/prices/platform costs."
                     ),
-                    max_tokens=5000,
+                    max_tokens=9000,
                     json_only=True,
                 )
             except Exception as call_exc:
@@ -1021,7 +1030,7 @@ Malformed response:
                 repair_text = await ask_claude(
                     repair_prompt,
                     system_prompt="You repair malformed JSON. Return only valid JSON, no markdown.",
-                    max_tokens=5000,
+                    max_tokens=9000,
                     json_only=True,
                 )
                 generated = _strip_course_costs(extract_json(repair_text))

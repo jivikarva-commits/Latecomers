@@ -636,6 +636,165 @@ function buildCareerFitRows(career) {
   ];
 }
 
+function detailedSalaryPath(career, jobs) {
+  const title = career?.title || "Career";
+  const field = detectField(career);
+  const min = asNumber(career?.avgSalary?.min, 3);
+  const max = asNumber(career?.avgSalary?.max, 12);
+  const presets = {
+    marketing: [
+      { role: "Marketing / Social Media Intern", years: "0 - 6 months", salary: "Rs 5K - Rs 15K/month", body: "Learns posting, research, basic reporting, captions, and campaign support." },
+      { role: "Digital Marketing Executive", years: "0 - 2 years", salary: "Rs 2L - Rs 3.5L/year", body: "Executes content, SEO, ads support, scheduling, and weekly client reports." },
+      { role: `${title} Manager`, years: "2 - 4 years", salary: "Rs 4L - Rs 8L/year", body: "Leads strategy, manages campaigns, tracks performance, and coordinates with designers or sales teams.", current: true },
+      { role: "Growth / Brand Strategist", years: "4 - 6 years", salary: "Rs 9L - Rs 15L/year", body: "Owns channel strategy, budgets, conversions, brand positioning, and team review." },
+      { role: "Digital Marketing Manager / Brand Manager", years: "6+ years", salary: "Rs 14L - Rs 25L+/year", body: "Oversees SEO, ads, content, analytics, brand, agencies, and business growth." },
+    ],
+    tech: [
+      { role: "Web Development Intern", years: "0 - 6 months", salary: "Rs 8K - Rs 20K/month", body: "Builds small UI screens, fixes bugs, learns Git, and ships supervised tasks." },
+      { role: "Junior Developer", years: "0 - 2 years", salary: "Rs 3L - Rs 6L/year", body: "Creates frontend/backend features, consumes APIs, writes tests, and maintains code." },
+      { role: title, years: "2 - 4 years", salary: `Rs ${Math.max(min, 4)}L - Rs ${Math.max(max, 10)}L/year`, body: "Owns modules, handles production bugs, improves performance, and works with product teams.", current: true },
+      { role: "Senior Developer", years: "4 - 6 years", salary: "Rs 12L - Rs 24L/year", body: "Designs architecture, mentors juniors, reviews code, and manages complex integrations." },
+      { role: "Tech Lead / Engineering Manager", years: "6+ years", salary: "Rs 25L - Rs 50L+/year", body: "Leads engineering delivery, system design, hiring, planning, and cross-team execution." },
+    ],
+    data: [
+      { role: "Data / MIS Intern", years: "0 - 6 months", salary: "Rs 8K - Rs 18K/month", body: "Cleans data, prepares Excel reports, and supports dashboards." },
+      { role: "Junior Data Analyst", years: "0 - 2 years", salary: "Rs 3L - Rs 6L/year", body: "Works on SQL, Excel, Power BI dashboards, and business reporting." },
+      { role: title, years: "2 - 4 years", salary: `Rs ${Math.max(min, 4)}L - Rs ${Math.max(max, 12)}L/year`, body: "Finds insights, builds dashboards, explains trends, and supports decisions.", current: true },
+      { role: "Senior Analyst / BI Analyst", years: "4 - 6 years", salary: "Rs 10L - Rs 20L/year", body: "Owns KPIs, analytics models, stakeholder reporting, and decision dashboards." },
+      { role: "Analytics Manager / Data Product Lead", years: "6+ years", salary: "Rs 18L - Rs 35L+/year", body: "Leads analytics strategy, data teams, governance, and business impact." },
+    ],
+    design: [
+      { role: "Design Intern", years: "0 - 6 months", salary: "Rs 5K - Rs 15K/month", body: "Creates UI screens, social creatives, wireframes, and portfolio case studies." },
+      { role: "Junior UI/Graphic Designer", years: "0 - 2 years", salary: "Rs 2.5L - Rs 5L/year", body: "Handles visual design, Figma files, brand layouts, and design revisions." },
+      { role: title, years: "2 - 4 years", salary: `Rs ${Math.max(min, 4)}L - Rs ${Math.max(max, 10)}L/year`, body: "Owns user flows, design systems, client presentations, and polished deliverables.", current: true },
+      { role: "Senior Designer / Product Designer", years: "4 - 6 years", salary: "Rs 10L - Rs 20L/year", body: "Leads research, systems, product UX, and junior designer reviews." },
+      { role: "Design Lead / Creative Director", years: "6+ years", salary: "Rs 18L - Rs 35L+/year", body: "Owns design direction, brand quality, hiring, and business outcomes." },
+    ],
+  };
+  return presets[field] || (jobs || []).slice(0, 5).map((job, index) => ({
+    role: job.title,
+    years: job.level || ["0 - 1 year", "1 - 3 years", "3 - 5 years", "5+ years"][index] || "Growth stage",
+    salary: job.salary,
+    body: job.skills || "Build proof, improve skills, and apply consistently.",
+    current: index === 1,
+  }));
+}
+
+function detailedEmployerGuide(career) {
+  const field = detectField(career);
+  const guides = {
+    marketing: {
+      types: [
+        { title: "Digital marketing agencies", body: "Best place to start, fast learning, multiple clients, and broad exposure." },
+        { title: "Brands in-house", body: "Better focus, stronger pay growth, and deeper ownership of one brand." },
+        { title: "Startups", body: "Often remote, high ownership, quick growth, and direct founder/team visibility." },
+        { title: "Freelance", body: "Own clients, work from home, and income grows with proof and referrals." },
+      ],
+      apply: [
+        { title: "Internshala", body: "Best for first internship and fresher roles" },
+        { title: "LinkedIn", body: `Search "${career?.title || "role"} fresher"` },
+        { title: "Naukri.com", body: "Filter by 0 years experience and city" },
+        { title: "Apna App", body: "Good for Tier 2 city jobs" },
+        { title: "Instagram DMs to local businesses", body: "Underrated and works well with a sample audit" },
+      ],
+      remote: "Yes - highly remote-friendly",
+    },
+    tech: {
+      types: [
+        { title: "IT service companies", body: "Good for first job, training exposure, and structured team work." },
+        { title: "SaaS/product startups", body: "Better learning curve, ownership, and modern engineering practices." },
+        { title: "Agencies", body: "Fast portfolio growth through websites, dashboards, and client apps." },
+        { title: "Freelance / contract", body: "Works after 3-5 solid deployed projects and good communication." },
+      ],
+      apply: [
+        { title: "LinkedIn", body: "Search junior developer, frontend intern, full stack intern" },
+        { title: "Naukri.com", body: "Filter by React, JavaScript, Node, fresher" },
+        { title: "AngelList / Wellfound", body: "Good for startup internships" },
+        { title: "GitHub + cold email", body: "Send live demo and GitHub links" },
+      ],
+      remote: "Yes - remote-friendly after portfolio proof",
+    },
+    data: {
+      types: [
+        { title: "Analytics teams", body: "Work on dashboards, SQL, KPIs, and stakeholder reports." },
+        { title: "Finance / operations teams", body: "Strong for Excel, MIS, reporting, and process analytics." },
+        { title: "Consulting and startups", body: "High learning, multiple business problems, and quick portfolio growth." },
+        { title: "Agencies / BI vendors", body: "Project-based dashboards for different clients and industries." },
+      ],
+      apply: [
+        { title: "LinkedIn", body: "Search data analyst fresher, MIS analyst, BI intern" },
+        { title: "Naukri.com", body: "Filter by Excel, SQL, Power BI, 0-1 years" },
+        { title: "Internshala", body: "Good for first analytics internship" },
+        { title: "Kaggle / GitHub portfolio", body: "Share projects with dashboard links" },
+      ],
+      remote: "Hybrid - remote possible after trust and dashboard proof",
+    },
+  };
+  const fallback = {
+    types: getCuratedIndustries(career).slice(0, 4).map((name) => ({ title: name, body: `Good place to apply for ${career?.title || "this role"} roles and internships.` })),
+    apply: [
+      { title: "LinkedIn", body: "Search fresher and internship roles" },
+      { title: "Naukri.com", body: "Filter by city and 0-1 years experience" },
+      { title: "Internshala", body: "Best for first internship" },
+      { title: "Local institutes / referrals", body: "Ask for placement support and local openings" },
+    ],
+    remote: "Depends on role and company",
+  };
+  const guide = guides[field] || fallback;
+  return {
+    ...guide,
+    cities: ["Mumbai", "Pune", "Bengaluru", "Hyderabad", "Delhi", "Chennai"],
+  };
+}
+
+function detailedRelatedRoles(career, jobs) {
+  const field = detectField(career);
+  const roles = {
+    marketing: [
+      ["Content Writer", "Marketing > Content"],
+      ["SEO Specialist", "Marketing > Search"],
+      ["Digital Marketing Executive", "Marketing > Digital"],
+      ["Graphic Designer", "Marketing > Design"],
+      ["Performance Marketer", "Marketing > Paid Ads"],
+      ["Influencer Marketing Manager", "Marketing > Influencer"],
+      ["Email Marketing Specialist", "Marketing > Email"],
+      ["Brand Manager", "Marketing > Brand"],
+    ],
+    tech: [
+      ["Frontend Developer", "IT / Tech > Web"],
+      ["Backend Developer", "IT / Tech > APIs"],
+      ["Full Stack Developer", "IT / Tech > Product"],
+      ["React Developer", "IT / Tech > Frontend"],
+      ["Node.js Developer", "IT / Tech > Backend"],
+      ["DevOps Engineer", "IT / Tech > Cloud"],
+      ["QA Automation Engineer", "IT / Tech > Testing"],
+      ["Product Engineer", "IT / Tech > SaaS"],
+    ],
+    data: [
+      ["MIS Executive", "Data > Reporting"],
+      ["Data Analyst", "Data > Analytics"],
+      ["Business Analyst", "Data > Business"],
+      ["Power BI Developer", "Data > Dashboards"],
+      ["SQL Analyst", "Data > Database"],
+      ["Operations Analyst", "Data > Ops"],
+      ["Product Analyst", "Data > Product"],
+      ["BI Consultant", "Data > Consulting"],
+    ],
+    design: [
+      ["UI Designer", "Design > Interface"],
+      ["UX Researcher", "Design > Research"],
+      ["Product Designer", "Design > Product"],
+      ["Graphic Designer", "Design > Visual"],
+      ["Brand Designer", "Design > Brand"],
+      ["Motion Designer", "Design > Motion"],
+      ["Web Designer", "Design > Web"],
+      ["Creative Lead", "Design > Leadership"],
+    ],
+  };
+  const mapped = roles[field] || (jobs || []).map((job) => [job.title, career?.category || "Related"]);
+  return mapped.slice(0, 8).map(([title, category]) => ({ title, category }));
+}
+
 function isWeakRoleSection(section, careerTitle) {
   const text = JSON.stringify(section || {}).toLowerCase();
   const title = String(careerTitle || "").toLowerCase();
@@ -651,6 +810,7 @@ function buildDefaultRoleSections(career, computed, fitRows) {
   const specific = roleSpecificFallbacks(title);
   const tools = (computed.aiTools || []).slice(0, 5).map((tool) => ({ name: tool.name, use: tool.usedFor || tool.bestFor || "Role workflow" }));
   const jobs = (computed.jobs || []).slice(0, 4);
+  const employerGuide = detailedEmployerGuide(career);
   return [
     {
       num: 1,
@@ -691,9 +851,30 @@ function buildDefaultRoleSections(career, computed, fitRows) {
       items: [`Search ${title} institutes near your city`, "Compare reviews, trainer quality, practical assignments, and placement support", "Ask for demo class, project work, fees, and refund rules before paying"],
     },
     { num: 8, title: "Tools Used in This Role", type: "tools", tools },
-    { num: 9, title: "Career Path & Salary Expectations", type: "salaryPath", steps: jobs.map((job) => ({ role: job.title, years: job.level, salary: job.salary })) },
-    { num: 10, title: "Where Can I Work & Who Hires Freshers?", type: "employers", industries: getCuratedIndustries(career, career?.insights?.topIndustries).slice(0, 5), companies: career?.insights?.topCompaniesIndia || [], cities: ["Mumbai", "Pune", "Bengaluru", "Delhi NCR"] },
-    { num: 11, title: `Related Roles in ${category}`, type: "related", roles: jobs.slice(0, 4).map((job) => ({ title: job.title, category })) },
+    {
+      num: 9,
+      title: "Career Path & Salary Expectations",
+      type: "salaryPath",
+      steps: detailedSalaryPath(career, jobs),
+      freelance: ["marketing", "design", "tech"].includes(detectField(career))
+        ? { title: "Freelance Income (Work from Home)", rows: [["1 client", "Rs 8,000 - Rs 15,000/month"], ["3 clients", "Rs 30,000 - Rs 50,000/month"], ["5-6 clients", "Rs 80,000 - Rs 1,50,000/month"]] }
+        : null,
+      note: ["marketing", "design", "tech"].includes(detectField(career))
+        ? "With strong proof of work, this career can grow through jobs, freelance clients, and remote projects."
+        : "Income grows fastest when you combine practical skills, proof of work, and consistent applications.",
+    },
+    {
+      num: 10,
+      title: "Where Can I Work & Who Hires Freshers?",
+      type: "employers",
+      employerTypes: employerGuide.types,
+      cities: employerGuide.cities,
+      remote: employerGuide.remote,
+      apply: employerGuide.apply,
+      industries: getCuratedIndustries(career, career?.insights?.topIndustries).slice(0, 5),
+      companies: career?.insights?.topCompaniesIndia || [],
+    },
+    { num: 11, title: `Related Roles in ${category}`, type: "related", roles: detailedRelatedRoles(career, jobs) },
   ];
 }
 
@@ -706,7 +887,7 @@ function normalizeRoleReportSections(career, computed) {
     return defaultSections
       .map((fallback) => {
         const existing = byNum.get(fallback.num);
-        if (!existing || fallback.num === 2 || isWeakRoleSection(existing, career?.title)) return fallback;
+        if (!existing || [2, 9, 10, 11].includes(fallback.num) || isWeakRoleSection(existing, career?.title)) return fallback;
         return { ...fallback, ...existing, title: fallback.title, type: fallback.type };
       })
       .sort((a, b) => (a.num || 99) - (b.num || 99));
@@ -773,7 +954,7 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
         </div>
       );
     }
-    if (section.type === "steps" || section.type === "salaryPath") {
+    if (section.type === "steps") {
       const steps = section.steps || [];
       return (
         <div className="space-y-3">
@@ -786,6 +967,46 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
               </div>
             </div>
           ))}
+        </div>
+      );
+    }
+    if (section.type === "salaryPath") {
+      const steps = section.steps || [];
+      return (
+        <div className="space-y-5">
+          <div className="relative pl-7">
+            <div className="absolute left-2.5 top-3 bottom-3 w-px bg-[#DCD4F3]" />
+            <div className="space-y-5">
+              {steps.map((step, index) => (
+                <div key={`${step.role}-${index}`} className="relative">
+                  <span className={`absolute -left-[29px] top-1 h-5 w-5 rounded-full border-4 ${step.current ? "border-[#D8C7FF] bg-brand" : "border-[#F0EBFF] bg-[#DCD4F3]"}`} />
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="font-heading text-base font-black text-ink">{step.role}</p>
+                      <p className="mt-1 text-sm font-semibold text-muted2">{step.years}</p>
+                      <p className="mt-1 text-base font-black text-brand">{step.salary}</p>
+                      {step.body && <p className="mt-1 text-sm leading-relaxed text-muted2">{step.body}</p>}
+                    </div>
+                    {step.current && <span className="w-fit rounded-lg bg-yellow-300 px-3 py-2 text-[11px] font-black uppercase text-ink">You are here</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {section.freelance && (
+            <div className="rounded-2xl bg-[#120B3D] p-4 text-white">
+              <p className="font-heading text-sm font-black text-yellow-300">{section.freelance.title}</p>
+              <div className="mt-3 space-y-2">
+                {(section.freelance.rows || []).map(([label, value]) => (
+                  <div key={label} className="grid grid-cols-[0.8fr_1.2fr] gap-3 text-sm">
+                    <span className="text-white/70">{label}</span>
+                    <span className="font-black">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {section.note && <div className="rounded-2xl bg-brand p-4 font-heading text-base font-black leading-relaxed text-white">{section.note}</div>}
         </div>
       );
     }
@@ -815,23 +1036,51 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
     }
     if (section.type === "employers") {
       return (
-        <div className="grid gap-3 sm:grid-cols-3">
-          {[["Industries", section.industries], ["Companies", section.companies], ["Cities", section.cities]].map(([label, list]) => (
-            <div key={label} className="rounded-xl border border-line bg-[#FAFAFE] p-3">
-              <p className="text-[11px] font-black uppercase tracking-wide text-brand">{label}</p>
-              <div className="mt-2 space-y-1.5">{(list || []).map((value) => <p key={value} className="text-[12.5px] font-semibold text-ink">{value}</p>)}</div>
+        <div className="space-y-5">
+          <div>
+            <p className="font-heading text-base font-black text-ink">Types of Employers</p>
+            <div className="mt-3 space-y-2">
+              {(section.employerTypes || []).map((item) => (
+                <div key={item.title} className="rounded-xl bg-[#F6F1FF] p-3 text-sm leading-relaxed text-muted2">
+                  <span className="font-black text-ink">{item.title}</span> - {item.body}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          <div>
+            <p className="font-heading text-base font-black text-ink">Cities with Most Jobs</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {(section.cities || []).map((city) => <span key={city} className="rounded-full bg-[#F0EBFF] px-4 py-2 text-sm font-black text-brand">{city}</span>)}
+            </div>
+          </div>
+          {section.remote && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 font-heading text-sm font-black text-emerald-700">Remote work: {section.remote}</div>}
+          <div>
+            <p className="font-heading text-base font-black text-ink">Where to Apply Right Now</p>
+            <div className="mt-3 space-y-2">
+              {(section.apply || []).map((item) => (
+                <div key={item.title} className="flex items-center gap-3 rounded-xl border border-line bg-[#FAFAFE] p-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-heading text-sm font-black text-ink">{item.title}</p>
+                    <p className="mt-1 text-[12.5px] text-muted2">{item.body}</p>
+                  </div>
+                  <span className="text-brand">↗</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       );
     }
     if (section.type === "related") {
       return (
-        <div className="grid gap-2 sm:grid-cols-2">
+        <div className="space-y-3">
           {(section.roles || []).map((role) => (
-            <div key={role.title} className="rounded-xl border border-line bg-[#FAFAFE] p-3">
-              <p className="font-heading text-sm font-black text-ink">{role.title}</p>
-              <p className="text-[11px] text-muted2">{role.category}</p>
+            <div key={role.title} className="flex items-center gap-3 rounded-xl border border-line bg-white p-4">
+              <div className="min-w-0 flex-1">
+                <p className="font-heading text-base font-black text-ink">{role.title}</p>
+                <p className="mt-1 text-sm text-muted2">{role.category}</p>
+              </div>
+              <span className="text-lg font-black text-brand">›</span>
             </div>
           ))}
         </div>
