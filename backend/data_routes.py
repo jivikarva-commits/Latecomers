@@ -1180,7 +1180,10 @@ async def generate_career(payload: CareerGenerateRequest, request: Request):
         raise HTTPException(404, "Career is not available yet.")
     if _career_details_fresh(item):
         return _merge_ai_details(item)
-    return await _generate_and_cache_career_details(request, item)
+    _start_career_detail_generation(request, item)
+    if isinstance(item.get("aiGeneratedDetails"), dict):
+        return _merge_ai_details(item)
+    return _fallback_career_response(item)
 
 
 # ---------- Colleges ----------
