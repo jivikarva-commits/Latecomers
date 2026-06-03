@@ -64,22 +64,118 @@ function getStageItems(stages, type) {
   return [];
 }
 
+function fieldForTitle(title) {
+  return detectField({ title });
+}
+
+function roleSpecificFallbacks(title) {
+  const field = fieldForTitle(title);
+  const presets = {
+    tech: {
+      education: [
+        "12th pass students can start, but must build strong coding fundamentals and a public project portfolio.",
+        "BCA/BSc IT/BE/BTech helps for campus jobs, but it is not mandatory for startup and agency roles.",
+        "Learn HTML, CSS, JavaScript, React, backend APIs, databases, Git, and deployment with hands-on projects.",
+      ],
+      skills: ["HTML, CSS, and JavaScript", "React and component thinking", "Node.js or backend APIs", "MongoDB/SQL basics", "Git, GitHub, and deployment", "Debugging and clean code"],
+      courses: ["Web development fundamentals", "JavaScript and React", "Backend APIs with Node.js", "Database design", "Git and deployment workflow", "Portfolio project sprint"],
+      projects: ["Responsive portfolio website", "Full-stack CRUD app with login", "E-commerce or booking mini app", "API dashboard with database", "Deployed capstone project"],
+      placement: ["GitHub profile with pinned projects", "Live demo links for 3 projects", "Resume with tech stack and impact", "Practice JavaScript, API, database, and debugging questions", "Explain each project architecture clearly"],
+      tasks: ["Build and improve website/app features", "Connect frontend screens with backend APIs", "Fix bugs and test user flows", "Deploy updates and document code"],
+    },
+    data: {
+      education: [
+        "12th pass students can start with Excel and statistics, but graduation helps for analyst hiring.",
+        "Commerce, science, engineering, BCA, BSc, BCom, BBA, and MBA backgrounds can enter with the right portfolio.",
+        "Learn Excel, SQL, Power BI/Tableau, Python basics, statistics, dashboards, and business storytelling.",
+      ],
+      skills: ["Advanced Excel", "SQL queries", "Power BI or Tableau dashboards", "Basic statistics", "Python with Pandas", "Business problem framing"],
+      courses: ["Excel for analytics", "SQL for data analysis", "Power BI dashboarding", "Statistics basics", "Python data analysis", "Business case study practice"],
+      projects: ["Sales dashboard in Power BI", "Customer churn analysis", "Excel MIS report pack", "SQL case study with insights", "Python notebook analysis"],
+      placement: ["Portfolio with 3 dashboards", "SQL and Excel test practice", "One-page case study summaries", "Resume with metrics and business impact", "Prepare for scenario-based analyst interviews"],
+      tasks: ["Clean and organize data", "Build reports and dashboards", "Find patterns and business insights", "Present recommendations to teams"],
+    },
+    marketing: {
+      education: [
+        "12th pass and graduates can start if they build strong communication, research, and campaign proof.",
+        "BPO, sales, telecalling, and back-office experience can become a big advantage because customer understanding matters.",
+        "Learn content strategy, ads basics, SEO, analytics, Canva, social platforms, and client reporting.",
+      ],
+      skills: ["Content planning", "Social media strategy", "SEO basics", "Canva and creative briefs", "Analytics and reporting", "Client communication"],
+      courses: ["Digital marketing basics", "Social media management", "SEO and content writing", "Performance marketing basics", "Analytics and reporting", "Campaign portfolio building"],
+      projects: ["30-day social media calendar", "Instagram campaign case study", "SEO blog content plan", "Ad copy and landing page brief", "Brand audit report"],
+      placement: ["Show campaign samples", "Create a simple content portfolio", "Practice client brief questions", "Track metrics like reach, CTR, and leads", "Prepare examples of customer understanding"],
+      tasks: ["Plan content and campaigns", "Create posts, briefs, and reports", "Track analytics and improve performance", "Coordinate with designers, clients, or sales teams"],
+    },
+    design: {
+      education: [
+        "12th pass students can start with design fundamentals and portfolio work; a degree is helpful but not mandatory.",
+        "Graduates from any stream can switch if they learn UI principles, visual design, and user problem solving.",
+        "Learn Figma, layout, typography, color, UX research basics, wireframes, and case-study writing.",
+      ],
+      skills: ["Figma", "Layout and typography", "Color and visual hierarchy", "Wireframing", "UX research basics", "Case-study presentation"],
+      courses: ["Design fundamentals", "Figma UI design", "UX research basics", "Design systems", "Portfolio case studies", "Interview design tasks"],
+      projects: ["Mobile app redesign", "Landing page UI kit", "Dashboard screen case study", "User flow and wireframe project", "Design system sample"],
+      placement: ["Portfolio with 3 case studies", "Show before-after design thinking", "Practice app critique tasks", "Prepare Figma file walkthrough", "Explain user problem and trade-offs"],
+      tasks: ["Create wireframes and UI screens", "Improve visual hierarchy", "Review user flows", "Collaborate with developers and product teams"],
+    },
+    healthcare: {
+      education: [
+        "Some healthcare roles need specific diplomas/degrees or certifications; check eligibility before joining a course.",
+        "12th science is required for many clinical paths, while admin/coding/support roles may allow broader backgrounds.",
+        "Learn domain terminology, compliance, patient/customer communication, and the exact tools used in the role.",
+      ],
+      skills: ["Medical terminology", "Process accuracy", "Compliance basics", "Documentation", "Patient/customer communication", "Tool handling"],
+      courses: ["Role-specific healthcare certification", "Medical terminology basics", "Documentation and compliance", "Practical lab/process training", "Interview and workplace readiness"],
+      projects: ["Sample patient record workflow", "Terminology flashcard set", "Process checklist", "Case documentation sample", "Accuracy practice log"],
+      placement: ["Verify recognized certification", "Prepare process accuracy examples", "Practice scenario questions", "Keep documents ready", "Apply to hospitals, diagnostics, and healthtech firms"],
+      tasks: ["Handle role-specific records or procedures", "Follow compliance steps", "Coordinate with healthcare teams", "Maintain accurate documentation"],
+    },
+    finance: {
+      education: [
+        "Commerce background helps strongly, but some entry roles allow any graduate with Excel and accounting basics.",
+        "CA/CMA/CS/CFA-style paths need formal eligibility and exam commitment.",
+        "Learn accounting, taxation, Excel, Tally/Zoho, GST basics, reporting, and compliance discipline.",
+      ],
+      skills: ["Accounting basics", "Excel", "GST and tax concepts", "Tally or Zoho Books", "Financial reporting", "Compliance discipline"],
+      courses: ["Accounting fundamentals", "Excel for finance", "GST and taxation basics", "Tally/Zoho practice", "Financial statements", "Interview case practice"],
+      projects: ["GST invoice practice file", "Monthly MIS report", "Tally ledger simulation", "Profit and loss analysis", "Tax calculation worksheet"],
+      placement: ["Show Excel/Tally samples", "Practice accounting entries", "Prepare GST and invoice questions", "Apply to CA firms and finance teams", "Keep accuracy examples ready"],
+      tasks: ["Maintain records and reports", "Work on invoices, ledgers, and reconciliations", "Support tax/compliance workflows", "Prepare financial summaries"],
+    },
+    default: {
+      education: [
+        `Understand the minimum eligibility for ${title} before selecting a course.`,
+        "Build practical proof through projects, assignments, internships, or freelance samples.",
+        "Focus on communication, tools, and the exact skills employers test for entry-level roles.",
+      ],
+      skills: [`${title} fundamentals`, "Digital tools", "Communication", "Problem solving", "Portfolio building", "Interview readiness"],
+      courses: [`${title} fundamentals`, "Hands-on practical training", "Tool workflow", "Portfolio building", "Job readiness practice"],
+      projects: [`${title} starter project`, `${title} case study`, `${title} portfolio sample`, "Client-style assignment", "Final capstone"],
+      placement: ["Create a focused resume", "Add proof of work", "Practice role-specific questions", "Apply to local and online openings", "Track applications weekly"],
+      tasks: ["Understand requirements", "Complete practical work", "Coordinate with teams", "Improve work using feedback"],
+    },
+  };
+  return presets[field] || presets.default;
+}
+
 function fallbackEducationPaths(title) {
+  const specific = roleSpecificFallbacks(title).education;
   return [
     {
       heading: "Bachelor's Degree",
       tag: "Recommended",
-      body: `For students who want a strong foundation in ${title} concepts, communication, and structured learning.`,
+      body: specific[0],
       duration: "3 - 4 Years",
     },
     {
       heading: "Diploma / Certificate",
-      body: "For students who want faster, practical learning and job-ready software skills.",
+      body: specific[1],
       duration: "6 Months - 1 Year",
     },
     {
       heading: "Self Learning",
-      body: "For students who want to learn online, build portfolio projects, and start freelancing or applying for jobs.",
+      body: specific[2],
       duration: "Flexible",
     },
     {
@@ -104,14 +200,7 @@ function buildEducationPaths(stages, title) {
 
 function buildSkillStages(stages, title) {
   const items = getStageItems(stages, "skills");
-  const all = items.length ? items : [
-    `${title} Fundamentals`,
-    "Communication & Collaboration",
-    "Tools & Software Basics",
-    "Project Workflow",
-    "Industry Awareness",
-    "Portfolio Building",
-  ];
+  const all = items.length ? items : roleSpecificFallbacks(title).skills;
   const third = Math.ceil(all.length / 3);
   return [
     { title: "Stage 1: Fundamentals", subtitle: "Build your foundation", items: all.slice(0, third) },
@@ -120,14 +209,9 @@ function buildSkillStages(stages, title) {
   ].filter((s) => s.items.length > 0);
 }
 
-function buildCourseMonths(stages) {
+function buildCourseMonths(stages, title = "this career") {
   const items = getStageItems(stages, "courses");
-  const list = items.length ? items : [
-    "Foundations course",
-    "Hands-on practice course",
-    "Advanced specialization",
-    "Portfolio & freelancing",
-  ];
+  const list = items.length ? items : roleSpecificFallbacks(title).courses;
   const labels = [
     { month: "Month 1", title: "Build Foundation" },
     { month: "Month 2 - 3", title: "Learn Core Tools" },
@@ -166,13 +250,7 @@ function buildAITools(stages, career) {
 
 function buildProjects(stages, title) {
   const items = getStageItems(stages, "projects");
-  const list = items.length ? items : [
-    `${title} starter project`,
-    `Real-world ${title} case study`,
-    `Client-style ${title} brief`,
-    `Personal ${title} portfolio`,
-    `${title} freelance gig`,
-  ];
+  const list = items.length ? items : roleSpecificFallbacks(title).projects;
   return list.slice(0, 6).map((p, idx) => ({
     num: String(idx + 1).padStart(2, "0"),
     title: p,
@@ -182,16 +260,11 @@ function buildProjects(stages, title) {
   }));
 }
 
-function buildPlacement(stages) {
+function buildPlacement(stages, title = "this career") {
   const items = getStageItems(stages, "placement");
+  const specific = roleSpecificFallbacks(title).placement;
   return {
-    resume: [
-      "Strong portfolio link",
-      "Behance / Dribbble / GitHub profile",
-      "LinkedIn profile up-to-date",
-      "3-5 best projects highlighted",
-      "Contact information clear",
-    ],
+    resume: specific,
     interviewQs: items.length ? items.slice(0, 5) : [
       "Explain your design / work process.",
       "Why did you choose this color palette / approach?",
@@ -535,48 +608,110 @@ function parseCountries(raw) {
   return list.length ? list.slice(0, 4) : fallback;
 }
 
-function normalizeRoleReportSections(career, computed) {
-  const fitRows = [
-    { label: "12th Pass", value: "Yes" },
+function buildCareerFitRows(career) {
+  const blob = `${career?.title || ""} ${career?.category || ""} ${career?.field || ""} ${(career?.tags || []).join(" ")}`.toLowerCase();
+  const isSoftware = /(full.?stack|frontend|backend|software|web developer|app developer|developer|programmer|react|python|java)/.test(blob);
+  const isData = /(data|analytics|analyst|scientist|sql|power bi|tableau)/.test(blob);
+  const isDevOpsCyber = /(devops|cloud|cyber|security|network)/.test(blob);
+  const isMedical = /(doctor|nurse|medical|pharma|lab technician|radiology|physio|healthcare)/.test(blob);
+  const isLegal = /(law|legal|advocate|judge|paralegal)/.test(blob);
+  const isFinanceCredential = /\b(ca|cma|cs|acca|cfa|chartered|tax|gst|account|accounts|accounting)\b/.test(blob);
+  const isGovernment = /(government|upsc|ssc|railway|bank po|police|defence|defense|psu)/.test(blob);
+  const isCreativeMarketing = /(marketing|social media|content|seo|copy|graphic|design|video|motion|makeup|mehendi|photography)/.test(blob);
+  const needsDegree = isMedical || isLegal || isFinanceCredential || isGovernment;
+
+  let coding = "No";
+  if (isSoftware) coding = "Yes";
+  else if (isData || isDevOpsCyber) coding = "Basic";
+
+  return [
+    { label: "12th Pass", value: needsDegree ? "No" : isSoftware ? "Yes + portfolio" : "Yes" },
     { label: "Any Graduate", value: "Yes" },
-    { label: "BPO / Back-office experience", value: "Big advantage" },
-    { label: "English fluency needed", value: "Basic is enough" },
+    { label: "BPO / Back-office experience", value: isSoftware ? "Helpful" : isCreativeMarketing || isData ? "Big advantage" : "Helpful" },
+    { label: "English fluency needed", value: isGovernment || isMedical ? "Basic is enough" : "Good English helps" },
     { label: "Prior experience needed", value: "No" },
-    { label: "Degree mandatory", value: "No" },
-    { label: "Age limit", value: "None" },
-    { label: "Coding required", value: /data|developer|tech|engineer|analyst/i.test(career?.title || "") ? "Basic" : "No" },
+    { label: "Degree mandatory", value: needsDegree ? "Yes" : "No" },
+    { label: "Age limit", value: isGovernment ? "Exam rules apply" : "None" },
+    { label: "Coding required", value: coding },
   ];
-  const sections = career?.roleReport?.sections;
-  if (Array.isArray(sections) && sections.length) {
-    return sections
-      .map((section, index) => {
-        const normalized = { ...section, num: section.num || index + 1 };
-        if (normalized.num === 2) {
-          const hasSampleRows = (normalized.rows || []).some((row) => /12th|graduate|coding/i.test(row.label || ""));
-          if (!hasSampleRows) normalized.rows = fitRows;
-          normalized.type = "fitTable";
-        }
-        return normalized;
-      })
-      .sort((a, b) => (a.num || 99) - (b.num || 99));
-  }
+}
+
+function isWeakRoleSection(section, careerTitle) {
+  const text = JSON.stringify(section || {}).toLowerCase();
+  const title = String(careerTitle || "").toLowerCase();
+  if (!text || text.length < 90) return true;
+  if (/domain skills|research requirements|complete practical tasks|small agencies|local businesses|freelance clients|industry tools|collaboration tools/.test(text)) return true;
+  if (title && !text.includes(title) && section?.num === 1) return true;
+  return false;
+}
+
+function buildDefaultRoleSections(career, computed, fitRows) {
   const title = career?.title || "this role";
   const category = career?.category || career?.field || "career";
+  const specific = roleSpecificFallbacks(title);
   const tools = (computed.aiTools || []).slice(0, 5).map((tool) => ({ name: tool.name, use: tool.usedFor || tool.bestFor || "Role workflow" }));
   const jobs = (computed.jobs || []).slice(0, 4);
   return [
-    { num: 1, title: "What is this role?", type: "text", summary: career?.overview || career?.description || `${title} is a practical career path in India.`, items: computed.educationPaths?.slice(0, 3).map((p) => p.heading) || [] },
+    {
+      num: 1,
+      title: "What is this role?",
+      type: "text",
+      summary: career?.overview || career?.description || `${title} is a practical career path in India.`,
+      items: specific.tasks,
+    },
     { num: 2, title: "Is this job for me?", type: "fitTable", rows: fitRows },
-    { num: 3, title: "Day-to-Day Tasks", type: "list", items: computed.placement?.resume?.slice(0, 4) || ["Research tasks", "Create work samples", "Coordinate with teams", "Improve from feedback"] },
-    { num: 4, title: "Skills You Need to Learn", type: "skills", hardSkills: computed.skillStages?.flatMap((s) => s.items).slice(0, 5) || [], softSkills: ["Communication", "Problem solving", "Time management"] },
-    { num: 5, title: "Who Is This Role For?", type: "cards", cards: [{ title: "Late starters", body: "You can start with basics and build proof step by step." }, { title: "Job switchers", body: "Your past experience can become a practical advantage." }] },
-    { num: 6, title: "How to Get Started", type: "steps", steps: computed.courseMonths?.slice(0, 4).map((m) => ({ title: `${m.month}: ${m.title}`, body: (m.items || []).join(", ") })) || [] },
-    { num: 7, title: `Best Institutes for Learning ${title}`, type: "institutes", items: [`Search ${title} institutes near your city`, "Compare reviews, trainers, projects, and placement support", "Ask for practical assignments before paying fees"] },
+    { num: 3, title: "Day-to-Day Tasks", type: "list", items: specific.tasks },
+    {
+      num: 4,
+      title: "Skills You Need to Learn",
+      type: "skills",
+      hardSkills: computed.skillStages?.flatMap((s) => s.items).slice(0, 6) || specific.skills,
+      softSkills: ["Communication", "Problem solving", "Consistency", "Time management"],
+    },
+    {
+      num: 5,
+      title: "Who Is This Role For?",
+      type: "cards",
+      cards: [
+        { title: "Freshers with proof", body: `Good fit if you can learn ${title} basics and show small practical projects.` },
+        { title: "Career switchers", body: "Your past work, communication, customer handling, or domain exposure can become an advantage." },
+        { title: "Self learners", body: "Works well if you can practice consistently and document your progress." },
+      ],
+    },
+    {
+      num: 6,
+      title: "How to Get Started",
+      type: "steps",
+      steps: computed.courseMonths?.slice(0, 4).map((m) => ({ title: `${m.month}: ${m.title}`, body: (m.items || []).join(", ") })) || [],
+    },
+    {
+      num: 7,
+      title: `Best Institutes for Learning ${title}`,
+      type: "institutes",
+      items: [`Search ${title} institutes near your city`, "Compare reviews, trainer quality, practical assignments, and placement support", "Ask for demo class, project work, fees, and refund rules before paying"],
+    },
     { num: 8, title: "Tools Used in This Role", type: "tools", tools },
     { num: 9, title: "Career Path & Salary Expectations", type: "salaryPath", steps: jobs.map((job) => ({ role: job.title, years: job.level, salary: job.salary })) },
     { num: 10, title: "Where Can I Work & Who Hires Freshers?", type: "employers", industries: getCuratedIndustries(career, career?.insights?.topIndustries).slice(0, 5), companies: career?.insights?.topCompaniesIndia || [], cities: ["Mumbai", "Pune", "Bengaluru", "Delhi NCR"] },
     { num: 11, title: `Related Roles in ${category}`, type: "related", roles: jobs.slice(0, 4).map((job) => ({ title: job.title, category })) },
   ];
+}
+
+function normalizeRoleReportSections(career, computed) {
+  const fitRows = buildCareerFitRows(career);
+  const defaultSections = buildDefaultRoleSections(career, computed, fitRows);
+  const sections = career?.roleReport?.sections;
+  if (Array.isArray(sections) && sections.length) {
+    const byNum = new Map(sections.map((section, index) => [section.num || index + 1, { ...section, num: section.num || index + 1 }]));
+    return defaultSections
+      .map((fallback) => {
+        const existing = byNum.get(fallback.num);
+        if (!existing || fallback.num === 2 || isWeakRoleSection(existing, career?.title)) return fallback;
+        return { ...fallback, ...existing, title: fallback.title, type: fallback.type };
+      })
+      .sort((a, b) => (a.num || 99) - (b.num || 99));
+  }
+  return defaultSections;
 }
 
 function RoleReportAccordion({ career, sections, onFindInstitutes }) {
@@ -787,59 +922,12 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
     return () => { mounted = false; };
   }, [slug]);
 
-  // 2) Load AI report: try cached GET, otherwise POST to generate
+  // 2) Use the career report immediately. The /careers/:slug endpoint owns report generation/cache.
   useEffect(() => {
     if (!career?.slug) return;
-    let mounted = true;
-    (async () => {
-      setStatus("loading");
-      // First check cached AI roadmap (DB-backed: user + career)
-      try {
-        const { data } = await api.get(`/ai/roadmap/${career.slug}`);
-        if (mounted && data?.stages?.length) {
-          setReport(data);
-          setStatus("ready");
-          return;
-        }
-      } catch (_) {
-        // 404 → no cache, proceed to generate
-      }
-      // Generate fresh
-      try {
-        setGenerating(true);
-        const { data } = await api.post("/ai/roadmap/generate", { career_slug: career.slug });
-        if (!mounted) return;
-        if (data?.stages?.length) {
-          setReport(data);
-          setStatus("ready");
-        } else {
-          // Fall back to whatever the career doc has
-          if (career.roadmap?.length) {
-            setReport({ stages: career.roadmap, totalDuration: career.roadmapTotalDuration || "12 Months" });
-            setStatus("ready");
-          } else {
-            setErrorMsg("AI returned no report data.");
-            setStatus("error");
-          }
-        }
-      } catch (e) {
-        const msg = e?.response?.data?.detail || "AI generation failed.";
-        // Show fallback if base career has roadmap, else error out
-        if (career.roadmap?.length) {
-          setReport({ stages: career.roadmap, totalDuration: "12 Months" });
-          setStatus("ready");
-          toast.error(`${msg} Showing fallback data.`);
-        } else {
-          setErrorMsg(msg);
-          setStatus("error");
-        }
-      } finally {
-        if (mounted) setGenerating(false);
-      }
-    })();
-    return () => { mounted = false; };
-  }, [career?.slug]); // eslint-disable-line react-hooks/exhaustive-deps
-
+    setReport({ stages: career.roadmap || [], totalDuration: career.roadmapTotalDuration || "12 Months" });
+    setStatus("ready");
+  }, [career]);
   // Fetch AI insights on demand (lazy: when user opens Overview or Insights tab)
   useEffect(() => {
     if (!career?.slug) return;
@@ -1021,10 +1109,10 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
 
   const educationPaths = useMemo(() => buildEducationPaths(stages, career?.title || "this career"), [stages, career?.title]);
   const skillStages = useMemo(() => buildSkillStages(stages, career?.title || "this career"), [stages, career?.title]);
-  const courseMonths = useMemo(() => buildCourseMonths(stages), [stages]);
+  const courseMonths = useMemo(() => buildCourseMonths(stages, career?.title || "this career"), [stages, career?.title]);
   const aiTools = useMemo(() => buildAITools(stages, career), [stages, career]);
   const projects = useMemo(() => buildProjects(stages, career?.title || "career"), [stages, career?.title]);
-  const placement = useMemo(() => buildPlacement(stages), [stages]);
+  const placement = useMemo(() => buildPlacement(stages, career?.title || "this career"), [stages, career?.title]);
   const jobs = useMemo(() => buildJobs(stages, career?.jobs, career?.title || "Role", career?.avgSalary), [stages, career]);
   const roleReportSections = useMemo(
     () => normalizeRoleReportSections(career, { educationPaths, skillStages, courseMonths, aiTools, projects, placement, jobs }),
