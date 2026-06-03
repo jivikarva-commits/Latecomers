@@ -636,6 +636,220 @@ function buildCareerFitRows(career) {
   ];
 }
 
+function detailedDayTasks(career) {
+  const title = career?.title || "this role";
+  const field = detectField(career);
+  const presets = {
+    marketing: [
+      "Create and schedule posts for Instagram, Facebook, LinkedIn, and YouTube Shorts based on the weekly content plan.",
+      "Write captions, hooks, carousel copy, ad copy, and content calendars for weekly or monthly campaigns.",
+      "Reply to comments and DMs, collect leads, handle community queries, and pass hot leads to the sales team.",
+      "Track reach, engagement, follower growth, CTR, leads, and conversions using platform analytics.",
+      "Coordinate with designers, video editors, or Canva templates to create creatives that match brand tone.",
+      "Run or assist with paid ads, boosted posts, retargeting, and campaign reporting for clients or brands.",
+      "Study trends, competitors, hashtags, viral formats, and algorithm changes to improve content performance.",
+    ],
+    tech: [
+      "Convert Figma screens or requirements into responsive frontend pages with clean components.",
+      "Build backend APIs, authentication flows, database models, and business logic for real app features.",
+      "Connect frontend with APIs, handle loading/error states, validate forms, and test complete user journeys.",
+      "Fix bugs, read error logs, debug browser/API issues, and improve performance on mobile and desktop.",
+      "Use Git and GitHub for commits, branches, code reviews, and safe deployment workflow.",
+      "Deploy projects on Vercel, Render, AWS, or similar platforms and monitor production behavior.",
+      "Discuss requirements with product/design/client teams and break large features into small tasks.",
+    ],
+    data: [
+      "Clean raw data from Excel, SQL tables, forms, CRMs, or APIs and remove duplicate or incorrect records.",
+      "Write SQL queries to filter, join, group, and summarize business data for decision making.",
+      "Build dashboards in Power BI, Tableau, or Excel with KPIs, charts, filters, and drill-down views.",
+      "Find patterns, trends, outliers, and revenue/customer insights from weekly or monthly data.",
+      "Prepare reports for managers with clear takeaways, business impact, and recommended next actions.",
+      "Automate repeated reports using formulas, scripts, templates, or scheduled dashboard refreshes.",
+      "Present findings to non-technical teams in simple language without overloading them with raw data.",
+    ],
+    design: [
+      "Create wireframes, UI screens, icons, layouts, and design systems in Figma or similar tools.",
+      "Review user flows and improve navigation, hierarchy, spacing, typography, and mobile usability.",
+      "Convert a client or product brief into moodboards, low-fidelity screens, and polished final designs.",
+      "Collaborate with developers to explain assets, states, responsive behavior, and interaction details.",
+      "Collect feedback from users, clients, or product teams and improve designs through iterations.",
+      "Maintain reusable components, color styles, typography tokens, and consistent visual patterns.",
+      "Prepare case studies that explain the problem, process, decisions, and final business/user outcome.",
+    ],
+  };
+  return presets[field] || [
+    `Understand daily requirements and plan practical ${title} tasks clearly before execution.`,
+    "Use the right tools to complete assignments, document progress, and maintain quality.",
+    "Coordinate with team members, clients, or seniors to clarify expectations and avoid rework.",
+    "Review output, fix mistakes, and improve based on feedback or performance metrics.",
+    "Build small proof-of-work samples that can be used in a portfolio or interview.",
+    "Track learning, applications, and project outcomes weekly to stay consistent.",
+  ];
+}
+
+function detailedSkillGroups(career) {
+  const field = detectField(career);
+  const presets = {
+    marketing: {
+      hardSkills: [
+        "Content writing and copywriting for captions, hooks, scripts, and ad creatives.",
+        "Meta Business Suite, Buffer, Hootsuite, or similar tools for scheduling and publishing.",
+        "Canva or basic design tools to create quick creatives, thumbnails, and carousels.",
+        "Basic analytics: Meta Insights, LinkedIn Analytics, Google Analytics, and campaign reports.",
+        "SEO basics, hashtag strategy, keyword research, and content optimization.",
+        "Paid ads fundamentals: audience, budget, creatives, CTR, leads, and retargeting.",
+      ],
+      softSkills: [
+        "Creativity and trend awareness for fresh content ideas.",
+        "Communication and brand voice understanding.",
+        "Time management across multiple platforms, deadlines, and campaigns.",
+        "Customer empathy for comments, DMs, and community management.",
+        "Reporting discipline to explain what worked and what needs improvement.",
+      ],
+    },
+    tech: {
+      hardSkills: [
+        "HTML, CSS, JavaScript, responsive layouts, browser debugging, and accessibility basics.",
+        "React components, state management, routing, forms, and reusable UI patterns.",
+        "Backend APIs with Node/Python, authentication, validation, and error handling.",
+        "Databases such as MongoDB or SQL with schema design, queries, and relationships.",
+        "Git, GitHub, deployment, environment variables, logs, and production debugging.",
+        "Testing, performance optimization, security basics, and clean code practices.",
+      ],
+      softSkills: [
+        "Problem solving and patience while debugging.",
+        "Clear communication with design/product/client teams.",
+        "Consistency in daily coding practice.",
+        "Ability to read documentation and learn independently.",
+        "Ownership of quality, deadlines, and deployed output.",
+      ],
+    },
+    data: {
+      hardSkills: [
+        "Advanced Excel: pivots, formulas, lookup logic, dashboards, and MIS reporting.",
+        "SQL: joins, grouping, filtering, subqueries, and business-focused queries.",
+        "Power BI or Tableau dashboarding with KPIs, filters, and data storytelling.",
+        "Basic statistics: averages, trends, outliers, correlation, and hypothesis thinking.",
+        "Python with Pandas for cleaning, analysis, and repeatable notebooks.",
+        "Business problem framing: convert raw data into decisions and next steps.",
+      ],
+      softSkills: [
+        "Attention to detail and data accuracy.",
+        "Business curiosity and questioning mindset.",
+        "Clear explanation for non-technical stakeholders.",
+        "Patience with messy data and repeated revisions.",
+        "Structured reporting and deadline discipline.",
+      ],
+    },
+    design: {
+      hardSkills: [
+        "Figma layouts, components, auto-layout, variants, and clickable prototypes.",
+        "Typography, spacing, color theory, visual hierarchy, and responsive design.",
+        "Wireframing, user flows, information architecture, and screen-state planning.",
+        "UX research basics: interviews, surveys, competitor study, and usability feedback.",
+        "Design systems, icons, buttons, form states, cards, and reusable UI patterns.",
+        "Portfolio case-study writing with problem, process, decisions, and outcome.",
+      ],
+      softSkills: [
+        "User empathy and product thinking.",
+        "Visual taste and attention to polish.",
+        "Communication with developers and clients.",
+        "Feedback handling without becoming defensive.",
+        "Consistency in practice and iteration.",
+      ],
+    },
+  };
+  return presets[field] || {
+    hardSkills: roleSpecificFallbacks(career?.title || "this role").skills.map((skill) => `${skill}: learn the basics and practice with real assignments.`),
+    softSkills: ["Communication", "Problem solving", "Consistency", "Time management", "Professional discipline"],
+  };
+}
+
+function detailedGettingStarted(career) {
+  const title = career?.title || "this career";
+  const field = detectField(career);
+  const presets = {
+    marketing: [
+      { title: "Learn the basics", body: "Join a practical digital marketing or social media course. Learn platform fundamentals, content strategy, ad basics, analytics, and reporting." },
+      { title: "Pick 1-2 platforms and go deep", body: "Instagram plus LinkedIn is a strong beginner combo. Understand formats, algorithms, content hooks, and what makes people engage." },
+      { title: "Practice on your own profile", body: "Treat your own Instagram or LinkedIn as a project. Try content ideas, check reach, and document learnings." },
+      { title: "Build a small portfolio", body: "Save screenshots of posts, growth metrics, calendars, campaign reports, and before-after examples." },
+      { title: "Apply for internships or freelance gigs", body: "Use Internshala, LinkedIn, Naukri, and local business outreach. Even a small internship counts as real experience." },
+    ],
+    tech: [
+      { title: "Build coding foundation", body: "Start with HTML, CSS, JavaScript, Git, and one framework like React. Practice daily instead of only watching tutorials." },
+      { title: "Create 3 small projects", body: "Build a portfolio site, CRUD app, and dashboard/login app. Deploy every project and keep GitHub clean." },
+      { title: "Learn backend and database basics", body: "Understand APIs, authentication, MongoDB/SQL, validation, and how frontend talks to backend." },
+      { title: "Practice debugging and interviews", body: "Solve JavaScript questions, explain your projects, read logs, and fix real errors." },
+      { title: "Apply with proof", body: "Send GitHub, live demo links, and a short explanation of what you built and what problem it solves." },
+    ],
+    data: [
+      { title: "Master Excel first", body: "Learn pivots, formulas, charts, lookup logic, and dashboard basics. Excel is still tested in many fresher analyst roles." },
+      { title: "Add SQL and dashboarding", body: "Practice SQL joins, grouping, filtering, and build dashboards in Power BI or Tableau." },
+      { title: "Create business case studies", body: "Use sales, customer, finance, or operations data and write clear insights, not just charts." },
+      { title: "Build a portfolio", body: "Publish dashboard screenshots, GitHub notebooks, project summaries, and key business recommendations." },
+      { title: "Apply to MIS/Data roles", body: "Search MIS Analyst, Data Analyst Intern, BI Intern, and Operations Analyst with 0-1 year filters." },
+    ],
+    design: [
+      { title: "Learn design fundamentals", body: "Study spacing, typography, color, layout, visual hierarchy, and mobile-first UI rules." },
+      { title: "Practice Figma deeply", body: "Learn components, auto-layout, variants, prototypes, responsive frames, and design systems." },
+      { title: "Redesign real screens", body: "Pick existing apps/websites and create better versions with reasoning, not just decoration." },
+      { title: "Write case studies", body: "Show problem, users, constraints, process, design decisions, and final screens." },
+      { title: "Apply with portfolio", body: "Send 3 polished case studies and be ready to explain your design choices in interviews." },
+    ],
+  };
+  return presets[field] || [
+    { title: "Understand the role", body: `Learn what ${title} professionals actually do daily and what employers expect from freshers.` },
+    { title: "Learn core skills", body: "Pick a focused course or roadmap and practice the exact tools used in entry-level work." },
+    { title: "Build proof", body: "Create assignments, projects, case studies, or samples that show you can do practical work." },
+    { title: "Prepare profile", body: "Update resume, LinkedIn, portfolio, and interview answers with role-specific examples." },
+    { title: "Apply consistently", body: "Track jobs, follow up, improve based on rejections, and keep adding better proof." },
+  ];
+}
+
+function detailedTools(career, baseTools) {
+  const field = detectField(career);
+  const curated = {
+    marketing: [
+      { name: "Meta Business Suite", use: "Schedule posts, manage pages, run ads, reply to comments, and track campaign performance." },
+      { name: "Canva", use: "Create carousels, thumbnails, ad creatives, stories, and simple brand templates without heavy design software." },
+      { name: "Google Analytics", use: "Understand traffic sources, user behavior, landing page results, and campaign conversions." },
+      { name: "Buffer / Hootsuite", use: "Plan multi-platform calendars, schedule content, and manage reporting across accounts." },
+      { name: "ChatGPT", use: "Generate content ideas, hooks, captions, ad variations, reports, and campaign briefs faster." },
+      { name: "Google Sheets", use: "Track content calendars, leads, campaign metrics, experiments, and monthly performance reports." },
+    ],
+    tech: [
+      { name: "VS Code / Cursor", use: "Write code, debug files, use AI assistance, and manage project structure efficiently." },
+      { name: "GitHub", use: "Store code, show portfolio proof, collaborate through branches, and share projects with recruiters." },
+      { name: "Postman", use: "Test APIs, inspect requests/responses, debug auth issues, and document endpoints." },
+      { name: "MongoDB / PostgreSQL", use: "Store app data, design schemas, query records, and connect backend logic to real databases." },
+      { name: "Vercel / Render / AWS", use: "Deploy live projects so recruiters can test your work instead of only reading code." },
+      { name: "ChatGPT / Claude", use: "Debug errors, understand docs, generate test cases, and review code quality." },
+    ],
+    data: [
+      { name: "Microsoft Excel", use: "Clean data, build MIS reports, pivot tables, formulas, charts, and quick business summaries." },
+      { name: "SQL", use: "Pull, join, filter, and summarize data from company databases." },
+      { name: "Power BI", use: "Create dashboards, KPIs, filters, and recurring business reports." },
+      { name: "Python + Pandas", use: "Clean larger datasets, automate analysis, and create repeatable notebooks." },
+      { name: "Tableau", use: "Build visual dashboards and present insights for stakeholders." },
+      { name: "ChatGPT / Claude", use: "Explain formulas, debug SQL, draft insights, and structure reports." },
+    ],
+    design: [
+      { name: "Figma", use: "Create UI screens, components, prototypes, design systems, and handoff files." },
+      { name: "FigJam / Miro", use: "Map user journeys, flows, brainstorming, and UX research notes." },
+      { name: "Adobe Photoshop", use: "Edit images, mockups, banners, and visual assets for polished presentations." },
+      { name: "Canva", use: "Quick social creatives, presentation layouts, and basic brand assets." },
+      { name: "Maze / Useberry", use: "Run simple usability tests and collect feedback on designs." },
+      { name: "ChatGPT", use: "Draft case studies, UX copy, interview questions, and design rationale." },
+    ],
+  };
+  if (curated[field]) return curated[field];
+  return (baseTools || []).slice(0, 6).map((tool) => ({
+    name: tool.name,
+    use: tool.use || tool.usedFor || tool.category || "Use this to improve speed, quality, and daily role workflow.",
+  }));
+}
+
 function detailedSalaryPath(career, jobs) {
   const title = career?.title || "Career";
   const field = detectField(career);
@@ -811,6 +1025,7 @@ function buildDefaultRoleSections(career, computed, fitRows) {
   const tools = (computed.aiTools || []).slice(0, 5).map((tool) => ({ name: tool.name, use: tool.usedFor || tool.bestFor || "Role workflow" }));
   const jobs = (computed.jobs || []).slice(0, 4);
   const employerGuide = detailedEmployerGuide(career);
+  const skillGroups = detailedSkillGroups(career);
   return [
     {
       num: 1,
@@ -820,13 +1035,13 @@ function buildDefaultRoleSections(career, computed, fitRows) {
       items: specific.tasks,
     },
     { num: 2, title: "Is this job for me?", type: "fitTable", rows: fitRows },
-    { num: 3, title: "Day-to-Day Tasks", type: "list", items: specific.tasks },
+    { num: 3, title: "Day-to-Day Tasks", type: "list", items: detailedDayTasks(career), cardList: true },
     {
       num: 4,
       title: "Skills You Need to Learn",
       type: "skills",
-      hardSkills: computed.skillStages?.flatMap((s) => s.items).slice(0, 6) || specific.skills,
-      softSkills: ["Communication", "Problem solving", "Consistency", "Time management"],
+      hardSkills: skillGroups.hardSkills,
+      softSkills: skillGroups.softSkills,
     },
     {
       num: 5,
@@ -842,7 +1057,12 @@ function buildDefaultRoleSections(career, computed, fitRows) {
       num: 6,
       title: "How to Get Started",
       type: "steps",
-      steps: computed.courseMonths?.slice(0, 4).map((m) => ({ title: `${m.month}: ${m.title}`, body: (m.items || []).join(", ") })) || [],
+      steps: detailedGettingStarted(career),
+      courses: (specific.courses || []).slice(0, 3).map((course, index) => ({
+        mode: "Classroom",
+        title: course,
+        detail: index === 0 ? "3-6 months" : index === 1 ? "1-3 months" : "6-12 months",
+      })),
     },
     {
       num: 7,
@@ -850,7 +1070,7 @@ function buildDefaultRoleSections(career, computed, fitRows) {
       type: "institutes",
       items: [`Search ${title} institutes near your city`, "Compare reviews, trainer quality, practical assignments, and placement support", "Ask for demo class, project work, fees, and refund rules before paying"],
     },
-    { num: 8, title: "Tools Used in This Role", type: "tools", tools },
+    { num: 8, title: "Tools Used in This Role", type: "tools", tools: detailedTools(career, tools) },
     {
       num: 9,
       title: "Career Path & Salary Expectations",
@@ -887,7 +1107,7 @@ function normalizeRoleReportSections(career, computed) {
     return defaultSections
       .map((fallback) => {
         const existing = byNum.get(fallback.num);
-        if (!existing || [2, 9, 10, 11].includes(fallback.num) || isWeakRoleSection(existing, career?.title)) return fallback;
+        if (!existing || [2, 3, 4, 6, 8, 9, 10, 11].includes(fallback.num) || isWeakRoleSection(existing, career?.title)) return fallback;
         return { ...fallback, ...existing, title: fallback.title, type: fallback.type };
       })
       .sort((a, b) => (a.num || 99) - (b.num || 99));
@@ -930,12 +1150,16 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
     }
     if (section.type === "skills") {
       return (
-        <div className="grid gap-3 sm:grid-cols-2">
-          {[["Hard skills", section.hardSkills], ["Soft skills", section.softSkills]].map(([label, list]) => (
-            <div key={label} className="rounded-xl border border-line bg-[#FAFAFE] p-3">
-              <p className="text-[11px] font-black uppercase tracking-wide text-brand">{label}</p>
-              <div className="mt-2 flex flex-wrap gap-1.5">
-                {(list || []).map((skill) => <span key={skill} className="rounded-full bg-white border border-line px-2.5 py-1 text-[12px] font-semibold text-ink">{skill}</span>)}
+        <div className="space-y-4 sm:grid sm:grid-cols-2 sm:gap-4 sm:space-y-0">
+          {[["Hard skills", section.hardSkills, "text-brand"], ["Soft skills", section.softSkills, "text-amber-600"]].map(([label, list, color]) => (
+            <div key={label} className="rounded-2xl border border-[#DCD4F3] bg-[#F8F4FF] p-4">
+              <p className={`font-heading text-sm font-black uppercase tracking-widest ${color}`}>{label}</p>
+              <div className="mt-3 border-t border-[#DCD4F3] pt-3 space-y-2">
+                {(list || []).map((skill) => (
+                  <div key={skill} className="rounded-xl border border-line bg-white px-3 py-3 text-sm font-semibold leading-relaxed text-muted2">
+                    {skill}
+                  </div>
+                ))}
               </div>
             </div>
           ))}
@@ -957,16 +1181,33 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
     if (section.type === "steps") {
       const steps = section.steps || [];
       return (
-        <div className="space-y-3">
-          {steps.map((step, index) => (
-            <div key={`${step.title || step.role}-${index}`} className="flex gap-3">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-black text-white">{index + 1}</span>
-              <div>
-                <p className="font-heading text-sm font-black text-ink">{step.title || step.role}</p>
-                <p className="text-[12.5px] text-muted2 leading-relaxed">{step.body || `${step.years || ""}${step.salary ? ` - ${step.salary}` : ""}`}</p>
+        <div className="space-y-5">
+          <div className="relative pl-10">
+            <div className="absolute left-4 top-8 bottom-8 w-px bg-[#DCD4F3]" />
+            <div className="space-y-8">
+              {steps.map((step, index) => (
+                <div key={`${step.title || step.role}-${index}`} className="relative">
+                  <span className="absolute -left-10 top-0 flex h-9 w-9 items-center justify-center rounded-full bg-brand font-heading text-sm font-black text-white">{index + 1}</span>
+                  <p className="font-heading text-base font-black text-ink">{step.title || step.role}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-muted2">{step.body || `${step.years || ""}${step.salary ? ` - ${step.salary}` : ""}`}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          {section.courses?.length > 0 && (
+            <div className="border-t border-dashed border-[#DCD4F3] pt-5">
+              <p className="font-heading text-sm font-black uppercase tracking-widest text-brand">Courses to explore (offline / classroom)</p>
+              <div className="mt-3 space-y-3">
+                {section.courses.map((course) => (
+                  <div key={course.title} className="rounded-2xl bg-[#120B3D] p-4 text-center">
+                    <p className="text-[11px] font-black uppercase tracking-widest text-yellow-300">{course.mode}</p>
+                    <p className="mt-2 font-heading text-base font-black text-white">{course.title}</p>
+                    <p className="mt-1 text-sm font-semibold text-white/60">{course.detail}</p>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+          )}
         </div>
       );
     }
@@ -1012,11 +1253,14 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
     }
     if (section.type === "tools") {
       return (
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {(section.tools || []).map((tool) => (
-            <div key={tool.name} className="rounded-xl border border-line bg-[#FAFAFE] p-3">
-              <p className="font-heading text-sm font-black text-ink">{tool.name}</p>
-              <p className="mt-1 text-[12px] text-muted2">{tool.use || tool.category || tool.description}</p>
+            <div key={tool.name} className="rounded-2xl border border-line bg-[#FAFAFE] p-4">
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#F0EBFF] text-brand">
+                <Bot size={18} />
+              </div>
+              <p className="font-heading text-base font-black text-ink">{tool.name}</p>
+              <p className="mt-2 text-sm leading-relaxed text-muted2">{tool.use || tool.category || tool.description}</p>
             </div>
           ))}
         </div>
@@ -1090,8 +1334,13 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
       <div>
         {section.summary && <p className="text-sm text-muted2 leading-relaxed">{section.summary}</p>}
         {items.length > 0 && (
-          <ul className="mt-3 space-y-2">
-            {items.map((item) => <li key={item} className="flex items-start gap-2 text-[13px] text-ink"><span className="mt-1 text-brand">-&gt;</span>{item}</li>)}
+          <ul className={`mt-3 ${section.cardList ? "space-y-3" : "space-y-2"}`}>
+            {items.map((item) => (
+              <li key={item} className={section.cardList ? "flex items-start gap-3 rounded-xl bg-[#F6F1FF] px-4 py-4 text-sm leading-relaxed text-muted2" : "flex items-start gap-2 text-[13px] text-ink"}>
+                <span className="mt-0.5 shrink-0 text-lg font-black text-brand">→</span>
+                <span>{item}</span>
+              </li>
+            ))}
           </ul>
         )}
       </div>
