@@ -12,7 +12,7 @@ import httpx
 from fastapi import APIRouter, Depends, HTTPException, Request, Query
 from pydantic import BaseModel
 
-from auth_routes import current_user
+from auth_routes import current_user, _resolve_user
 from career_catalog import ALLOWED_CAREER_SLUGS, DYNAMIC_CAREERS, FIELD_META, slugify
 from llm_client import ask_claude, extract_json
 from subscription_utils import consume_feature, ensure_feature_available
@@ -42,6 +42,21 @@ GOOGLE_DETAILS_FIELDS = ",".join(
         "currentOpeningHours",
     ]
 )
+
+
+async def optional_current_user(request: Request):
+    try:
+        return await _resolve_user(
+            request,
+            request.cookies.get("session_token"),
+            request.headers.get("authorization"),
+        )
+    except HTTPException as exc:
+        if exc.status_code == 401:
+            return None
+        raise
+
+
 CAREER_DETAILS_TTL_DAYS = 90
 CAREER_DETAILS_PROMPT_VERSION = "career-details-full-report-v9-2026-06-03"
 
@@ -1190,8 +1205,9 @@ async def list_colleges(
 
 
 @router.post("/colleges/search")
-async def search_colleges_from_web(payload: CollegeSearchRequest, request: Request, user=Depends(current_user)):
-    ensure_feature_available(user, "institute_search")
+async def search_colleges_from_web(payload: CollegeSearchRequest, request: Request, user=Depends(optional_current_user)):
+    if user:
+        ensure_feature_available(user, "institute_search")
     location = payload.location.strip()
     if len(location) < 2:
         raise HTTPException(400, "Enter a valid location.")
@@ -1219,7 +1235,8 @@ async def search_colleges_from_web(payload: CollegeSearchRequest, request: Reque
 
     if cache:
         cached_results = await _supplement_college_results(request, cache.get("results", []), cache.get("searchedLocation") or location, course, 10)
-        await consume_feature(request, user, "institute_search")
+        if user:
+            await consume_feature(request, user, "institute_search")
         return {
             "location": cache.get("searchedLocation") or location,
             "course": course,
@@ -1379,7 +1396,8 @@ googleMapsLink (construct as https://maps.google.com/?q={{name}}+{{address}})
         },
         upsert=True,
     )
-    await consume_feature(request, user, "institute_search")
+    if user:
+        await consume_feature(request, user, "institute_search")
     return {
         "location": location,
         "course": course,

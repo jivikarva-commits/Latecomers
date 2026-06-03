@@ -4,6 +4,7 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 import Logo from "./Logo";
 import { useAuth } from "../context/AuthContext";
 import { CAREER_CATEGORIES } from "../data/careerCategories";
+import { openCareerReportByTitle } from "../lib/careerNavigation";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -16,14 +17,11 @@ const navItems = [
   { to: "/contact", label: "Contact" },
 ];
 
-function roleHref(role) {
-  return `/careers-explore?search=${encodeURIComponent(role)}`;
-}
-
 function CategoryNav() {
   const [openKey, setOpenKey] = useState(null);
   const containerRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const closeTimer = useRef(null);
 
   // Close on route change
@@ -110,13 +108,16 @@ function CategoryNav() {
                       <ul className="space-y-1.5">
                         {sub.roles.map((role) => (
                           <li key={role}>
-                            <Link
-                              to={roleHref(role)}
-                              className="block text-[12px] text-muted2 hover:text-brand transition truncate"
-                              onClick={() => setOpenKey(null)}
+                            <button
+                              type="button"
+                              className="block w-full truncate text-left text-[12px] text-muted2 hover:text-brand transition"
+                              onClick={() => {
+                                setOpenKey(null);
+                                openCareerReportByTitle(role, navigate);
+                              }}
                             >
                               {role}
-                            </Link>
+                            </button>
                           </li>
                         ))}
                       </ul>

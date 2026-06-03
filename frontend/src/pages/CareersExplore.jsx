@@ -1,13 +1,15 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowRight, Briefcase, Search, X } from "lucide-react";
 import PublicShell from "../components/PublicShell";
 import { api } from "../lib/api";
 import SEO from "../components/SEO";
 import { breadcrumbSchema, itemListSchema } from "../lib/seoSchemas";
 import { CAREER_CATEGORIES } from "../data/careerCategories";
+import { openCareerReportByTitle } from "../lib/careerNavigation";
 
 export default function CareersExplore() {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const fieldKey = searchParams.get("field");
   const initialSearch = searchParams.get("search") || "";
@@ -124,10 +126,11 @@ export default function CareersExplore() {
                   <h3 className="font-heading font-black text-sm sm:text-base text-ink mb-3">{sub.title}</h3>
                   <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4">
                     {subRoles.map((role) => (
-                      <Link
+                      <button
                         key={role}
-                        to={`/careers-explore?search=${encodeURIComponent(role)}`}
-                        className="surface-gradient border border-line rounded-xl sm:rounded-2xl p-3 sm:p-4 hover:shadow-soft transition"
+                        type="button"
+                        onClick={() => openCareerReportByTitle(role, navigate)}
+                        className="surface-gradient border border-line rounded-xl sm:rounded-2xl p-3 sm:p-4 hover:shadow-soft transition text-left"
                       >
                         <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-brand-50 text-brand flex items-center justify-center">
                           <Briefcase size={16} />
@@ -137,7 +140,7 @@ export default function CareersExplore() {
                         <div className="mt-2 sm:mt-3 flex items-center justify-end text-[11px] sm:text-xs">
                           <span className="inline-flex items-center gap-1 text-brand font-semibold">View <ArrowRight size={12} /></span>
                         </div>
-                      </Link>
+                      </button>
                     ))}
                   </div>
                 </div>

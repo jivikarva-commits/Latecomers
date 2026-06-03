@@ -16,6 +16,7 @@ import PublicShell from "../components/PublicShell";
 import { useAuth } from "../context/AuthContext";
 import SEO from "../components/SEO";
 import { faqSchema, organizationSchema, softwareAppSchema, websiteSchema } from "../lib/seoSchemas";
+import { openCareerReportByTitle } from "../lib/careerNavigation";
 
 const stats = [
   ["12,000+", "Quizzes taken"],
@@ -243,7 +244,7 @@ export default function Landing() {
           <SectionHeading eyebrow="Career tracks" title="40+ paths. Real job titles. No fluff." text="From mainstream tech roles to hidden-gem careers - we map paths that match your actual background, not just your dream." light />
           <div className="mt-5 grid gap-2.5 sm:mt-10 sm:gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {careerTracks.map(([title, category, text, tag, Icon]) => (
-              <Link key={title} to="/careers-explore" className="rounded-xl border border-white/12 bg-white/6 p-3.5 sm:rounded-2xl sm:p-5">
+              <button key={title} type="button" onClick={() => openCareerReportByTitle(title, navigate)} className="rounded-xl border border-white/12 bg-white/6 p-3.5 text-left sm:rounded-2xl sm:p-5">
                 <div className="mb-2.5 flex h-8 w-8 items-center justify-center rounded-lg bg-brand-100 text-brand sm:mb-4 sm:h-10 sm:w-10 sm:rounded-xl">
                   <Icon size={17} />
                 </div>
@@ -251,7 +252,7 @@ export default function Landing() {
                 <h3 className="mt-1 font-heading text-[13px] font-black text-white sm:mt-1.5 sm:text-base">{title}</h3>
                 <p className="mt-1 text-[12px] leading-relaxed text-white/62 sm:mt-1.5 sm:min-h-[56px] sm:text-sm">{text}</p>
                 <span className="mt-2.5 inline-flex rounded-full bg-white/10 px-2 py-0.5 text-[9px] font-black uppercase text-yellow-200 sm:mt-3 sm:px-2.5 sm:py-1 sm:text-[10px]">{tag}</span>
-              </Link>
+              </button>
             ))}
           </div>
         </div>

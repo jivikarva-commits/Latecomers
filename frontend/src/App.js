@@ -49,6 +49,9 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/for-institutes" element={<ForInstitutes />} />
             <Route path="/onboarding/payment" element={<Pricing />} />
+            <Route path="/careers/:slug" element={<CareerReportPage />} />
+            <Route path="/colleges" element={<Colleges />} />
+            <Route path="/institutes" element={<Colleges />} />
 
             <Route path="/profile-setup" element={<ProtectedRoute><ProfileSetup /></ProtectedRoute>} />
 
@@ -61,11 +64,8 @@ function App() {
               <Route path="/career-test/questions" element={<CareerTestQuestions />} />
               <Route path="/career-test/results" element={<CareerTestResults />} />
               <Route path="/careers" element={<Careers />} />
-              <Route path="/careers/:slug" element={<CareerReportPage />} />
               <Route path="/careers-legacy/:slug" element={<CareerDetail />} />
               <Route path="/roadmap" element={<Roadmap />} />
-              <Route path="/colleges" element={<Colleges />} />
-              <Route path="/institutes" element={<Colleges />} />
               <Route path="/scholarships" element={<Scholarships />} />
               <Route path="/mock-interview" element={<MockInterview />} />
               <Route path="/ai-chat" element={<AIChat />} />
