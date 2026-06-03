@@ -1287,18 +1287,11 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
           <div className="space-y-4 sm:space-y-6">
 
         <div className="rounded-2xl border border-line bg-[#EEE9F8] p-3 sm:p-4">
-          <div className="mb-3 px-1">
-            <p className="text-[10px] font-black uppercase tracking-widest text-brand">AI Career Guide</p>
-            <h2 className="font-heading text-lg sm:text-2xl font-black text-ink">
-              {career?.roleReport?.headline || career?.title} report
-            </h2>
-            {(career?.roleReport?.summary || career?.overview) && (
-              <p className="mt-1 text-sm text-muted2 leading-relaxed">{career?.roleReport?.summary || career?.overview}</p>
-            )}
-          </div>
           <RoleReportAccordion career={career} sections={roleReportSections} onFindInstitutes={openInstituteFinder} />
         </div>
 
+        {false && (
+          <>
         {/* 1. Education */}
         <SectionShell type="education">
           <p className="text-sm text-muted2 mb-4">You can become a <span className="font-bold text-ink">{career?.title}</span> through different education paths. Choose what suits you best.</p>
@@ -1451,6 +1444,8 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
             ))}
           </div>
         </SectionShell>
+          </>
+        )}
 
           </div>
         )}
