@@ -43,7 +43,7 @@ GOOGLE_DETAILS_FIELDS = ",".join(
     ]
 )
 CAREER_DETAILS_TTL_DAYS = 90
-CAREER_DETAILS_PROMPT_VERSION = "career-details-full-report-v7-2026-06-03"
+CAREER_DETAILS_PROMPT_VERSION = "career-details-full-report-v8-2026-06-03"
 
 
 def db(request: Request):
@@ -695,7 +695,7 @@ JSON shape:
   "overview": {{"description": "70 words about {title} in India", "whyChooseThis": "why choose it", "indianMarketDemand": "India demand", "globalScope": "global scope", "typicalDay": "typical day", "whyGreatFit": ["reason1","reason2"], "workAreas": [{{"title": "area", "icon": "briefcase"}}]}},
   "roleReport": {{"heroTag": "career track", "headline": "{title}", "summary": "short practical role snapshot", "pills": ["skill level","job style","salary note"], "sections": [
     {{"num": 1, "title": "What is this role?", "type": "text", "summary": "plain explanation", "items": ["key point","key point","key point"]}},
-    {{"num": 2, "title": "Is this job for me?", "type": "fitTable", "rows": [{{"label": "Good for", "value": "specific student/personality"}}, {{"label": "Not ideal if", "value": "specific caution"}}, {{"label": "Best background", "value": "specific background"}}]}},
+    {{"num": 2, "title": "Is this job for me?", "type": "fitTable", "rows": [{{"label": "12th Pass", "value": "Yes/No/Helpful"}}, {{"label": "Any Graduate", "value": "Yes/No/Helpful"}}, {{"label": "BPO / Back-office experience", "value": "Big advantage/Helpful/Not required"}}, {{"label": "English fluency needed", "value": "Basic is enough/Good English helps/Strong English needed"}}, {{"label": "Prior experience needed", "value": "No/Helpful/Yes"}}, {{"label": "Degree mandatory", "value": "No/Yes/Preferred"}}, {{"label": "Age limit", "value": "None/Usually 18+"}}, {{"label": "Coding required", "value": "No/Basic/Yes"}}]}},
     {{"num": 3, "title": "Day-to-Day Tasks", "type": "list", "items": ["task","task","task","task"]}},
     {{"num": 4, "title": "Skills You Need to Learn", "type": "skills", "hardSkills": ["skill","skill","skill"], "softSkills": ["skill","skill","skill"]}},
     {{"num": 5, "title": "Who Is This Role For?", "type": "cards", "cards": [{{"title": "profile", "body": "why fit"}}, {{"title": "profile", "body": "why fit"}}]}},
@@ -751,7 +751,21 @@ def _fallback_ai_details(career_title: str) -> Dict:
             "pills": ["Beginner friendly", "Portfolio matters", "India-focused"],
             "sections": [
                 {"num": 1, "title": "What is this role?", "type": "text", "summary": f"{clean_title} professionals solve real business or customer problems using domain skills, practical tools, and clear communication.", "items": [f"Understand the day-to-day work of {clean_title}", "Build proof through projects or practice", "Apply for entry-level roles with a focused profile"]},
-                {"num": 2, "title": "Is this job for me?", "type": "fitTable", "rows": [{"label": "Good for", "value": "Students who like structured learning and practical work"}, {"label": "Not ideal if", "value": "You do not want to practice consistently"}, {"label": "Best background", "value": "Freshers, graduates, and career switchers"}]},
+                {
+                    "num": 2,
+                    "title": "Is this job for me?",
+                    "type": "fitTable",
+                    "rows": [
+                        {"label": "12th Pass", "value": "Yes"},
+                        {"label": "Any Graduate", "value": "Yes"},
+                        {"label": "BPO / Back-office experience", "value": "Big advantage"},
+                        {"label": "English fluency needed", "value": "Basic is enough"},
+                        {"label": "Prior experience needed", "value": "No"},
+                        {"label": "Degree mandatory", "value": "No"},
+                        {"label": "Age limit", "value": "None"},
+                        {"label": "Coding required", "value": "No"},
+                    ],
+                },
                 {"num": 3, "title": "Day-to-Day Tasks", "type": "list", "items": ["Research requirements", "Complete practical tasks", "Coordinate with team members", "Improve work based on feedback"]},
                 {"num": 4, "title": "Skills You Need to Learn", "type": "skills", "hardSkills": [f"{clean_title} fundamentals", "Digital tools", "Portfolio building"], "softSkills": ["Communication", "Discipline", "Problem solving"]},
                 {"num": 5, "title": "Who Is This Role For?", "type": "cards", "cards": [{"title": "Freshers", "body": "Good if you want a clear first career direction."}, {"title": "Career Switchers", "body": "Useful if your past experience can become a strength."}]},

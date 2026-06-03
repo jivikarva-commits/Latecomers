@@ -562,16 +562,33 @@ function normalizeRoleReportSections(career, computed) {
 }
 
 function RoleReportAccordion({ career, sections, onFindInstitutes }) {
-  const [open, setOpen] = useState(0);
+  const [open, setOpen] = useState(() => Math.max(0, (sections || []).findIndex((section) => section.num === 2)));
+  const fitBadgeClass = (value = "") => {
+    const text = String(value).toLowerCase();
+    if (/advantage|star|big/.test(text)) return "bg-amber-50 text-amber-700";
+    if (/basic|enough|helpful/.test(text)) return "bg-brand-50 text-brand";
+    if (/no|none|yes/.test(text)) return "bg-emerald-50 text-emerald-700";
+    return "bg-brand-50 text-brand";
+  };
+  const fitBadgeText = (value = "") => {
+    const text = String(value).trim();
+    if (/^yes$/i.test(text)) return "☑ Yes";
+    if (/advantage/i.test(text)) return "★ " + text;
+    return text;
+  };
   const renderSection = (section) => {
     const items = section.items || [];
     if (section.type === "fitTable") {
       return (
-        <div className="overflow-hidden rounded-xl border border-line">
+        <div className="border-t border-line">
           {(section.rows || []).map((row, index) => (
-            <div key={`${row.label}-${index}`} className="grid grid-cols-[0.9fr_1.1fr] gap-3 border-b border-line last:border-b-0 px-3 py-2.5 text-[12.5px] sm:text-sm">
-              <span className="font-bold text-muted2">{row.label}</span>
-              <span className="font-semibold text-ink">{row.value}</span>
+            <div key={`${row.label}-${index}`} className="grid grid-cols-[1.25fr_1fr] gap-3 border-b border-line last:border-b-0 px-3 sm:px-4 py-3.5 text-[13px] sm:text-sm">
+              <span className="font-bold text-[#2B255F]">{row.label}</span>
+              <span>
+                <span className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-black ${fitBadgeClass(row.value)}`}>
+                  {fitBadgeText(row.value)}
+                </span>
+              </span>
             </div>
           ))}
         </div>
@@ -680,17 +697,19 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3.5">
       {(sections || []).map((section, index) => {
         const isOpen = open === index;
         return (
-          <div key={`${section.num}-${section.title}`} className="overflow-hidden rounded-2xl border border-line bg-white">
-            <button type="button" onClick={() => setOpen(isOpen ? -1 : index)} className="flex w-full items-center gap-3 px-4 py-4 text-left sm:px-5">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-sm font-black text-brand">{section.num}</span>
+          <div key={`${section.num}-${section.title}`} className="overflow-hidden rounded-2xl border border-[#DCD4F3] bg-white">
+            <button type="button" onClick={() => setOpen(isOpen ? -1 : index)} className="flex w-full items-center gap-3 px-4 py-4 text-left sm:px-5 sm:py-5">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F0EBFF] text-sm font-black text-brand">{section.num}</span>
               <span className="min-w-0 flex-1 font-heading text-sm sm:text-base font-black text-ink">{section.title}</span>
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-brand/25 text-brand">{isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}</span>
+              <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition ${isOpen ? "border-brand bg-brand text-white" : "border-[#D6C9F5] text-[#8278B6]"}`}>
+                {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              </span>
             </button>
-            {isOpen && <div className="border-t border-line px-4 py-4 sm:px-5">{renderSection(section)}</div>}
+            {isOpen && <div className="px-4 pb-4 sm:px-5 sm:pb-5">{renderSection(section)}</div>}
           </div>
         );
       })}
