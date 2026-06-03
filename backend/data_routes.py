@@ -43,7 +43,7 @@ GOOGLE_DETAILS_FIELDS = ",".join(
     ]
 )
 CAREER_DETAILS_TTL_DAYS = 90
-CAREER_DETAILS_PROMPT_VERSION = "career-details-rich-courses-v6-2026-05-27"
+CAREER_DETAILS_PROMPT_VERSION = "career-details-full-report-v7-2026-06-03"
 
 
 def db(request: Request):
@@ -639,6 +639,7 @@ def _merge_ai_details(career: Dict) -> Dict:
     item["roadmapTotalDuration"] = roadmap.get("totalDuration")
     item["jobs"] = _flatten_ai_jobs(details) or item.get("jobs", [])
     item["salaryProgression"] = details.get("salaryProgression", [])
+    item["roleReport"] = details.get("roleReport") or {}
     top_countries = insights.get("topHiringCountries") or insights.get("topCountries") or (item.get("insights") or {}).get("topCountries")
     if not isinstance(top_countries, list):
         top_countries = [top_countries] if top_countries else []
@@ -683,11 +684,28 @@ Rules:
 - Roadmap must have exactly 6 stages: Education, Skills To Master, Courses, AI Tools, Portfolio & Projects, Placement & Jobs.
 - Each roadmap stage needs exactly 3 concrete items for that exact career.
 - Keep arrays small: 2 skills per skill group, 1 work area, 2 job levels, 3 salary points, 3 AI tools.
+- Also generate roleReport.sections like a practical accordion report similar to a Latecomers career guide.
+- roleReport.sections must have exactly 11 sections with titles:
+  1 "What is this role?", 2 "Is this job for me?", 3 "Day-to-Day Tasks", 4 "Skills You Need to Learn", 5 "Who Is This Role For?", 6 "How to Get Started", 7 "Best Institutes for Learning {title}", 8 "Tools Used in This Role", 9 "Career Path & Salary Expectations", 10 "Where Can I Work & Who Hires Freshers?", 11 "Related Roles in {category}".
+- In roleReport, avoid provider names unless they are tools/employers. Institute section should describe institute/course types, not fake institute names.
 - Return JSON only.
 
 JSON shape:
 {{
   "overview": {{"description": "70 words about {title} in India", "whyChooseThis": "why choose it", "indianMarketDemand": "India demand", "globalScope": "global scope", "typicalDay": "typical day", "whyGreatFit": ["reason1","reason2"], "workAreas": [{{"title": "area", "icon": "briefcase"}}]}},
+  "roleReport": {{"heroTag": "career track", "headline": "{title}", "summary": "short practical role snapshot", "pills": ["skill level","job style","salary note"], "sections": [
+    {{"num": 1, "title": "What is this role?", "type": "text", "summary": "plain explanation", "items": ["key point","key point","key point"]}},
+    {{"num": 2, "title": "Is this job for me?", "type": "fitTable", "rows": [{{"label": "Good for", "value": "specific student/personality"}}, {{"label": "Not ideal if", "value": "specific caution"}}, {{"label": "Best background", "value": "specific background"}}]}},
+    {{"num": 3, "title": "Day-to-Day Tasks", "type": "list", "items": ["task","task","task","task"]}},
+    {{"num": 4, "title": "Skills You Need to Learn", "type": "skills", "hardSkills": ["skill","skill","skill"], "softSkills": ["skill","skill","skill"]}},
+    {{"num": 5, "title": "Who Is This Role For?", "type": "cards", "cards": [{{"title": "profile", "body": "why fit"}}, {{"title": "profile", "body": "why fit"}}]}},
+    {{"num": 6, "title": "How to Get Started", "type": "steps", "steps": [{{"title": "step", "body": "action"}}, {{"title": "step", "body": "action"}}, {{"title": "step", "body": "action"}}]}},
+    {{"num": 7, "title": "Best Institutes for Learning {title}", "type": "institutes", "items": ["what course to search","what to check before joining","what practical training to ask for"]}},
+    {{"num": 8, "title": "Tools Used in This Role", "type": "tools", "tools": [{{"name": "tool", "use": "use case"}}, {{"name": "tool", "use": "use case"}}, {{"name": "tool", "use": "use case"}}]}},
+    {{"num": 9, "title": "Career Path & Salary Expectations", "type": "salaryPath", "steps": [{{"role": "entry role", "years": "0-1", "salary": "Rs X-Y LPA"}}, {{"role": "mid role", "years": "2-4", "salary": "Rs X-Y LPA"}}]}},
+    {{"num": 10, "title": "Where Can I Work & Who Hires Freshers?", "type": "employers", "industries": ["industry","industry","industry"], "companies": ["company","company","company"], "cities": ["city","city","city"]}},
+    {{"num": 11, "title": "Related Roles in {category}", "type": "related", "roles": [{{"title": "role", "category": "{category}"}}, {{"title": "role", "category": "{category}"}}]}}
+  ]}},
   "skills": {{"technical": [{{"name": "skill", "type": "Core", "importance": 95, "description": "short", "priority": "Essential"}}], "analytical": [{{"name": "skill", "type": "Analytical", "importance": 85, "description": "short", "priority": "Essential"}}], "tools": [{{"name": "tool", "type": "Tool", "importance": 80, "description": "short", "priority": "Important"}}], "softSkills": [{{"name": "skill", "type": "Soft Skill", "importance": 75, "description": "short", "priority": "Good to have"}}]}},
   "roadmap": {{"totalDuration": "12 Months", "stages": [
     {{"stageNum": 1, "title": "Education", "duration": "0-2 Months", "description": "education route", "preview": "education route", "skills": ["skill"], "sections": [{{"type": "education", "label": "Education Path", "items": ["concrete education route", "bridge option", "eligibility requirement"]}}], "milestone": "education plan ready"}},
@@ -725,6 +743,25 @@ def _fallback_ai_details(career_title: str) -> Dict:
             "whyChooseThis": f"Choose {clean_title} if you enjoy structured learning, problem solving, and steady skill growth.",
             "indianMarketDemand": "Demand varies by city and specialization, but skilled candidates with practical experience are preferred.",
             "globalScope": "International opportunities are possible after building strong credentials, portfolio work, and domain experience.",
+        },
+        "roleReport": {
+            "heroTag": "Career Track",
+            "headline": clean_title,
+            "summary": f"A practical Latecomers guide for understanding, learning, and applying for {clean_title} roles in India.",
+            "pills": ["Beginner friendly", "Portfolio matters", "India-focused"],
+            "sections": [
+                {"num": 1, "title": "What is this role?", "type": "text", "summary": f"{clean_title} professionals solve real business or customer problems using domain skills, practical tools, and clear communication.", "items": [f"Understand the day-to-day work of {clean_title}", "Build proof through projects or practice", "Apply for entry-level roles with a focused profile"]},
+                {"num": 2, "title": "Is this job for me?", "type": "fitTable", "rows": [{"label": "Good for", "value": "Students who like structured learning and practical work"}, {"label": "Not ideal if", "value": "You do not want to practice consistently"}, {"label": "Best background", "value": "Freshers, graduates, and career switchers"}]},
+                {"num": 3, "title": "Day-to-Day Tasks", "type": "list", "items": ["Research requirements", "Complete practical tasks", "Coordinate with team members", "Improve work based on feedback"]},
+                {"num": 4, "title": "Skills You Need to Learn", "type": "skills", "hardSkills": [f"{clean_title} fundamentals", "Digital tools", "Portfolio building"], "softSkills": ["Communication", "Discipline", "Problem solving"]},
+                {"num": 5, "title": "Who Is This Role For?", "type": "cards", "cards": [{"title": "Freshers", "body": "Good if you want a clear first career direction."}, {"title": "Career Switchers", "body": "Useful if your past experience can become a strength."}]},
+                {"num": 6, "title": "How to Get Started", "type": "steps", "steps": [{"title": "Learn basics", "body": "Start with core concepts and examples."}, {"title": "Practice weekly", "body": "Create small assignments or projects."}, {"title": "Apply with proof", "body": "Use projects, resume, and interview practice."}]},
+                {"num": 7, "title": f"Best Institutes for Learning {clean_title}", "type": "institutes", "items": [f"Search for {clean_title} courses near your city", "Check placement support and practical assignments", "Ask for trainer experience, fees, reviews, and batch size"]},
+                {"num": 8, "title": "Tools Used in This Role", "type": "tools", "tools": [{"name": "ChatGPT", "use": "Research and practice"}, {"name": "Google Workspace", "use": "Documentation"}, {"name": "Canva", "use": "Presentations and visuals"}]},
+                {"num": 9, "title": "Career Path & Salary Expectations", "type": "salaryPath", "steps": [{"role": f"{clean_title} Trainee", "years": "0-1", "salary": "Rs 2.5-5 LPA"}, {"role": f"{clean_title} Associate", "years": "2-4", "salary": "Rs 5-10 LPA"}, {"role": f"Senior {clean_title}", "years": "5+", "salary": "Rs 10-20 LPA"}]},
+                {"num": 10, "title": "Where Can I Work & Who Hires Freshers?", "type": "employers", "industries": ["Startups", "Service companies", "Local businesses"], "companies": ["Small agencies", "Mid-size companies", "Freelance clients"], "cities": ["Mumbai", "Pune", "Bengaluru", "Delhi NCR"]},
+                {"num": 11, "title": "Related Roles", "type": "related", "roles": [{"title": f"Junior {clean_title}", "category": "Entry"}, {"title": f"{clean_title} Associate", "category": "Growth"}, {"title": f"{clean_title} Consultant", "category": "Freelance"}]},
+            ],
         },
         "skills": {
             "technical": [
@@ -927,7 +964,7 @@ def _roadmap_has_bad_items(roadmap: Dict) -> bool:
 
 
 async def _generate_and_cache_career_details(request: Request, career: Dict) -> Dict:
-    prompt = _career_roadmap_prompt(career)
+    prompt = _career_details_prompt(career)
     try:
         details = _fallback_ai_details(career["title"])
         last_error = None
@@ -936,10 +973,11 @@ async def _generate_and_cache_career_details(request: Request, career: Dict) -> 
                 text = await ask_claude(
                     prompt,
                     system_prompt=(
-                        "You generate concise, valid JSON career roadmaps for Indian students. "
-                        "Return only roadmap JSON. No markdown. No paid/free/course prices."
+                        "You generate concise, valid JSON career reports for Indian students. "
+                        "Return only one JSON object. No markdown. No fake institutes. "
+                        "Courses must not include paid/free/prices/platform costs."
                     ),
-                    max_tokens=1800,
+                    max_tokens=5000,
                     json_only=True,
                 )
             except Exception as call_exc:
@@ -952,16 +990,16 @@ async def _generate_and_cache_career_details(request: Request, career: Dict) -> 
                 )
                 continue
             try:
-                roadmap = _strip_course_costs({"roadmap": extract_json(text)})["roadmap"]
+                generated = _strip_course_costs(extract_json(text))
             except Exception as parse_exc:
                 last_error = parse_exc
                 logger.warning(
-                    "Career roadmap JSON parse failed slug=%s attempt=%s: %s",
+                    "Career report JSON parse failed slug=%s attempt=%s: %s",
                     career.get("slug"),
                     attempt,
                     parse_exc,
                 )
-                repair_prompt = f"""Repair this malformed roadmap JSON for career "{career['title']}".
+                repair_prompt = f"""Repair this malformed career report JSON for career "{career['title']}".
 Return ONLY a valid JSON object. Do not add markdown. Preserve career-specific content.
 
 Malformed response:
@@ -969,15 +1007,20 @@ Malformed response:
                 repair_text = await ask_claude(
                     repair_prompt,
                     system_prompt="You repair malformed JSON. Return only valid JSON, no markdown.",
-                    max_tokens=1800,
+                    max_tokens=5000,
                     json_only=True,
                 )
-                roadmap = _strip_course_costs({"roadmap": extract_json(repair_text)})["roadmap"]
+                generated = _strip_course_costs(extract_json(repair_text))
+            roadmap = generated.get("roadmap") or {}
+            role_report = generated.get("roleReport") or {}
             if isinstance(roadmap, dict) and len(roadmap.get("stages") or []) >= 6 and not _roadmap_has_bad_items(roadmap):
+                details.update(generated)
                 details["roadmap"] = roadmap
+                if not isinstance(role_report.get("sections"), list) or len(role_report.get("sections") or []) < 8:
+                    details["roleReport"] = _fallback_ai_details(career["title"])["roleReport"]
                 break
             logger.warning(
-                "Career roadmap response failed quality check slug=%s attempt=%s",
+                "Career report response failed quality check slug=%s attempt=%s",
                 career.get("slug"),
                 attempt,
             )

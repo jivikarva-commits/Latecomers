@@ -6,6 +6,7 @@ import {
   BarChart3,
   Bot,
   Briefcase,
+  Building2,
   CheckCircle2,
   Download,
   Globe,
@@ -13,6 +14,8 @@ import {
   IndianRupee,
   LayoutGrid,
   Lightbulb,
+  MapPin,
+  Navigation,
   RefreshCw,
   Rocket,
   Search,
@@ -306,6 +309,7 @@ const TABS = [
   { id: "report", label: "Report", icon: LayoutGrid },
   { id: "overview", label: "Overview", icon: Sparkles },
   { id: "insights", label: "Insights", icon: BarChart3 },
+  { id: "institutes", label: "Institute", icon: Building2 },
 ];
 
 // --- Field detection + curated insights (industries + AI tools) ---
@@ -529,6 +533,169 @@ function parseCountries(raw) {
     })
     .filter(Boolean);
   return list.length ? list.slice(0, 4) : fallback;
+}
+
+function normalizeRoleReportSections(career, computed) {
+  const sections = career?.roleReport?.sections;
+  if (Array.isArray(sections) && sections.length) {
+    return sections
+      .map((section, index) => ({ ...section, num: section.num || index + 1 }))
+      .sort((a, b) => (a.num || 99) - (b.num || 99));
+  }
+  const title = career?.title || "this role";
+  const category = career?.category || career?.field || "career";
+  const tools = (computed.aiTools || []).slice(0, 5).map((tool) => ({ name: tool.name, use: tool.usedFor || tool.bestFor || "Role workflow" }));
+  const jobs = (computed.jobs || []).slice(0, 4);
+  return [
+    { num: 1, title: "What is this role?", type: "text", summary: career?.overview || career?.description || `${title} is a practical career path in India.`, items: computed.educationPaths?.slice(0, 3).map((p) => p.heading) || [] },
+    { num: 2, title: "Is this job for me?", type: "fitTable", rows: [{ label: "Good for", value: "Students who like practical work and consistent learning" }, { label: "Best background", value: "Freshers, graduates, and career switchers" }, { label: "You will need", value: "Portfolio proof, communication, and discipline" }] },
+    { num: 3, title: "Day-to-Day Tasks", type: "list", items: computed.placement?.resume?.slice(0, 4) || ["Research tasks", "Create work samples", "Coordinate with teams", "Improve from feedback"] },
+    { num: 4, title: "Skills You Need to Learn", type: "skills", hardSkills: computed.skillStages?.flatMap((s) => s.items).slice(0, 5) || [], softSkills: ["Communication", "Problem solving", "Time management"] },
+    { num: 5, title: "Who Is This Role For?", type: "cards", cards: [{ title: "Late starters", body: "You can start with basics and build proof step by step." }, { title: "Job switchers", body: "Your past experience can become a practical advantage." }] },
+    { num: 6, title: "How to Get Started", type: "steps", steps: computed.courseMonths?.slice(0, 4).map((m) => ({ title: `${m.month}: ${m.title}`, body: (m.items || []).join(", ") })) || [] },
+    { num: 7, title: `Best Institutes for Learning ${title}`, type: "institutes", items: [`Search ${title} institutes near your city`, "Compare reviews, trainers, projects, and placement support", "Ask for practical assignments before paying fees"] },
+    { num: 8, title: "Tools Used in This Role", type: "tools", tools },
+    { num: 9, title: "Career Path & Salary Expectations", type: "salaryPath", steps: jobs.map((job) => ({ role: job.title, years: job.level, salary: job.salary })) },
+    { num: 10, title: "Where Can I Work & Who Hires Freshers?", type: "employers", industries: getCuratedIndustries(career, career?.insights?.topIndustries).slice(0, 5), companies: career?.insights?.topCompaniesIndia || [], cities: ["Mumbai", "Pune", "Bengaluru", "Delhi NCR"] },
+    { num: 11, title: `Related Roles in ${category}`, type: "related", roles: jobs.slice(0, 4).map((job) => ({ title: job.title, category })) },
+  ];
+}
+
+function RoleReportAccordion({ career, sections, onFindInstitutes }) {
+  const [open, setOpen] = useState(0);
+  const renderSection = (section) => {
+    const items = section.items || [];
+    if (section.type === "fitTable") {
+      return (
+        <div className="overflow-hidden rounded-xl border border-line">
+          {(section.rows || []).map((row, index) => (
+            <div key={`${row.label}-${index}`} className="grid grid-cols-[0.9fr_1.1fr] gap-3 border-b border-line last:border-b-0 px-3 py-2.5 text-[12.5px] sm:text-sm">
+              <span className="font-bold text-muted2">{row.label}</span>
+              <span className="font-semibold text-ink">{row.value}</span>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    if (section.type === "skills") {
+      return (
+        <div className="grid gap-3 sm:grid-cols-2">
+          {[["Hard skills", section.hardSkills], ["Soft skills", section.softSkills]].map(([label, list]) => (
+            <div key={label} className="rounded-xl border border-line bg-[#FAFAFE] p-3">
+              <p className="text-[11px] font-black uppercase tracking-wide text-brand">{label}</p>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {(list || []).map((skill) => <span key={skill} className="rounded-full bg-white border border-line px-2.5 py-1 text-[12px] font-semibold text-ink">{skill}</span>)}
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    if (section.type === "cards") {
+      return (
+        <div className="grid gap-3 sm:grid-cols-2">
+          {(section.cards || []).map((card) => (
+            <div key={card.title} className="rounded-xl border border-line bg-[#FAFAFE] p-3">
+              <p className="font-heading text-sm font-black text-ink">{card.title}</p>
+              <p className="mt-1 text-[12.5px] text-muted2 leading-relaxed">{card.body}</p>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    if (section.type === "steps" || section.type === "salaryPath") {
+      const steps = section.steps || [];
+      return (
+        <div className="space-y-3">
+          {steps.map((step, index) => (
+            <div key={`${step.title || step.role}-${index}`} className="flex gap-3">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-black text-white">{index + 1}</span>
+              <div>
+                <p className="font-heading text-sm font-black text-ink">{step.title || step.role}</p>
+                <p className="text-[12.5px] text-muted2 leading-relaxed">{step.body || `${step.years || ""}${step.salary ? ` - ${step.salary}` : ""}`}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    if (section.type === "tools") {
+      return (
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {(section.tools || []).map((tool) => (
+            <div key={tool.name} className="rounded-xl border border-line bg-[#FAFAFE] p-3">
+              <p className="font-heading text-sm font-black text-ink">{tool.name}</p>
+              <p className="mt-1 text-[12px] text-muted2">{tool.use || tool.category || tool.description}</p>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    if (section.type === "institutes") {
+      return (
+        <div>
+          <ul className="space-y-2">
+            {items.map((item) => <li key={item} className="flex items-start gap-2 text-[13px] text-ink"><CheckCircle2 size={14} className="mt-0.5 shrink-0 text-emerald-500" />{item}</li>)}
+          </ul>
+          <button onClick={onFindInstitutes} className="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-sm font-bold text-white">
+            <Navigation size={15} /> Find institutes for {career?.title}
+          </button>
+        </div>
+      );
+    }
+    if (section.type === "employers") {
+      return (
+        <div className="grid gap-3 sm:grid-cols-3">
+          {[["Industries", section.industries], ["Companies", section.companies], ["Cities", section.cities]].map(([label, list]) => (
+            <div key={label} className="rounded-xl border border-line bg-[#FAFAFE] p-3">
+              <p className="text-[11px] font-black uppercase tracking-wide text-brand">{label}</p>
+              <div className="mt-2 space-y-1.5">{(list || []).map((value) => <p key={value} className="text-[12.5px] font-semibold text-ink">{value}</p>)}</div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    if (section.type === "related") {
+      return (
+        <div className="grid gap-2 sm:grid-cols-2">
+          {(section.roles || []).map((role) => (
+            <div key={role.title} className="rounded-xl border border-line bg-[#FAFAFE] p-3">
+              <p className="font-heading text-sm font-black text-ink">{role.title}</p>
+              <p className="text-[11px] text-muted2">{role.category}</p>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    return (
+      <div>
+        {section.summary && <p className="text-sm text-muted2 leading-relaxed">{section.summary}</p>}
+        {items.length > 0 && (
+          <ul className="mt-3 space-y-2">
+            {items.map((item) => <li key={item} className="flex items-start gap-2 text-[13px] text-ink"><span className="mt-1 text-brand">-&gt;</span>{item}</li>)}
+          </ul>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="space-y-3">
+      {(sections || []).map((section, index) => {
+        const isOpen = open === index;
+        return (
+          <div key={`${section.num}-${section.title}`} className="overflow-hidden rounded-2xl border border-line bg-white">
+            <button type="button" onClick={() => setOpen(isOpen ? -1 : index)} className="flex w-full items-center gap-3 px-4 py-4 text-left sm:px-5">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-sm font-black text-brand">{section.num}</span>
+              <span className="min-w-0 flex-1 font-heading text-sm sm:text-base font-black text-ink">{section.title}</span>
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-brand/25 text-brand">{isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}</span>
+            </button>
+            {isOpen && <div className="border-t border-line px-4 py-4 sm:px-5">{renderSection(section)}</div>}
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 export default function CareerReportPage({ slug: propSlug, embedded = false }) {
@@ -822,6 +989,21 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
   const projects = useMemo(() => buildProjects(stages, career?.title || "career"), [stages, career?.title]);
   const placement = useMemo(() => buildPlacement(stages), [stages]);
   const jobs = useMemo(() => buildJobs(stages, career?.jobs, career?.title || "Role", career?.avgSalary), [stages, career]);
+  const roleReportSections = useMemo(
+    () => normalizeRoleReportSections(career, { educationPaths, skillStages, courseMonths, aiTools, projects, placement, jobs }),
+    [career, educationPaths, skillStages, courseMonths, aiTools, projects, placement, jobs]
+  );
+
+  const openInstituteFinder = () => {
+    const course = career?.title || "";
+    try {
+      localStorage.setItem("active_institute_course", course);
+    } catch (_) {
+      // ignore storage failures
+    }
+    window.dispatchEvent(new CustomEvent("latecomers:institute-course-change", { detail: { course } }));
+    navigate(`/colleges?course=${encodeURIComponent(course)}&auto=1`);
+  };
 
   if (status === "loading" && !report) {
     const title = career?.title || slug.split("-").map((w) => w[0]?.toUpperCase() + w.slice(1)).join(" ");
@@ -1074,9 +1256,48 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
           </div>
         )}
 
+        {/* INSTITUTE tab */}
+        {tab === "institutes" && (
+          <div className="rounded-2xl border border-line bg-white p-5 sm:p-6 shadow-sm">
+            <div className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-center">
+              <div>
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-50 text-brand">
+                  <Building2 size={22} />
+                </div>
+                <h2 className="mt-3 font-heading text-xl sm:text-2xl font-black text-ink">
+                  Find institutes for {career?.title}
+                </h2>
+                <p className="mt-2 max-w-2xl text-sm text-muted2 leading-relaxed">
+                  We will open the Institute Finder with this career name already filled. Add your city or use auto-location, then search nearby Indian institutes, coaching centers, and training options.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={openInstituteFinder}
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3 text-sm font-bold text-white hover:bg-brand-700 transition"
+              >
+                <Navigation size={16} /> Find Institute
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* REPORT tab (default) */}
         {tab === "report" && (
           <div className="space-y-4 sm:space-y-6">
+
+        <div className="rounded-2xl border border-line bg-[#EEE9F8] p-3 sm:p-4">
+          <div className="mb-3 px-1">
+            <p className="text-[10px] font-black uppercase tracking-widest text-brand">AI Career Guide</p>
+            <h2 className="font-heading text-lg sm:text-2xl font-black text-ink">
+              {career?.roleReport?.headline || career?.title} report
+            </h2>
+            {(career?.roleReport?.summary || career?.overview) && (
+              <p className="mt-1 text-sm text-muted2 leading-relaxed">{career?.roleReport?.summary || career?.overview}</p>
+            )}
+          </div>
+          <RoleReportAccordion career={career} sections={roleReportSections} onFindInstitutes={openInstituteFinder} />
+        </div>
 
         {/* 1. Education */}
         <SectionShell type="education">

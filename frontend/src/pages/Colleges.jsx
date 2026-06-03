@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import {
   ArrowLeft, ArrowRight, Bookmark, Building2, ExternalLink, Filter,
@@ -124,6 +124,7 @@ const InstituteCard = ({ institute }) => {
 
 export default function Colleges() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const [q, setQ] = useState("");
   const [cat, setCat] = useState("All");
@@ -143,11 +144,14 @@ export default function Colleges() {
   const locationRetryRef = useRef(false);
 
   useEffect(() => {
-    const storedCourse = localStorage.getItem("last_roadmap_career_title") || localStorage.getItem("active_institute_course") || "";
+    const paramCourse = searchParams.get("course") || "";
+    const paramLocation = searchParams.get("location") || "";
+    const storedCourse = paramCourse || localStorage.getItem("last_roadmap_career_title") || localStorage.getItem("active_institute_course") || "";
     if (storedCourse && !courseQuery) setCourseQuery(storedCourse);
-    if (user?.profile?.location && !locationQuery) setLocationQuery(user.profile.location);
+    if (paramLocation && !locationQuery) setLocationQuery(paramLocation);
+    else if (user?.profile?.location && !locationQuery) setLocationQuery(user.profile.location);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.profile?.location]);
+  }, [user?.profile?.location, searchParams]);
 
   useEffect(() => {
     const handler = (event) => {
