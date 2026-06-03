@@ -536,10 +536,28 @@ function parseCountries(raw) {
 }
 
 function normalizeRoleReportSections(career, computed) {
+  const fitRows = [
+    { label: "12th Pass", value: "Yes" },
+    { label: "Any Graduate", value: "Yes" },
+    { label: "BPO / Back-office experience", value: "Big advantage" },
+    { label: "English fluency needed", value: "Basic is enough" },
+    { label: "Prior experience needed", value: "No" },
+    { label: "Degree mandatory", value: "No" },
+    { label: "Age limit", value: "None" },
+    { label: "Coding required", value: /data|developer|tech|engineer|analyst/i.test(career?.title || "") ? "Basic" : "No" },
+  ];
   const sections = career?.roleReport?.sections;
   if (Array.isArray(sections) && sections.length) {
     return sections
-      .map((section, index) => ({ ...section, num: section.num || index + 1 }))
+      .map((section, index) => {
+        const normalized = { ...section, num: section.num || index + 1 };
+        if (normalized.num === 2) {
+          const hasSampleRows = (normalized.rows || []).some((row) => /12th|graduate|coding/i.test(row.label || ""));
+          if (!hasSampleRows) normalized.rows = fitRows;
+          normalized.type = "fitTable";
+        }
+        return normalized;
+      })
       .sort((a, b) => (a.num || 99) - (b.num || 99));
   }
   const title = career?.title || "this role";
@@ -548,7 +566,7 @@ function normalizeRoleReportSections(career, computed) {
   const jobs = (computed.jobs || []).slice(0, 4);
   return [
     { num: 1, title: "What is this role?", type: "text", summary: career?.overview || career?.description || `${title} is a practical career path in India.`, items: computed.educationPaths?.slice(0, 3).map((p) => p.heading) || [] },
-    { num: 2, title: "Is this job for me?", type: "fitTable", rows: [{ label: "Good for", value: "Students who like practical work and consistent learning" }, { label: "Best background", value: "Freshers, graduates, and career switchers" }, { label: "You will need", value: "Portfolio proof, communication, and discipline" }] },
+    { num: 2, title: "Is this job for me?", type: "fitTable", rows: fitRows },
     { num: 3, title: "Day-to-Day Tasks", type: "list", items: computed.placement?.resume?.slice(0, 4) || ["Research tasks", "Create work samples", "Coordinate with teams", "Improve from feedback"] },
     { num: 4, title: "Skills You Need to Learn", type: "skills", hardSkills: computed.skillStages?.flatMap((s) => s.items).slice(0, 5) || [], softSkills: ["Communication", "Problem solving", "Time management"] },
     { num: 5, title: "Who Is This Role For?", type: "cards", cards: [{ title: "Late starters", body: "You can start with basics and build proof step by step." }, { title: "Job switchers", body: "Your past experience can become a practical advantage." }] },

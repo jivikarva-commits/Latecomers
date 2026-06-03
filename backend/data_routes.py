@@ -1137,8 +1137,10 @@ async def _get_career_detail_by_slug(slug: str, request: Request):
     if _career_details_fresh(item):
         return _merge_ai_details(item)
     if isinstance(item.get("aiGeneratedDetails"), dict):
-        return await _generate_and_cache_career_details(request, item)
-    return await _generate_and_cache_career_details(request, item)
+        _start_career_detail_generation(request, item)
+        return _merge_ai_details(item)
+    _start_career_detail_generation(request, item)
+    return _fallback_career_response(item)
 
 
 @router.post("/careers/generate")
