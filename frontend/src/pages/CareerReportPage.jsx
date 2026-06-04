@@ -1205,13 +1205,19 @@ function buildDefaultRoleSections(career, computed, fitRows) {
     },
     {
       num: 7,
+      title: `Best Institutes for Learning ${title}`,
+      type: "institutes",
+      items: [`Search ${title} institutes near your city`, "Compare reviews, trainer quality, practical assignments, and placement support", "Ask for demo class, project work, fees, and refund rules before paying"],
+    },
+    {
+      num: 8,
       title: `Course Glance for ${title}`,
       type: "courseGlance",
       items: buildCourseGlance(career),
     },
-    { num: 8, title: "Tools Used in This Role", type: "tools", tools: detailedTools(career, tools) },
+    { num: 9, title: "Tools Used in This Role", type: "tools", tools: detailedTools(career, tools) },
     {
-      num: 9,
+      num: 10,
       title: "Career Path & Salary Expectations",
       type: "salaryPath",
       steps: detailedSalaryPath(career, jobs),
@@ -1223,7 +1229,7 @@ function buildDefaultRoleSections(career, computed, fitRows) {
         : "Income grows fastest when you combine practical skills, proof of work, and consistent applications.",
     },
     {
-      num: 10,
+      num: 11,
       title: "Where Can I Work & Who Hires Freshers?",
       type: "employers",
       employerTypes: employerGuide.types,
@@ -1233,7 +1239,7 @@ function buildDefaultRoleSections(career, computed, fitRows) {
       industries: getCuratedIndustries(career, career?.insights?.topIndustries).slice(0, 5),
       companies: career?.insights?.topCompaniesIndia || [],
     },
-    { num: 11, title: `Related Roles in ${category}`, type: "related", roles: detailedRelatedRoles(career, jobs) },
+    { num: 12, title: `Related Roles in ${category}`, type: "related", roles: detailedRelatedRoles(career, jobs) },
   ];
 }
 
@@ -1246,7 +1252,7 @@ function normalizeRoleReportSections(career, computed) {
     return defaultSections
       .map((fallback) => {
         const existing = byNum.get(fallback.num);
-        if (!existing || [2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(fallback.num) || isWeakRoleSection(existing, career?.title)) return fallback;
+        if (!existing || [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].includes(fallback.num) || isWeakRoleSection(existing, career?.title)) return fallback;
         return { ...fallback, ...existing, title: fallback.title, type: fallback.type };
       })
       .sort((a, b) => (a.num || 99) - (b.num || 99));
@@ -1275,10 +1281,10 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
       return (
         <div className="border-t border-line">
           {(section.rows || []).map((row, index) => (
-            <div key={`${row.label}-${index}`} className="grid grid-cols-[1.25fr_1fr] gap-3 border-b border-line last:border-b-0 px-3 sm:px-4 py-3.5 text-[13px] sm:text-sm">
+            <div key={`${row.label}-${index}`} className="grid grid-cols-[1.25fr_1fr] gap-2 border-b border-line last:border-b-0 px-3 sm:px-4 py-2.5 sm:py-3.5 text-[12px] sm:text-sm">
               <span className="font-bold text-[#2B255F]">{row.label}</span>
               <span>
-                <span className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-black ${fitBadgeClass(row.value)}`}>
+                <span className={`inline-flex rounded-full px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10.5px] sm:text-[11px] font-black ${fitBadgeClass(row.value)}`}>
                   {fitBadgeText(row.value)}
                 </span>
               </span>
@@ -1289,13 +1295,13 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
     }
     if (section.type === "skills") {
       return (
-        <div className="space-y-4 sm:grid sm:grid-cols-2 sm:gap-4 sm:space-y-0">
+        <div className="space-y-3 sm:grid sm:grid-cols-2 sm:gap-4 sm:space-y-0">
           {[["Hard skills", section.hardSkills, "text-brand"], ["Soft skills", section.softSkills, "text-amber-600"]].map(([label, list, color]) => (
-            <div key={label} className="rounded-2xl border border-[#DCD4F3] bg-[#F8F4FF] p-4">
-              <p className={`font-heading text-sm font-black uppercase tracking-widest ${color}`}>{label}</p>
-              <div className="mt-3 border-t border-[#DCD4F3] pt-3 space-y-2">
+            <div key={label} className="rounded-xl sm:rounded-2xl border border-[#DCD4F3] bg-[#F8F4FF] p-3 sm:p-4">
+              <p className={`font-heading text-xs sm:text-sm font-black uppercase tracking-widest ${color}`}>{label}</p>
+              <div className="mt-2.5 sm:mt-3 border-t border-[#DCD4F3] pt-2.5 sm:pt-3 space-y-2">
                 {(list || []).map((skill) => (
-                  <div key={skill} className="rounded-xl border border-line bg-white px-3 py-3 text-sm font-semibold leading-relaxed text-muted2">
+                  <div key={skill} className="rounded-lg sm:rounded-xl border border-line bg-white px-3 py-2.5 sm:py-3 text-[12.5px] sm:text-sm font-semibold leading-relaxed text-muted2">
                     {skill}
                   </div>
                 ))}
@@ -1309,11 +1315,11 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
       return (
         <div className="space-y-3">
           {(section.cards || []).map((card) => (
-            <div key={card.title} className="flex gap-3 rounded-xl border border-[#DCD4F3] bg-[#F7F3FF] p-3.5 sm:p-4">
-              {card.icon && <span className="text-xl leading-none">{card.icon}</span>}
+            <div key={card.title} className="flex gap-2.5 sm:gap-3 rounded-xl border border-[#DCD4F3] bg-[#F7F3FF] p-3 sm:p-4">
+              {card.icon && <span className="text-lg sm:text-xl leading-none">{card.icon}</span>}
               <div className="min-w-0">
-                <p className="font-heading text-sm font-black text-ink">{card.title}</p>
-                <p className="mt-1 text-[12.5px] sm:text-[13px] text-muted2 leading-relaxed">{card.body}</p>
+                <p className="font-heading text-[13px] sm:text-sm font-black text-ink">{card.title}</p>
+                <p className="mt-1 text-[12px] sm:text-[13px] text-muted2 leading-relaxed">{card.body}</p>
               </div>
             </div>
           ))}
@@ -1323,28 +1329,28 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
     if (section.type === "steps") {
       const steps = section.steps || [];
       return (
-        <div className="space-y-5">
-          <div className="relative pl-10">
-            <div className="absolute left-4 top-8 bottom-8 w-px bg-[#DCD4F3]" />
-            <div className="space-y-8">
+        <div className="space-y-4 sm:space-y-5">
+          <div className="relative pl-8 sm:pl-10">
+            <div className="absolute left-3.5 sm:left-4 top-7 bottom-7 sm:top-8 sm:bottom-8 w-px bg-[#DCD4F3]" />
+            <div className="space-y-6 sm:space-y-8">
               {steps.map((step, index) => (
                 <div key={`${step.title || step.role}-${index}`} className="relative">
-                  <span className="absolute -left-10 top-0 flex h-9 w-9 items-center justify-center rounded-full bg-brand font-heading text-sm font-black text-white">{index + 1}</span>
-                  <p className="font-heading text-[15px] sm:text-base font-black leading-snug text-ink">{step.title || step.role}</p>
-                  <p className="mt-2 text-[13px] sm:text-sm leading-relaxed text-muted2">{step.body || `${step.years || ""}${step.salary ? ` - ${step.salary}` : ""}`}</p>
+                  <span className="absolute -left-8 sm:-left-10 top-0 flex h-7 w-7 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-brand font-heading text-xs sm:text-sm font-black text-white">{index + 1}</span>
+                  <p className="font-heading text-[13.5px] sm:text-base font-black leading-snug text-ink">{step.title || step.role}</p>
+                  <p className="mt-1.5 sm:mt-2 text-[12.5px] sm:text-sm leading-relaxed text-muted2">{step.body || `${step.years || ""}${step.salary ? ` - ${step.salary}` : ""}`}</p>
                 </div>
               ))}
             </div>
           </div>
           {section.courses?.length > 0 && (
-            <div className="border-t border-dashed border-[#DCD4F3] pt-5">
-              <p className="font-heading text-sm font-black uppercase tracking-widest text-brand">Courses to explore (offline / classroom)</p>
+            <div className="border-t border-dashed border-[#DCD4F3] pt-4 sm:pt-5">
+              <p className="font-heading text-xs sm:text-sm font-black uppercase tracking-widest text-brand">Courses to explore (offline / classroom)</p>
               <div className="mt-3 space-y-3">
                 {section.courses.map((course) => (
-                  <div key={course.title} className="rounded-2xl bg-[#120B3D] p-4 text-center">
+                  <div key={course.title} className="rounded-xl sm:rounded-2xl bg-[#120B3D] p-3 sm:p-4 text-center">
                     <p className="text-[11px] font-black uppercase tracking-widest text-yellow-300">{course.mode}</p>
-                    <p className="mt-2 font-heading text-base font-black text-white">{course.title}</p>
-                    <p className="mt-1 text-sm font-semibold text-white/60">{course.detail}</p>
+                    <p className="mt-2 font-heading text-sm sm:text-base font-black text-white">{course.title}</p>
+                    <p className="mt-1 text-xs sm:text-sm font-semibold text-white/60">{course.detail}</p>
                   </div>
                 ))}
               </div>
@@ -1356,19 +1362,19 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
     if (section.type === "salaryPath") {
       const steps = section.steps || [];
       return (
-        <div className="space-y-5">
-          <div className="relative pl-7">
+        <div className="space-y-4 sm:space-y-5">
+          <div className="relative pl-6 sm:pl-7">
             <div className="absolute left-2.5 top-3 bottom-3 w-px bg-[#DCD4F3]" />
-            <div className="space-y-5">
+            <div className="space-y-4 sm:space-y-5">
               {steps.map((step, index) => (
                 <div key={`${step.role}-${index}`} className="relative">
                   <span className={`absolute -left-[29px] top-1 h-5 w-5 rounded-full border-4 ${step.current ? "border-[#D8C7FF] bg-brand" : "border-[#F0EBFF] bg-[#DCD4F3]"}`} />
                   <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                      <p className="font-heading text-base font-black text-ink">{step.role}</p>
-                      <p className="mt-1 text-sm font-semibold text-muted2">{step.years}</p>
-                      <p className="mt-1 text-base font-black text-brand">{step.salary}</p>
-                      {step.body && <p className="mt-1 text-sm leading-relaxed text-muted2">{step.body}</p>}
+                      <p className="font-heading text-sm sm:text-base font-black text-ink">{step.role}</p>
+                      <p className="mt-1 text-xs sm:text-sm font-semibold text-muted2">{step.years}</p>
+                      <p className="mt-1 text-sm sm:text-base font-black text-brand">{step.salary}</p>
+                      {step.body && <p className="mt-1 text-[12.5px] sm:text-sm leading-relaxed text-muted2">{step.body}</p>}
                     </div>
                     {step.current && <span className="w-fit rounded-lg bg-yellow-300 px-3 py-2 text-[11px] font-black uppercase text-ink">You are here</span>}
                   </div>
@@ -1377,11 +1383,11 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
             </div>
           </div>
           {section.freelance && (
-            <div className="rounded-2xl bg-[#120B3D] p-4 text-white">
-              <p className="font-heading text-sm font-black text-yellow-300">{section.freelance.title}</p>
+            <div className="rounded-xl sm:rounded-2xl bg-[#120B3D] p-3 sm:p-4 text-white">
+              <p className="font-heading text-xs sm:text-sm font-black text-yellow-300">{section.freelance.title}</p>
               <div className="mt-3 space-y-2">
                 {(section.freelance.rows || []).map(([label, value]) => (
-                  <div key={label} className="grid grid-cols-[0.8fr_1.2fr] gap-3 text-sm">
+                  <div key={label} className="grid grid-cols-[0.8fr_1.2fr] gap-3 text-xs sm:text-sm">
                     <span className="text-white/70">{label}</span>
                     <span className="font-black">{value}</span>
                   </div>
@@ -1389,7 +1395,7 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
               </div>
             </div>
           )}
-          {section.note && <div className="rounded-2xl bg-brand p-4 font-heading text-base font-black leading-relaxed text-white">{section.note}</div>}
+          {section.note && <div className="rounded-xl sm:rounded-2xl bg-brand p-3 sm:p-4 font-heading text-sm sm:text-base font-black leading-relaxed text-white">{section.note}</div>}
         </div>
       );
     }
@@ -1397,12 +1403,12 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
       return (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {(section.tools || []).map((tool) => (
-            <div key={tool.name} className="rounded-2xl border border-line bg-[#FAFAFE] p-4">
-              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-[#F0EBFF] text-brand">
-                <Bot size={18} />
+            <div key={tool.name} className="rounded-xl sm:rounded-2xl border border-line bg-[#FAFAFE] p-3 sm:p-4">
+              <div className="mb-2.5 sm:mb-3 flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg sm:rounded-xl bg-[#F0EBFF] text-brand">
+                <Bot size={16} />
               </div>
-              <p className="font-heading text-base font-black text-ink">{tool.name}</p>
-              <p className="mt-2 text-sm leading-relaxed text-muted2">{tool.use || tool.category || tool.description}</p>
+              <p className="font-heading text-sm sm:text-base font-black text-ink">{tool.name}</p>
+              <p className="mt-1.5 sm:mt-2 text-[12.5px] sm:text-sm leading-relaxed text-muted2">{tool.use || tool.category || tool.description}</p>
             </div>
           ))}
         </div>
@@ -1412,9 +1418,9 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
       return (
         <div>
           <ul className="space-y-2">
-            {items.map((item) => <li key={item} className="flex items-start gap-2 text-[13px] text-ink"><CheckCircle2 size={14} className="mt-0.5 shrink-0 text-emerald-500" />{item}</li>)}
+            {items.map((item) => <li key={item} className="flex items-start gap-2 text-[12.5px] sm:text-[13px] text-ink"><CheckCircle2 size={14} className="mt-0.5 shrink-0 text-emerald-500" />{item}</li>)}
           </ul>
-          <button onClick={onFindInstitutes} className="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-sm font-bold text-white">
+          <button onClick={onFindInstitutes} className="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand px-3.5 sm:px-4 py-2.5 text-xs sm:text-sm font-bold text-white">
             <Navigation size={15} /> Find institutes for {career?.title}
           </button>
         </div>
@@ -1424,9 +1430,9 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
       return (
         <div className="grid gap-2 sm:grid-cols-2">
           {(section.items || []).map((item) => (
-            <div key={item.label} className="rounded-xl border border-[#DCD4F3] bg-[#F7F3FF] p-3">
-              <p className="text-[10px] font-black uppercase tracking-widest text-brand">{item.label}</p>
-              <p className="mt-1 font-heading text-sm font-black leading-snug text-ink">{item.value}</p>
+            <div key={item.label} className="rounded-xl border border-[#DCD4F3] bg-[#F7F3FF] p-2.5 sm:p-3">
+              <p className="text-[9.5px] sm:text-[10px] font-black uppercase tracking-widest text-brand">{item.label}</p>
+              <p className="mt-1 font-heading text-[13px] sm:text-sm font-black leading-snug text-ink">{item.value}</p>
             </div>
           ))}
         </div>
@@ -1436,30 +1442,30 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
       return (
         <div className="space-y-5">
           <div>
-            <p className="font-heading text-base font-black text-ink">Types of Employers</p>
+            <p className="font-heading text-sm sm:text-base font-black text-ink">Types of Employers</p>
             <div className="mt-3 space-y-2">
               {(section.employerTypes || []).map((item) => (
-                <div key={item.title} className="rounded-xl bg-[#F6F1FF] p-3 text-sm leading-relaxed text-muted2">
+                <div key={item.title} className="rounded-xl bg-[#F6F1FF] p-2.5 sm:p-3 text-[12.5px] sm:text-sm leading-relaxed text-muted2">
                   <span className="font-black text-ink">{item.title}</span> - {item.body}
                 </div>
               ))}
             </div>
           </div>
           <div>
-            <p className="font-heading text-base font-black text-ink">Cities with Most Jobs</p>
+            <p className="font-heading text-sm sm:text-base font-black text-ink">Cities with Most Jobs</p>
             <div className="mt-3 flex flex-wrap gap-2">
-              {(section.cities || []).map((city) => <span key={city} className="rounded-full bg-[#F0EBFF] px-4 py-2 text-sm font-black text-brand">{city}</span>)}
+              {(section.cities || []).map((city) => <span key={city} className="rounded-full bg-[#F0EBFF] px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-black text-brand">{city}</span>)}
             </div>
           </div>
-          {section.remote && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 font-heading text-sm font-black text-emerald-700">Remote work: {section.remote}</div>}
+          {section.remote && <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-2.5 sm:p-3 font-heading text-xs sm:text-sm font-black text-emerald-700">Remote work: {section.remote}</div>}
           <div>
-            <p className="font-heading text-base font-black text-ink">Where to Apply Right Now</p>
+            <p className="font-heading text-sm sm:text-base font-black text-ink">Where to Apply Right Now</p>
             <div className="mt-3 space-y-2">
               {(section.apply || []).map((item) => (
-                <div key={item.title} className="flex items-center gap-3 rounded-xl border border-line bg-[#FAFAFE] p-3">
+                <div key={item.title} className="flex items-center gap-3 rounded-xl border border-line bg-[#FAFAFE] p-2.5 sm:p-3">
                   <div className="min-w-0 flex-1">
-                    <p className="font-heading text-sm font-black text-ink">{item.title}</p>
-                    <p className="mt-1 text-[12.5px] text-muted2">{item.body}</p>
+                    <p className="font-heading text-[13px] sm:text-sm font-black text-ink">{item.title}</p>
+                    <p className="mt-1 text-[12px] sm:text-[12.5px] text-muted2">{item.body}</p>
                   </div>
                   <span className="text-brand">↗</span>
                 </div>
@@ -1471,12 +1477,12 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
     }
     if (section.type === "related") {
       return (
-        <div className="space-y-3">
+        <div className="space-y-2.5 sm:space-y-3">
           {(section.roles || []).map((role) => (
-            <div key={role.title} className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#120B3D] p-4 text-white">
+            <div key={role.title} className="flex items-center gap-2.5 sm:gap-3 rounded-xl border border-white/10 bg-[#120B3D] p-3 sm:p-4 text-white">
               <div className="min-w-0 flex-1">
-                <p className="font-heading text-base font-black text-white">{role.title}</p>
-                <p className="mt-1 text-sm text-white/60">{role.category}</p>
+                <p className="font-heading text-sm sm:text-base font-black text-white">{role.title}</p>
+                <p className="mt-1 text-xs sm:text-sm text-white/60">{role.category}</p>
               </div>
               <button
                 type="button"
@@ -1484,7 +1490,7 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
                   const slug = String(role.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
                   if (slug) window.location.href = `/careers/${slug}`;
                 }}
-                className="shrink-0 rounded-full bg-white px-3 py-1.5 text-[11px] font-black text-brand"
+                className="shrink-0 rounded-full bg-white px-2.5 sm:px-3 py-1.5 text-[10.5px] sm:text-[11px] font-black text-brand"
               >
                 View Course
               </button>
@@ -1495,12 +1501,12 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
     }
     return (
       <div>
-        {section.summary && <p className="text-sm text-muted2 leading-relaxed">{section.summary}</p>}
+        {section.summary && <p className="text-[12.5px] sm:text-sm text-muted2 leading-relaxed">{section.summary}</p>}
         {items.length > 0 && (
           <ul className={`mt-3 ${section.cardList ? "space-y-3" : "space-y-2"}`}>
             {items.map((item) => (
-              <li key={item} className={section.cardList ? "flex items-start gap-3 rounded-xl bg-[#F6F1FF] px-4 py-4 text-sm leading-relaxed text-muted2" : "flex items-start gap-2 text-[13px] text-ink"}>
-                <span className="mt-0.5 shrink-0 text-lg font-black text-brand">→</span>
+              <li key={item} className={section.cardList ? "flex items-start gap-2.5 sm:gap-3 rounded-xl bg-[#F6F1FF] px-3 sm:px-4 py-3 sm:py-4 text-[12.5px] sm:text-sm leading-relaxed text-muted2" : "flex items-start gap-2 text-[12.5px] sm:text-[13px] text-ink"}>
+                <span className="mt-0.5 shrink-0 text-base sm:text-lg font-black text-brand">→</span>
                 <span>{item}</span>
               </li>
             ))}
@@ -1511,19 +1517,19 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
   };
 
   return (
-    <div className="space-y-3.5">
+    <div className="space-y-2.5 sm:space-y-3.5">
       {(sections || []).map((section, index) => {
         const isOpen = open === index;
         return (
-          <div key={`${section.num}-${section.title}`} className="overflow-hidden rounded-2xl border border-[#DCD4F3] bg-white">
-            <button type="button" onClick={() => setOpen(isOpen ? -1 : index)} className="flex w-full items-center gap-3 px-4 py-4 text-left sm:px-5 sm:py-5">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#F0EBFF] text-sm font-black text-brand">{section.num}</span>
-              <span className="min-w-0 flex-1 font-heading text-sm sm:text-base font-black text-ink">{section.title}</span>
-              <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border transition ${isOpen ? "border-brand bg-brand text-white" : "border-[#D6C9F5] text-[#8278B6]"}`}>
-                {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          <div key={`${section.num}-${section.title}`} className="overflow-hidden rounded-xl sm:rounded-2xl border border-[#DCD4F3] bg-white">
+            <button type="button" onClick={() => setOpen(isOpen ? -1 : index)} className="flex w-full items-center gap-2.5 sm:gap-3 px-3 sm:px-5 py-3 sm:py-5 text-left">
+              <span className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg bg-[#F0EBFF] text-xs sm:text-sm font-black text-brand">{section.num}</span>
+              <span className="min-w-0 flex-1 font-heading text-[13px] sm:text-base font-black leading-snug text-ink">{section.title}</span>
+              <span className={`flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg border transition ${isOpen ? "border-brand bg-brand text-white" : "border-[#D6C9F5] text-[#8278B6]"}`}>
+                {isOpen ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
               </span>
             </button>
-            {isOpen && <div className="px-4 pb-4 sm:px-5 sm:pb-5">{renderSection(section)}</div>}
+            {isOpen && <div className="px-3 pb-3 sm:px-5 sm:pb-5">{renderSection(section)}</div>}
           </div>
         );
       })}
