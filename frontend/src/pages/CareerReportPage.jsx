@@ -2000,7 +2000,7 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
         )}
 
         {/* REPORT tab (default) */}
-        {false && tab === "report" && (
+        {tab === "report" && (
           <div ref={reportRef} className="scroll-mt-28 space-y-4 sm:space-y-6">
 
         <div className="rounded-2xl border border-line bg-[#EEE9F8] p-3 sm:p-4">
@@ -2167,7 +2167,7 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
           </div>
         )}
 
-        {tab === "report" && (
+        {false && tab === "report" && (
           <div className="no-print text-center py-6">
             <button onClick={retry} disabled={generating} className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 py-2 text-xs font-bold text-muted2 hover:text-brand hover:border-brand transition disabled:opacity-50">
               <RefreshCw size={13} className={generating ? "animate-spin" : ""} />
