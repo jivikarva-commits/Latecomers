@@ -9,12 +9,11 @@ import { openCareerReportByTitle } from "../lib/careerNavigation";
 const navItems = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About Us" },
-  { to: "/#how", label: "How it works", anchor: true },
-  { to: "/careers-explore", label: "Careers" },
-  { to: "/pricing", label: "Pricing" },
+  { to: "/colleges", label: "Find Institutes" },
+  { to: "/scholarships", label: "Scholarship" },
+  { to: "/contact?topic=counselling", label: "Free Counselling" },
   { to: "/blog", label: "Blog" },
-  { to: "/for-institutes", label: "For Institutes" },
-  { to: "/contact", label: "Contact" },
+  { to: "/contact", label: "Contact Us" },
 ];
 
 function CategoryNav() {

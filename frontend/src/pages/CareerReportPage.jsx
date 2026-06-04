@@ -384,6 +384,10 @@ function PublicCareerHero({ career, onTakeQuiz, onFindInstitute, onFindRoadmap }
   const accentWord = words.length > 1 ? words.pop() : "";
   const mainTitle = words.join(" ") || title;
   const category = career?.category || career?.field || "Career";
+  const fitRows = buildCareerFitRows(career);
+  const degreeRow = fitRows.find((row) => row.label === "Degree mandatory");
+  const passRow = fitRows.find((row) => row.label === "12th Pass");
+  const codingRow = fitRows.find((row) => row.label === "Coding required");
   const summary =
     career?.roleReport?.summary ||
     career?.overviewDetails?.description ||
@@ -393,22 +397,23 @@ function PublicCareerHero({ career, onTakeQuiz, onFindInstitute, onFindRoadmap }
   const primaryPill = (career?.tags || [category]).slice(0, 2).join(" • ") || category;
 
   return (
-    <section className="relative overflow-hidden rounded-none bg-[#120B3D] px-5 py-8 text-white sm:rounded-3xl sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+    <section className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-[#120B3D] px-5 py-8 text-white sm:px-8 sm:py-10 lg:px-10 lg:py-12">
       <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/10 sm:h-96 sm:w-96" />
       <div className="pointer-events-none absolute bottom-[-110px] left-[18%] h-64 w-64 rounded-full bg-yellow-300/10 sm:h-80 sm:w-80" />
 
-      <div className="relative max-w-3xl">
+      <div className="relative mx-auto max-w-6xl">
+        <div className="max-w-3xl">
         <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/18 bg-white/10 px-4 py-2 text-[11px] font-black uppercase tracking-[0.22em] text-white/75">
           <span className="h-2 w-2 rounded-full bg-white/80" />
           <span className="truncate">{category} • {primaryPill}</span>
         </div>
 
-        <h1 className="mt-7 font-heading text-[42px] font-black leading-[0.98] tracking-normal sm:text-6xl lg:text-7xl">
+        <h1 className="mt-7 font-heading text-[38px] font-black leading-[1.02] tracking-normal sm:text-5xl lg:text-6xl">
           <span>{mainTitle}</span>
           {accentWord && <span className="block text-yellow-300">{accentWord}</span>}
         </h1>
 
-        <p className="mt-6 max-w-2xl text-lg font-medium leading-relaxed text-white/72 sm:text-xl">
+        <p className="mt-6 max-w-2xl text-base font-medium leading-relaxed text-white/72 sm:text-lg">
           {summary}
         </p>
 
@@ -417,7 +422,10 @@ function PublicCareerHero({ career, onTakeQuiz, onFindInstitute, onFindRoadmap }
             Practical roadmap
           </span>
           <span className="rounded-full border border-white/18 bg-white/10 px-4 py-2 text-sm font-bold text-white/82">
-            Find nearby institutes
+            {degreeRow?.value === "Yes" ? "Degree required" : `12th: ${passRow?.value || "Allowed"}`}
+          </span>
+          <span className="rounded-full border border-white/18 bg-white/10 px-4 py-2 text-sm font-bold text-white/82">
+            Coding: {codingRow?.value || "Role based"}
           </span>
           <span className="rounded-full border border-yellow-300/35 bg-yellow-300/10 px-4 py-2 text-sm font-black text-yellow-300">
             6 - 12 months to job ready
@@ -446,6 +454,7 @@ function PublicCareerHero({ career, onTakeQuiz, onFindInstitute, onFindRoadmap }
           >
             Find Roadmap →
           </button>
+        </div>
         </div>
       </div>
     </section>
@@ -1092,6 +1101,66 @@ function isWeakRoleSection(section, careerTitle) {
   return false;
 }
 
+function buildRoleAudienceCards(career) {
+  const field = detectField(career);
+  const title = career?.title || "this role";
+  const defaults = {
+    tech: [
+      { icon: "🎓", title: "Just passed 12th?", body: "Yes, you can start if you build coding basics, GitHub projects, and a live portfolio. A degree helps for bigger companies but proof of work is the real entry ticket." },
+      { icon: "🏫", title: "Graduate looking to start?", body: "BCA, BSc IT, BE/BTech, BCom, BBA, or any degree works if you add practical projects, internships, and interview-ready fundamentals." },
+      { icon: "🔁", title: "Switching careers?", body: `You can move into ${title} if you practice daily, rebuild your resume around projects, and show 2-3 deployed apps instead of only certificates.` },
+    ],
+    marketing: [
+      { icon: "🎓", title: "Just passed 12th?", body: "You do not need a degree to begin. Start with content, social media, analytics basics, and manage a page for a local business to create proof." },
+      { icon: "🏫", title: "Graduate looking to start?", body: "Marketing, BBA, mass communication, commerce, arts, or any stream can enter. Internships and campaign samples matter more than marks." },
+      { icon: "🔁", title: "Switching careers?", body: "Sales, BPO, teaching, content writing, and customer support experience become useful because this role needs audience understanding and communication." },
+    ],
+    finance: [
+      { icon: "🎓", title: "12th commerce student?", body: "Commerce stream is ideal. Start with accounts, Excel, GST basics, and Tally/Zoho before choosing a deeper qualification." },
+      { icon: "🏫", title: "Degree / stream needed?", body: "B.Com, BAF, BMS, BBA Finance, Economics, or CA/CMA/CS tracks help strongly. Some roles require formal eligibility and exam commitment." },
+      { icon: "🔁", title: "Switching careers?", body: "Back-office, MIS, operations, banking support, and admin experience can help if you prove Excel, accuracy, and compliance discipline." },
+    ],
+    healthcare: [
+      { icon: "🎓", title: "12th eligibility?", body: "Many healthcare roles need 12th science or a recognized certificate/diploma. Always verify eligibility before paying for a course." },
+      { icon: "🏫", title: "Degree / diploma path", body: "Clinical roles usually need formal qualifications. Healthcare admin, coding, and support roles may allow broader backgrounds with certification." },
+      { icon: "🔁", title: "Switching careers?", body: "Customer support, documentation, insurance, and operations experience can help in non-clinical healthcare roles." },
+    ],
+    default: [
+      { icon: "🎓", title: "12th / beginner route", body: `Start with ${title} fundamentals, practical assignments, and a small portfolio before spending heavily on advanced courses.` },
+      { icon: "🏫", title: "Degree / stream guidance", body: "Any stream can explore the role unless a regulated degree is mandatory. Choose the learning path based on eligibility and hiring expectations." },
+      { icon: "🔁", title: "Career switchers", body: "Past experience helps when you translate it into domain knowledge, communication, process discipline, or customer understanding." },
+    ],
+  };
+  return defaults[field] || defaults.default;
+}
+
+function buildCourseGlance(career) {
+  const field = detectField(career);
+  const fitRows = buildCareerFitRows(career);
+  const valueFor = (label) => fitRows.find((row) => row.label === label)?.value || "Role based";
+  const streamMap = {
+    tech: "Any stream; PCM or Computer Science helps",
+    data: "Any stream; maths/statistics/commerce helps",
+    marketing: "Any stream; communication and creativity help",
+    design: "Any stream; design/arts/media helps",
+    finance: "Commerce preferred",
+    healthcare: "Science or role-specific diploma may be required",
+    law: "Any stream for BA LLB; degree required for LLB",
+    government: "Exam-specific eligibility",
+    aviation: "Any stream; grooming and communication matter",
+    languages: "Any stream; language proficiency required",
+    trade: "Any stream; skill certificate/apprenticeship helps",
+  };
+  return [
+    { label: "12th pass", value: valueFor("12th Pass") },
+    { label: "Degree mandatory", value: valueFor("Degree mandatory") },
+    { label: "Best stream", value: streamMap[field] || "Any stream with practical proof" },
+    { label: "Prior experience", value: valueFor("Prior experience needed") },
+    { label: "English level", value: valueFor("English fluency needed") },
+    { label: "Coding required", value: valueFor("Coding required") },
+  ];
+}
+
 function buildDefaultRoleSections(career, computed, fitRows) {
   const title = career?.title || "this role";
   const category = career?.category || career?.field || "career";
@@ -1121,11 +1190,7 @@ function buildDefaultRoleSections(career, computed, fitRows) {
       num: 5,
       title: "Who Is This Role For?",
       type: "cards",
-      cards: [
-        { title: "Freshers with proof", body: `Good fit if you can learn ${title} basics and show small practical projects.` },
-        { title: "Career switchers", body: "Your past work, communication, customer handling, or domain exposure can become an advantage." },
-        { title: "Self learners", body: "Works well if you can practice consistently and document your progress." },
-      ],
+      cards: buildRoleAudienceCards(career),
     },
     {
       num: 6,
@@ -1140,9 +1205,9 @@ function buildDefaultRoleSections(career, computed, fitRows) {
     },
     {
       num: 7,
-      title: `Best Institutes for Learning ${title}`,
-      type: "institutes",
-      items: [`Search ${title} institutes near your city`, "Compare reviews, trainer quality, practical assignments, and placement support", "Ask for demo class, project work, fees, and refund rules before paying"],
+      title: `Course Glance for ${title}`,
+      type: "courseGlance",
+      items: buildCourseGlance(career),
     },
     { num: 8, title: "Tools Used in This Role", type: "tools", tools: detailedTools(career, tools) },
     {
@@ -1181,7 +1246,7 @@ function normalizeRoleReportSections(career, computed) {
     return defaultSections
       .map((fallback) => {
         const existing = byNum.get(fallback.num);
-        if (!existing || [2, 3, 4, 6, 8, 9, 10, 11].includes(fallback.num) || isWeakRoleSection(existing, career?.title)) return fallback;
+        if (!existing || [2, 3, 4, 5, 6, 7, 8, 9, 10, 11].includes(fallback.num) || isWeakRoleSection(existing, career?.title)) return fallback;
         return { ...fallback, ...existing, title: fallback.title, type: fallback.type };
       })
       .sort((a, b) => (a.num || 99) - (b.num || 99));
@@ -1242,11 +1307,14 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
     }
     if (section.type === "cards") {
       return (
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="space-y-3">
           {(section.cards || []).map((card) => (
-            <div key={card.title} className="rounded-xl border border-line bg-[#FAFAFE] p-3">
-              <p className="font-heading text-sm font-black text-ink">{card.title}</p>
-              <p className="mt-1 text-[12.5px] text-muted2 leading-relaxed">{card.body}</p>
+            <div key={card.title} className="flex gap-3 rounded-xl border border-[#DCD4F3] bg-[#F7F3FF] p-3.5 sm:p-4">
+              {card.icon && <span className="text-xl leading-none">{card.icon}</span>}
+              <div className="min-w-0">
+                <p className="font-heading text-sm font-black text-ink">{card.title}</p>
+                <p className="mt-1 text-[12.5px] sm:text-[13px] text-muted2 leading-relaxed">{card.body}</p>
+              </div>
             </div>
           ))}
         </div>
@@ -1262,8 +1330,8 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
               {steps.map((step, index) => (
                 <div key={`${step.title || step.role}-${index}`} className="relative">
                   <span className="absolute -left-10 top-0 flex h-9 w-9 items-center justify-center rounded-full bg-brand font-heading text-sm font-black text-white">{index + 1}</span>
-                  <p className="font-heading text-base font-black text-ink">{step.title || step.role}</p>
-                  <p className="mt-2 text-sm leading-relaxed text-muted2">{step.body || `${step.years || ""}${step.salary ? ` - ${step.salary}` : ""}`}</p>
+                  <p className="font-heading text-[15px] sm:text-base font-black leading-snug text-ink">{step.title || step.role}</p>
+                  <p className="mt-2 text-[13px] sm:text-sm leading-relaxed text-muted2">{step.body || `${step.years || ""}${step.salary ? ` - ${step.salary}` : ""}`}</p>
                 </div>
               ))}
             </div>
@@ -1352,6 +1420,18 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
         </div>
       );
     }
+    if (section.type === "courseGlance") {
+      return (
+        <div className="grid gap-2 sm:grid-cols-2">
+          {(section.items || []).map((item) => (
+            <div key={item.label} className="rounded-xl border border-[#DCD4F3] bg-[#F7F3FF] p-3">
+              <p className="text-[10px] font-black uppercase tracking-widest text-brand">{item.label}</p>
+              <p className="mt-1 font-heading text-sm font-black leading-snug text-ink">{item.value}</p>
+            </div>
+          ))}
+        </div>
+      );
+    }
     if (section.type === "employers") {
       return (
         <div className="space-y-5">
@@ -1393,12 +1473,21 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
       return (
         <div className="space-y-3">
           {(section.roles || []).map((role) => (
-            <div key={role.title} className="flex items-center gap-3 rounded-xl border border-line bg-white p-4">
+            <div key={role.title} className="flex items-center gap-3 rounded-xl border border-white/10 bg-[#120B3D] p-4 text-white">
               <div className="min-w-0 flex-1">
-                <p className="font-heading text-base font-black text-ink">{role.title}</p>
-                <p className="mt-1 text-sm text-muted2">{role.category}</p>
+                <p className="font-heading text-base font-black text-white">{role.title}</p>
+                <p className="mt-1 text-sm text-white/60">{role.category}</p>
               </div>
-              <span className="text-lg font-black text-brand">›</span>
+              <button
+                type="button"
+                onClick={() => {
+                  const slug = String(role.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+                  if (slug) window.location.href = `/careers/${slug}`;
+                }}
+                className="shrink-0 rounded-full bg-white px-3 py-1.5 text-[11px] font-black text-brand"
+              >
+                View Course
+              </button>
             </div>
           ))}
         </div>

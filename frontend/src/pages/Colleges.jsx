@@ -4,12 +4,14 @@ import { toast } from "sonner";
 import {
   ArrowLeft, ArrowRight, Bookmark, Building2, ExternalLink, Filter,
   LocateFixed, MapPin, Navigation, Phone, Search, Sparkles, Star, GraduationCap,
+  Mail, User, X,
 } from "lucide-react";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import HeroIllustration from "../components/HeroIllustration";
 import BackToTopButton from "../components/BackToTopButton";
 import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
+import { CAREER_CATEGORIES } from "../data/careerCategories";
 
 const CATEGORIES = ["All", "Engineering", "Medical", "Management", "Commerce", "Law", "Coaching", "Skill"];
 
@@ -139,9 +141,22 @@ export default function Colleges() {
   const [searchedCourse, setSearchedCourse] = useState("");
   const [detectingLocation, setDetectingLocation] = useState(false);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const [counsellingOpen, setCounsellingOpen] = useState(false);
+  const [counsellingSent, setCounsellingSent] = useState(false);
+  const [counsellingForm, setCounsellingForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    course: "",
+  });
   const autoSearchKeyRef = useRef("");
   const locationPromptedRef = useRef(false);
   const locationRetryRef = useRef(false);
+
+  const courseOptions = useMemo(
+    () => CAREER_CATEGORIES.flatMap((cat) => cat.subsections.flatMap((sub) => sub.roles)).sort((a, b) => a.localeCompare(b)),
+    []
+  );
 
   useEffect(() => {
     const paramCourse = searchParams.get("course") || "";
@@ -165,6 +180,12 @@ export default function Colleges() {
       window.removeEventListener("storage", handler);
     };
   }, []);
+
+  useEffect(() => {
+    const nextCourse = courseQuery.trim();
+    if (!nextCourse) return;
+    setCounsellingForm((prev) => (prev.course === nextCourse ? prev : { ...prev, course: nextCourse }));
+  }, [courseQuery]);
 
   // Free client-side reverse geocode fallback (no API key needed).
   // Used if backend /colleges/reverse-geocode returns empty or fails.
@@ -381,22 +402,32 @@ export default function Colleges() {
   }, [cat, locationResults, q]);
 
   const handleRecommendation = async () => {
-    if (!locationResults.length) {
-      toast.error("Search a location first.");
+    setCounsellingForm((prev) => ({
+      ...prev,
+      course: prev.course || courseQuery.trim() || searchedCourse || "",
+    }));
+    setCounsellingSent(false);
+    setCounsellingOpen(true);
+  };
+
+  const submitCounselling = (event) => {
+    event.preventDefault();
+    const phoneDigits = counsellingForm.phone.replace(/\D/g, "");
+    if (phoneDigits.length < 10) {
+      toast.error("Please enter a valid mobile number.");
       return;
     }
-    setRecommendationLoading(true);
-    try {
-      const { data } = await api.post("/colleges/recommend", {
-        location: searchedLocation || locationQuery,
-        results: locationResults,
-      });
-      setRecommendation(data);
-    } catch (e) {
-      toast.error(e?.response?.data?.detail || "Recommendations are temporarily unavailable.");
-    } finally {
-      setRecommendationLoading(false);
-    }
+    const lead = {
+      ...counsellingForm,
+      phone: phoneDigits,
+      location: searchedLocation || locationQuery,
+      submittedAt: new Date().toISOString(),
+      source: "institute-recommendation",
+    };
+    const existing = JSON.parse(localStorage.getItem("latecomers_counselling_leads") || "[]");
+    localStorage.setItem("latecomers_counselling_leads", JSON.stringify([lead, ...existing].slice(0, 50)));
+    setCounsellingSent(true);
+    toast.success("Counselling request saved. Our team will contact you soon.");
   };
 
   return (
@@ -414,7 +445,7 @@ export default function Colleges() {
         </button>
       </div>
 
-      <div className="glass-card rounded-3xl p-5 sm:p-6 flex items-center gap-4 sm:gap-6">
+      <div className="hidden glass-card rounded-3xl p-5 sm:p-6 items-center gap-4 sm:gap-6">
         <div className="flex-1 min-w-0">
           <h2 className="font-heading font-bold text-base sm:text-xl text-ink">Find the Right Institute for You</h2>
           <p className="text-xs sm:text-sm text-muted2 mt-1.5 leading-relaxed">
@@ -430,7 +461,10 @@ export default function Colleges() {
         <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
           <div className="flex items-center gap-2">
             <LocateFixed size={16} className="text-brand" />
-            <p className="font-heading font-bold text-ink text-sm sm:text-base">Search Institutes</p>
+            <div>
+              <p className="font-heading font-bold text-ink text-sm sm:text-base">Find the Right Institute for You</p>
+              <p className="text-xs text-muted2 mt-0.5">Search by course and city to discover the best institutes near you.</p>
+            </div>
           </div>
           <button
             type="button"
@@ -631,21 +665,116 @@ export default function Colleges() {
             <Building2 size={20} />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-heading font-bold text-sm sm:text-base text-ink">Not sure which institute is right?</p>
-            <p className="text-xs text-muted2 mt-0.5">Get AI-powered recommendations based on your profile and search results.</p>
+            <p className="font-heading font-bold text-sm sm:text-base text-ink">Need help choosing the right institute?</p>
+            <p className="text-xs text-muted2 mt-0.5">Share your details and get free counselling for your selected course.</p>
           </div>
         </div>
         <button
           onClick={handleRecommendation}
-          disabled={recommendationLoading || !locationResults.length}
+          disabled={recommendationLoading}
           className="mt-3 w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-brand hover:bg-brand-600 text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full disabled:opacity-60"
           data-testid="get-recommendations-btn"
         >
-          {recommendationLoading ? "Recommending..." : "Get Recommendations"} <ArrowRight size={14} />
+          Get Free Counselling <ArrowRight size={14} />
         </button>
       </div>
 
       <BackToTopButton />
+      {counsellingOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/45 px-4 py-6">
+          <div className="w-full max-w-lg rounded-3xl border border-line bg-white p-5 shadow-2xl">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.25em] text-brand">Free Counselling</p>
+                <h3 className="mt-1 font-heading text-xl font-black text-ink">Get institute guidance</h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted2">
+                  Fill your details and our team will help you choose a practical course/institute.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setCounsellingOpen(false)}
+                className="rounded-full border border-line p-2 text-muted2 hover:text-ink"
+                aria-label="Close counselling form"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <form onSubmit={submitCounselling} className="mt-5 space-y-3">
+              <label className="block">
+                <span className="text-xs font-bold text-ink">Name</span>
+                <div className="relative mt-1">
+                  <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted2" />
+                  <input
+                    required
+                    value={counsellingForm.name}
+                    onChange={(e) => setCounsellingForm((prev) => ({ ...prev, name: e.target.value }))}
+                    className="w-full rounded-xl border border-line bg-brand-50 py-2.5 pl-9 pr-3 text-sm"
+                    placeholder="Your full name"
+                  />
+                </div>
+              </label>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <label className="block">
+                  <span className="text-xs font-bold text-ink">Mobile number</span>
+                  <div className="relative mt-1">
+                    <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted2" />
+                    <input
+                      required
+                      value={counsellingForm.phone}
+                      onChange={(e) => setCounsellingForm((prev) => ({ ...prev, phone: e.target.value }))}
+                      className="w-full rounded-xl border border-line bg-brand-50 py-2.5 pl-9 pr-3 text-sm"
+                      placeholder="10 digit number"
+                      inputMode="tel"
+                    />
+                  </div>
+                </label>
+                <label className="block">
+                  <span className="text-xs font-bold text-ink">Email</span>
+                  <div className="relative mt-1">
+                    <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted2" />
+                    <input
+                      required
+                      type="email"
+                      value={counsellingForm.email}
+                      onChange={(e) => setCounsellingForm((prev) => ({ ...prev, email: e.target.value }))}
+                      className="w-full rounded-xl border border-line bg-brand-50 py-2.5 pl-9 pr-3 text-sm"
+                      placeholder="you@example.com"
+                    />
+                  </div>
+                </label>
+              </div>
+              <label className="block">
+                <span className="text-xs font-bold text-ink">Course interested in</span>
+                <select
+                  required
+                  value={counsellingForm.course}
+                  onChange={(e) => setCounsellingForm((prev) => ({ ...prev, course: e.target.value }))}
+                  className="mt-1 w-full rounded-xl border border-line bg-brand-50 px-3 py-2.5 text-sm"
+                >
+                  <option value="">Select course</option>
+                  {courseQuery.trim() && !courseOptions.includes(courseQuery.trim()) && (
+                    <option value={courseQuery.trim()}>{courseQuery.trim()}</option>
+                  )}
+                  {courseOptions.map((course) => (
+                    <option key={course} value={course}>{course}</option>
+                  ))}
+                </select>
+              </label>
+
+              <button type="submit" className="w-full rounded-xl bg-brand px-4 py-3 text-sm font-bold text-white hover:bg-brand-700">
+                Submit counselling request
+              </button>
+              {counsellingSent && (
+                <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700">
+                  Request saved. We will contact you soon.
+                </p>
+              )}
+            </form>
+          </div>
+        </div>
+      )}
       <PremiumSubscriptionModal
         open={upgradeOpen}
         onClose={() => setUpgradeOpen(false)}
