@@ -1,8 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   AlertCircle,
-  ArrowLeft,
   BarChart3,
   Bot,
   Briefcase,
@@ -34,6 +33,7 @@ import { api } from "../lib/api";
 import { toast } from "sonner";
 import SEO from "../components/SEO";
 import BrandClockMark from "../components/BrandClockMark";
+import PublicShell from "../components/PublicShell";
 
 const SECTION_ORDER = ["education", "skills", "courses", "tools", "projects", "placement", "jobs"];
 
@@ -375,6 +375,80 @@ function ErrorState({ message, onRetry }) {
         <RefreshCw size={15} /> Retry generation
       </button>
     </div>
+  );
+}
+
+function PublicCareerHero({ career, onTakeQuiz, onFindInstitute, onFindRoadmap }) {
+  const title = career?.title || "Career Report";
+  const words = title.split(/\s+/).filter(Boolean);
+  const accentWord = words.length > 1 ? words.pop() : "";
+  const mainTitle = words.join(" ") || title;
+  const category = career?.category || career?.field || "Career";
+  const summary =
+    career?.roleReport?.summary ||
+    career?.overviewDetails?.description ||
+    career?.overview ||
+    career?.description ||
+    `Explore ${title} with practical roadmap, institutes, tools, and job guidance for Indian students.`;
+  const primaryPill = (career?.tags || [category]).slice(0, 2).join(" • ") || category;
+
+  return (
+    <section className="relative overflow-hidden rounded-none bg-[#120B3D] px-5 py-8 text-white sm:rounded-3xl sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+      <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/10 sm:h-96 sm:w-96" />
+      <div className="pointer-events-none absolute bottom-[-110px] left-[18%] h-64 w-64 rounded-full bg-yellow-300/10 sm:h-80 sm:w-80" />
+
+      <div className="relative max-w-3xl">
+        <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/18 bg-white/10 px-4 py-2 text-[11px] font-black uppercase tracking-[0.22em] text-white/75">
+          <span className="h-2 w-2 rounded-full bg-white/80" />
+          <span className="truncate">{category} • {primaryPill}</span>
+        </div>
+
+        <h1 className="mt-7 font-heading text-[42px] font-black leading-[0.98] tracking-normal sm:text-6xl lg:text-7xl">
+          <span>{mainTitle}</span>
+          {accentWord && <span className="block text-yellow-300">{accentWord}</span>}
+        </h1>
+
+        <p className="mt-6 max-w-2xl text-lg font-medium leading-relaxed text-white/72 sm:text-xl">
+          {summary}
+        </p>
+
+        <div className="mt-7 flex flex-wrap gap-3">
+          <span className="rounded-full border border-white/18 bg-white/10 px-4 py-2 text-sm font-bold text-white/82">
+            Practical roadmap
+          </span>
+          <span className="rounded-full border border-white/18 bg-white/10 px-4 py-2 text-sm font-bold text-white/82">
+            Find nearby institutes
+          </span>
+          <span className="rounded-full border border-yellow-300/35 bg-yellow-300/10 px-4 py-2 text-sm font-black text-yellow-300">
+            6 - 12 months to job ready
+          </span>
+        </div>
+
+        <div className="mt-9 grid gap-3 sm:grid-cols-3">
+          <button
+            type="button"
+            onClick={onTakeQuiz}
+            className="rounded-2xl bg-gradient-to-r from-brand-600 to-pink-500 px-5 py-4 text-left font-heading text-lg font-black text-white transition hover:from-brand hover:to-pink-500"
+          >
+            Take Career Quiz →
+          </button>
+          <button
+            type="button"
+            onClick={onFindInstitute}
+            className="rounded-2xl border border-white/25 bg-white/8 px-5 py-4 text-left font-heading text-lg font-black text-white transition hover:bg-white/14"
+          >
+            Find Institute →
+          </button>
+          <button
+            type="button"
+            onClick={onFindRoadmap}
+            className="rounded-2xl border border-white/25 bg-white/8 px-5 py-4 text-left font-heading text-lg font-black text-white transition hover:bg-white/14"
+          >
+            Find Roadmap →
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -1372,7 +1446,7 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
   const params = useParams();
   const slug = propSlug || params.slug;
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const [career, setCareer] = useState(null);
   const [report, setReport] = useState(null); // AI roadmap data { stages, totalDuration }
@@ -1382,6 +1456,7 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
   const [errorMsg, setErrorMsg] = useState("");
   const [generating, setGenerating] = useState(false);
   const [tab, setTab] = useState("report");
+  const reportRef = useRef(null);
 
   // 1) Load base career info + sync Roadmap/Institutes tabs
   useEffect(() => {
@@ -1628,13 +1703,26 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
     navigate(`/colleges?course=${encodeURIComponent(course)}&auto=1`);
   };
 
+  const startQuiz = () => {
+    navigate(isAuthenticated ? "/dashboard" : "/signin");
+  };
+
+  const openRoadmap = () => {
+    setTab("report");
+    window.setTimeout(() => {
+      reportRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 60);
+  };
+
+  const withPublicShell = (node) => (embedded ? node : <PublicShell>{node}</PublicShell>);
+
   if (status === "loading" && !report) {
     const title = career?.title || slug.split("-").map((w) => w[0]?.toUpperCase() + w.slice(1)).join(" ");
-    return <LoadingSkeleton title={title} />;
+    return withPublicShell(<LoadingSkeleton title={title} />);
   }
 
   if (status === "error") {
-    return <ErrorState message={errorMsg} onRetry={retry} />;
+    return withPublicShell(<ErrorState message={errorMsg} onRetry={retry} />);
   }
 
   const matchScore = 89;
@@ -1642,27 +1730,32 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
   const salaryMax = asNumber(career?.avgSalary?.max, 15);
   const demand = career?.demand || "High";
 
-  return (
+  return withPublicShell(
     <div className={embedded ? "" : "min-h-screen bg-[#F8F6FF]"}>
       {!embedded && <SEO title={`${career?.title || "Career"} - Latecomers AI Report`} description={`Personalized career report for ${career?.title}.`} path={`/careers/${slug}`} />}
 
-      {/* Sticky back bar — hidden in embedded mode */}
-      {!embedded && (
-        <div className="sticky top-0 z-20 border-b border-line bg-white/95 backdrop-blur">
-          <div className="max-w-6xl mx-auto flex items-center gap-2 px-4 sm:px-6 lg:px-8 py-2.5">
-            <button onClick={() => navigate(-1)} className="p-1.5 -ml-1.5 text-ink"><ArrowLeft size={18} /></button>
-            <p className="flex-1 font-heading font-bold text-sm sm:text-base text-ink truncate">{career?.title}</p>
-            {generating && (
-              <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs text-brand font-bold">
-                <Sparkles size={12} className="animate-pulse" /> Updating…
-              </span>
-            )}
-          </div>
-        </div>
-      )}
-
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-4 sm:space-y-6">
+        {!embedded && (
+          <nav className="text-sm font-semibold text-muted2">
+            <button type="button" onClick={() => navigate("/")} className="hover:text-brand">Home</button>
+            <span className="px-2">›</span>
+            <button type="button" onClick={() => navigate("/careers-explore")} className="hover:text-brand">
+              {career?.category || "Careers"}
+            </button>
+            <span className="px-2">›</span>
+            <span className="font-black text-brand">{career?.title}</span>
+          </nav>
+        )}
+
         {/* Hero / report header */}
+        {!embedded ? (
+          <PublicCareerHero
+            career={career}
+            onTakeQuiz={startQuiz}
+            onFindInstitute={openInstituteFinder}
+            onFindRoadmap={openRoadmap}
+          />
+        ) : (
         <div className="rounded-2xl border border-line bg-white p-4 sm:p-6 shadow-sm">
           <div className="grid gap-4 lg:grid-cols-[1fr_auto] items-start">
             <div>
@@ -1684,6 +1777,7 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
             <StatCard icon={Clock} label="Time to Job Ready" value="6 - 12 Months" sub="With consistent effort" color="#5B4FE9" />
           </div>
         </div>
+        )}
 
         {/* Tab strip */}
         <div className="no-print rounded-2xl border border-line bg-white p-1.5 flex gap-1 overflow-x-auto no-scrollbar">
@@ -1907,7 +2001,7 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
 
         {/* REPORT tab (default) */}
         {tab === "report" && (
-          <div className="space-y-4 sm:space-y-6">
+          <div ref={reportRef} className="scroll-mt-28 space-y-4 sm:space-y-6">
 
         <div className="rounded-2xl border border-line bg-[#EEE9F8] p-3 sm:p-4">
           <RoleReportAccordion career={career} sections={roleReportSections} onFindInstitutes={openInstituteFinder} />
