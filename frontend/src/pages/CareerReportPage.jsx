@@ -2000,7 +2000,7 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
         )}
 
         {/* REPORT tab (default) */}
-        {tab === "report" && (
+        {false && tab === "report" && (
           <div ref={reportRef} className="scroll-mt-28 space-y-4 sm:space-y-6">
 
         <div className="rounded-2xl border border-line bg-[#EEE9F8] p-3 sm:p-4">
