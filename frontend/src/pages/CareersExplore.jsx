@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowRight, Briefcase, Search, X } from "lucide-react";
 import PublicShell from "../components/PublicShell";
 import { api } from "../lib/api";
@@ -18,7 +18,7 @@ export default function CareersExplore() {
   const [query, setQuery] = useState(initialSearch);
 
   useEffect(() => {
-    api.get("/careers?limit=48").then(({ data }) => setCareers(data)).catch(() => setCareers([]));
+    api.get("/careers?limit=240").then(({ data }) => setCareers(data)).catch(() => setCareers([]));
   }, []);
 
   useEffect(() => {
@@ -30,36 +30,99 @@ export default function CareersExplore() {
     [fieldKey]
   );
 
-  // When a category is selected, use its curated role list (subsections + roles).
-  // Otherwise show backend careers (filtered by search query).
-  const categoryRoles = useMemo(() => {
-    if (!activeCategory) return [];
+  const catalogRoles = useMemo(() => {
+    const seen = new Set();
     const out = [];
-    activeCategory.subsections.forEach((sub) => {
-      sub.roles.forEach((role) => out.push({ role, group: sub.title }));
+    CAREER_CATEGORIES.forEach((cat) => {
+      cat.subsections.forEach((sub) => {
+        sub.roles.forEach((role) => {
+          const key = role.toLowerCase();
+          if (seen.has(key)) return;
+          seen.add(key);
+          out.push({
+            title: role,
+            role,
+            group: sub.title,
+            category: cat.label,
+            description: `${sub.title} career path under ${cat.label}.`,
+          });
+        });
+      });
     });
     return out;
-  }, [activeCategory]);
+  }, []);
+
+  const categoryRoles = useMemo(() => {
+    if (!activeCategory) return [];
+    return catalogRoles.filter((item) => item.category === activeCategory.label);
+  }, [activeCategory, catalogRoles]);
+
+  const mergedCareers = useMemo(() => {
+    const byTitle = new Map();
+    catalogRoles.forEach((item) => byTitle.set(item.title.toLowerCase(), item));
+    careers.forEach((career) => {
+      const title = String(career.title || "").trim();
+      if (!title) return;
+      const existing = byTitle.get(title.toLowerCase()) || {};
+      byTitle.set(title.toLowerCase(), {
+        ...existing,
+        ...career,
+        title,
+        role: title,
+        group: existing.group || career.category || career.field || "Career",
+        category: existing.category || career.category || career.field || "Career",
+        description: career.description || existing.description || "Explore salary, skills, demand, and roadmap.",
+      });
+    });
+    return Array.from(byTitle.values()).sort((a, b) => a.title.localeCompare(b.title));
+  }, [catalogRoles, careers]);
 
   const filteredCategoryRoles = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return categoryRoles;
-    return categoryRoles.filter((r) => r.role.toLowerCase().includes(q) || r.group.toLowerCase().includes(q));
+    return categoryRoles.filter((r) =>
+      [r.role, r.group, r.category].join(" ").toLowerCase().includes(q)
+    );
   }, [categoryRoles, query]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return careers;
-    return careers.filter((career) =>
-      [career.title, career.category, ...(career.tags || [])].join(" ").toLowerCase().includes(q)
+    if (!q) return mergedCareers;
+    return mergedCareers.filter((career) =>
+      [career.title, career.category, career.group, ...(career.tags || [])].join(" ").toLowerCase().includes(q)
     );
-  }, [careers, query]);
+  }, [mergedCareers, query]);
 
   const clearField = () => {
     const next = new URLSearchParams(searchParams);
     next.delete("field");
     setSearchParams(next, { replace: true });
   };
+
+  const openReport = (title) => {
+    openCareerReportByTitle(title, navigate);
+  };
+
+  const renderRoleCard = (career) => (
+    <button
+      key={career.slug || career.title}
+      type="button"
+      onClick={() => openReport(career.title || career.role)}
+      className="surface-gradient border border-line rounded-xl sm:rounded-2xl p-3 sm:p-4 hover:shadow-soft transition text-left"
+    >
+      <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-brand-50 text-brand flex items-center justify-center">
+        <Briefcase size={16} />
+      </div>
+      <h2 className="font-heading font-bold text-xs sm:text-sm text-ink mt-2 sm:mt-3 leading-tight">{career.title || career.role}</h2>
+      <p className="text-[10px] sm:text-xs text-muted2 mt-1 line-clamp-2">
+        {career.description || career.group || "Explore salary, skills, demand, and roadmap."}
+      </p>
+      <div className="mt-2 sm:mt-3 flex items-center justify-between text-[11px] sm:text-xs">
+        <span className="font-semibold text-ink">Rs {career.avgSalary?.min || 3}-{career.avgSalary?.max || 12}L</span>
+        <span className="inline-flex items-center gap-1 text-brand font-semibold">View <ArrowRight size={12} /></span>
+      </div>
+    </button>
+  );
 
   return (
     <PublicShell>
@@ -75,7 +138,9 @@ export default function CareersExplore() {
           itemListSchema(
             "Career options and course roadmaps in India",
             "Practical career and course options for students, graduates, BPO workers, and career switchers.",
-            (activeCategory ? filteredCategoryRoles.slice(0, 24).map((r) => ({ name: r.role, path: `/careers-explore?search=${encodeURIComponent(r.role)}` })) : filtered.slice(0, 24).map((career) => ({ name: career.title, path: `/careers/${career.slug}` })))
+            (activeCategory ? filteredCategoryRoles : filtered)
+              .slice(0, 24)
+              .map((career) => ({ name: career.title || career.role, path: `/careers-explore?search=${encodeURIComponent(career.title || career.role)}` }))
           ),
         ]}
       />
@@ -88,7 +153,7 @@ export default function CareersExplore() {
             </h1>
             <p className="text-muted2 mt-2 max-w-2xl text-sm sm:text-base">
               {activeCategory
-                ? `Browse roles under ${activeCategory.label} — tap any role to search related info.`
+                ? `Browse roles under ${activeCategory.label} - tap any role to generate a detailed report.`
                 : "Browse careers across technology, operations, business, healthcare, trades, creative work, and more."}
             </p>
           </div>
@@ -125,23 +190,7 @@ export default function CareersExplore() {
                 <div key={sub.title}>
                   <h3 className="font-heading font-black text-sm sm:text-base text-ink mb-3">{sub.title}</h3>
                   <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4">
-                    {subRoles.map((role) => (
-                      <button
-                        key={role}
-                        type="button"
-                        onClick={() => openCareerReportByTitle(role, navigate)}
-                        className="surface-gradient border border-line rounded-xl sm:rounded-2xl p-3 sm:p-4 hover:shadow-soft transition text-left"
-                      >
-                        <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-brand-50 text-brand flex items-center justify-center">
-                          <Briefcase size={16} />
-                        </div>
-                        <h2 className="font-heading font-bold text-xs sm:text-sm text-ink mt-2 sm:mt-3 leading-tight">{role}</h2>
-                        <p className="text-[10px] sm:text-xs text-muted2 mt-1 line-clamp-2">{sub.title}</p>
-                        <div className="mt-2 sm:mt-3 flex items-center justify-end text-[11px] sm:text-xs">
-                          <span className="inline-flex items-center gap-1 text-brand font-semibold">View <ArrowRight size={12} /></span>
-                        </div>
-                      </button>
-                    ))}
+                    {subRoles.map((role) => renderRoleCard({ title: role, role, group: sub.title, category: activeCategory.label }))}
                   </div>
                 </div>
               );
@@ -149,19 +198,7 @@ export default function CareersExplore() {
           </div>
         ) : (
           <div className="mt-5 sm:mt-8 grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4">
-            {filtered.map((career) => (
-              <Link key={career.slug} to={`/careers/${career.slug}`} className="surface-gradient border border-line rounded-xl sm:rounded-2xl p-3 sm:p-4 hover:shadow-soft transition">
-                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-brand-50 text-brand flex items-center justify-center">
-                  <Briefcase size={16} />
-                </div>
-                <h2 className="font-heading font-bold text-xs sm:text-sm text-ink mt-2 sm:mt-3 leading-tight">{career.title}</h2>
-                <p className="text-[10px] sm:text-xs text-muted2 mt-1 line-clamp-2">{career.description || "Explore salary, skills, demand, and roadmap."}</p>
-                <div className="mt-2 sm:mt-3 flex items-center justify-between text-[11px] sm:text-xs">
-                  <span className="font-semibold text-ink">₹{career.avgSalary?.min || 3}-{career.avgSalary?.max || 12}L</span>
-                  <span className="inline-flex items-center gap-1 text-brand font-semibold">View <ArrowRight size={12} /></span>
-                </div>
-              </Link>
-            ))}
+            {filtered.map(renderRoleCard)}
           </div>
         )}
       </main>
