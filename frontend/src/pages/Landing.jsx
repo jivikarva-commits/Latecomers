@@ -116,13 +116,16 @@ export default function Landing() {
               + For late starters, BPO workers and confused graduates
             </span>
             <h1 className="mt-4 font-heading text-[1.7rem] font-black leading-[1.12] text-ink min-[390px]:text-[1.85rem] sm:mt-6 sm:text-[2.4rem] sm:leading-[1.08] lg:text-[2.65rem] xl:text-[2.9rem]">
+              {/* Visually-hidden keyword phrase for SEO; screen readers + Google see it,
+                  visual users see the punchy brand line below. */}
+              <span className="sr-only">AI Career Guidance for Late Starters in India — </span>
               You are not late.
               <span className="block">You just need the{" "}
                 <span className="inline whitespace-nowrap text-brand underline decoration-pink-400 decoration-4 underline-offset-4">right career map.</span>
               </span>
             </h1>
             <p className="mt-3 max-w-xl text-[13px] leading-relaxed text-muted2 sm:mt-4 sm:text-sm">
-              Latecomers AI helps you find a practical career path, understand why it fits, and follow a step-by-step roadmap to move from confusion to action.
+              Latecomers AI is a <strong className="font-bold text-ink">free AI career guidance platform for India</strong> — helping BPO workers, confused graduates, and career switchers find a practical career path, understand why it fits, and follow a step-by-step roadmap to move from confusion to action.
             </p>
             <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-6 sm:gap-3">
               <button onClick={startJourney} className="rounded-lg bg-brand px-4 py-2.5 text-xs font-black text-white sm:px-5 sm:py-3 sm:text-sm">
