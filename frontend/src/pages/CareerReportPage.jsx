@@ -34,6 +34,7 @@ import { toast } from "sonner";
 import SEO from "../components/SEO";
 import BrandClockMark from "../components/BrandClockMark";
 import PublicShell from "../components/PublicShell";
+import AppLayout from "../components/layout/AppLayout";
 
 const SECTION_ORDER = ["education", "skills", "courses", "tools", "projects", "placement", "jobs"];
 
@@ -1809,15 +1810,22 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
     }, 60);
   };
 
-  const withPublicShell = (node) => (embedded ? node : <PublicShell>{node}</PublicShell>);
+  // Auth-aware shell: logged-in users see the in-app dashboard layout (sidebar +
+  // bottom tabs); public visitors see the marketing PublicShell. Embedded usage
+  // (e.g. Roadmap page) bypasses both since the host page already provides chrome.
+  const withShell = (node) => {
+    if (embedded) return node;
+    if (isAuthenticated) return <AppLayout>{node}</AppLayout>;
+    return <PublicShell>{node}</PublicShell>;
+  };
 
   if (status === "loading" && !report) {
     const title = career?.title || slug.split("-").map((w) => w[0]?.toUpperCase() + w.slice(1)).join(" ");
-    return withPublicShell(<LoadingSkeleton title={title} />);
+    return withShell(<LoadingSkeleton title={title} />);
   }
 
   if (status === "error") {
-    return withPublicShell(<ErrorState message={errorMsg} onRetry={retry} />);
+    return withShell(<ErrorState message={errorMsg} onRetry={retry} />);
   }
 
   const matchScore = 89;
@@ -1825,7 +1833,7 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
   const salaryMax = asNumber(career?.avgSalary?.max, 15);
   const demand = career?.demand || "High";
 
-  return withPublicShell(
+  return withShell(
     <div className={embedded ? "" : "min-h-screen bg-[#F8F6FF]"}>
       {!embedded && <SEO title={`${career?.title || "Career"} - Latecomers AI Report`} description={`Personalized career report for ${career?.title}.`} path={`/careers/${slug}`} />}
 

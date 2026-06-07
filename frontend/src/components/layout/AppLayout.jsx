@@ -37,7 +37,7 @@ function MobileHeader() {
   );
 }
 
-export default function AppLayout() {
+export default function AppLayout({ children }) {
   const location = useLocation();
   const isOnboarding = location.pathname.startsWith("/onboarding");
   const isChat = location.pathname.startsWith("/ai-chat");
@@ -49,7 +49,7 @@ export default function AppLayout() {
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(560px_260px_at_12%_0%,rgba(124,44,242,0.09),transparent_58%),radial-gradient(500px_240px_at_100%_8%,rgba(236,72,153,0.06),transparent_56%)]" />
           {!isOnboarding && !isChat && <MobileHeader />}
           <div className="relative">
-            <Outlet />
+            {children !== undefined ? children : <Outlet />}
           </div>
         </main>
       </div>
