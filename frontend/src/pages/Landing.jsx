@@ -15,7 +15,7 @@ import {
 import PublicShell from "../components/PublicShell";
 import { useAuth } from "../context/AuthContext";
 import SEO from "../components/SEO";
-import { faqSchema, organizationSchema, softwareAppSchema, websiteSchema } from "../lib/seoSchemas";
+import { faqSchema, howToSchema, organizationSchema, softwareAppSchema, websiteSchema } from "../lib/seoSchemas";
 import { openCareerReportByTitle } from "../lib/careerNavigation";
 
 const stats = [
@@ -92,18 +92,30 @@ export default function Landing() {
           organizationSchema(),
           websiteSchema(),
           softwareAppSchema(),
+          howToSchema(
+            "From confused to career-ready in 4 steps",
+            steps.map(([title, text]) => ({ name: title, text }))
+          ),
           faqSchema([
+            {
+              question: "How can I switch career from BPO to IT in India?",
+              answer: "Start with a career assessment to find an IT path that fits your background (support, QA, cybersecurity, or cloud), then follow a step-by-step roadmap of certifications and projects. Latecomers AI builds this roadmap free based on your profile.",
+            },
+            {
+              question: "What career options are available after a BPO job?",
+              answer: "BPO experience transfers into customer success, digital marketing, data analytics, HR, corporate training, and IT support. Latecomers AI matches you to the best-fit option and gives a practical roadmap.",
+            },
+            {
+              question: "Is there free career guidance in India?",
+              answer: "Yes. Latecomers AI offers a free AI-powered career quiz and personalised roadmap for late starters, graduates, and career switchers in India, with paid plans starting at Rs 9 for detailed results.",
+            },
+            {
+              question: "How do I change career after 25 or 30 in India?",
+              answer: "It is not too late. Pick a path that uses your existing skills, add one in-demand skill, build a small portfolio in 30-90 days, and apply. Latecomers AI gives you a personalised, age-appropriate roadmap.",
+            },
             {
               question: "Who is Latecomers AI for?",
               answer: "Latecomers AI is for BPO workers, confused graduates, students, late starters, and career switchers in India who need practical career direction.",
-            },
-            {
-              question: "How much does Latecomers AI start at?",
-              answer: "Latecomers AI plans start at Rs 9 for basic career results.",
-            },
-            {
-              question: "What does Latecomers AI provide?",
-              answer: "Latecomers AI provides career matching, practical roadmaps, institute search, scholarship guidance, mock interviews, and AI career chat.",
             },
           ]),
         ]}

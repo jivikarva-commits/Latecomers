@@ -30,7 +30,7 @@ function absoluteUrl(path) {
 export default function SEO({
   title,
   description,
-  image = "/brand/latecomers-logo.png",
+  image = "/brand/og-share.png",
   type = "website",
   path,
   robots = "index,follow",

@@ -8,16 +8,19 @@ export function organizationSchema() {
     name: SITE_NAME,
     alternateName: ["Latecomers", "Latecomers.in"],
     url: SITE_URL,
-    // Google Knowledge Panel / SERP logo requires a near-square image (≥112x112,
-    // PNG/JPG, file ≤5MB). Square version generated from the wide wordmark logo.
+    // Google logo guidelines: square-ish, PNG/JPG, on-domain, not transparent.
+    // Google's docs recommend the logo image be served at a usable size; we use a
+    // dedicated 512x512 white-background PNG and declare matching dimensions.
     logo: {
       "@type": "ImageObject",
-      url: absoluteUrl("/brand/latecomers-logo-square.png"),
-      width: 1024,
-      height: 1024,
+      "@id": `${SITE_URL}/#logo`,
+      url: absoluteUrl("/brand/latecomers-logo-512.png"),
+      contentUrl: absoluteUrl("/brand/latecomers-logo-512.png"),
+      width: 512,
+      height: 512,
       caption: SITE_NAME,
     },
-    image: absoluteUrl("/brand/latecomers-logo-square.png"),
+    image: { "@id": `${SITE_URL}/#logo` },
     description:
       "AI-powered career guidance for late starters, BPO workers, confused graduates, and career switchers in India.",
     foundingDate: "2025",
@@ -36,8 +39,11 @@ export function websiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${SITE_URL}/#website`,
     name: SITE_NAME,
     url: SITE_URL,
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    inLanguage: "en-IN",
     potentialAction: {
       "@type": "SearchAction",
       target: `${SITE_URL}/careers-explore?q={search_term_string}`,
@@ -140,6 +146,26 @@ export function faqSchema(items) {
         "@type": "Answer",
         text: item.answer,
       },
+    })),
+  };
+}
+
+// HowTo schema for the homepage "From confused to career-ready in 4 steps".
+// Eligible for the HowTo rich result (numbered steps) in Google.
+export function howToSchema(name, steps) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name,
+    description:
+      "How to find a practical career path in India using Latecomers AI — from a quick quiz to a step-by-step roadmap.",
+    totalTime: "PT5M",
+    step: steps.map((s, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+      url: `${SITE_URL}/#step-${i + 1}`,
     })),
   };
 }
