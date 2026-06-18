@@ -150,6 +150,33 @@ export function faqSchema(items) {
   };
 }
 
+// Occupation schema for a career guide page — eligible for Google's
+// occupation/career rich data. Salary in INR per year.
+export function occupationSchema(guide) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Occupation",
+    name: `${guide.title} (India)`,
+    description: guide.intro,
+    occupationLocation: { "@type": "Country", name: "India" },
+    estimatedSalary: {
+      "@type": "MonetaryAmountDistribution",
+      name: "base",
+      currency: "INR",
+      duration: "P1Y",
+      median: Math.round(((guide.salaryMin + guide.salaryMax) / 2) * 100000),
+      percentile10: Math.round(guide.salaryMin * 100000),
+      percentile90: Math.round(guide.salaryMax * 100000),
+    },
+    skills: guide.topSkills.join(", "),
+    responsibilities: guide.intro,
+    educationRequirements: guide.degreeNeeded
+      ? "A relevant degree or qualifying exam is typically required."
+      : "No specific degree required; skills and portfolio matter most.",
+    experienceRequirements: "Entry level — suitable for freshers and career switchers.",
+  };
+}
+
 // HowTo schema for the homepage "From confused to career-ready in 4 steps".
 // Eligible for the HowTo rich result (numbered steps) in Google.
 export function howToSchema(name, steps) {

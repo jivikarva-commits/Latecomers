@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowRight, Briefcase, Search, X } from "lucide-react";
 import PublicShell from "../components/PublicShell";
 import { api } from "../lib/api";
 import SEO from "../components/SEO";
 import { breadcrumbSchema, itemListSchema } from "../lib/seoSchemas";
 import { CAREER_CATEGORIES } from "../data/careerCategories";
+import { CAREER_GUIDES } from "../data/careerGuides";
 import { openCareerReportByTitle } from "../lib/careerNavigation";
 
 export default function CareersExplore() {
@@ -201,6 +202,31 @@ export default function CareersExplore() {
             {filtered.map(renderRoleCard)}
           </div>
         )}
+
+        {/* In-depth career guides — internal links to prerendered SEO pages */}
+        <section className="mt-10 sm:mt-14 border-t border-line pt-8">
+          <p className="text-[10px] sm:text-xs font-bold tracking-[0.25em] text-brand uppercase">In-depth guides</p>
+          <h2 className="font-heading font-extrabold text-xl sm:text-2xl text-ink mt-1.5">Career guides for India — salary, roadmap & skills</h2>
+          <p className="text-muted2 mt-2 max-w-2xl text-sm sm:text-base">
+            Detailed, no-degree-needed guides for India's most in-demand careers. Each covers salary, a month-by-month roadmap, top skills, free courses, and job roles.
+          </p>
+          <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3">
+            {CAREER_GUIDES.map((g) => (
+              <Link
+                key={g.slug}
+                to={`/career-guide/${g.slug}`}
+                className="group flex items-center gap-3 rounded-xl border border-line bg-white p-3 hover:border-brand/40 hover:shadow-soft transition"
+              >
+                <span className="text-xl shrink-0">{g.emoji}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-heading font-bold text-[13px] sm:text-sm text-ink leading-tight truncate">{g.title}</span>
+                  <span className="block text-[11px] text-muted2">₹{g.salaryMin}-{g.salaryMax} LPA · {g.timeline}</span>
+                </span>
+                <ArrowRight size={14} className="text-muted2 group-hover:text-brand shrink-0" />
+              </Link>
+            ))}
+          </div>
+        </section>
       </main>
     </PublicShell>
   );

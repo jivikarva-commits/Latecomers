@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const frontendDir = path.resolve(__dirname, "..");
@@ -208,6 +208,91 @@ for (const post of blogPosts) {
   });
 }
 
+// ---- Career guide pages (programmatic SEO, /career-guide/<slug>) ----
+// Read the JSON sibling (gen-career-guides.mjs emits it) to avoid ESM/CJS interop.
+const careerGuides = JSON.parse(
+  await readFile(path.join(frontendDir, "src/data/careerGuides.json"), "utf8")
+);
+
+for (const g of careerGuides) {
+  const sal = `Rs ${g.salaryMin}-${g.salaryMax} LPA`;
+  const title = `${g.title} Career in India 2026 — Salary, Roadmap & Skills`;
+  const description = `How to become a ${g.title} in India. Salary: ${sal}. Timeline: ${g.timeline}. ${g.degreeNeeded ? "Exam/degree path explained." : "No degree needed."} Free roadmap on Latecomers AI.`;
+  const faqs = [
+    [`How long does it take to become a ${g.title} in India?`, `Most people become job-ready as a ${g.title} in about ${g.timeline} with consistent effort.`],
+    [`What salary does a ${g.title} earn in India?`, `A ${g.title} in India typically earns ${sal} per year, starting around ${g.freshersSalary} for freshers.`],
+    [`Can I become a ${g.title} without a degree in India?`, g.degreeNeeded ? `${g.title} usually needs a relevant degree or qualifying exam, but preparation matters most.` : `Yes. No specific degree is needed — skills like ${g.topSkills.slice(0, 3).join(", ")} and a portfolio matter more.`],
+    [`What skills do I need to become a ${g.title}?`, `The core skills are ${g.topSkills.join(", ")}, all learnable online in about ${g.timeline}.`],
+    [`Which courses are best for ${g.title} in India?`, `Good starting courses include ${g.courses.map((c) => `${c.name} (${c.provider})`).join(", ")}.`],
+  ];
+  const salINR = (v) => Math.round(v * 100000);
+  const bodyHtml = [
+    `<h1>${escapeHtml(g.title)} Career Path in India</h1>`,
+    `<p>${escapeHtml(g.intro)}</p>`,
+    `<h2>${escapeHtml(g.title)} Salary in India</h2>`,
+    `<p>Freshers: ${escapeHtml(g.freshersSalary)}. Average range: ${escapeHtml(sal)}. Market demand: ${escapeHtml(g.growth)}. Time to job-ready: ${escapeHtml(g.timeline)}.</p>`,
+    `<h2>Skills required</h2><ul>${g.topSkills.map((s) => `<li>${escapeHtml(s)}</li>`).join("")}</ul>`,
+    `<h2>How to become a ${escapeHtml(g.title)} — step by step</h2><ol>${g.roadmap.map((r) => `<li><strong>${escapeHtml(r.phase)}:</strong> ${escapeHtml(r.focus)}</li>`).join("")}</ol>`,
+    `<h2>Best courses</h2><ul>${g.courses.map((c) => `<li>${escapeHtml(c.name)} — ${escapeHtml(c.provider)}${c.free ? " (free)" : ""}</li>`).join("")}</ul>`,
+    `<h2>Jobs you can apply for</h2><ul>${g.jobTitles.map((t) => `<li>${escapeHtml(t)}</li>`).join("")}</ul>`,
+    `<h2>Frequently asked questions</h2>${faqs.map(([q, a]) => `<h3>${escapeHtml(q)}</h3><p>${escapeHtml(a)}</p>`).join("")}`,
+    `<h2>Related careers</h2><ul>${(g.related || []).map((rs) => { const rg = careerGuides.find((x) => x.slug === rs); return rg ? `<li><a href="/career-guide/${rg.slug}">${escapeHtml(rg.title)} career in India</a></li>` : ""; }).join("")}</ul>`,
+    `<p><a href="/signin">Take the free career quiz</a> · <a href="/careers-explore">Explore more careers</a></p>`,
+  ].join("");
+
+  routes.push({
+    path: `/career-guide/${g.slug}`,
+    title,
+    description,
+    type: "website",
+    bodyHtml,
+    breadcrumb: ["Home", "Careers", g.title],
+    schema: [
+      {
+        "@context": "https://schema.org",
+        "@type": "Occupation",
+        name: `${g.title} (India)`,
+        description: g.intro,
+        occupationLocation: { "@type": "Country", name: "India" },
+        estimatedSalary: {
+          "@type": "MonetaryAmountDistribution",
+          name: "base",
+          currency: "INR",
+          duration: "P1Y",
+          median: salINR((g.salaryMin + g.salaryMax) / 2),
+          percentile10: salINR(g.salaryMin),
+          percentile90: salINR(g.salaryMax),
+        },
+        skills: g.topSkills.join(", "),
+        educationRequirements: g.degreeNeeded
+          ? "A relevant degree or qualifying exam is typically required."
+          : "No specific degree required; skills and portfolio matter most.",
+        experienceRequirements: "Entry level — suitable for freshers and career switchers.",
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        name: `How to become a ${g.title} in India`,
+        step: g.roadmap.map((r, i) => ({
+          "@type": "HowToStep",
+          position: i + 1,
+          name: r.phase,
+          text: r.focus,
+        })),
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: faqs.map(([q, a]) => ({
+          "@type": "Question",
+          name: q,
+          acceptedAnswer: { "@type": "Answer", text: a },
+        })),
+      },
+    ],
+  });
+}
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -270,7 +355,10 @@ function stripExistingSeo(html) {
 }
 
 function buildStaticRoot(route) {
-  return `<div id="root"><main style="max-width:960px;margin:0 auto;padding:48px 20px;font-family:Arial,sans-serif;color:#061b4f"><p style="color:#0b93c9;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px">Latecomers AI</p><h1>${escapeHtml(route.h1)}</h1><p>${escapeHtml(route.body)}</p><p><a href="/pricing">Start at Rs 9</a> · <a href="/careers-explore">Explore careers</a> · <a href="/blog">Read blog</a></p></main></div>`;
+  const inner = route.bodyHtml
+    ? route.bodyHtml
+    : `<h1>${escapeHtml(route.h1)}</h1><p>${escapeHtml(route.body)}</p><p><a href="/pricing">Start at Rs 9</a> · <a href="/careers-explore">Explore careers</a> · <a href="/blog">Read blog</a></p>`;
+  return `<div id="root"><main style="max-width:960px;margin:0 auto;padding:48px 20px;font-family:Arial,sans-serif;color:#061b4f"><p style="color:#0b93c9;font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px">Latecomers AI</p>${inner}</main></div>`;
 }
 
 const shell = await readFile(path.join(buildDir, "index.html"), "utf8");

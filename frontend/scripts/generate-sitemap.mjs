@@ -21,6 +21,15 @@ const STATIC_URLS = [
   { loc: "/signin", changefreq: "monthly", priority: 0.4 },
 ];
 
+function loadCareerGuideSlugs() {
+  const src = fs.readFileSync(path.join(ROOT, "src/data/careerGuides.js"), "utf8");
+  const slugs = [];
+  const re = /slug:\s*"([^"]+)"/g;
+  let m;
+  while ((m = re.exec(src))) slugs.push(m[1]);
+  return slugs;
+}
+
 function loadBlogPosts() {
   // Parse src/data/blogPosts.js with regex (avoids needing "type":"module" in package.json)
   const src = fs.readFileSync(path.join(ROOT, "src/data/blogPosts.js"), "utf8");
@@ -45,10 +54,15 @@ function urlEntry({ loc, changefreq = "monthly", priority = 0.5, lastmod }) {
 
 async function main() {
   const posts = loadBlogPosts();
+  const careerSlugs = loadCareerGuideSlugs();
   const today = new Date().toISOString().slice(0, 10);
 
   const entries = [
     ...STATIC_URLS.map((u) => urlEntry({ ...u, lastmod: today })),
+    // Career guide pages — high priority, they are dedicated ranking pages
+    ...careerSlugs.map((slug) =>
+      urlEntry({ loc: `/career-guide/${slug}`, changefreq: "monthly", priority: 0.8, lastmod: today })
+    ),
     ...posts.map((p) =>
       urlEntry({
         loc: `/blog/${p.slug}`,
@@ -74,7 +88,7 @@ ${entries.join("\n")}
     try {
       fs.mkdirSync(path.dirname(file), { recursive: true });
       fs.writeFileSync(file, xml);
-      console.log(`[sitemap] Wrote ${posts.length + STATIC_URLS.length} URLs → ${path.relative(ROOT, file)}`);
+      console.log(`[sitemap] Wrote ${entries.length} URLs → ${path.relative(ROOT, file)}`);
     } catch (err) {
       console.warn(`[sitemap] Could not write ${file}:`, err.message);
     }
