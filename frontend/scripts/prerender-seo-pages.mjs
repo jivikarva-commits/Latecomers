@@ -6,14 +6,43 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const frontendDir = path.resolve(__dirname, "..");
 const buildDir = path.join(frontendDir, "build");
 const baseUrl = "https://www.latecomers.in";
-const defaultImage = `${baseUrl}/brand/latecomers-logo.png`;
+// og:image must be the 1200x630 branded share card; the SERP/Knowledge-Panel
+// logo must be a near-square image. These are different assets on purpose.
+const shareImage = `${baseUrl}/brand/og-share.png`;
+const squareLogo = `${baseUrl}/brand/latecomers-logo-512.png`;
+const defaultImage = shareImage;
 
+// This is the Organization schema Googlebot actually reads (prerendered HTML).
+// Must match the client-side organizationSchema() in src/lib/seoSchemas.js:
+// square logo as an ImageObject + sameAs so Google can confirm the brand entity
+// and display the logo instead of a generic globe.
 const orgSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": `${baseUrl}/#organization`,
   name: "Latecomers AI",
+  alternateName: ["Latecomers", "Latecomers.in"],
   url: baseUrl,
-  logo: defaultImage,
+  logo: {
+    "@type": "ImageObject",
+    "@id": `${baseUrl}/#logo`,
+    url: squareLogo,
+    contentUrl: squareLogo,
+    width: 512,
+    height: 512,
+    caption: "Latecomers AI",
+  },
+  image: { "@id": `${baseUrl}/#logo` },
+  description:
+    "AI-powered career guidance for late starters, BPO workers, confused graduates, and career switchers in India.",
+  foundingDate: "2025",
+  areaServed: { "@type": "Country", name: "India" },
+  sameAs: [
+    "https://www.linkedin.com/company/latecomers-ai",
+    "https://x.com/latecomersai",
+    "https://www.instagram.com/latecomers.ai",
+    "https://www.youtube.com/@latecomersai",
+  ],
 };
 
 const routes = [
@@ -199,7 +228,7 @@ for (const post of blogPosts) {
         publisher: {
           "@type": "Organization",
           name: "Latecomers AI",
-          logo: { "@type": "ImageObject", url: defaultImage },
+          logo: { "@type": "ImageObject", url: squareLogo },
         },
         keywords: post.keywords,
       },
