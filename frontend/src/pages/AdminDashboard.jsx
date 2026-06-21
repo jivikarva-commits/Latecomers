@@ -136,10 +136,10 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <Metric icon={Users} label="Total platform users" value={platform.totalUsers || 0} />
-        <Metric icon={CalendarDays} label="Today" value={platform.usersToday || 0} hint={`${platform.loginsToday || 0} logins`} />
-        <Metric icon={CalendarDays} label="This week" value={platform.usersThisWeek || 0} hint={`${platform.loginsThisWeek || 0} logins`} />
-        <Metric icon={CalendarDays} label="This month" value={platform.usersThisMonth || 0} hint={`${platform.loginsThisMonth || 0} logins`} />
+        <Metric icon={Users} label="Total visitors" value={platform.totalVisitors || platform.totalUsers || 0} hint={`${platform.totalUsers || 0} logged-in users`} />
+        <Metric icon={CalendarDays} label="Visitors today" value={platform.visitorsToday || 0} hint={`${platform.usersToday || 0} signups, ${platform.loginsToday || 0} logins`} />
+        <Metric icon={CalendarDays} label="Visitors this week" value={platform.visitorsThisWeek || 0} hint={`${platform.usersThisWeek || 0} signups, ${platform.loginsThisWeek || 0} logins`} />
+        <Metric icon={CalendarDays} label="Visitors this month" value={platform.visitorsThisMonth || 0} hint={`${platform.usersThisMonth || 0} signups, ${platform.loginsThisMonth || 0} logins`} />
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">

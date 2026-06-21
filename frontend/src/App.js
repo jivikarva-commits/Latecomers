@@ -5,6 +5,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "./components/ui/sonner";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AppLayout from "./components/layout/AppLayout";
+import VisitorTracker from "./components/VisitorTracker";
 
 import Landing from "./pages/Landing";
 import About from "./pages/About";
@@ -39,6 +40,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <AuthProvider>
+          <VisitorTracker />
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/signin" element={<SignIn />} />

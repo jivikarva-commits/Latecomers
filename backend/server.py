@@ -17,6 +17,7 @@ from auth_routes import router as auth_router  # noqa: E402
 from data_routes import router as data_router  # noqa: E402
 from ai_routes import router as ai_router  # noqa: E402
 from payment_routes import router as payment_router  # noqa: E402
+from visitor_routes import router as visitor_router  # noqa: E402
 from seed_data import seed  # noqa: E402
 from llm_client import llm_status  # noqa: E402
 from data_routes import CAREER_DETAILS_PROMPT_VERSION  # noqa: E402
@@ -59,6 +60,7 @@ api_router.include_router(auth_router)
 api_router.include_router(data_router)
 api_router.include_router(ai_router)
 api_router.include_router(payment_router)
+api_router.include_router(visitor_router)
 
 app.include_router(api_router)
 

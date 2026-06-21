@@ -118,6 +118,16 @@ def _count_since(items, field, since):
     return count
 
 
+def _unique_since(items, id_field, date_field, since):
+    seen = set()
+    for item in items:
+        dt = _parse_dt(item.get(date_field))
+        value = item.get(id_field)
+        if dt and dt >= since and value:
+            seen.add(value)
+    return len(seen)
+
+
 @router.get("/subscriptions/plans")
 async def list_subscription_plans():
     return {"plans": public_plan_list()}
@@ -313,6 +323,8 @@ async def revenue_dashboard(request: Request, user=Depends(current_user)):
     payments = await db(request).payments.find({}, {"_id": 0}).sort("createdAt", -1).to_list(5000)
     all_users = await db(request).users.find({}, {"_id": 0}).sort("created_at", -1).to_list(5000)
     sessions = await db(request).user_sessions.find({}, {"_id": 0}).sort("created_at", -1).to_list(10000)
+    visitors = await db(request).visitors.find({}, {"_id": 0}).sort("lastSeenAt", -1).to_list(100000)
+    visitor_events = await db(request).visitor_events.find({}, {"_id": 0}).sort("createdAt", -1).to_list(100000)
     users = [item for item in all_users if (item.get("subscription") or {}).get("status") == "active"]
     now = datetime.now(timezone.utc)
 
@@ -426,6 +438,8 @@ async def revenue_dashboard(request: Request, user=Depends(current_user)):
     user_monthly = defaultdict(int)
     login_daily = defaultdict(int)
     login_monthly = defaultdict(int)
+    visitor_daily = defaultdict(int)
+    visitor_monthly = defaultdict(int)
     for item in all_users:
         user_daily[_date_key(item.get("created_at"))] += 1
         user_monthly[_month_key(item.get("created_at"))] += 1
@@ -433,6 +447,10 @@ async def revenue_dashboard(request: Request, user=Depends(current_user)):
         created = session.get("created_at") or session.get("createdAt")
         login_daily[_date_key(created)] += 1
         login_monthly[_month_key(created)] += 1
+    for event in visitor_events:
+        created = event.get("createdAt") or event.get("created_at")
+        visitor_daily[_date_key(created)] += 1
+        visitor_monthly[_month_key(created)] += 1
 
     return {
         "totalMoneyEarned": total_money,
@@ -445,6 +463,11 @@ async def revenue_dashboard(request: Request, user=Depends(current_user)):
         "monthlyRevenue": dict(sorted(monthly.items())),
         "activeUsersByPlan": dict(active_by_plan),
         "platformStats": {
+            "totalVisitors": len(visitors),
+            "totalVisitEvents": len(visitor_events),
+            "visitorsToday": _unique_since(visitor_events, "visitorId", "createdAt", now - timedelta(days=1)),
+            "visitorsThisWeek": _unique_since(visitor_events, "visitorId", "createdAt", now - timedelta(days=7)),
+            "visitorsThisMonth": _unique_since(visitor_events, "visitorId", "createdAt", now - timedelta(days=30)),
             "totalUsers": len(all_users),
             "usersToday": _count_since(all_users, "created_at", now - timedelta(days=1)),
             "usersThisWeek": _count_since(all_users, "created_at", now - timedelta(days=7)),
@@ -459,6 +482,8 @@ async def revenue_dashboard(request: Request, user=Depends(current_user)):
             "monthlyUsers": dict(sorted(user_monthly.items())),
             "dailyLogins": dict(sorted(login_daily.items())),
             "monthlyLogins": dict(sorted(login_monthly.items())),
+            "dailyVisitors": dict(sorted(visitor_daily.items())),
+            "monthlyVisitors": dict(sorted(visitor_monthly.items())),
         },
         "subscribedUsers": subscribed_users,
         "loginUsers": login_users,
