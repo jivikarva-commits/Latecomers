@@ -237,6 +237,45 @@ for (const post of blogPosts) {
   });
 }
 
+// ---- SEO landing pages (keyword pages, /<slug>) ----
+const landingPages = JSON.parse(
+  await readFile(path.join(frontendDir, "src/data/landingPages.json"), "utf8")
+);
+
+for (const lp of landingPages) {
+  const bodyHtml = [
+    `<h1>${escapeHtml(lp.h1)}</h1>`,
+    `<p>${escapeHtml(lp.intro)}</p>`,
+    ...lp.sections.map((s) => [
+      `<h2>${escapeHtml(s.heading)}</h2>`,
+      s.body.map((p) => `<p>${escapeHtml(p)}</p>`).join(""),
+      s.bullets ? `<ul>${s.bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ul>` : "",
+    ].join("")),
+    `<h2>Frequently asked questions</h2>${lp.faqs.map((f) => `<h3>${escapeHtml(f.question)}</h3><p>${escapeHtml(f.answer)}</p>`).join("")}`,
+    `<p><a href="/signin">Take the free career quiz</a> · <a href="/careers-explore">Explore careers</a> · <a href="/career-guide/data-analyst-india">Career guides</a> · <a href="/pricing">Pricing</a></p>`,
+  ].join("");
+
+  routes.push({
+    path: `/${lp.slug}`,
+    title: lp.metaTitle,
+    description: lp.metaDescription,
+    type: "website",
+    bodyHtml,
+    breadcrumb: ["Home", lp.eyebrow],
+    schema: [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: lp.faqs.map((f) => ({
+          "@type": "Question",
+          name: f.question,
+          acceptedAnswer: { "@type": "Answer", text: f.answer },
+        })),
+      },
+    ],
+  });
+}
+
 // ---- Career guide pages (programmatic SEO, /career-guide/<slug>) ----
 // Read the JSON sibling (gen-career-guides.mjs emits it) to avoid ESM/CJS interop.
 const careerGuides = JSON.parse(

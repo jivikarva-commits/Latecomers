@@ -24,6 +24,7 @@ import Careers from "./pages/Careers";
 import CareerDetail from "./pages/CareerDetail";
 import CareerReportPage from "./pages/CareerReportPage";
 import CareerGuide from "./pages/CareerGuide";
+import LandingSEO from "./pages/LandingSEO";
 import Roadmap from "./pages/Roadmap";
 import Colleges from "./pages/Colleges";
 import Scholarships from "./pages/Scholarships";
@@ -52,6 +53,11 @@ function App() {
             <Route path="/onboarding/payment" element={<Pricing />} />
             <Route path="/careers/:slug" element={<CareerReportPage />} />
             <Route path="/career-guide/:slug" element={<CareerGuide />} />
+            <Route path="/career-guidance-india" element={<LandingSEO />} />
+            <Route path="/career-quiz" element={<LandingSEO />} />
+            <Route path="/best-careers-india-2026" element={<LandingSEO />} />
+            <Route path="/confused-about-career" element={<LandingSEO />} />
+            <Route path="/career-roadmap" element={<LandingSEO />} />
             <Route path="/colleges" element={<Colleges />} />
             <Route path="/institutes" element={<Colleges />} />
 

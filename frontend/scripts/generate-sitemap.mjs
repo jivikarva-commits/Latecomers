@@ -19,6 +19,12 @@ const STATIC_URLS = [
   { loc: "/for-institutes", changefreq: "monthly", priority: 0.6 },
   { loc: "/contact", changefreq: "monthly", priority: 0.5 },
   { loc: "/signin", changefreq: "monthly", priority: 0.4 },
+  // SEO keyword landing pages
+  { loc: "/career-guidance-india", changefreq: "weekly", priority: 0.9 },
+  { loc: "/career-quiz", changefreq: "weekly", priority: 0.9 },
+  { loc: "/best-careers-india-2026", changefreq: "weekly", priority: 0.9 },
+  { loc: "/confused-about-career", changefreq: "monthly", priority: 0.8 },
+  { loc: "/career-roadmap", changefreq: "monthly", priority: 0.8 },
 ];
 
 function loadCareerGuideSlugs() {
