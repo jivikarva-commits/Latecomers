@@ -3,7 +3,7 @@ import json
 import os
 import uuid
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Dict
 
 import httpx
@@ -48,13 +48,61 @@ def razorpay_keys():
 
 
 def admin_emails():
-    return {email.strip().lower() for email in os.environ.get("ADMIN_EMAILS", "").split(",") if email.strip()}
+    raw = os.environ.get("ADMIN_EMAILS", "").strip() or "latecomers.in@gmail.com"
+    return {email.strip().lower() for email in raw.split(",") if email.strip()}
 
 
 def require_admin(user: Dict):
     allowed = admin_emails()
     if not allowed or (user.get("email") or "").lower() not in allowed:
         raise HTTPException(403, "Admin access required.")
+
+
+def _parse_dt(value):
+    if isinstance(value, datetime):
+        dt = value
+    elif isinstance(value, str) and value:
+        try:
+            dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        except ValueError:
+            return None
+    else:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
+
+
+def _date_key(value):
+    dt = _parse_dt(value)
+    return dt.date().isoformat() if dt else "unknown"
+
+
+def _month_key(value):
+    dt = _parse_dt(value)
+    return dt.strftime("%Y-%m") if dt else "unknown"
+
+
+def _phone_from_user(user: Dict):
+    profile = user.get("profile") or {}
+    return (
+        user.get("phoneNumber")
+        or user.get("phone")
+        or user.get("mobile")
+        or profile.get("phoneNumber")
+        or profile.get("phone")
+        or profile.get("mobile")
+        or ""
+    )
+
+
+def _count_since(items, field, since):
+    count = 0
+    for item in items:
+        dt = _parse_dt(item.get(field))
+        if dt and dt >= since:
+            count += 1
+    return count
 
 
 @router.get("/subscriptions/plans")
@@ -249,8 +297,11 @@ async def razorpay_webhook(request: Request):
 @router.get("/admin/revenue")
 async def revenue_dashboard(request: Request, user=Depends(current_user)):
     require_admin(user)
-    payments = await db(request).payments.find({}, {"_id": 0}).sort("createdAt", -1).to_list(1000)
-    users = await db(request).users.find({"subscription.status": "active"}, {"_id": 0}).to_list(1000)
+    payments = await db(request).payments.find({}, {"_id": 0}).sort("createdAt", -1).to_list(5000)
+    all_users = await db(request).users.find({}, {"_id": 0}).sort("created_at", -1).to_list(5000)
+    sessions = await db(request).user_sessions.find({}, {"_id": 0}).sort("created_at", -1).to_list(10000)
+    users = [item for item in all_users if (item.get("subscription") or {}).get("status") == "active"]
+    now = datetime.now(timezone.utc)
 
     successful = [p for p in payments if p.get("paymentStatus") == "paid"]
     failed = [p for p in payments if p.get("paymentStatus") in {"failed", "order_failed", "signature_failed"}]
@@ -270,6 +321,79 @@ async def revenue_dashboard(request: Request, user=Depends(current_user)):
         daily[day] += int(p.get("paidAmount") or 0)
         monthly[month] += int(p.get("paidAmount") or 0)
 
+    user_by_id = {item.get("user_id"): item for item in all_users if item.get("user_id")}
+    login_counts = defaultdict(int)
+    last_login = {}
+    active_session_users = set()
+    for session in sessions:
+        uid = session.get("user_id")
+        if not uid:
+            continue
+        login_counts[uid] += 1
+        created = session.get("created_at") or session.get("createdAt")
+        created_dt = _parse_dt(created)
+        if created_dt and (uid not in last_login or created_dt > last_login[uid]):
+            last_login[uid] = created_dt
+        expires_dt = _parse_dt(session.get("expires_at"))
+        if expires_dt and expires_dt >= now:
+            active_session_users.add(uid)
+
+    login_users = []
+    for uid, count in sorted(login_counts.items(), key=lambda item: last_login.get(item[0]) or datetime.min.replace(tzinfo=timezone.utc), reverse=True):
+        item = user_by_id.get(uid) or {}
+        login_users.append(
+            {
+                "userId": uid,
+                "name": item.get("name"),
+                "email": item.get("email"),
+                "mobile": _phone_from_user(item),
+                "loginCount": count,
+                "lastLoginAt": last_login.get(uid).isoformat() if uid in last_login else "",
+                "isActiveSession": uid in active_session_users,
+                "createdAt": item.get("created_at"),
+            }
+        )
+
+    paid_by_user = {}
+    for payment in successful:
+        uid = payment.get("userId") or payment.get("user_id")
+        email = (payment.get("userEmail") or "").lower()
+        key = uid or email
+        if not key:
+            continue
+        current_dt = _parse_dt(payment.get("purchaseDate") or payment.get("updatedAt") or payment.get("createdAt")) or datetime.min.replace(tzinfo=timezone.utc)
+        previous = paid_by_user.get(key)
+        previous_dt = _parse_dt((previous or {}).get("purchaseDate") or (previous or {}).get("updatedAt") or (previous or {}).get("createdAt")) if previous else None
+        if previous is None or current_dt > (previous_dt or datetime.min.replace(tzinfo=timezone.utc)):
+            paid_by_user[key] = payment
+
+    subscribed_users = []
+    for key, payment in sorted(
+        paid_by_user.items(),
+        key=lambda item: _parse_dt(item[1].get("purchaseDate") or item[1].get("updatedAt") or item[1].get("createdAt")) or datetime.min.replace(tzinfo=timezone.utc),
+        reverse=True,
+    ):
+        item = user_by_id.get(payment.get("userId")) or next(
+            (u for u in all_users if (u.get("email") or "").lower() == (payment.get("userEmail") or "").lower()),
+            {},
+        )
+        subscribed_users.append(
+            {
+                "userId": payment.get("userId") or item.get("user_id"),
+                "name": item.get("name"),
+                "email": item.get("email") or payment.get("userEmail"),
+                "mobile": _phone_from_user(item),
+                "plan": payment.get("plan"),
+                "planName": payment.get("selectedPlanName") or (item.get("subscription") or {}).get("planName"),
+                "paidAmount": payment.get("paidAmount"),
+                "originalPrice": payment.get("originalPrice"),
+                "paymentStatus": payment.get("paymentStatus"),
+                "purchaseDate": payment.get("purchaseDate") or payment.get("updatedAt") or payment.get("createdAt"),
+                "subscription": item.get("subscription"),
+                "usage": item.get("usage"),
+            }
+        )
+
     for item in users:
         active_by_plan[item.get("subscription", {}).get("planName") or "Unknown"] += 1
 
@@ -277,6 +401,7 @@ async def revenue_dashboard(request: Request, user=Depends(current_user)):
         {
             "userId": item.get("user_id"),
             "email": item.get("email"),
+            "mobile": _phone_from_user(item),
             "name": item.get("name"),
             "subscription": item.get("subscription"),
             "usage": item.get("usage"),
@@ -284,15 +409,46 @@ async def revenue_dashboard(request: Request, user=Depends(current_user)):
         for item in users
     ]
 
+    user_daily = defaultdict(int)
+    user_monthly = defaultdict(int)
+    login_daily = defaultdict(int)
+    login_monthly = defaultdict(int)
+    for item in all_users:
+        user_daily[_date_key(item.get("created_at"))] += 1
+        user_monthly[_month_key(item.get("created_at"))] += 1
+    for session in sessions:
+        created = session.get("created_at") or session.get("createdAt")
+        login_daily[_date_key(created)] += 1
+        login_monthly[_month_key(created)] += 1
+
     return {
         "totalMoneyEarned": total_money,
         "totalPayments": len(payments),
         "successfulPayments": len(successful),
         "failedPayments": len(failed),
+        "fullySubscribedUsers": len(paid_by_user),
         "revenueByPlan": dict(by_plan),
         "dailyRevenue": dict(sorted(daily.items())),
         "monthlyRevenue": dict(sorted(monthly.items())),
         "activeUsersByPlan": dict(active_by_plan),
+        "platformStats": {
+            "totalUsers": len(all_users),
+            "usersToday": _count_since(all_users, "created_at", now - timedelta(days=1)),
+            "usersThisWeek": _count_since(all_users, "created_at", now - timedelta(days=7)),
+            "usersThisMonth": _count_since(all_users, "created_at", now - timedelta(days=30)),
+            "totalLoginSessions": len(sessions),
+            "distinctLoggedInUsers": len(login_counts),
+            "activeSessions": len(active_session_users),
+            "loginsToday": _count_since(sessions, "created_at", now - timedelta(days=1)),
+            "loginsThisWeek": _count_since(sessions, "created_at", now - timedelta(days=7)),
+            "loginsThisMonth": _count_since(sessions, "created_at", now - timedelta(days=30)),
+            "dailyUsers": dict(sorted(user_daily.items())),
+            "monthlyUsers": dict(sorted(user_monthly.items())),
+            "dailyLogins": dict(sorted(login_daily.items())),
+            "monthlyLogins": dict(sorted(login_monthly.items())),
+        },
+        "subscribedUsers": subscribed_users,
+        "loginUsers": login_users,
         "users": user_details,
         "paymentHistory": payments[:100],
         "generatedAt": datetime.now(timezone.utc).isoformat(),

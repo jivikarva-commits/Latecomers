@@ -9,6 +9,9 @@ import { toast } from "sonner";
 import BrandClockMark from "../components/BrandClockMark";
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const ADMIN_EMAIL = "latecomers.in@gmail.com";
+
+const isAdminUser = (item) => (item?.email || "").toLowerCase() === ADMIN_EMAIL;
 
 export default function SignIn() {
   const { user, setUser, refresh } = useAuth();
@@ -48,7 +51,11 @@ export default function SignIn() {
         }
 
         // Use React Router navigate instead of window.location for SPA navigation
-        const dest = data.user && !data.user.onboarded ? "/onboarding" : "/dashboard";
+        const dest = isAdminUser(data.user)
+          ? "/admin"
+          : data.user && !data.user.onboarded
+            ? "/onboarding"
+            : "/dashboard";
         navigate(dest, { replace: true });
       } catch (e) {
         const detail = e?.response?.data?.detail || "Sign-in failed. Please try again.";
@@ -99,7 +106,7 @@ export default function SignIn() {
 
   // Early return AFTER all hooks
   if (user) {
-    navigate("/dashboard", { replace: true });
+    navigate(isAdminUser(user) ? "/admin" : "/dashboard", { replace: true });
     return null;
   }
 
