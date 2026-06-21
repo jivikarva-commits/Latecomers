@@ -51,12 +51,23 @@ def admin_emails():
     raw = os.environ.get("ADMIN_EMAILS", "").strip() or "latecomers.in@gmail.com"
     allowed = {email.strip().lower() for email in raw.split(",") if email.strip()}
     allowed.add("latecomers.in@gmail.com")
-    return allowed
+    allowed.add("latecomersin@gmail.com")
+    return {_normalize_email(email) for email in allowed}
+
+
+def _normalize_email(email: str):
+    email = (email or "").strip().lower()
+    if "@" not in email:
+        return email
+    local, domain = email.split("@", 1)
+    if domain in {"gmail.com", "googlemail.com"}:
+        return f"{local.replace('.', '')}@gmail.com"
+    return email
 
 
 def require_admin(user: Dict):
     allowed = admin_emails()
-    if not allowed or (user.get("email") or "").lower() not in allowed:
+    if not allowed or _normalize_email(user.get("email")) not in allowed:
         raise HTTPException(403, "Admin access required.")
 
 

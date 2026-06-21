@@ -11,7 +11,16 @@ import BrandClockMark from "../components/BrandClockMark";
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const ADMIN_EMAIL = "latecomers.in@gmail.com";
 
-const isAdminUser = (item) => (item?.email || "").toLowerCase() === ADMIN_EMAIL;
+const normalizeEmail = (email = "") => {
+  const clean = email.trim().toLowerCase();
+  const [local, domain] = clean.split("@");
+  if ((domain === "gmail.com" || domain === "googlemail.com") && local) {
+    return `${local.replace(/\./g, "")}@gmail.com`;
+  }
+  return clean;
+};
+
+const isAdminUser = (item) => normalizeEmail(item?.email) === normalizeEmail(ADMIN_EMAIL);
 
 export default function SignIn() {
   const { user, setUser, refresh } = useAuth();

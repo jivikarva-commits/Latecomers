@@ -3,7 +3,16 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const ADMIN_EMAIL = "latecomers.in@gmail.com";
-const isAdminUser = (user) => (user?.email || "").toLowerCase() === ADMIN_EMAIL;
+const normalizeEmail = (email = "") => {
+  const clean = email.trim().toLowerCase();
+  const [local, domain] = clean.split("@");
+  if ((domain === "gmail.com" || domain === "googlemail.com") && local) {
+    return `${local.replace(/\./g, "")}@gmail.com`;
+  }
+  return clean;
+};
+
+const isAdminUser = (user) => normalizeEmail(user?.email) === normalizeEmail(ADMIN_EMAIL);
 
 export default function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
