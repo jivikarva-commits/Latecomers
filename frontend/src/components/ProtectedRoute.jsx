@@ -2,6 +2,9 @@ import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+const ADMIN_EMAIL = "latecomers.in@gmail.com";
+const isAdminUser = (user) => (user?.email || "").toLowerCase() === ADMIN_EMAIL;
+
 export default function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
   const location = useLocation();
@@ -14,18 +17,21 @@ export default function ProtectedRoute({ children }) {
     );
   }
 
-  // Not logged in → sign in
   if (!user) {
     return <Navigate to="/signin" state={{ from: location }} replace />;
   }
 
-  // Logged in but profile (name/gender/phone) not completed → force profile setup
-  // (allow access to /profile-setup itself so they can complete it)
+  if (isAdminUser(user)) {
+    if (location.pathname !== "/admin") {
+      return <Navigate to="/admin" replace />;
+    }
+    return children;
+  }
+
   if (!user.isProfileCompleted && location.pathname !== "/profile-setup") {
     return <Navigate to="/profile-setup" replace />;
   }
 
-  // Profile complete but onboarding (quiz) not completed → force onboarding
   if (user.isProfileCompleted && !user.onboarded && location.pathname !== "/onboarding") {
     return <Navigate to="/onboarding" replace />;
   }
