@@ -36,6 +36,11 @@ const orgSchema = {
   description:
     "AI-powered career guidance for late starters, BPO workers, confused graduates, and career switchers in India.",
   foundingDate: "2025",
+  founder: {
+    "@type": "Person",
+    name: "Gokul Karvande",
+    jobTitle: "Founder & AI/ML Developer",
+  },
   areaServed: { "@type": "Country", name: "India" },
   sameAs: [
     "https://www.linkedin.com/company/latecomers-ai",
@@ -143,94 +148,52 @@ const routes = [
   },
 ];
 
-const blogPosts = [
-  {
-    slug: "career-after-bpo-in-india",
-    title: "Career after BPO in India: practical paths that use your real experience",
-    description:
-      "BPO experience can become customer success, sales, operations, QA, data analytics, or team leadership when you translate it correctly.",
-    keywords: "career after BPO, BPO career switch, customer success jobs India",
-  },
-  {
-    slug: "best-skills-to-learn-in-2026-india",
-    title: "Best skills to learn in 2026 in India if you want a better career",
-    description:
-      "A practical guide to choosing skills that match hiring demand, your background, and realistic career outcomes in India.",
-    keywords: "best skills 2026 India, career skills, high income skills",
-  },
-  {
-    slug: "career-switch-at-30-india",
-    title: "Career switch at 30 in India: how to restart without feeling behind",
-    description:
-      "Switching careers at 30 is possible when you choose a practical target role, reuse your experience, and build proof.",
-    keywords: "career switch at 30 India, restart career, career change",
-  },
-  {
-    slug: "best-careers-after-bcom",
-    title: "Best careers after BCom for practical growth in India",
-    description:
-      "Explore realistic career options after BCom including finance, analytics, accounting, business development, and digital roles.",
-    keywords: "careers after BCom, BCom jobs India, commerce careers",
-  },
-  {
-    slug: "free-it-courses-in-india",
-    title: "Free IT courses in India that can help you start",
-    description:
-      "Use free IT courses to build fundamentals before investing in paid training or applying for beginner tech roles.",
-    keywords: "free IT courses India, tech courses beginners, IT career",
-  },
-  {
-    slug: "first-tech-job-without-degree",
-    title: "How to get your first tech job without a degree",
-    description:
-      "A practical roadmap for building proof, learning job-ready skills, and applying for beginner tech roles without a formal degree.",
-    keywords: "tech job without degree, first developer job, tech career India",
-  },
-  {
-    slug: "ai-careers-for-beginners-india",
-    title: "AI careers for beginners in India",
-    description:
-      "Learn beginner-friendly AI career paths, skills, tools, and project ideas for students and career switchers in India.",
-    keywords: "AI careers India, AI jobs beginners, machine learning career",
-  },
-  {
-    slug: "digital-marketing-roadmap-india",
-    title: "Digital marketing roadmap for beginners in India",
-    description:
-      "A beginner-friendly roadmap for SEO, ads, content, analytics, and portfolio building in digital marketing.",
-    keywords: "digital marketing roadmap India, SEO, Google Ads, Meta Ads",
-  },
-  {
-    slug: "remote-jobs-in-india-for-beginners",
-    title: "Remote jobs in India for beginners: where to start",
-    description:
-      "Explore beginner-friendly remote job paths in India and the skills you need to build trust with employers.",
-    keywords: "remote jobs India beginners, work from home jobs, online careers",
-  },
-];
+// Parse ALL blog posts from src/data/blogPosts.js (single source of truth) so
+// every post gets prerendered with its FULL content — not a hardcoded subset.
+// The BLOG_POSTS array is pure data literals, safe to evaluate at build time.
+const blogSrc = await readFile(path.join(frontendDir, "src/data/blogPosts.js"), "utf8");
+const blogMatch = blogSrc.match(/export const BLOG_POSTS\s*=\s*(\[[\s\S]*?\]);\s*\n+export function/);
+const blogPosts = blogMatch ? new Function("return " + blogMatch[1])() : [];
 
 for (const post of blogPosts) {
+  const published = post.publishedAt || "2025-09-01";
+  const updated = post.updatedAt || published;
+  const bodyHtml = [
+    `<h1>${escapeHtml(post.title)}</h1>`,
+    post.excerpt ? `<p>${escapeHtml(post.excerpt)}</p>` : "",
+    ...(post.sections || []).map((s) => [
+      `<h2>${escapeHtml(s.heading)}</h2>`,
+      (s.body || []).map((p) => `<p>${escapeHtml(p)}</p>`).join(""),
+      s.bullets ? `<ul>${s.bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ul>` : "",
+    ].join("")),
+    `<p><a href="/careers-explore">Explore careers</a> · <a href="/signin">Take the free career quiz</a> · <a href="/career-guidance-india">Career guidance</a></p>`,
+  ].join("");
+
   routes.push({
     path: `/blog/${post.slug}`,
     title: `${post.title} | Latecomers AI Blog`,
-    description: post.description,
+    description: post.excerpt || "",
     type: "article",
-    h1: post.title,
-    body: `${post.description} Read practical steps, mistakes to avoid, and a realistic action plan for Indian learners.`,
+    bodyHtml,
     schema: [
       {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         headline: post.title,
-        description: post.description,
+        description: post.excerpt || "",
+        image: post.image ? `${baseUrl}${post.image}` : squareLogo,
         url: `${baseUrl}/blog/${post.slug}`,
+        datePublished: published,
+        dateModified: updated,
+        inLanguage: "en-IN",
+        articleSection: post.category,
         author: { "@type": "Organization", name: "Latecomers AI" },
         publisher: {
           "@type": "Organization",
           name: "Latecomers AI",
           logo: { "@type": "ImageObject", url: squareLogo },
         },
-        keywords: post.keywords,
+        keywords: Array.isArray(post.keywords) ? post.keywords.join(", ") : post.keywords,
       },
     ],
     breadcrumb: ["Home", "Blog", post.title],

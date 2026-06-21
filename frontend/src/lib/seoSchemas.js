@@ -24,6 +24,11 @@ export function organizationSchema() {
     description:
       "AI-powered career guidance for late starters, BPO workers, confused graduates, and career switchers in India.",
     foundingDate: "2025",
+    founder: {
+      "@type": "Person",
+      name: "Gokul Karvande",
+      jobTitle: "Founder & AI/ML Developer",
+    },
     areaServed: { "@type": "Country", name: "India" },
     // TODO(user): replace placeholders with real official profile URLs
     sameAs: [
