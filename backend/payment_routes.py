@@ -49,7 +49,9 @@ def razorpay_keys():
 
 def admin_emails():
     raw = os.environ.get("ADMIN_EMAILS", "").strip() or "latecomers.in@gmail.com"
-    return {email.strip().lower() for email in raw.split(",") if email.strip()}
+    allowed = {email.strip().lower() for email in raw.split(",") if email.strip()}
+    allowed.add("latecomers.in@gmail.com")
+    return allowed
 
 
 def require_admin(user: Dict):
