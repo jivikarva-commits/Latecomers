@@ -5,6 +5,7 @@ import {
   CreditCard,
   IndianRupee,
   LogOut,
+  Plus,
   RefreshCw,
   UserCheck,
   Users,
@@ -15,6 +16,22 @@ import { useAuth } from "../context/AuthContext";
 const money = (value) => `Rs ${Number(value || 0).toLocaleString("en-IN")}`;
 const dateText = (value) => (value ? String(value).slice(0, 10) : "-");
 const ADMIN_EMAIL = "latecomers.in@gmail.com";
+const MASTERCLASS_MODES = ["Online", "Offline", "Hybrid"];
+const MASTERCLASS_EMPTY = {
+  instituteName: "",
+  title: "",
+  description: "",
+  thumbnail: "",
+  date: "",
+  time: "",
+  mode: "Online",
+  locationOrLink: "",
+  price: "Free",
+  instructor: "",
+  contactEmail: "",
+  contactPhone: "",
+  registrationLink: "",
+};
 
 function Metric({ icon: Icon, label, value, hint }) {
   return (
@@ -69,10 +86,27 @@ function Remaining({ usage = {}, subscription = {} }) {
   );
 }
 
+function MasterclassField({ label, value, onChange, placeholder, type = "text" }) {
+  return (
+    <div>
+      <label className="text-[11px] font-black uppercase tracking-[0.08em] text-muted2">{label}</label>
+      <input
+        type={type}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2 text-sm outline-none focus:border-brand"
+      />
+    </div>
+  );
+}
+
 function MasterclassModeration() {
   const [mc, setMc] = useState({ items: [], counts: {} });
   const [busy, setBusy] = useState("");
   const [filter, setFilter] = useState("pending");
+  const [form, setForm] = useState(MASTERCLASS_EMPTY);
+  const [saving, setSaving] = useState(false);
 
   const load = async () => {
     try {
@@ -100,6 +134,31 @@ function MasterclassModeration() {
     } finally { setBusy(""); }
   };
 
+  const set = (key) => (event) => setForm((current) => ({ ...current, [key]: event.target.value }));
+
+  const createMasterclass = async (event) => {
+    event.preventDefault();
+    if (form.instituteName.trim().length < 2) return alert("Enter institute name.");
+    if (form.title.trim().length < 3) return alert("Enter masterclass title.");
+    if (form.description.trim().length < 10) return alert("Add a short description.");
+    if (!form.date) return alert("Pick a date.");
+    if (!form.contactEmail && !form.contactPhone && !form.registrationLink) {
+      return alert("Add registration link, contact email, or contact phone.");
+    }
+
+    setSaving(true);
+    try {
+      await api.post("/admin/masterclasses", form);
+      setForm(MASTERCLASS_EMPTY);
+      setFilter("approved");
+      await load();
+    } catch (err) {
+      alert(err?.response?.data?.detail || "Could not add masterclass.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const list = (mc.items || []).filter((m) => filter === "all" || m.status === filter);
 
   return (
@@ -119,6 +178,56 @@ function MasterclassModeration() {
           <button onClick={load} className="rounded-full bg-brand-50 px-2.5 py-1.5 text-brand"><RefreshCw size={14} /></button>
         </div>
       </div>
+
+      <form onSubmit={createMasterclass} className="mb-5 rounded-2xl border border-line bg-brand-50/40 p-4">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.14em] text-brand">Admin only</p>
+            <h3 className="font-heading text-base font-black text-ink">Add masterclass</h3>
+          </div>
+          <button
+            type="submit"
+            disabled={saving}
+            className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2 text-xs font-black text-white disabled:opacity-50"
+          >
+            <Plus size={14} /> {saving ? "Publishing..." : "Publish"}
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+          <MasterclassField label="Institute / organiser *" value={form.instituteName} onChange={set("instituteName")} placeholder="Bright Future Academy" />
+          <MasterclassField label="Masterclass title *" value={form.title} onChange={set("title")} placeholder="Free Data Analytics Masterclass" />
+          <MasterclassField type="date" label="Date *" value={form.date} onChange={set("date")} />
+          <MasterclassField label="Time" value={form.time} onChange={set("time")} placeholder="6:00 PM IST" />
+          <div>
+            <label className="text-[11px] font-black uppercase tracking-[0.08em] text-muted2">Mode</label>
+            <select
+              value={form.mode}
+              onChange={set("mode")}
+              className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2 text-sm outline-none focus:border-brand"
+            >
+              {MASTERCLASS_MODES.map((mode) => <option key={mode} value={mode}>{mode}</option>)}
+            </select>
+          </div>
+          <MasterclassField label="Price" value={form.price} onChange={set("price")} placeholder="Free or Rs 499" />
+          <MasterclassField label={form.mode === "Online" ? "Join link / platform" : "Venue / location"} value={form.locationOrLink} onChange={set("locationOrLink")} placeholder={form.mode === "Online" ? "Zoom / YouTube link" : "City, venue"} />
+          <MasterclassField label="Instructor" value={form.instructor} onChange={set("instructor")} placeholder="Rohan Sharma" />
+          <MasterclassField label="Thumbnail URL" value={form.thumbnail} onChange={set("thumbnail")} placeholder="https://image-url.jpg" />
+          <MasterclassField label="Registration link" value={form.registrationLink} onChange={set("registrationLink")} placeholder="https://register-here.com" />
+          <MasterclassField label="Contact email" value={form.contactEmail} onChange={set("contactEmail")} placeholder="team@institute.com" />
+          <MasterclassField label="Contact phone" value={form.contactPhone} onChange={set("contactPhone")} placeholder="+91 ..." />
+        </div>
+        <div className="mt-3">
+          <label className="text-[11px] font-black uppercase tracking-[0.08em] text-muted2">Description *</label>
+          <textarea
+            value={form.description}
+            onChange={set("description")}
+            rows={3}
+            placeholder="What learners will get from this masterclass"
+            className="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2 text-sm outline-none focus:border-brand"
+          />
+        </div>
+      </form>
 
       {list.length === 0 ? (
         <p className="py-4 text-sm text-muted2">No {filter !== "all" ? filter : ""} masterclasses.</p>

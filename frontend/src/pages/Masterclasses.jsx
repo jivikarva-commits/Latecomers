@@ -162,7 +162,7 @@ export default function Masterclasses() {
     <PublicShell>
       <SEO
         title="Masterclasses for Students in India – Latecomers AI"
-        description="Discover upcoming masterclasses, workshops, and webinars from institutes across India. Institutes can list their masterclass for free on Latecomers AI."
+        description="Discover upcoming masterclasses, workshops, and webinars from verified institutes across India."
         path="/masterclasses"
       />
 
@@ -175,14 +175,8 @@ export default function Masterclasses() {
           </h1>
           <p className="mt-3 max-w-2xl text-sm sm:text-base text-muted2 leading-relaxed">
             Free and paid masterclasses, webinars, and skill workshops from institutes across India.
-            Are you an institute? List your masterclass for free and reach thousands of learners.
+            Listings are curated by Latecomers AI so learners see only reviewed programs.
           </p>
-          <button
-            onClick={() => { setShowForm(true); setSubmitted(false); }}
-            className="mt-5 inline-flex items-center gap-2 rounded-lg bg-brand px-5 py-3 text-sm font-black text-white hover:bg-brand-700 transition"
-          >
-            <Plus size={16} /> List your masterclass
-          </button>
         </div>
       </section>
 
@@ -197,10 +191,7 @@ export default function Masterclasses() {
             <div className="rounded-2xl border border-line bg-brand-50/50 p-10 text-center">
               <GraduationCap size={36} className="mx-auto text-brand" />
               <h2 className="mt-3 font-heading font-black text-lg text-ink">No upcoming masterclasses yet</h2>
-              <p className="mt-1.5 text-sm text-muted2">Be the first institute to list one — it's free and reaches thousands of learners.</p>
-              <button onClick={() => setShowForm(true)} className="mt-4 inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2.5 text-sm font-bold text-white">
-                <Plus size={15} /> List your masterclass
-              </button>
+              <p className="mt-1.5 text-sm text-muted2">New verified masterclasses will appear here once the admin team publishes them.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -213,16 +204,13 @@ export default function Masterclasses() {
       {/* CTA */}
       <section className="bg-brand py-12 text-center text-white">
         <div className="max-w-2xl mx-auto px-4">
-          <h2 className="font-heading font-black text-2xl sm:text-3xl">Run an institute or training program?</h2>
-          <p className="mt-2 text-sm sm:text-base text-white/80">List your masterclasses, webinars, and workshops for free and get discovered by motivated learners across India.</p>
-          <button onClick={() => setShowForm(true)} className="mt-5 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-black text-brand">
-            <Plus size={16} /> List your masterclass free
-          </button>
+          <h2 className="font-heading font-black text-2xl sm:text-3xl">Want your institute featured?</h2>
+          <p className="mt-2 text-sm sm:text-base text-white/80">Reach the Latecomers AI team for curated masterclass listings and student discovery campaigns.</p>
         </div>
       </section>
 
       {/* Submission modal */}
-      {showForm && (
+      {false && showForm && (
         <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 p-4 py-8" onClick={closeForm}>
           <div className="w-full max-w-xl rounded-2xl bg-white shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between border-b border-line px-5 py-3.5 sticky top-0 bg-white rounded-t-2xl">

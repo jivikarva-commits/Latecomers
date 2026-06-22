@@ -1,4 +1,4 @@
-"""Masterclass listings — institutes submit masterclasses (moderated), shown publicly when approved."""
+"""Masterclass listings - admin-managed listings shown publicly when approved."""
 import uuid
 from datetime import datetime, timezone, date
 from typing import Optional
@@ -62,9 +62,7 @@ def _public_view(doc: dict) -> dict:
     }
 
 
-@router.post("/masterclasses")
-async def submit_masterclass(payload: MasterclassIn, request: Request):
-    """Public submission — anyone (institute) can submit. Goes to moderation queue."""
+def _make_masterclass_doc(payload: MasterclassIn, *, status: str, user: Optional[dict] = None) -> dict:
     mode = payload.mode if payload.mode in VALID_MODES else "Online"
     if not (payload.contactEmail or payload.contactPhone or payload.registrationLink):
         raise HTTPException(400, "Provide at least one of: contact email, phone, or registration link.")
@@ -76,7 +74,7 @@ async def submit_masterclass(payload: MasterclassIn, request: Request):
         raise HTTPException(400, "Date must be in YYYY-MM-DD format.")
 
     now = iso_now()
-    doc = {
+    return {
         "id": uuid.uuid4().hex,
         "instituteName": payload.instituteName.strip(),
         "title": payload.title.strip(),
@@ -91,12 +89,28 @@ async def submit_masterclass(payload: MasterclassIn, request: Request):
         "contactEmail": (payload.contactEmail or "").strip() or None,
         "contactPhone": (payload.contactPhone or "").strip() or None,
         "registrationLink": (payload.registrationLink or "").strip() or None,
-        "status": "pending",
+        "status": status,
+        "createdByAdmin": bool(user),
+        "createdByUserId": user.get("id") if user else None,
+        "createdByEmail": user.get("email") if user else None,
         "createdAt": now,
         "updatedAt": now,
     }
+
+
+@router.post("/masterclasses")
+async def submit_masterclass():
+    """Public submissions are disabled; only admins can create masterclasses."""
+    raise HTTPException(403, "Only admins can add masterclasses.")
+
+
+@router.post("/admin/masterclasses")
+async def admin_create_masterclass(payload: MasterclassIn, request: Request, user=Depends(current_user)):
+    """Admin-only creation. Newly added masterclasses are published immediately."""
+    require_admin(user)
+    doc = _make_masterclass_doc(payload, status="approved", user=user)
     await db(request).masterclasses.insert_one(doc)
-    return {"ok": True, "message": "Masterclass submitted for review. It will appear once approved."}
+    return {"ok": True, "item": _public_view(doc), "message": "Masterclass published."}
 
 
 @router.get("/masterclasses")
