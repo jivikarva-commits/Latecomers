@@ -4,11 +4,13 @@ import {
   CalendarDays,
   CreditCard,
   IndianRupee,
+  LogOut,
   RefreshCw,
   UserCheck,
   Users,
 } from "lucide-react";
 import { api } from "../lib/api";
+import { useAuth } from "../context/AuthContext";
 
 const money = (value) => `Rs ${Number(value || 0).toLocaleString("en-IN")}`;
 const dateText = (value) => (value ? String(value).slice(0, 10) : "-");
@@ -150,6 +152,7 @@ function MasterclassModeration() {
 }
 
 export default function AdminDashboard() {
+  const { logout } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -209,12 +212,20 @@ export default function AdminDashboard() {
             Platform users, subscriptions, logins, Gmail IDs, and mobile numbers.
           </p>
         </div>
-        <button
-          onClick={load}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-brand px-4 py-2 text-sm font-bold text-white"
-        >
-          <RefreshCw size={15} /> Refresh
-        </button>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <button
+            onClick={load}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-brand px-4 py-2 text-sm font-bold text-white"
+          >
+            <RefreshCw size={15} /> Refresh
+          </button>
+          <button
+            onClick={logout}
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm font-bold text-ink hover:border-brand hover:text-brand"
+          >
+            <LogOut size={15} /> Logout
+          </button>
+        </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
