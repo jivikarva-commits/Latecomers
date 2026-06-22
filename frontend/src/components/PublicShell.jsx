@@ -10,6 +10,7 @@ const navItems = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About Us" },
   { to: "/colleges", label: "Find Institutes" },
+  { to: "/masterclasses", label: "Masterclass" },
   { to: "/scholarships", label: "Scholarship" },
   { to: "/contact?topic=counselling", label: "Free Counselling" },
   { to: "/blog", label: "Blog" },

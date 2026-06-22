@@ -26,6 +26,7 @@ import CareerDetail from "./pages/CareerDetail";
 import CareerReportPage from "./pages/CareerReportPage";
 import CareerGuide from "./pages/CareerGuide";
 import LandingSEO from "./pages/LandingSEO";
+import Masterclasses from "./pages/Masterclasses";
 import Roadmap from "./pages/Roadmap";
 import Colleges from "./pages/Colleges";
 import Scholarships from "./pages/Scholarships";
@@ -60,6 +61,7 @@ function App() {
             <Route path="/best-careers-india-2026" element={<LandingSEO />} />
             <Route path="/confused-about-career" element={<LandingSEO />} />
             <Route path="/career-roadmap" element={<LandingSEO />} />
+            <Route path="/masterclasses" element={<Masterclasses />} />
             <Route path="/colleges" element={<Colleges />} />
             <Route path="/institutes" element={<Colleges />} />
 

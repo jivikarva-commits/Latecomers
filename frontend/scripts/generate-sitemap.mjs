@@ -25,6 +25,7 @@ const STATIC_URLS = [
   { loc: "/best-careers-india-2026", changefreq: "weekly", priority: 0.9 },
   { loc: "/confused-about-career", changefreq: "monthly", priority: 0.8 },
   { loc: "/career-roadmap", changefreq: "monthly", priority: 0.8 },
+  { loc: "/masterclasses", changefreq: "daily", priority: 0.7 },
 ];
 
 function loadCareerGuideSlugs() {

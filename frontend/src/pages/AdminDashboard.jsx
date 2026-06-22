@@ -67,6 +67,88 @@ function Remaining({ usage = {}, subscription = {} }) {
   );
 }
 
+function MasterclassModeration() {
+  const [mc, setMc] = useState({ items: [], counts: {} });
+  const [busy, setBusy] = useState("");
+  const [filter, setFilter] = useState("pending");
+
+  const load = async () => {
+    try {
+      const { data } = await api.get("/admin/masterclasses");
+      setMc(data);
+    } catch {
+      /* non-admin or error — section stays empty */
+    }
+  };
+  useEffect(() => { load(); }, []);
+
+  const moderate = async (id, status) => {
+    setBusy(id);
+    try {
+      await api.post(`/admin/masterclasses/${id}/moderate`, { status });
+      await load();
+    } finally { setBusy(""); }
+  };
+  const remove = async (id) => {
+    if (!window.confirm("Delete this masterclass permanently?")) return;
+    setBusy(id);
+    try {
+      await api.delete(`/admin/masterclasses/${id}`);
+      await load();
+    } finally { setBusy(""); }
+  };
+
+  const list = (mc.items || []).filter((m) => filter === "all" || m.status === filter);
+
+  return (
+    <section className="rounded-3xl border border-line bg-white p-4 sm:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-brand">Masterclasses</p>
+          <h2 className="font-heading text-lg font-black text-ink">Institute submissions</h2>
+        </div>
+        <div className="flex gap-1.5">
+          {["pending", "approved", "rejected", "all"].map((f) => (
+            <button key={f} onClick={() => setFilter(f)}
+              className={`rounded-full px-3 py-1.5 text-xs font-bold capitalize ${filter === f ? "bg-brand text-white" : "bg-brand-50 text-brand"}`}>
+              {f} {mc.counts?.[f] != null && f !== "all" ? `(${mc.counts[f]})` : ""}
+            </button>
+          ))}
+          <button onClick={load} className="rounded-full bg-brand-50 px-2.5 py-1.5 text-brand"><RefreshCw size={14} /></button>
+        </div>
+      </div>
+
+      {list.length === 0 ? (
+        <p className="py-4 text-sm text-muted2">No {filter !== "all" ? filter : ""} masterclasses.</p>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          {list.map((m) => (
+            <div key={m.id} className="flex gap-3 rounded-2xl border border-line p-3">
+              <div className="h-16 w-24 shrink-0 overflow-hidden rounded-lg bg-brand-50 flex items-center justify-center">
+                {m.thumbnail ? <img src={m.thumbnail} alt="" className="h-full w-full object-cover" /> : <span className="text-xs text-muted2">No image</span>}
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <p className="font-heading font-black text-sm text-ink truncate">{m.title}</p>
+                  <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${m.status === "approved" ? "bg-emerald-50 text-emerald-700" : m.status === "rejected" ? "bg-red-50 text-red-600" : "bg-amber-50 text-amber-700"}`}>{m.status}</span>
+                </div>
+                <p className="text-[11px] text-muted2">{m.instituteName} · {dateText(m.date)} · {m.mode} · {m.price}</p>
+                <p className="text-[11px] text-muted2 line-clamp-1">{m.description}</p>
+                <div className="mt-1.5 flex flex-wrap gap-1.5">
+                  {m.status !== "approved" && <button disabled={busy === m.id} onClick={() => moderate(m.id, "approved")} className="rounded-lg bg-emerald-600 px-2.5 py-1 text-[11px] font-bold text-white disabled:opacity-50">Approve</button>}
+                  {m.status !== "rejected" && <button disabled={busy === m.id} onClick={() => moderate(m.id, "rejected")} className="rounded-lg bg-amber-500 px-2.5 py-1 text-[11px] font-bold text-white disabled:opacity-50">Reject</button>}
+                  <button disabled={busy === m.id} onClick={() => remove(m.id)} className="rounded-lg border border-red-200 px-2.5 py-1 text-[11px] font-bold text-red-600 disabled:opacity-50">Delete</button>
+                  {(m.registrationLink || m.contactEmail) && <a href={m.registrationLink || `mailto:${m.contactEmail}`} target="_blank" rel="noreferrer" className="rounded-lg border border-line px-2.5 py-1 text-[11px] font-bold text-brand">Link</a>}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
 export default function AdminDashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -228,6 +310,8 @@ export default function AdminDashboard() {
           {!loginUsers.length && <p className="py-4 text-sm text-muted2">No login sessions recorded yet.</p>}
         </div>
       </section>
+
+      <MasterclassModeration />
     </div>
   );
 }

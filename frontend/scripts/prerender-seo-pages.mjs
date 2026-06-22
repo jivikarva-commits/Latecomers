@@ -146,6 +146,16 @@ const routes = [
     body:
       "Reach the Latecomers AI team for help with career guidance, plans, institute partnerships, and product support.",
   },
+  {
+    path: "/masterclasses",
+    title: "Masterclasses & Workshops in India | Latecomers AI",
+    description:
+      "Discover upcoming masterclasses, webinars, and skill workshops from institutes across India. Institutes can list their masterclass for free on Latecomers AI.",
+    type: "website",
+    h1: "Upcoming masterclasses & workshops in India",
+    body:
+      "Browse free and paid masterclasses, webinars, and skill workshops from institutes across India. Are you an institute or trainer? List your masterclass for free and reach motivated learners across India.",
+  },
 ];
 
 // Parse ALL blog posts from src/data/blogPosts.js (single source of truth) so
