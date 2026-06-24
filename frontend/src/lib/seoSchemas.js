@@ -76,6 +76,30 @@ export function softwareAppSchema() {
   };
 }
 
+// Founder Person entity — reused as Organization.founder and blog author so the
+// name "Gokul Karvande" builds a consistent entity across the site (helps Google
+// associate the founder with the brand in search + AI overviews).
+export const FOUNDER = {
+  name: "Gokul Karvande",
+  jobTitle: "Founder & AI/ML Developer",
+};
+
+export function personSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${SITE_URL}/#founder`,
+    name: FOUNDER.name,
+    jobTitle: FOUNDER.jobTitle,
+    description:
+      "Gokul Karvande is the founder of Latecomers AI, a 21-year-old AI specialist and software & AI/ML developer building free, AI-powered career guidance for students and late starters in India.",
+    worksFor: { "@id": `${SITE_URL}/#organization` },
+    knowsAbout: ["Career Guidance", "Artificial Intelligence", "Machine Learning", "Software Development", "EdTech"],
+    nationality: "Indian",
+    url: SITE_URL,
+  };
+}
+
 export function breadcrumbSchema(items) {
   return {
     "@context": "https://schema.org",
@@ -103,8 +127,10 @@ export function articleSchema(post) {
     dateModified: updated,
     inLanguage: "en-IN",
     author: {
-      "@type": "Organization",
-      name: SITE_NAME,
+      "@type": "Person",
+      "@id": `${SITE_URL}/#founder`,
+      name: FOUNDER.name,
+      jobTitle: FOUNDER.jobTitle,
       url: SITE_URL,
     },
     publisher: {

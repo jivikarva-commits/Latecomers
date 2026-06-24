@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, ChevronRight, List } from "lucide-
 import PublicShell from "../components/PublicShell";
 import SEO from "../components/SEO";
 import { BLOG_POSTS, getBlogPost } from "../data/blogPosts";
-import { articleSchema, breadcrumbSchema } from "../lib/seoSchemas";
+import { articleSchema, breadcrumbSchema, personSchema } from "../lib/seoSchemas";
 
 // Generate a stable URL-safe anchor id from a heading string.
 function slugifyHeading(h) {
@@ -57,6 +57,7 @@ export default function BlogDetail() {
         modifiedTime={post.updatedAt}
         jsonLd={[
           articleSchema(post),
+          personSchema(),
           breadcrumbSchema([
             { name: "Home", path: "/" },
             { name: "Blog", path: "/blog" },
@@ -87,7 +88,7 @@ export default function BlogDetail() {
               {post.updatedAt && post.updatedAt !== post.publishedAt && (
                 <> · <time dateTime={post.updatedAt}>Updated {new Date(post.updatedAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}</time></>
               )}
-              {" · by "}<span className="font-semibold text-ink">Latecomers AI Team</span>
+              {" · by "}<span className="font-semibold text-ink">Gokul Karvande</span>
             </p>
           )}
           <p className="text-xs sm:text-base text-muted2 mt-2 sm:mt-3 leading-relaxed">{post.excerpt}</p>
@@ -190,6 +191,20 @@ export default function BlogDetail() {
             </Link>
           </div>
         </div>
+
+        {/* About the author — repeats founder name + role across every blog page (entity signal) */}
+        <section className="mt-6 sm:mt-8 rounded-2xl border border-line bg-brand-50/50 p-4 sm:p-5 flex items-start gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand text-white font-heading font-black text-lg">GK</div>
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-wide text-brand">About the author</p>
+            <p className="font-heading font-black text-sm sm:text-base text-ink mt-0.5">Gokul Karvande — Founder, Latecomers AI</p>
+            <p className="mt-1 text-xs sm:text-sm text-muted2 leading-relaxed">
+              Gokul Karvande is the founder of Latecomers AI and a 21-year-old AI specialist and software &amp; AI/ML developer.
+              He builds free, AI-powered career guidance to help students, graduates, and late starters across India find a
+              practical path. <Link to="/blog/story-behind-latecomers-ai" className="font-semibold text-brand">Read his story →</Link>
+            </p>
+          </div>
+        </section>
 
         <aside className="mt-6 sm:mt-8">
           <h2 className="font-heading font-bold text-base sm:text-xl text-ink">Related articles you might find useful</h2>

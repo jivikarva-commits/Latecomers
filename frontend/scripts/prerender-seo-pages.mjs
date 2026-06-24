@@ -176,7 +176,9 @@ for (const post of blogPosts) {
       (s.body || []).map((p) => `<p>${escapeHtml(p)}</p>`).join(""),
       s.bullets ? `<ul>${s.bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ul>` : "",
     ].join("")),
+    `<p>By <strong>Gokul Karvande</strong>, Founder of Latecomers AI · Published ${published}</p>`,
     `<p><a href="/careers-explore">Explore careers</a> · <a href="/signin">Take the free career quiz</a> · <a href="/career-guidance-india">Career guidance</a></p>`,
+    `<h2>About the author</h2><p>Gokul Karvande is the founder of Latecomers AI and a 21-year-old AI specialist and software &amp; AI/ML developer. He builds free, AI-powered career guidance to help students, graduates, and late starters across India find a practical path. <a href="/blog/story-behind-latecomers-ai">Read his story</a>.</p>`,
   ].join("");
 
   routes.push({
@@ -197,13 +199,32 @@ for (const post of blogPosts) {
         dateModified: updated,
         inLanguage: "en-IN",
         articleSection: post.category,
-        author: { "@type": "Organization", name: "Latecomers AI" },
+        author: {
+          "@type": "Person",
+          "@id": `${baseUrl}/#founder`,
+          name: "Gokul Karvande",
+          jobTitle: "Founder & AI/ML Developer",
+          url: baseUrl,
+        },
         publisher: {
           "@type": "Organization",
           name: "Latecomers AI",
           logo: { "@type": "ImageObject", url: squareLogo },
         },
         keywords: Array.isArray(post.keywords) ? post.keywords.join(", ") : post.keywords,
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": `${baseUrl}/#founder`,
+        name: "Gokul Karvande",
+        jobTitle: "Founder & AI/ML Developer",
+        description:
+          "Gokul Karvande is the founder of Latecomers AI, a 21-year-old AI specialist and software & AI/ML developer building free, AI-powered career guidance for students and late starters in India.",
+        worksFor: { "@id": `${baseUrl}/#organization` },
+        knowsAbout: ["Career Guidance", "Artificial Intelligence", "Machine Learning", "Software Development", "EdTech"],
+        nationality: "Indian",
+        url: baseUrl,
       },
     ],
     breadcrumb: ["Home", "Blog", post.title],
