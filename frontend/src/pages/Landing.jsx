@@ -17,6 +17,7 @@ import { useAuth } from "../context/AuthContext";
 import SEO from "../components/SEO";
 import { faqSchema, howToSchema, organizationSchema, softwareAppSchema, websiteSchema } from "../lib/seoSchemas";
 import { openCareerReportByTitle } from "../lib/careerNavigation";
+import publicSeo from "../data/publicSeo.json";
 
 const stats = [
   ["12,000+", "Quizzes taken"],
@@ -85,8 +86,8 @@ export default function Landing() {
   return (
     <PublicShell>
       <SEO
-        title="Latecomers AI - Career Guidance for Late Starters"
-        description="Latecomers AI helps BPO workers, confused graduates, students, and career switchers in India find practical career paths, roadmaps, institutes, scholarships, mock interviews, and AI guidance."
+        title={publicSeo.home.title}
+        description={publicSeo.home.description}
         path="/"
         jsonLd={[
           organizationSchema(),
@@ -99,7 +100,7 @@ export default function Landing() {
           faqSchema([
             {
               question: "How can I switch career from BPO to IT in India?",
-              answer: "Start with a career assessment to find an IT path that fits your background (support, QA, cybersecurity, or cloud), then follow a step-by-step roadmap of certifications and projects. Latecomers AI builds this roadmap free based on your profile.",
+              answer: "Start with a career assessment to find an IT path that fits your background, then follow a roadmap of skills and projects. Latecomers AI offers free public career guides; personalised quiz results and roadmaps require a paid plan from Rs 9.",
             },
             {
               question: "What career options are available after a BPO job?",
@@ -107,7 +108,7 @@ export default function Landing() {
             },
             {
               question: "Is there free career guidance in India?",
-              answer: "Yes. Latecomers AI offers a free AI-powered career quiz and personalised roadmap for late starters, graduates, and career switchers in India, with paid plans starting at Rs 9 for detailed results.",
+              answer: publicSeo.home.offer,
             },
             {
               question: "How do I change career after 25 or 30 in India?",
@@ -128,17 +129,12 @@ export default function Landing() {
               + For late starters, BPO workers and confused graduates
             </span>
             <h1 className="mt-4 font-heading text-[1.7rem] font-black leading-[1.12] text-ink min-[390px]:text-[1.85rem] sm:mt-6 sm:text-[2.4rem] sm:leading-[1.08] lg:text-[2.65rem] xl:text-[2.9rem]">
-              {/* Visually-hidden keyword phrase for SEO; screen readers + Google see it,
-                  visual users see the punchy brand line below. */}
-              <span className="sr-only">AI Career Guidance for Late Starters in India — </span>
-              You are not late.
-              <span className="block">You just need the{" "}
-                <span className="inline whitespace-nowrap text-brand underline decoration-pink-400 decoration-4 underline-offset-4">right career map.</span>
-              </span>
+              {publicSeo.home.h1}
             </h1>
             <p className="mt-3 max-w-xl text-[13px] leading-relaxed text-muted2 sm:mt-4 sm:text-sm">
-              Latecomers AI is a <strong className="font-bold text-ink">free AI career guidance platform for India</strong> — helping BPO workers, confused graduates, and career switchers find a practical career path, understand why it fits, and follow a step-by-step roadmap to move from confusion to action.
+              You are not late. You just need the right career map. {publicSeo.home.intro}
             </p>
+            <p className="mt-2 text-xs leading-relaxed text-muted2">{publicSeo.home.offer} <Link to="/pricing" className="font-bold text-brand underline">Compare plans</Link></p>
             <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-6 sm:gap-3">
               <button onClick={startJourney} className="rounded-lg bg-brand px-4 py-2.5 text-xs font-black text-white sm:px-5 sm:py-3 sm:text-sm">
                 Take the career quiz <ArrowRight className="inline-block" size={16} />
@@ -325,7 +321,7 @@ export default function Landing() {
           <h2 className="font-heading text-[1.5rem] font-black leading-tight sm:text-5xl">Your next career chapter starts with one quiz.</h2>
           <p className="mt-3 text-[13px] font-semibold text-white/76 sm:mt-5 sm:text-base">Join 12,000+ late starters who found their direction. Takes 5 minutes. Starts at Rs 9.</p>
           <button onClick={startJourney} className="mt-6 rounded-xl bg-white px-6 py-3 text-xs font-black text-brand sm:mt-9 sm:px-8 sm:py-4 sm:text-sm">
-            Take the free career quiz <ArrowRight className="inline" size={16} />
+            Take the career quiz <ArrowRight className="inline" size={16} />
           </button>
         </div>
       </section>

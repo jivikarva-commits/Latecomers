@@ -92,7 +92,7 @@ export function personSchema() {
     name: FOUNDER.name,
     jobTitle: FOUNDER.jobTitle,
     description:
-      "Gokul Karvande is the founder of Latecomers AI, a 21-year-old AI specialist and software & AI/ML developer building free, AI-powered career guidance for students and late starters in India.",
+      "Gokul Karvande is the founder of Latecomers AI, a 21-year-old AI specialist and software & AI/ML developer building AI-powered career guidance for students and late starters in India.",
     worksFor: { "@id": `${SITE_URL}/#organization` },
     knowsAbout: ["Career Guidance", "Artificial Intelligence", "Machine Learning", "Software Development", "EdTech"],
     nationality: "Indian",

@@ -48,7 +48,7 @@ export default function BlogDetail() {
   return (
     <PublicShell>
       <SEO
-        title={`${post.title} | Latecomers AI Blog`}
+        title={post.seoTitle ? `${post.seoTitle} | Latecomers AI` : `${post.title} | Latecomers AI Blog`}
         description={post.excerpt}
         image={post.image}
         type="article"
@@ -92,6 +92,12 @@ export default function BlogDetail() {
             </p>
           )}
           <p className="text-xs sm:text-base text-muted2 mt-2 sm:mt-3 leading-relaxed">{post.excerpt}</p>
+          {post.quickAnswer && (
+            <section aria-label="Quick answer" className="mt-4 rounded-xl border border-brand/20 bg-brand-50 p-4">
+              <h2 className="font-heading text-sm font-bold text-ink">Quick answer</h2>
+              <p className="mt-2 text-xs sm:text-sm leading-relaxed text-muted2">{post.quickAnswer}</p>
+            </section>
+          )}
           <div className="mt-3 flex flex-wrap gap-1.5">
             {post.keywords.map((keyword) => (
               <span key={keyword} className="px-2.5 py-0.5 rounded-full bg-brand-50 border border-line text-[10px] sm:text-xs font-semibold text-muted2">
@@ -140,6 +146,13 @@ export default function BlogDetail() {
                       <li key={item} className="flex items-start gap-2 rounded-xl bg-brand-50 border border-line p-2.5 text-xs sm:text-sm font-semibold text-ink">
                         <CheckCircle2 size={14} className="text-brand mt-0.5 shrink-0" /> {item}
                       </li>
+                    ))}
+                  </ul>
+                )}
+                {section.links && (
+                  <ul className="mt-3 space-y-2 text-xs sm:text-sm">
+                    {section.links.map((link) => (
+                      <li key={link.href}><a href={link.href} className="font-semibold text-brand underline">{link.label}</a></li>
                     ))}
                   </ul>
                 )}
@@ -200,7 +213,7 @@ export default function BlogDetail() {
             <p className="font-heading font-black text-sm sm:text-base text-ink mt-0.5">Gokul Karvande — Founder, Latecomers AI</p>
             <p className="mt-1 text-xs sm:text-sm text-muted2 leading-relaxed">
               Gokul Karvande is the founder of Latecomers AI and a 21-year-old AI specialist and software &amp; AI/ML developer.
-              He builds free, AI-powered career guidance to help students, graduates, and late starters across India find a
+              He builds AI-powered career guidance to help students, graduates, and late starters across India find a
               practical path. <Link to="/blog/story-behind-latecomers-ai" className="font-semibold text-brand">Read his story →</Link>
             </p>
           </div>

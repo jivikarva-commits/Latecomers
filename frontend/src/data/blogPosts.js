@@ -81,9 +81,11 @@ export const BLOG_POSTS = [
   {
     slug: "career-options-after-bsc-india",
     publishedAt: "2026-06-22",
-    updatedAt: "2026-06-22",
+    updatedAt: "2026-08-26",
     title: "Career Options After BSc in India 2026 — Jobs, Salary & Courses",
-    excerpt: "Confused about what to do after BSc in India? Here are the best career options after BSc — high-paying jobs, courses, and salary, even without an MSc.",
+    excerpt: "Compare career options after BSc by specialisation: data, software, life sciences, further study and exams. Choose a route that fits your skills and budget.",
+    seoTitle: "Career Options After BSc: Jobs & Courses in India",
+    quickAnswer: "Compare three routes after BSc: apply for roles that accept your current qualification, build the missing skills for a target role, or pursue further study that the role actually requires. Your BSc subject matters. Start with the qualification requirements in real job or admission notices rather than choosing an MSc, MBA or course by default.",
     image: "/blog/career-options-after-bsc-india.webp",
     category: "After Graduation",
     readTime: "11 min read",
@@ -94,27 +96,113 @@ export const BLOG_POSTS = [
       { heading: "Career options after BSc without a master's", body: ["You don't need an MSc to start earning. These paths take a BSc graduate to a real job in months through short, skill-based courses:"], bullets: ["Digital Marketing — 3-6 months, ₹3-12 LPA", "UI/UX Design — 4-7 months, portfolio-driven", "Medical coding (for BSc Bio/Life Science) — WFH-friendly", "Lab Technician / research assistant (science BSc)", "Banking & SSC government exams (any BSc)"] },
       { heading: "Career options by BSc specialisation", body: ["BSc IT / CS / Maths: data analytics, software development, data science, cybersecurity. BSc Statistics: data science, business analytics, actuarial science. BSc Physics/Chemistry: data roles, research, teaching, government science exams.", "BSc Biology / Life Sciences / Biotech: medical coding, clinical research, healthcare admin, lab technician, pharma roles, or a switch into data analytics. BSc Agriculture: agri-tech, food tech, government agri exams, NABARD."] },
       { heading: "Should you do MSc, MBA, or a job after BSc?", body: ["Do an MSc only if you want research, teaching, or a specialised science career — otherwise it can delay earning by 2 years for little market gain. An MBA makes sense after some work experience, not immediately. For most BSc graduates, the fastest path to a good salary is a focused 3-6 month skill (data, dev, marketing) plus a portfolio.", "The smart move: start earning with a skill-based role, then add an MSc or MBA later if your career actually needs it — funded by your own salary."] },
-      { heading: "How to choose the right path after BSc", body: ["Pick based on three honest questions: Does the field interest you? Can you learn its core skill in your timeline and budget? Are there real job openings for it? A path that fails any of these will waste time.", "Not sure which career fits your BSc background and interests? Take the free Latecomers AI career quiz — it matches your degree, strengths, and goals to specific careers with a step-by-step roadmap for each."] },
+      { heading: "How to choose the right path after BSc", body: ["Pick based on three honest questions: Does the field interest you? Can you learn its core skill in your timeline and budget? Are there real job openings for it? A path that fails any of these will waste time.", "Not sure which career fits your BSc background and interests? Take the Latecomers AI career quiz (personalised results start at Rs 9) — it matches your degree, strengths, and goals to specific careers with a step-by-step roadmap for each."] },
+      {"heading": "Compare two career routes before buying a course", "body": ["Shortlist two roles and collect recent job descriptions for each. Note the required degree, core tools, location and work experience. Then compare those requirements with your BSc subject and a sample project you could build.", "For further study, check admission eligibility, syllabus, fees and the evidence behind placement claims. A course or degree is a possible route, not a guarantee of employment."], "links": [{"label": "Data analyst career guide for India", "href": "/career-guide/data-analyst-india"}, {"label": "Data scientist learning roadmap", "href": "/blog/how-to-become-data-scientist-india"}, {"label": "First-job plan for candidates with no experience", "href": "/blog/how-to-get-first-job-india-no-experience"}]},
     ],
   },
   {
     slug: "government-jobs-after-12th-india",
     publishedAt: "2026-06-22",
-    updatedAt: "2026-06-22",
+    updatedAt: "2026-08-26",
     title: "Government Jobs After 12th in India 2026 — Exams, Salary & Eligibility",
-    excerpt: "Want a sarkari naukri after 12th? Here are the best government jobs after 12th in India — SSC, railways, defence, police — with exams, salary, and eligibility.",
+    excerpt: "Compare SSC CHSL, railway NTPC undergraduate and other government job routes after 12th. Check eligibility and official notices before applying.",
+    seoTitle: "Government Jobs After 12th (2026): Exams & Eligibility",
+    quickAnswer: "Start with SSC CHSL and RRB NTPC undergraduate notices, then check defence or state recruitment that matches your subjects and age. A 12th-pass certificate alone does not make you eligible for every post. This is a career guide, not a live vacancy list; application dates and post-specific rules must be checked in the official notice.",
     image: "/blog/government-jobs-after-12th-india.webp",
     category: "Government Jobs",
     readTime: "11 min read",
     keywords: ["government jobs after 12th India", "sarkari naukri after 12th", "defence jobs after 12th", "SSC jobs after 12th", "railway jobs after 12th", "police jobs after 12th", "govt exams after 12th"],
     sections: [
-      { heading: "You don't need a degree for a government job", body: ["Many students think a sarkari naukri needs graduation. Not true — there are strong, stable government jobs you can get right after 12th, with good salary, pension, and security. For students who can't or don't want to wait for a degree, these are some of the best options in India.", "This guide covers the best government jobs after 12th in 2026 — the exams, eligibility, and pay for each, across SSC, railways, defence, and police."] },
-      { heading: "SSC jobs after 12th (SSC CHSL)", body: ["The SSC Combined Higher Secondary Level (CHSL) exam is the main central-government route after 12th. It recruits for clerical and data-entry posts across government departments.", "Posts: LDC (Lower Division Clerk), JSA, Postal Assistant, Data Entry Operator. Salary: ₹20,000-35,000/month with allowances. Eligibility: 12th pass, any stream. Prep time: 4-8 months with free mock-test apps."] },
-      { heading: "Railway jobs after 12th (RRB)", body: ["Indian Railways is one of the largest recruiters in the country, with huge vacancy numbers — great odds compared to many exams.", "RRB Group D and some RRB NTPC posts are open to 12th-pass candidates: Junior Clerk, Accounts Clerk, Trains Clerk, Track Maintainer, Helper. Salary: ₹18,000-35,000/month. Eligibility: 10th/12th depending on post. Pan-India postings."] },
-      { heading: "Defence jobs after 12th", body: ["Defence offers prestige, early entry, and excellent benefits. You can join right after 12th:"], bullets: ["NDA (National Defence Academy) — Army/Navy/Air Force officer, age 16.5-19.5", "Indian Army Soldier (GD / Technical / Clerk)", "Indian Navy SSR / MR", "Air Force Agniveer (Agnipath scheme)", "Salary: ₹21,000-56,000/month + benefits"] },
-      { heading: "Police & state government jobs after 12th", body: ["State governments recruit heavily at the 12th-pass level — often with home-state and regional-language advantages:"], bullets: ["Police Constable (state Police Bharti)", "Home Guard / Forest Guard", "Gram Sevak / Talathi (some states)", "State-level clerk and MTS posts", "Salary: ₹18,000-40,000/month"] },
-      { heading: "Other government exams after 12th", body: ["Beyond the big four, also look at: SSC GD Constable (for CRPF, BSF, CISF and other forces), India Post GDS (Gramin Dak Sevak — often merit-based, no written exam), LIC and bank clerical assistant roles, and state PSC clerical exams. Each has its own calendar and eligibility.", "Tip: pick ONE exam that fits your strengths and prepare seriously, rather than applying to everything. Free platforms like Testbook, Adda247, and YouTube channels cover all of these."] },
-      { heading: "How to start preparing today", body: ["Choose one exam, download its syllabus and previous papers, and start with the basics — quantitative aptitude, reasoning, English, and general awareness are common across most. Take free mock tests weekly to track progress.", "Confused between government jobs and private careers, or which exam fits you? The free Latecomers AI career quiz helps you compare options based on your interests, timeline, and goals — so you commit to the right path with confidence."] },
+      {
+        "heading": "Which government jobs can you explore after 12th?",
+        "body": [
+          "SSC CHSL and RRB NTPC undergraduate recruitment are two routes to research. Defence entries and some state recruitment have their own subject, age, physical and medical requirements. Do not assume all clerical, police, banking or railway posts accept the same qualification."
+        ],
+        "bullets": [
+          "Check the exact post and recruitment cycle",
+          "Match your subjects, marks and age to the notice",
+          "Read any typing, skill, physical and medical requirements",
+          "Check application dates before paying a fee"
+        ]
+      },
+      {
+        "heading": "SSC CHSL: check the qualification for each post",
+        "body": [
+          "The SSC CHSL 2025 notice covers LDC/JSA and Data Entry Operator posts. While the notice specifies a 12th-standard qualification for LDC/JSA and many DEO posts, some DEO posts require Science with Mathematics. Read the qualification clause for your selected post instead of assuming that every stream is eligible.",
+          "Use the 2025 notice below as a reference for that recruitment cycle. For a later cycle, check the current SSC notice, vacancies and any corrigenda. Pay levels, age cut-off dates and selection requirements come from the relevant official notice."
+        ],
+        "links": [
+          {
+            "label": "SSC CHSL 2025 official notification (reference cycle)",
+            "href": "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_chsl_2025.pdf"
+          },
+          {
+            "label": "SSC official website: current notices",
+            "href": "https://ssc.gov.in/"
+          }
+        ]
+      },
+      {
+        "heading": "Railway NTPC undergraduate: not the same as graduate posts",
+        "body": [
+          "RRB CEN 07/2025 lists undergraduate posts including Commercial cum Ticket Clerk, Accounts Clerk cum Typist, Junior Clerk cum Typist and Trains Clerk. The notice sets a 12th (+2) qualification with marks conditions and specified exceptions; typing proficiency applies to the typist posts.",
+          "Do not mix NTPC undergraduate, NTPC graduate and Level-1 recruitment. They have separate notices and requirements. Check the notification and later updates for the exact vacancy you want."
+        ],
+        "links": [
+          {
+            "label": "RRB CEN 07/2025 NTPC undergraduate notification",
+            "href": "https://www.rrbcdg.gov.in/uploads/2025/07-NTPCUG/072025NTPCUG-CEN.pdf"
+          },
+          {
+            "label": "RRB CEN 07/2025 updates and corrigenda",
+            "href": "https://www.rrbcdg.gov.in/2025-07-ntpcug.php"
+          }
+        ]
+      },
+      {
+        "heading": "Defence and state recruitment: verify the entry route",
+        "body": [
+          "Treat each defence entry or state post as a separate eligibility check. Subject requirements, age windows, domicile rules, physical standards, medical standards and service conditions can differ.",
+          "Use the recruiting authority's official website. A general list of government careers is not evidence that an application is open or that a particular candidate qualifies."
+        ]
+      },
+      {
+        "heading": "Salary and service conditions: read the official notice",
+        "body": [
+          "Compare the advertised pay level or initial basic pay, then check allowances, location, deductions and service conditions. Basic pay is not the same as take-home salary.",
+          "Avoid choosing an exam based on a single monthly salary estimate. Do not assume that all government or defence entry routes have identical tenure, pension or benefits."
+        ]
+      },
+      {
+        "heading": "A checklist before you apply",
+        "body": [
+          "Keep a copy of the notification you used. Read later corrigenda before submitting an application."
+        ],
+        "bullets": [
+          "Verify the official domain and application link",
+          "Check qualification, subjects and marks by the specified cut-off",
+          "Check age, category rules and required certificates",
+          "Check skill tests and medical or physical standards",
+          "Confirm fees, application dates and exam stages",
+          "Save your application receipt and notification"
+        ]
+      },
+      {
+        "heading": "Choose between exam preparation and a first private-sector role",
+        "body": [
+          "Choose a route that fits your available preparation time and current qualifications. Compare the syllabus and past papers before committing to a course. If you also need to start applying for work, build a separate first-job plan."
+        ],
+        "links": [
+          {
+            "label": "First job in India with no experience: practical steps",
+            "href": "/blog/how-to-get-first-job-india-no-experience"
+          },
+          {
+            "label": "Compare Latecomers quiz-result and roadmap plans",
+            "href": "/pricing"
+          }
+        ]
+      }
     ],
   },
   {
@@ -217,9 +305,11 @@ export const BLOG_POSTS = [
   {
     slug: "how-to-become-data-scientist-india",
     publishedAt: "2026-06-20",
-    updatedAt: "2026-06-20",
+    updatedAt: "2026-08-26",
     title: "How to Become a Data Scientist in India (2026 Step-by-Step Guide)",
-    excerpt: "Want to become a data scientist in India? Here's the exact roadmap — skills, free courses, salary, and how long it takes, even without a fancy degree.",
+    excerpt: "Follow a data science roadmap for India: Python, SQL, statistics, machine learning, portfolio projects and interviews. Compare analyst and scientist entry routes.",
+    seoTitle: "How to Become a Data Scientist in India: Roadmap",
+    quickAnswer: "Start with Python, SQL and statistics, then practise cleaning data, evaluating models and explaining results through portfolio projects. Check the degree and experience requirements of the roles you want. If you need a more gradual entry into data work, compare analyst roles with data-scientist roles rather than treating them as the same job.",
     image: "/blog/how-to-become-data-scientist-india.webp",
     category: "Tech Careers",
     readTime: "11 min read",
@@ -232,7 +322,8 @@ export const BLOG_POSTS = [
       { heading: "Skills and tools you actually need", body: ["Don't try to learn everything. The core stack that gets you hired as a data scientist in India is focused and learnable:"], bullets: ["Python (the main language for data science)", "Statistics & probability (the real foundation)", "Pandas & NumPy for data manipulation", "scikit-learn for machine learning", "SQL for pulling data", "Data visualisation (Matplotlib / Seaborn)"] },
       { heading: "Best free courses to learn data science", body: ["You can become job-ready without paying for an expensive program. These free resources genuinely compete with paid bootcamps:", "Pair them with projects — theory alone won't get you hired."], bullets: ["Andrew Ng's Machine Learning (Coursera — free to audit)", "Kaggle Learn — free micro-courses on Python, ML, data viz", "freeCodeCamp — free Python for data science", "Khan Academy — free statistics foundations", "fast.ai — free practical deep learning"] },
       { heading: "Build these portfolio projects to get hired", body: ["Your projects ARE your experience. Build 3-4 real ones using Indian or public datasets and put them on GitHub with a clear writeup: problem, data, approach, result.", "Strong project ideas: predict house prices, analyse IPL or election data, build a customer-churn model, or do sentiment analysis on product reviews. Each shows a different skill and gives you something concrete to discuss in interviews."] },
-      { heading: "Your next step", body: ["Data science is a long but high-reward path. If you're not sure whether to go straight for data science or start with data analytics first, take the free Latecomers AI career quiz — it'll match your background to the right entry point and give you a personalised roadmap.", "For the full breakdown of this career — salary, skills, roadmap, and courses — see our complete Data Scientist career guide for India."] },
+      { heading: "Your next step", body: ["Data science is a long but high-reward path. If you're not sure whether to go straight for data science or start with data analytics first, take the Latecomers AI career quiz (personalised results start at Rs 9) — it'll match your background to the right entry point and give you a personalised roadmap.", "For the full breakdown of this career — salary, skills, roadmap, and courses — see our complete Data Scientist career guide for India."] },
+      {"heading": "What a useful data-science portfolio should show", "body": ["Choose one clear question and document where the data came from. Keep a baseline model, separate training and evaluation data, and explain the limitations of the result. A notebook full of model scores is less useful than a project a reviewer can reproduce and understand.", "Link your code, describe your decisions and explain what you would improve next. Match the project to the requirements of the job you are applying for; do not present a course exercise as paid work."], "links": [{"label": "Compare the data analyst entry route", "href": "/career-guide/data-analyst-india"}, {"label": "Explore the data scientist career guide", "href": "/career-guide/data-scientist-india"}, {"label": "Prepare a resume without work experience", "href": "/blog/how-to-make-resume-no-experience-india"}]},
     ],
   },
   {
@@ -296,9 +387,11 @@ export const BLOG_POSTS = [
   {
     slug: "how-to-get-first-job-india-no-experience",
     publishedAt: "2026-06-18",
-    updatedAt: "2026-06-18",
+    updatedAt: "2026-08-26",
     title: "How to Get Your First Job in India With No Experience (2026 Guide)",
-    excerpt: "No experience, no connections, no idea where to start? Here's exactly how to land your first job in India in 2026 — practical steps that actually work.",
+    excerpt: "Find your first job in India with six practical steps: choose a role, build a project, prepare a fresher resume, apply selectively and practise interviews.",
+    seoTitle: "First Job in India Without Experience: 6 Steps",
+    quickAnswer: "Pick one entry-level role, build a relevant project, put the evidence on a one-page resume, and tailor applications to suitable openings. The six steps below cover projects, internships, your resume, applications and interviews. They are a practical plan, not a promise of a job or a fixed hiring timeline.",
     image: "/blog/how-to-get-first-job-india-no-experience.webp",
     category: "Job Search",
     readTime: "11 min read",
@@ -311,7 +404,8 @@ export const BLOG_POSTS = [
       { heading: "Step 4: Fix your resume and LinkedIn for zero-experience", body: ["A fresher resume should lead with skills and projects, not a sad empty 'Experience' section. Structure it: Summary (2 lines) → Skills → Projects (with links) → Education → Certifications.", "On LinkedIn, write a clear headline ('Aspiring Data Analyst | SQL, Power BI, Excel | Open to entry-level roles'), add your projects, and connect with people in your target field. A polished LinkedIn often gets you found before you even apply."], bullets: ["Headline states your target role + top 3 skills", "Projects section with live links and short results", "Connect with 5 people in your target role per week", "Ask one for a 15-minute chat — many say yes"] },
       { heading: "Step 5: Apply smart, not hard", body: ["Quality beats quantity. 5 tailored applications a day with a customised resume and a short, specific message beats 50 copy-paste blasts. Mention the company, the role, and one reason you fit. This alone puts you ahead of 90% of freshers.", "Target the right companies: startups, SaaS firms, agencies, and growing mid-size companies hire freshers faster and care more about skill than big MNCs with rigid filters. Use LinkedIn 'Easy Apply' plus a direct message to someone on the team."] },
       { heading: "Step 6: Prepare for the 'no experience' interview question", body: ["You will be asked some version of 'You have no experience — why should we hire you?' Do not get defensive. Answer with proof: 'I taught myself X, built these projects, and here's what I learned solving real problems.' Point to your artifacts.", "Hiring managers don't actually need experience — they need confidence that you can do the work and won't quit. Your projects, your clarity, and your eagerness to learn answer both."] },
-      { heading: "The mindset that gets freshers hired", body: ["Everyone starts at zero. The freshers who break through first are not the smartest — they are the ones who picked a direction, built one visible thing, and applied with a story instead of an excuse. You do not need permission or perfect readiness. You need one project and one good week of focused applying.", "Not sure which role to target first? Take the free Latecomers AI career quiz — it matches your background and interests to roles you can realistically start, with a step-by-step roadmap for each."] },
+      { heading: "The mindset that gets freshers hired", body: ["Everyone starts at zero. The freshers who break through first are not the smartest — they are the ones who picked a direction, built one visible thing, and applied with a story instead of an excuse. You do not need permission or perfect readiness. You need one project and one good week of focused applying.", "Not sure which role to target first? Take the Latecomers AI career quiz (personalised results start at Rs 9) — it matches your background and interests to roles you can realistically start, with a step-by-step roadmap for each."] },
+      {"heading": "Your first application: a practical checklist", "body": ["Use a truthful project bullet such as: Built [project] with [tools] to answer [question]; explain [what you checked or learned] and add a link. Replace the brackets with work you actually completed.", "Keep a simple application tracker with the role, company, required skills, application date and follow-up status. Review which applications get replies before changing your target role."], "links": [{"label": "How to make a resume with no experience in India", "href": "/blog/how-to-make-resume-no-experience-india"}, {"label": "Job interview preparation for freshers", "href": "/blog/job-interview-tips-freshers-india"}]},
     ],
   },
   {

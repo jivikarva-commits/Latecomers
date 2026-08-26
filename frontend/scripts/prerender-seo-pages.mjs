@@ -11,6 +11,7 @@ const baseUrl = "https://www.latecomers.in";
 const shareImage = `${baseUrl}/brand/og-share.png`;
 const squareLogo = `${baseUrl}/brand/latecomers-logo-512.png`;
 const defaultImage = shareImage;
+const publicSeo = JSON.parse(await readFile(path.join(frontendDir, "src/data/publicSeo.json"), "utf8"));
 
 // This is the Organization schema Googlebot actually reads (prerendered HTML).
 // Must match the client-side organizationSchema() in src/lib/seoSchemas.js:
@@ -53,13 +54,11 @@ const orgSchema = {
 const routes = [
   {
     path: "/",
-    title: "Latecomers AI - Career guidance for late starters in India",
-    description:
-      "AI-powered career guidance for BPO workers, confused graduates, late starters, and career switchers in India.",
+    title: publicSeo.home.title,
+    description: publicSeo.home.description,
     type: "website",
-    h1: "You are not late. You just need the right career map.",
-    body:
-      "Take a practical career quiz, discover matching careers, compare courses, and follow a step-by-step roadmap built for your background.",
+    h1: publicSeo.home.h1,
+    body: `${publicSeo.home.intro} ${publicSeo.home.offer}`,
     schema: [
       orgSchema,
       {
@@ -108,13 +107,11 @@ const routes = [
   },
   {
     path: "/pricing",
-    title: "Latecomers AI Pricing - Start at Rs 9",
-    description:
-      "Start your Latecomers AI career quiz from Rs 9 and unlock practical career guidance, roadmaps, and recommendations.",
+    title: publicSeo.pricing.title,
+    description: publicSeo.pricing.description,
     type: "website",
-    h1: "Start your career clarity journey from Rs 9.",
-    body:
-      "Choose a simple plan to get AI-powered career guidance, career matches, and roadmap support.",
+    h1: publicSeo.pricing.h1,
+    body: publicSeo.pricing.intro,
   },
   {
     path: "/blog",
@@ -171,19 +168,21 @@ for (const post of blogPosts) {
   const bodyHtml = [
     `<h1>${escapeHtml(post.title)}</h1>`,
     post.excerpt ? `<p>${escapeHtml(post.excerpt)}</p>` : "",
+    post.quickAnswer ? `<section aria-label="Quick answer"><h2>Quick answer</h2><p>${escapeHtml(post.quickAnswer)}</p></section>` : "",
     ...(post.sections || []).map((s) => [
       `<h2>${escapeHtml(s.heading)}</h2>`,
       (s.body || []).map((p) => `<p>${escapeHtml(p)}</p>`).join(""),
       s.bullets ? `<ul>${s.bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ul>` : "",
+      s.links ? `<ul>${s.links.map((link) => `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a></li>`).join("")}</ul>` : "",
     ].join("")),
-    `<p>By <strong>Gokul Karvande</strong>, Founder of Latecomers AI · Published ${published}</p>`,
-    `<p><a href="/careers-explore">Explore careers</a> · <a href="/signin">Take the free career quiz</a> · <a href="/career-guidance-india">Career guidance</a></p>`,
-    `<h2>About the author</h2><p>Gokul Karvande is the founder of Latecomers AI and a 21-year-old AI specialist and software &amp; AI/ML developer. He builds free, AI-powered career guidance to help students, graduates, and late starters across India find a practical path. <a href="/blog/story-behind-latecomers-ai">Read his story</a>.</p>`,
+    `<p>By <strong>Gokul Karvande</strong>, Founder of Latecomers AI · Published ${published}${updated !== published ? ` · Updated ${updated}` : ""}</p>`,
+    `<p><a href="/careers-explore">Explore careers</a> · <a href="/pricing">Quiz results and roadmaps from Rs 9</a> · <a href="/career-guidance-india">Career guidance</a></p>`,
+    `<h2>About the author</h2><p>Gokul Karvande is the founder of Latecomers AI and a 21-year-old AI specialist and software &amp; AI/ML developer. He builds AI-powered career guidance to help students, graduates, and late starters across India find a practical path. <a href="/blog/story-behind-latecomers-ai">Read his story</a>.</p>`,
   ].join("");
 
   routes.push({
     path: `/blog/${post.slug}`,
-    title: `${post.title} | Latecomers AI Blog`,
+    title: post.seoTitle ? `${post.seoTitle} | Latecomers AI` : `${post.title} | Latecomers AI Blog`,
     description: post.excerpt || "",
     type: "article",
     bodyHtml,
@@ -220,7 +219,7 @@ for (const post of blogPosts) {
         name: "Gokul Karvande",
         jobTitle: "Founder & AI/ML Developer",
         description:
-          "Gokul Karvande is the founder of Latecomers AI, a 21-year-old AI specialist and software & AI/ML developer building free, AI-powered career guidance for students and late starters in India.",
+          "Gokul Karvande is the founder of Latecomers AI, a 21-year-old AI specialist and software & AI/ML developer building AI-powered career guidance for students and late starters in India.",
         worksFor: { "@id": `${baseUrl}/#organization` },
         knowsAbout: ["Career Guidance", "Artificial Intelligence", "Machine Learning", "Software Development", "EdTech"],
         nationality: "Indian",
@@ -240,13 +239,14 @@ for (const lp of landingPages) {
   const bodyHtml = [
     `<h1>${escapeHtml(lp.h1)}</h1>`,
     `<p>${escapeHtml(lp.intro)}</p>`,
+    lp.offerNote ? `<p>${escapeHtml(lp.offerNote)} <a href="/pricing">Compare plans</a></p>` : "",
     ...lp.sections.map((s) => [
       `<h2>${escapeHtml(s.heading)}</h2>`,
       s.body.map((p) => `<p>${escapeHtml(p)}</p>`).join(""),
       s.bullets ? `<ul>${s.bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ul>` : "",
     ].join("")),
     `<h2>Frequently asked questions</h2>${lp.faqs.map((f) => `<h3>${escapeHtml(f.question)}</h3><p>${escapeHtml(f.answer)}</p>`).join("")}`,
-    `<p><a href="/signin">Take the free career quiz</a> · <a href="/careers-explore">Explore careers</a> · <a href="/career-guide/data-analyst-india">Career guides</a> · <a href="/pricing">Pricing</a></p>`,
+    `<p><a href="/pricing">Quiz results and roadmaps from Rs 9</a> · <a href="/careers-explore">Explore careers</a> · <a href="/career-guide/data-analyst-india">Career guides</a> · <a href="/pricing">Pricing</a></p>`,
   ].join("");
 
   routes.push({
@@ -299,7 +299,7 @@ for (const g of careerGuides) {
     `<h2>Jobs you can apply for</h2><ul>${g.jobTitles.map((t) => `<li>${escapeHtml(t)}</li>`).join("")}</ul>`,
     `<h2>Frequently asked questions</h2>${faqs.map(([q, a]) => `<h3>${escapeHtml(q)}</h3><p>${escapeHtml(a)}</p>`).join("")}`,
     `<h2>Related careers</h2><ul>${(g.related || []).map((rs) => { const rg = careerGuides.find((x) => x.slug === rs); return rg ? `<li><a href="/career-guide/${rg.slug}">${escapeHtml(rg.title)} career in India</a></li>` : ""; }).join("")}</ul>`,
-    `<p><a href="/signin">Take the free career quiz</a> · <a href="/careers-explore">Explore more careers</a></p>`,
+    `<p><a href="/pricing">Quiz results and roadmaps from Rs 9</a> · <a href="/careers-explore">Explore more careers</a></p>`,
   ].join("");
 
   routes.push({

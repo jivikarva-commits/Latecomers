@@ -74,7 +74,7 @@ export default function SEO({
       script.text = JSON.stringify(schema);
       document.head.appendChild(script);
     });
-  }, [title, description, image, type, path, robots, jsonLd]);
+  }, [title, description, image, type, path, robots, jsonLd, publishedTime, modifiedTime]);
 
   return null;
 }

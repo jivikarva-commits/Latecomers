@@ -66,6 +66,7 @@ export default function LandingSEO() {
           <p className="text-[10px] sm:text-xs font-bold tracking-[0.25em] text-brand uppercase">{page.eyebrow}</p>
           <h1 className="mt-2 font-heading font-black text-2xl sm:text-4xl lg:text-[2.6rem] leading-tight text-ink">{page.h1}</h1>
           <p className="mt-4 max-w-3xl text-sm sm:text-lg text-muted2 leading-relaxed">{page.intro}</p>
+          {page.offerNote && <p className="mt-3 max-w-3xl text-sm text-muted2">{page.offerNote} <Link to="/pricing" className="font-bold text-brand underline">Compare plans</Link></p>}
           <div className="mt-6 flex flex-wrap gap-3">
             <button onClick={startQuiz} className="rounded-lg bg-brand px-5 py-3 text-sm font-black text-white hover:bg-brand-700 transition">
               {page.ctaPrimary} <ArrowRight className="inline-block" size={16} />

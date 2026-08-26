@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import SEO from "../components/SEO";
 import { breadcrumbSchema, softwareAppSchema } from "../lib/seoSchemas";
 import PremiumSubscriptionModal from "../components/PremiumSubscriptionModal";
+import publicSeo from "../data/publicSeo.json";
 
 const plans = [
   {
@@ -56,7 +57,7 @@ export default function Pricing() {
   return (
     <PublicShell>
       <SEO
-        title="Pricing Plans - Latecomers AI"
+        title={publicSeo.pricing.title}
         path="/pricing"
         jsonLd={[
           softwareAppSchema(),
@@ -65,12 +66,13 @@ export default function Pricing() {
             { name: "Pricing", path: "/pricing" },
           ]),
         ]}
-        description="Choose a Latecomers AI plan: Starter Offer, Rs 99 Plan, or Rs 299 Plan for career results, AI chats, mock interviews, institute search, and roadmaps."
+        description={publicSeo.pricing.description}
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16">
         <div className="text-center max-w-2xl mx-auto">
           <p className="text-[10px] sm:text-xs font-bold tracking-[0.25em] text-brand uppercase">Pricing</p>
-          <h1 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink mt-2">Choose your Latecomers plan.</h1>
+          <h1 className="font-heading font-extrabold text-2xl sm:text-4xl text-ink mt-2">{publicSeo.pricing.h1}</h1>
+          <p className="text-muted2 mt-3 text-sm leading-relaxed">{publicSeo.pricing.intro}</p>
           <p className="text-muted2 mt-2 text-sm sm:text-base">
             Secure Razorpay checkout. Your plan activates only after backend payment verification.
           </p>
