@@ -175,15 +175,24 @@ for (const post of blogPosts) {
       s.bullets ? `<ul>${s.bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ul>` : "",
       s.links ? `<ul>${s.links.map((link) => `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a></li>`).join("")}</ul>` : "",
     ].join("")),
+    (post.faqs || []).length
+      ? `<section aria-label="Frequently asked questions"><h2>Frequently asked questions</h2>${post.faqs
+          .map((f) => `<h3>${escapeHtml(f.question)}</h3><p>${escapeHtml(f.answer)}</p>`)
+          .join("")}</section>`
+      : "",
     `<p>By <strong>Gokul Karvande</strong>, Founder of Latecomers AI · Published ${published}${updated !== published ? ` · Updated ${updated}` : ""}</p>`,
     `<p><a href="/careers-explore">Explore careers</a> · <a href="/pricing">Quiz results and roadmaps from Rs 9</a> · <a href="/career-guidance-india">Career guidance</a></p>`,
     `<h2>About the author</h2><p>Gokul Karvande is the founder of Latecomers AI and a 21-year-old AI specialist and software &amp; AI/ML developer. He builds AI-powered career guidance to help students, graduates, and late starters across India find a practical path. <a href="/blog/story-behind-latecomers-ai">Read his story</a>.</p>`,
   ].join("");
 
+  // The excerpt is written for the blog listing card; seoDescription, where a post
+  // has one, is written for the SERP snippet. Prefer it in both places.
+  const metaDescription = post.seoDescription || post.excerpt || "";
+
   routes.push({
     path: `/blog/${post.slug}`,
     title: post.seoTitle ? `${post.seoTitle} | Latecomers AI` : `${post.title} | Latecomers AI Blog`,
-    description: post.excerpt || "",
+    description: metaDescription,
     type: "article",
     bodyHtml,
     schema: [
@@ -191,7 +200,7 @@ for (const post of blogPosts) {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         headline: post.title,
-        description: post.excerpt || "",
+        description: metaDescription,
         image: post.image ? `${baseUrl}${post.image}` : squareLogo,
         url: `${baseUrl}/blog/${post.slug}`,
         datePublished: published,
@@ -225,6 +234,17 @@ for (const post of blogPosts) {
         nationality: "Indian",
         url: baseUrl,
       },
+      ...((post.faqs || []).length
+        ? [{
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: post.faqs.map((f) => ({
+              "@type": "Question",
+              name: f.question,
+              acceptedAnswer: { "@type": "Answer", text: f.answer },
+            })),
+          }]
+        : []),
     ],
     breadcrumb: ["Home", "Blog", post.title],
   });

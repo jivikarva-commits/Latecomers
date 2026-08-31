@@ -46,3 +46,6 @@ htmlcov/
 
 # Claude Code
 .claude/
+
+# Deployment notes - contain live production credentials, never commit
+DEPLOY_PROMPT.md

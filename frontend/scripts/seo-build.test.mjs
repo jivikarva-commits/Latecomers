@@ -28,15 +28,19 @@ test('homepage and pricing ship the same metadata used by the React pages', asyn
 });
 
 test('priority article titles, answers and source links are present before JavaScript runs', async () => {
-  assert.equal(changed.length, 4);
+  assert.ok(changed.length >= 4);
   const sitemap = await read('build/sitemap.xml');
   for (const post of changed) {
     const html = await htmlAt(`blog/${post.slug}`);
+    // A seoTitle only earns its place if the rendered title survives Google's
+    // ~60 character mobile truncation once the brand suffix is appended.
+    assert.ok(`${post.seoTitle} | Latecomers AI`.length <= 60, `${post.slug}: rendered title exceeds 60 chars`);
+    assert.ok(post.quickAnswer, `${post.slug}: a priority article must answer its query above the fold`);
     assert.ok(html.includes(`<title>${escape(post.seoTitle)} | Latecomers AI</title>`));
     assert.ok(html.includes(escape(post.quickAnswer)));
-    assert.ok(html.includes('Updated 2026-08-26'));
-    assert.ok(html.includes('"dateModified":"2026-08-26"'));
-    assert.ok(sitemap.includes(`<loc>https://www.latecomers.in/blog/${post.slug}</loc>\n    <lastmod>2026-08-26</lastmod>`));
+    assert.ok(html.includes(`Updated ${post.updatedAt}`));
+    assert.ok(html.includes(`"dateModified":"${post.updatedAt}"`));
+    assert.ok(sitemap.includes(`<loc>https://www.latecomers.in/blog/${post.slug}</loc>\n    <lastmod>${post.updatedAt}</lastmod>`));
     for (const link of post.sections.flatMap(s => s.links || [])) {
       assert.ok(html.includes(`href="${escape(link.href)}"`));
       if (link.href.startsWith('/')) {

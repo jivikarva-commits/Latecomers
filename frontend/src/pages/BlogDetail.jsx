@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, ChevronRight, List } from "lucide-
 import PublicShell from "../components/PublicShell";
 import SEO from "../components/SEO";
 import { BLOG_POSTS, getBlogPost } from "../data/blogPosts";
-import { articleSchema, breadcrumbSchema, personSchema } from "../lib/seoSchemas";
+import { articleSchema, breadcrumbSchema, faqSchema, personSchema } from "../lib/seoSchemas";
 
 // Generate a stable URL-safe anchor id from a heading string.
 function slugifyHeading(h) {
@@ -45,11 +45,18 @@ export default function BlogDetail() {
     [post]
   );
 
+  const faqs = post.faqs || [];
+  // The "Practical action plan" / "Common mistakes" pair below is byte-identical
+  // on every post and is written for career switchers, so it reads as filler on a
+  // post about, say, part-time student jobs. Posts that carry their own FAQ block
+  // opt out of it and end on their own topic instead.
+  const showBoilerplate = !post.hideBoilerplate;
+
   return (
     <PublicShell>
       <SEO
         title={post.seoTitle ? `${post.seoTitle} | Latecomers AI` : `${post.title} | Latecomers AI Blog`}
-        description={post.excerpt}
+        description={post.seoDescription || post.excerpt}
         image={post.image}
         type="article"
         path={`/blog/${post.slug}`}
@@ -58,6 +65,7 @@ export default function BlogDetail() {
         jsonLd={[
           articleSchema(post),
           personSchema(),
+          ...(faqs.length ? [faqSchema(faqs)] : []),
           breadcrumbSchema([
             { name: "Home", path: "/" },
             { name: "Blog", path: "/blog" },
@@ -158,6 +166,7 @@ export default function BlogDetail() {
                 )}
               </section>
             ))}
+            {showBoilerplate && (
             <section>
               <h2 className="font-heading font-extrabold text-base sm:text-xl text-ink leading-tight">Practical action plan</h2>
               <div className="mt-2.5 space-y-2.5">
@@ -172,6 +181,8 @@ export default function BlogDetail() {
                 </p>
               </div>
             </section>
+            )}
+            {showBoilerplate && (
             <section>
               <h2 className="font-heading font-extrabold text-base sm:text-xl text-ink leading-tight">Common mistakes to avoid</h2>
               <ul className="mt-3 grid sm:grid-cols-2 gap-2">
@@ -192,16 +203,44 @@ export default function BlogDetail() {
                 The best career move is usually not the most glamorous one. It is the one you can start, prove, and sustain. Latecomers AI is designed to help you choose that path with less shame and more structure.
               </p>
             </section>
+            )}
+
+            {/* FAQ block — mirrors the FAQPage JSON-LD above, so the answers Google
+                may surface in the SERP are the same ones a reader sees on the page. */}
+            {faqs.length > 0 && (
+              <section id="faq" className="scroll-mt-20">
+                <h2 className="font-heading font-extrabold text-base sm:text-xl text-ink leading-tight">Frequently asked questions</h2>
+                <div className="mt-3 space-y-2.5">
+                  {faqs.map((item) => (
+                    <details key={item.question} className="group rounded-xl border border-line bg-brand-50/60 p-3 sm:p-4">
+                      <summary className="cursor-pointer list-none font-heading font-bold text-xs sm:text-sm text-ink flex items-start justify-between gap-3">
+                        {item.question}
+                        <ChevronRight size={15} className="mt-0.5 shrink-0 text-brand transition group-open:rotate-90" />
+                      </summary>
+                      <p className="mt-2 text-muted2 leading-relaxed text-xs sm:text-sm">{item.answer}</p>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
 
+          {/* /career-quiz converts better than any other page (7.1% CTR vs 3.2% on
+              the homepage) but was not in the top 10 internally linked pages, so it
+              leads here. Pricing stays visible because results are a paid plan. */}
           <div className="mt-6 sm:mt-8 premium-gradient rounded-xl sm:rounded-2xl p-3.5 sm:p-5 text-white">
             <p className="font-heading font-extrabold text-base sm:text-xl">Find your best-fit career path</p>
             <p className="mt-1.5 text-white/82 text-xs sm:text-sm leading-relaxed">
-              Take the Latecomers AI quiz and get a practical roadmap based on your background, interests, work style, and goals.
+              Take the Latecomers AI career quiz and get a practical roadmap based on your background, interests, work style, and goals. Personalised results and roadmaps need a plan, starting at ₹9.
             </p>
-            <Link to="/pricing" className="mt-3 inline-flex items-center gap-1.5 bg-white text-ink font-bold px-4 py-2.5 rounded-full text-xs sm:text-sm">
-              Start with ₹9 plan <ArrowRight size={14} />
-            </Link>
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2.5">
+              <Link to="/career-quiz" className="inline-flex items-center gap-1.5 bg-white text-ink font-bold px-4 py-2.5 rounded-full text-xs sm:text-sm">
+                Take the career quiz <ArrowRight size={14} />
+              </Link>
+              <Link to="/pricing" className="text-white/85 underline underline-offset-2 font-semibold text-xs sm:text-sm">
+                Compare plans from ₹9
+              </Link>
+            </div>
           </div>
         </div>
 
