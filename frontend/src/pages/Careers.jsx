@@ -166,7 +166,7 @@ export default function Careers() {
   const restCareers = sortedCareers.slice(topCareers.length);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto overflow-x-hidden w-full min-w-0" data-testid="careers-page">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto overflow-x-clip w-full min-w-0" data-testid="careers-page">
       <h1 className="font-heading font-extrabold text-xl sm:text-3xl text-ink">
         Top Career Recommendations
       </h1>

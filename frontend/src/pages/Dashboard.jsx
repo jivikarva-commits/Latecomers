@@ -184,7 +184,7 @@ export default function Dashboard() {
     : { label: "Growing Match", cls: "bg-amber-100 text-amber-700" };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto overflow-x-hidden w-full min-w-0" data-testid="dashboard-page">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto overflow-x-clip w-full min-w-0" data-testid="dashboard-page">
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4">
         <div className="flex-1 min-w-0">
           <h1 className="font-heading font-extrabold text-xl sm:text-3xl text-ink">

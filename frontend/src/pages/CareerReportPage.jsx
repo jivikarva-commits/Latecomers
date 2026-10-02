@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import useAnchoredToggle from "../hooks/useAnchoredToggle";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   AlertCircle,
@@ -1262,7 +1263,7 @@ function normalizeRoleReportSections(career, computed) {
 }
 
 function RoleReportAccordion({ career, sections, onFindInstitutes }) {
-  const [open, setOpen] = useState(() => Math.max(0, (sections || []).findIndex((section) => section.num === 2)));
+  const [open, setOpen] = useAnchoredToggle(() => Math.max(0, (sections || []).findIndex((section) => section.num === 2)));
   const fitBadgeClass = (value = "") => {
     const text = String(value).toLowerCase();
     if (/advantage|star|big/.test(text)) return "bg-amber-50 text-amber-700";
@@ -1523,7 +1524,7 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
         const isOpen = open === index;
         return (
           <div key={`${section.num}-${section.title}`} className="overflow-hidden rounded-xl sm:rounded-2xl border border-[#DCD4F3] bg-white">
-            <button type="button" onClick={() => setOpen(isOpen ? -1 : index)} className="flex w-full items-center gap-2.5 sm:gap-3 px-3 sm:px-5 py-3 sm:py-5 text-left">
+            <button type="button" onClick={(e) => setOpen(isOpen ? -1 : index, e.currentTarget)} aria-expanded={isOpen} className="flex w-full items-center gap-2.5 sm:gap-3 px-3 sm:px-5 py-3 sm:py-5 text-left">
               <span className="flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg bg-[#F0EBFF] text-xs sm:text-sm font-black text-brand">{section.num}</span>
               <span className="min-w-0 flex-1 font-heading text-[13px] sm:text-base font-black leading-snug text-ink">{section.title}</span>
               <span className={`flex h-7 w-7 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-lg border transition ${isOpen ? "border-brand bg-brand text-white" : "border-[#D6C9F5] text-[#8278B6]"}`}>

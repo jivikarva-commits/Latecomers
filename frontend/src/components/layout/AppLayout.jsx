@@ -42,10 +42,10 @@ export default function AppLayout({ children }) {
   const isOnboarding = location.pathname.startsWith("/onboarding");
   const isChat = location.pathname.startsWith("/ai-chat");
   return (
-    <div className="bg-brand-50 overflow-x-hidden max-w-[100vw]">
+    <div className="bg-brand-50 overflow-x-clip max-w-[100vw]">
       <div className="flex w-full min-w-0">
         <Sidebar />
-        <main className="flex-1 min-w-0 pb-20 md:pb-0 relative overflow-x-hidden">
+        <main className="flex-1 min-w-0 pb-20 md:pb-0 relative overflow-x-clip">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(560px_260px_at_12%_0%,rgba(124,44,242,0.09),transparent_58%),radial-gradient(500px_240px_at_100%_8%,rgba(236,72,153,0.06),transparent_56%)]" />
           {!isOnboarding && !isChat && <MobileHeader />}
           <div className="relative">

@@ -6,6 +6,7 @@ import { Toaster } from "./components/ui/sonner";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AppLayout from "./components/layout/AppLayout";
 import VisitorTracker from "./components/VisitorTracker";
+import ScrollToTop from "./components/ScrollToTop";
 
 import Landing from "./pages/Landing";
 import About from "./pages/About";
@@ -41,6 +42,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <AuthProvider>
+          <ScrollToTop />
           <VisitorTracker />
           <Routes>
             <Route path="/" element={<Landing />} />

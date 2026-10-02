@@ -11,6 +11,7 @@ import { useAuth } from "../context/AuthContext";
 import BackToTopButton from "../components/BackToTopButton";
 import CareerReportPage from "./CareerReportPage";
 import BrandClockMark from "../components/BrandClockMark";
+import useAnchoredToggle from "../hooks/useAnchoredToggle";
 
 const STAGE_COLORS = ["#7C3AED", "#10B981", "#0EA5E9", "#8B5CF6", "#F97316", "#EC4899"];
 const STAGE_ICONS = [GraduationCap, Target, BookOpen, Bot, FolderOpen, Briefcase];
@@ -57,7 +58,7 @@ export default function Roadmap() {
   const [roadmap, setRoadmap] = useState(null);
   const [loading, setLoading] = useState(false);
   const [loadingPage, setLoadingPage] = useState(true);
-  const [openStage, setOpenStage] = useState(0);
+  const [openStage, setOpenStage] = useAnchoredToggle(0);
 
   // Search autocomplete state
   const [searchText, setSearchText] = useState(storedSlug === defaultSlug ? storedTitle : "");
@@ -110,7 +111,7 @@ export default function Roadmap() {
       window.removeEventListener("latecomers:roadmap-career-change", handler);
       window.removeEventListener("storage", handler);
     };
-  }, [careers]);
+  }, [careers, setOpenStage]);
 
   useEffect(() => {
     if (!slug) { setLoadingPage(false); return; }
@@ -200,7 +201,7 @@ export default function Roadmap() {
 
   const topMatch = user?.top_career_matches?.[0];
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-[1080px] mx-auto overflow-x-hidden w-full min-w-0" data-testid="roadmap-page">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-[1080px] mx-auto overflow-x-clip w-full min-w-0" data-testid="roadmap-page">
       <h1 className="font-heading font-extrabold text-xl sm:text-3xl text-ink">Your Career Roadmap</h1>
       <p className="text-xs sm:text-sm text-muted2 mt-0.5">Step-by-step plan with specific actions to become job-ready.</p>
 
@@ -367,7 +368,8 @@ function _LegacyRoadmapBlock({ stages, summary, loadingPage, slug, openStage, se
                 <div className={`flex-1 mb-3 sm:mb-4 rounded-xl sm:rounded-2xl border transition-all ${isOpen ? "glass-card border-brand/20 shadow-md" : "surface-gradient border-line"}`}>
                   {/* Collapsed header — always visible */}
                   <button
-                    onClick={() => setOpenStage(isOpen ? -1 : idx)}
+                    onClick={(e) => setOpenStage(isOpen ? -1 : idx, e.currentTarget)}
+                    aria-expanded={isOpen}
                     className="w-full p-3 sm:p-4 flex items-center gap-3 text-left"
                     data-testid={`roadmap-stage-${stage.stageNum}`}
                   >

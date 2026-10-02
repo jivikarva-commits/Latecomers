@@ -250,7 +250,7 @@ export function PublicFooter() {
 
 export default function PublicShell({ children }) {
   return (
-    <div className="min-h-screen bg-brand-50 font-body overflow-x-hidden scroll-smooth">
+    <div className="min-h-screen bg-brand-50 font-body overflow-x-clip">
       <PublicNav />
       <main id="main-content">{children}</main>
       <PublicFooter />
