@@ -166,24 +166,42 @@ async def create_razorpay_order(payload: OrderIn, request: Request, user=Depends
             "plan": payload.plan,
         },
     }
-    async with httpx.AsyncClient(timeout=20.0, auth=(key_id, key_secret)) as client:
-        response = await client.post("https://api.razorpay.com/v1/orders", json=order_payload)
+    failure_doc = {
+        "userId": user["user_id"],
+        "userEmail": user.get("email"),
+        "selectedPlanName": plan["name"],
+        "plan": payload.plan,
+        "originalPrice": plan["originalPrice"],
+        "paidAmount": plan["amount"],
+        "paymentStatus": "order_failed",
+        "createdAt": iso_now(),
+    }
+    try:
+        async with httpx.AsyncClient(timeout=20.0, auth=(key_id, key_secret)) as client:
+            response = await client.post("https://api.razorpay.com/v1/orders", json=order_payload)
+    except httpx.HTTPError as exc:
+        await db(request).payments.insert_one(
+            {**failure_doc, "error": f"Razorpay connection error: {type(exc).__name__}"}
+        )
+        raise HTTPException(502, "Could not reach Razorpay. Please try again.") from exc
     if response.status_code >= 400:
         await db(request).payments.insert_one(
-            {
-                "userId": user["user_id"],
-                "userEmail": user.get("email"),
-                "selectedPlanName": plan["name"],
-                "plan": payload.plan,
-                "originalPrice": plan["originalPrice"],
-                "paidAmount": plan["amount"],
-                "paymentStatus": "order_failed",
-                "error": response.text[:500],
-                "createdAt": iso_now(),
-            }
+            {**failure_doc, "error": response.text[:500]}
         )
         raise HTTPException(502, "Could not create Razorpay order. Please try again.")
-    order = response.json()
+    try:
+        order = response.json()
+    except ValueError as exc:
+        await db(request).payments.insert_one(
+            {**failure_doc, "error": "Razorpay returned a non-JSON order response."}
+        )
+        raise HTTPException(502, "Razorpay returned an invalid order. Please try again.") from exc
+    expected_amount = int(plan["amount"] * 100)
+    if not order.get("id") or order.get("amount") != expected_amount or order.get("currency") != plan["currency"]:
+        await db(request).payments.insert_one(
+            {**failure_doc, "error": "Razorpay returned an incomplete or mismatched order."}
+        )
+        raise HTTPException(502, "Razorpay returned an invalid order. Please try again.")
     await db(request).payments.insert_one(
         {
             "userId": user["user_id"],

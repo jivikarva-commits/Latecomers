@@ -36,6 +36,7 @@ import SEO from "../components/SEO";
 import BrandClockMark from "../components/BrandClockMark";
 import PublicShell from "../components/PublicShell";
 import AppLayout from "../components/layout/AppLayout";
+import { quizStartPath } from "../lib/authNavigation";
 
 const SECTION_ORDER = ["education", "skills", "courses", "tools", "projects", "placement", "jobs"];
 
@@ -380,7 +381,7 @@ function ErrorState({ message, onRetry }) {
   );
 }
 
-function PublicCareerHero({ career, onTakeQuiz, onFindInstitute, onFindRoadmap }) {
+function PublicCareerHero({ career, onTakeQuiz, onFindInstitute, onFindRoadmap, contained = false }) {
   const title = career?.title || "Career Report";
   const words = title.split(/\s+/).filter(Boolean);
   const accentWord = words.length > 1 ? words.pop() : "";
@@ -399,7 +400,7 @@ function PublicCareerHero({ career, onTakeQuiz, onFindInstitute, onFindRoadmap }
   const primaryPill = (career?.tags || [category]).slice(0, 2).join(" • ") || category;
 
   return (
-    <section className="relative left-1/2 w-screen -translate-x-1/2 overflow-hidden bg-[#120B3D] px-5 py-8 text-white sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+    <section className={`relative overflow-hidden bg-[#120B3D] px-5 py-8 text-white sm:px-8 sm:py-10 lg:px-10 lg:py-12 ${contained ? "w-full rounded-2xl" : "left-1/2 w-screen -translate-x-1/2"}`}>
       <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/10 sm:h-96 sm:w-96" />
       <div className="pointer-events-none absolute bottom-[-110px] left-[18%] h-64 w-64 rounded-full bg-yellow-300/10 sm:h-80 sm:w-80" />
 
@@ -1801,7 +1802,8 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
   };
 
   const startQuiz = () => {
-    navigate(isAuthenticated ? "/dashboard" : "/signin");
+    const destination = quizStartPath(user);
+    navigate(destination, destination === "/signin" ? { state: { from: { pathname: "/career-test" } } } : undefined);
   };
 
   const openRoadmap = () => {
@@ -1858,6 +1860,7 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
             onTakeQuiz={startQuiz}
             onFindInstitute={openInstituteFinder}
             onFindRoadmap={openRoadmap}
+            contained={isAuthenticated}
           />
         ) : (
         <div className="rounded-2xl border border-line bg-white p-4 sm:p-6 shadow-sm">

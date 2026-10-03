@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
+import { postAuthPath } from "../lib/authNavigation";
 
 export default function AuthCallback() {
   const navigate = useNavigate();
@@ -26,19 +27,15 @@ export default function AuthCallback() {
       try {
         const { data } = await api.post("/auth/session", { session_id: sessionId });
         setUser(data.user);
-        // Clear hash and route to dashboard or onboarding
-        window.history.replaceState({}, "", "/dashboard");
-        if (data.user && !data.user.onboarded) {
-          navigate("/onboarding", { state: { user: data.user }, replace: true });
-        } else {
-          navigate("/dashboard", { state: { user: data.user }, replace: true });
-        }
+        const destination = postAuthPath(data.user, location.state?.from);
+        window.history.replaceState({}, "", destination);
+        navigate(destination, { state: { user: data.user }, replace: true });
       } catch (e) {
         setError(e?.response?.data?.detail || "Authentication failed");
         setTimeout(() => navigate("/signin", { replace: true }), 2500);
       }
     })();
-  }, [location.hash, navigate, setUser]);
+  }, [location.hash, location.state, navigate, setUser]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-brand-50" data-testid="auth-callback">

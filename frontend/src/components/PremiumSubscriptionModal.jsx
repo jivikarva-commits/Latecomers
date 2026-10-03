@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 import BrandClockMark from "./BrandClockMark";
+import { useNavigate } from "react-router-dom";
+import { hasUsableSubscription } from "../lib/subscription";
 
 const fallbackPlans = [
   {
@@ -86,6 +88,7 @@ export default function PremiumSubscriptionModal({
   offerOnly = false,
 }) {
   const { user, refresh, setUser } = useAuth();
+  const navigate = useNavigate();
   const [plans, setPlans] = useState(fallbackPlans);
   const [loadingPlan, setLoadingPlan] = useState("");
 
@@ -98,7 +101,9 @@ export default function PremiumSubscriptionModal({
       .catch(() => setPlans(fallbackPlans));
   }, [open]);
 
-  const activePlan = user?.subscription?.status === "active" ? user.subscription.plan : "";
+  const subscription = user?.subscription || {};
+  const hasActiveSubscription = hasUsableSubscription(subscription);
+  const activePlan = hasActiveSubscription ? subscription.plan : "";
 
   const sortedPlans = useMemo(() => {
     const order = ["starter_offer", "standard_99", "premium_299"];
@@ -155,6 +160,12 @@ export default function PremiumSubscriptionModal({
       const checkout = new window.Razorpay(options);
       checkout.open();
     } catch (error) {
+      if (error?.response?.status === 401) {
+        toast.error("Please sign in before starting payment.");
+        onClose?.();
+        navigate("/signin", { state: { from: { pathname: "/pricing" } } });
+        return;
+      }
       toast.error(error?.response?.data?.detail || error.message || "Payment could not start.");
       setLoadingPlan("");
     }
@@ -182,6 +193,7 @@ export default function PremiumSubscriptionModal({
             {sortedPlans.map((plan) => {
               const featured = plan.key === "starter_offer";
               const active = activePlan === plan.key;
+              const canContinue = offerOnly && hasActiveSubscription;
               return (
                 <div key={plan.key} className={`relative rounded-2xl border p-4 sm:p-5 ${featured ? "border-brand bg-brand-50/50" : "border-line bg-white"}`}>
                   {featured && (
@@ -189,7 +201,7 @@ export default function PremiumSubscriptionModal({
                       Limited Offer
                     </span>
                   )}
-                  {active && (
+                  {(active || canContinue) && (
                     <span className="absolute -top-2.5 right-4 rounded-full bg-emerald-600 px-3 py-1 text-[10px] font-black text-white">Active</span>
                   )}
                   <h3 className="font-heading text-lg font-black text-ink">{plan.name}</h3>
@@ -200,12 +212,14 @@ export default function PremiumSubscriptionModal({
                     <span className="font-heading text-4xl font-black text-ink">{"\u20B9"}{plan.amount}</span>
                   </div>
                   <button
-                    onClick={() => startPayment(plan.key)}
-                    disabled={!!loadingPlan || active}
+                    onClick={() => canContinue ? onSuccess?.({ alreadyActive: true }) : startPayment(plan.key)}
+                    disabled={!!loadingPlan || (active && !offerOnly)}
                     className={`mt-4 w-full rounded-xl px-4 py-3 text-sm font-bold disabled:opacity-60 ${featured ? "premium-gradient text-white" : "bg-brand text-white"}`}
                   >
                     {loadingPlan === plan.key
                       ? "Opening checkout..."
+                      : canContinue
+                      ? "Continue with current plan"
                       : active
                       ? "Current plan"
                       : offerOnly && featured

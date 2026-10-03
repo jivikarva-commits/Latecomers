@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CheckCircle2, MessageCircle, Mic, Route, Search, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import PublicShell from "../components/PublicShell";
@@ -40,6 +41,8 @@ const plans = [
 
 export default function Pricing() {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState("starter_offer");
   const activePlan = user?.subscription?.status === "active" ? user.subscription.plan : "";
@@ -96,11 +99,23 @@ export default function Pricing() {
                   <span className="font-heading font-extrabold text-3xl sm:text-4xl text-ink">{"\u20B9"}{plan.price}</span>
                 </div>
                 <button
+                  disabled={isActive}
                   onClick={() => {
+                    if (!user) {
+                      navigate("/signin", {
+                        state: {
+                          from: {
+                            pathname: location.pathname,
+                            search: `?plan=${encodeURIComponent(plan.key)}`,
+                          },
+                        },
+                      });
+                      return;
+                    }
                     setSelectedPlan(plan.key);
                     setModalOpen(true);
                   }}
-                  className={`mt-4 w-full inline-flex items-center justify-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold ${
+                  className={`mt-4 w-full inline-flex items-center justify-center gap-1.5 rounded-full px-4 py-2.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-60 ${
                     plan.featured ? "premium-gradient text-white shadow-brand" : "bg-brand-50 text-ink border border-line"
                   }`}
                 >

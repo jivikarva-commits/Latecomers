@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import Logo from "../components/Logo";
 import SEO from "../components/SEO";
@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import { api } from "../lib/api";
 import { toast } from "sonner";
 import BrandClockMark from "../components/BrandClockMark";
+import { postAuthPath } from "../lib/authNavigation";
 
 const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const ADMIN_EMAIL = "latecomers.in@gmail.com";
@@ -25,6 +26,7 @@ const isAdminUser = (item) => normalizeEmail(item?.email) === normalizeEmail(ADM
 export default function SignIn() {
   const { user, setUser, refresh } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const btnContainerRef = useRef(null);
   const initializedRef = useRef(false);
   const [signingIn, setSigningIn] = useState(false);
@@ -62,9 +64,7 @@ export default function SignIn() {
         // Use React Router navigate instead of window.location for SPA navigation
         const dest = isAdminUser(data.user)
           ? "/admin"
-          : data.user && !data.user.onboarded
-            ? "/onboarding"
-            : "/dashboard";
+          : postAuthPath(data.user, location.state?.from);
         navigate(dest, { replace: true });
       } catch (e) {
         const detail = e?.response?.data?.detail || "Sign-in failed. Please try again.";
@@ -75,7 +75,7 @@ export default function SignIn() {
         setSigningIn(false);
       }
     },
-    [setUser, refresh, navigate]
+    [setUser, refresh, navigate, location.state]
   );
 
   // Render Google's official Sign In button — MUST be before any early return
@@ -113,11 +113,13 @@ export default function SignIn() {
     }
   }, [handleCredential]);
 
-  // Early return AFTER all hooks
-  if (user) {
-    navigate(isAdminUser(user) ? "/admin" : "/dashboard", { replace: true });
-    return null;
-  }
+  useEffect(() => {
+    if (!user || signingIn) return;
+    const destination = isAdminUser(user) ? "/admin" : postAuthPath(user, location.state?.from);
+    navigate(destination, { replace: true });
+  }, [user, signingIn, navigate, location.state]);
+
+  if (user) return null;
 
   return (
     <>

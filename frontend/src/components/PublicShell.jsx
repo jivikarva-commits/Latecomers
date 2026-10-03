@@ -5,6 +5,7 @@ import Logo from "./Logo";
 import { useAuth } from "../context/AuthContext";
 import { CAREER_CATEGORIES } from "../data/careerCategories";
 import { openCareerReportByTitle } from "../lib/careerNavigation";
+import { quizStartPath } from "../lib/authNavigation";
 
 const navItems = [
   { to: "/", label: "Home" },
@@ -151,8 +152,11 @@ function CategoryNav() {
 export function PublicNav() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
-  const start = () => navigate(isAuthenticated ? "/dashboard" : "/signin");
+  const { user } = useAuth();
+  const start = () => {
+    const destination = quizStartPath(user);
+    navigate(destination, destination === "/signin" ? { state: { from: { pathname: "/career-test" } } } : undefined);
+  };
 
   return (
     <header className="sticky top-0 z-40 border-b border-line/80 bg-white/92 backdrop-blur-2xl">
@@ -226,6 +230,13 @@ export function PublicNav() {
 }
 
 export function PublicFooter() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const start = (event) => {
+    event.preventDefault();
+    const destination = quizStartPath(user);
+    navigate(destination, destination === "/signin" ? { state: { from: { pathname: "/career-test" } } } : undefined);
+  };
   return (
     <footer className="border-t border-line bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid gap-6 md:grid-cols-[1.2fr_2fr]">
@@ -238,7 +249,7 @@ export function PublicFooter() {
           <Link to="/blog" className="text-muted2 hover:text-ink">Blog</Link>
           <Link to="/contact" className="text-muted2 hover:text-ink">Contact</Link>
           <Link to="/signin" className="text-muted2 hover:text-ink">Sign In</Link>
-          <Link to="/pricing" className="text-muted2 hover:text-ink">Start Quiz</Link>
+          <Link to="/career-test" onClick={start} className="text-muted2 hover:text-ink">Start Quiz</Link>
         </div>
       </div>
       <div className="border-t border-line py-4 text-center text-xs text-muted2">

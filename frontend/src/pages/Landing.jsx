@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import PublicShell from "../components/PublicShell";
 import { useAuth } from "../context/AuthContext";
+import { quizStartPath } from "../lib/authNavigation";
 import SEO from "../components/SEO";
 import { faqSchema, howToSchema, organizationSchema, softwareAppSchema, websiteSchema } from "../lib/seoSchemas";
 import { openCareerReportByTitle } from "../lib/careerNavigation";
@@ -80,8 +81,11 @@ function SectionHeading({ eyebrow, title, text, light = false }) {
 
 export default function Landing() {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-  const startJourney = () => navigate(isAuthenticated ? "/dashboard" : "/signin");
+  const { user } = useAuth();
+  const startJourney = () => {
+    const destination = quizStartPath(user);
+    navigate(destination, destination === "/signin" ? { state: { from: { pathname: "/career-test" } } } : undefined);
+  };
 
   return (
     <PublicShell>
