@@ -710,7 +710,6 @@ Rules:
 - Section 9 must include 5 salary/career steps from intern/fresher to senior/manager. Include years, salary, and body.
 - Section 10 must include employerTypes (4 objects with title/body), cities (6 Indian cities), remote, and apply (4-5 objects with title/body).
 - Section 11 must include 8 related roles.
-- Be truthful: software/developer roles must say coding required Yes; data/cloud/cyber roles Basic/Yes; non-tech roles No unless the role needs it.
 - In roleReport, avoid provider names unless they are tools/employers. Institute section should describe institute/course types, not fake institute names.
 - Return JSON only.
 
@@ -719,7 +718,7 @@ JSON shape:
   "overview": {{"description": "70 words about {title} in India", "whyChooseThis": "why choose it", "indianMarketDemand": "India demand", "globalScope": "global scope", "typicalDay": "typical day", "whyGreatFit": ["reason1","reason2"], "workAreas": [{{"title": "area", "icon": "briefcase"}}]}},
   "roleReport": {{"heroTag": "career track", "headline": "{title}", "summary": "short practical role snapshot", "pills": ["skill level","job style","salary note"], "sections": [
     {{"num": 1, "title": "What is this role?", "type": "text", "summary": "plain explanation", "items": ["key point","key point","key point"]}},
-    {{"num": 2, "title": "Is this job for me?", "type": "fitTable", "rows": [{{"label": "12th Pass", "value": "Yes/No/Helpful"}}, {{"label": "Any Graduate", "value": "Yes/No/Helpful"}}, {{"label": "BPO / Back-office experience", "value": "Big advantage/Helpful/Not required"}}, {{"label": "English fluency needed", "value": "Basic is enough/Good English helps/Strong English needed"}}, {{"label": "Prior experience needed", "value": "No/Helpful/Yes"}}, {{"label": "Degree mandatory", "value": "No/Yes/Preferred"}}, {{"label": "Age limit", "value": "None/Usually 18+"}}, {{"label": "Coding required", "value": "No/Basic/Yes"}}]}},
+    {{"num": 2, "title": "Is this job for me?", "type": "fitTable", "rows": [{{"label": "12th Pass", "value": "Yes/No/Helpful"}}, {{"label": "Any Graduate", "value": "Yes/No/Helpful"}}, {{"label": "BPO / Back-office experience", "value": "Big advantage/Helpful/Not required"}}, {{"label": "English fluency needed", "value": "Basic is enough/Good English helps/Strong English needed"}}, {{"label": "Prior experience needed", "value": "No/Helpful/Yes"}}, {{"label": "Degree mandatory", "value": "No/Yes/Preferred"}}, {{"label": "Age limit", "value": "None/Usually 18+"}}]}},
     {{"num": 3, "title": "Day-to-Day Tasks", "type": "list", "items": ["task","task","task","task"]}},
     {{"num": 4, "title": "Skills You Need to Learn", "type": "skills", "hardSkills": ["skill","skill","skill"], "softSkills": ["skill","skill","skill"]}},
     {{"num": 5, "title": "Who Is This Role For?", "type": "cards", "cards": [{{"title": "profile", "body": "why fit"}}, {{"title": "profile", "body": "why fit"}}]}},
@@ -787,7 +786,6 @@ def _fallback_ai_details(career_title: str) -> Dict:
                         {"label": "Prior experience needed", "value": "No"},
                         {"label": "Degree mandatory", "value": "No"},
                         {"label": "Age limit", "value": "None"},
-                        {"label": "Coding required", "value": "No"},
                     ],
                 },
                 {"num": 3, "title": "Day-to-Day Tasks", "type": "list", "items": ["Research requirements", "Complete practical tasks", "Coordinate with team members", "Improve work based on feedback"]},

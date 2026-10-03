@@ -390,7 +390,6 @@ function PublicCareerHero({ career, onTakeQuiz, onFindInstitute, onFindRoadmap, 
   const fitRows = buildCareerFitRows(career);
   const degreeRow = fitRows.find((row) => row.label === "Degree mandatory");
   const passRow = fitRows.find((row) => row.label === "12th Pass");
-  const codingRow = fitRows.find((row) => row.label === "Coding required");
   const summary =
     career?.roleReport?.summary ||
     career?.overviewDetails?.description ||
@@ -426,9 +425,6 @@ function PublicCareerHero({ career, onTakeQuiz, onFindInstitute, onFindRoadmap, 
           </span>
           <span className="rounded-full border border-white/18 bg-white/10 px-4 py-2 text-sm font-bold text-white/82">
             {degreeRow?.value === "Yes" ? "Degree required" : `12th: ${passRow?.value || "Allowed"}`}
-          </span>
-          <span className="rounded-full border border-white/18 bg-white/10 px-4 py-2 text-sm font-bold text-white/82">
-            Coding: {codingRow?.value || "Role based"}
           </span>
           <span className="rounded-full border border-yellow-300/35 bg-yellow-300/10 px-4 py-2 text-sm font-black text-yellow-300">
             6 - 12 months to job ready
@@ -698,17 +694,12 @@ function buildCareerFitRows(career) {
   const blob = `${career?.title || ""} ${career?.category || ""} ${career?.field || ""} ${(career?.tags || []).join(" ")}`.toLowerCase();
   const isSoftware = /(full.?stack|frontend|backend|software|web developer|app developer|developer|programmer|react|python|java)/.test(blob);
   const isData = /(data|analytics|analyst|scientist|sql|power bi|tableau)/.test(blob);
-  const isDevOpsCyber = /(devops|cloud|cyber|security|network)/.test(blob);
   const isMedical = /(doctor|nurse|medical|pharma|lab technician|radiology|physio|healthcare)/.test(blob);
   const isLegal = /(law|legal|advocate|judge|paralegal)/.test(blob);
   const isFinanceCredential = /\b(ca|cma|cs|acca|cfa|chartered|tax|gst|account|accounts|accounting)\b/.test(blob);
   const isGovernment = /(government|upsc|ssc|railway|bank po|police|defence|defense|psu)/.test(blob);
   const isCreativeMarketing = /(marketing|social media|content|seo|copy|graphic|design|video|motion|makeup|mehendi|photography)/.test(blob);
   const needsDegree = isMedical || isLegal || isFinanceCredential || isGovernment;
-
-  let coding = "No";
-  if (isSoftware) coding = "Yes";
-  else if (isData || isDevOpsCyber) coding = "Basic";
 
   return [
     { label: "12th Pass", value: needsDegree ? "No" : isSoftware ? "Yes + portfolio" : "Yes" },
@@ -718,7 +709,6 @@ function buildCareerFitRows(career) {
     { label: "Prior experience needed", value: "No" },
     { label: "Degree mandatory", value: needsDegree ? "Yes" : "No" },
     { label: "Age limit", value: isGovernment ? "Exam rules apply" : "None" },
-    { label: "Coding required", value: coding },
   ];
 }
 
@@ -1160,7 +1150,6 @@ function buildCourseGlance(career) {
     { label: "Best stream", value: streamMap[field] || "Any stream with practical proof" },
     { label: "Prior experience", value: valueFor("Prior experience needed") },
     { label: "English level", value: valueFor("English fluency needed") },
-    { label: "Coding required", value: valueFor("Coding required") },
   ];
 }
 
@@ -1283,7 +1272,7 @@ function RoleReportAccordion({ career, sections, onFindInstitutes }) {
     if (section.type === "fitTable") {
       return (
         <div className="border-t border-line">
-          {(section.rows || []).map((row, index) => (
+          {(section.rows || []).filter((row) => String(row?.label || "").trim().toLowerCase() !== "coding required").map((row, index) => (
             <div key={`${row.label}-${index}`} className="grid grid-cols-[1.25fr_1fr] gap-2 border-b border-line last:border-b-0 px-3 sm:px-4 py-2.5 sm:py-3.5 text-[12px] sm:text-sm">
               <span className="font-bold text-[#2B255F]">{row.label}</span>
               <span>
