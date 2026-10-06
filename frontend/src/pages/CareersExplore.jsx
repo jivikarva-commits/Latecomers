@@ -13,6 +13,11 @@ const GOVERNMENT_TITLES = new Set([
   ...CAREER_CATEGORIES.find((c) => c.key === "government").subsections.flatMap((s) => s.roles),
   "NDA Officer", "SSC MTS",
 ]);
+const GOVERNMENT_GUIDE_PATHS = {
+  "ssc-cgl-officer-india": "/careers/inspector-auditor-examiner",
+  "bank-po-india": "/careers/probationary-officer-po",
+  "upsc-civil-services-india": "/careers/ias-ips-ifs-officer",
+};
 
 export default function CareersExplore() {
   const navigate = useNavigate();
@@ -209,7 +214,7 @@ export default function CareersExplore() {
         )}
 
         {/* In-depth career guides — internal links to prerendered SEO pages */}
-        <section className="mt-10 sm:mt-14 border-t border-line pt-8">
+        {activeCategory?.key !== "government" && <section className="mt-10 sm:mt-14 border-t border-line pt-8">
           <p className="text-[10px] sm:text-xs font-bold tracking-[0.25em] text-brand uppercase">In-depth guides</p>
           <h2 className="font-heading font-extrabold text-xl sm:text-2xl text-ink mt-1.5">Career guides for India — salary, roadmap & skills</h2>
           <p className="text-muted2 mt-2 max-w-2xl text-sm sm:text-base">
@@ -219,19 +224,19 @@ export default function CareersExplore() {
             {CAREER_GUIDES.map((g) => (
               <Link
                 key={g.slug}
-                to={`/career-guide/${g.slug}`}
+                to={GOVERNMENT_GUIDE_PATHS[g.slug] || `/career-guide/${g.slug}`}
                 className="group flex items-center gap-3 rounded-xl border border-line bg-white p-3 hover:border-brand/40 hover:shadow-soft transition"
               >
                 <span className="text-xl shrink-0">{g.emoji}</span>
                 <span className="min-w-0 flex-1">
                   <span className="block font-heading font-bold text-[13px] sm:text-sm text-ink leading-tight truncate">{g.title}</span>
-                  <span className="block text-[11px] text-muted2">₹{g.salaryMin}-{g.salaryMax} LPA · {g.timeline}</span>
+                  <span className="block text-[11px] text-muted2">{GOVERNMENT_GUIDE_PATHS[g.slug] ? "Eligibility, official pay rules and sources" : `₹${g.salaryMin}-${g.salaryMax} LPA · ${g.timeline}`}</span>
                 </span>
                 <ArrowRight size={14} className="text-muted2 group-hover:text-brand shrink-0" />
               </Link>
             ))}
           </div>
-        </section>
+        </section>}
       </main>
     </PublicShell>
   );
