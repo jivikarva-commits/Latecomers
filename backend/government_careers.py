@@ -5,6 +5,7 @@ Recruitment authorities take precedence over supplementary institute material.
 """
 from copy import deepcopy
 from career_catalog import slugify
+from civil_services_guides import IAS, IPS, IFS, SHARED_SOURCES, SERVICE_SOURCES
 
 REVIEWED = "2026-10-06"
 NOTICE = (
@@ -61,28 +62,58 @@ SOURCES = {
 }
 
 
-def guide(title, old_title, scope, cycle, summary, eligibility, selection, pay, subjects, caution, refs, aliases=()):
-    return {
-        "title": title, "slug": slugify(old_title), "aliases": [old_title, title, *aliases],
+def guide(title, old_title, scope, cycle, summary, eligibility, selection, pay, subjects, caution, refs, aliases=(),
+          slug=None, details=None, extra_sources=()):
+    g = {
+        "title": title, "slug": slug or slugify(old_title), "aliases": [old_title, title, *aliases],
         "scope": scope, "sourceCycle": cycle, "reviewedAt": REVIEWED,
         "summary": summary, "eligibility": eligibility, "selection": selection,
         "pay": pay, "subjects": subjects, "caution": caution,
-        "sources": [SOURCES[r] for r in refs],
+        "sources": [*extra_sources, *(SOURCES[r] for r in refs)],
     }
+    if details:
+        g["details"] = details
+    return g
+
+
+CSE_SELECTION = ["Preliminary exam: GS Paper I (merit for Mains cut-off) and CSAT Paper II (qualifying, 33%).",
+                 "Main exam: 2 qualifying language papers (25% each) + 7 merit papers of 250 marks = 1,750.",
+                 "Personality Test of 275 marks, then service allocation by rank, preference, category, vacancies and medical fitness."]
+CSE_ELIGIBILITY = ["Indian citizen (compulsory for IAS, IPS and Indian Foreign Service).",
+                   "Graduate degree in any subject from a recognised university; final-year students may apply.",
+                   "Age 21 to under 32 on 1 August of the exam year (OBC +3, SC/ST +5, PwBD +10 years).",
+                   "Attempts: General/EWS 6, OBC 9, SC/ST unlimited within age; PwBD 9 (General/EWS/OBC)."]
+CSE_SUBJECTS = ["Prelims: current affairs, history, geography, polity, economy, environment, science and CSAT",
+                "Mains: essay, GS I–IV including ethics, one optional subject and answer writing"]
 
 
 GUIDES = [
-    guide("IAS / IPS / Indian Foreign Service", "IAS / IPS / IFS Officer", "UPSC • India", "CSE 2026",
-          "Civil services recruitment for administration, policing and diplomacy. Service allocation depends on rank, preferences, eligibility and vacancies.",
-          ["Recognised graduate degree or equivalent; final-year candidates must meet the notification's proof-of-passing deadline.",
-           "2026 general age rule: 21 to under 32 on 1 August 2026. OBC: up to 3 years and SC/ST: up to 5 years upper-age relaxation; other categories have separate provisions.",
-           "General/EWS: 6 attempts; OBC: 9; SC/ST: unlimited within age eligibility. PwBD provisions differ. Appearing in a prelims paper counts as an attempt.",
-           "IAS, IPS and Indian Foreign Service require Indian citizenship. Service-specific medical conditions apply."],
-          ["Preliminary examination: General Studies and qualifying CSAT.", "Main written examination, then Personality Test; document and medical checks for allocation."],
-          "Service-specific government pay rules apply. Check the allocated service's appointment terms; no universal take-home or annual package is quoted.",
-          ["General studies, current affairs, CSAT", "Essay, ethics, optional subject and answer writing"],
-          "IFS here means Indian Foreign Service. Indian Forest Service has a separate recruitment route and subject-specific degree eligibility, despite sharing the preliminary examination.",
-          ["upsc", "drishti"], ["Union Public Service Commission (UPSC) Civil Services Exam"]),
+    guide("IAS — Indian Administrative Service", "IAS Officer", "UPSC Civil Services Exam • All India Service", "CSE 2026 rules • CSE 2027 calendar",
+          "Run districts as SDM and Collector, lead State departments and make policy in Union ministries. Selected through the UPSC Civil Services Examination.",
+          CSE_ELIGIBILITY, CSE_SELECTION,
+          "Starts at Level 10 (₹56,100 basic/month) and rises to Level 17–18 (₹2,25,000–₹2,50,000) under the IAS (Pay) Rules 2016.",
+          CSE_SUBJECTS,
+          "IAS, IPS and Indian Foreign Service share one exam. Your service depends on rank and the preferences you fill — compare all three before filling the form.",
+          ["drishti"], ["IAS / IPS / IFS Officer", "IAS / IPS / Indian Foreign Service", "UPSC Civil Services Exam",
+                        "Union Public Service Commission (UPSC) Civil Services Exam", "Indian Administrative Service"],
+          slug="ias-officer", details=IAS, extra_sources=[*SHARED_SOURCES, *SERVICE_SOURCES["ias"]]),
+    guide("IPS — Indian Police Service", "IPS Officer", "UPSC Civil Services Exam • All India Service", "CSE 2026 rules • CSE 2027 calendar",
+          "Lead police as ASP and SP, handle law and order and crime investigation, and rise to DGP. Selected through the UPSC Civil Services Examination with extra physical standards.",
+          [*CSE_ELIGIBILITY, "IPS physical standards: height 165 cm (men) / 150 cm (women), chest and eyesight standards — checked after the final result."],
+          CSE_SELECTION,
+          "Starts at Level 10 (₹56,100 basic/month); DIG at Level 13A and DGP at Level 16–17 under the IPS (Pay) Rules 2016.",
+          CSE_SUBJECTS,
+          "Meeting the IPS physical and eyesight standards is required for IPS allocation. State police SI/DSP recruitment is a separate State exam.",
+          [], ["Indian Police Service"],
+          slug="ips-officer", details=IPS, extra_sources=[*SHARED_SOURCES, *SERVICE_SOURCES["ips"]]),
+    guide("IFS — Indian Foreign Service", "Indian Foreign Service Officer", "UPSC Civil Services Exam • Ministry of External Affairs", "CSE 2026 rules • CSE 2027 calendar",
+          "Become a career diplomat in India's embassies, high commissions and missions to the UN. Selected through the UPSC Civil Services Examination.",
+          CSE_ELIGIBILITY, CSE_SELECTION,
+          "Starts at Level 10 (₹56,100 basic/month) in India; Foreign Allowance and housing abroad under MEA rules.",
+          CSE_SUBJECTS,
+          "IFS here means Indian Foreign Service. Indian Forest Service (IFoS) shares the Prelims but has a separate Mains and subject-specific degree eligibility.",
+          ["drishti"], ["IFS Officer", "Indian Foreign Service", "Diplomat"],
+          slug="indian-foreign-service-officer", details=IFS, extra_sources=[*SHARED_SOURCES, *SERVICE_SOURCES["ifs"]]),
     guide("State Services — DSP / BDO / Tahsildar", "State Service Officer (DSP, BDO, Tahsildar)", "State-specific • Maharashtra example", "MPSC State Services syllabus; eligibility must be checked for the chosen advertisement",
           "State commissions recruit administrative, revenue and police officers. A combined exam does not guarantee that every named post is advertised each year.",
           ["A recognised bachelor's degree is the usual general-service route; certain posts require specific subjects or additional qualifications.",

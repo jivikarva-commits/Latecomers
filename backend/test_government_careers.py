@@ -13,8 +13,8 @@ class GovernmentGuidesTest(TestCase):
         menu = (Path(__file__).parents[1] / "frontend/src/data/careerCategories.js").read_text(encoding="utf-8")
         section = menu.split('key: "government"', 1)[1].split('key: "law-mgmt"', 1)[0]
         titles = [title for row in re.findall(r"roles: \[(.*?)\]", section) for title in re.findall(r'"([^"]+)"', row)]
-        self.assertEqual(len(titles), 15)
-        self.assertEqual(len({government_career(title)["slug"] for title in titles}), 15)
+        self.assertEqual(len(titles), 17)
+        self.assertEqual(len({government_career(title)["slug"] for title in titles}), 17)
         for g in GUIDES:
             for alias in g["aliases"]:
                 self.assertEqual(government_career(alias)["slug"], g["slug"])
@@ -37,8 +37,8 @@ class GovernmentGuidesTest(TestCase):
         database.careers.find.return_value = cursor
         with patch.object(data_routes, "db", return_value=database):
             result = asyncio.run(data_routes.list_careers(None))
-        self.assertEqual(len(result), 15)
-        self.assertEqual(len({r["slug"] for r in result}), 15)
+        self.assertEqual(len(result), 17)
+        self.assertEqual(len({r["slug"] for r in result}), 17)
         self.assertTrue(all(r["governmentProfile"] for r in result))
         self.assertEqual([r["slug"] for r in government_careers("Talathi")], ["village-revenue-officer-talathi"])
 
@@ -57,3 +57,22 @@ class GovernmentGuidesTest(TestCase):
                 self.assertTrue(g["sourceCycle"] and g["caution"] and g["eligibility"] and g["selection"] and g["pay"])
                 self.assertEqual({s["kind"] for s in g["sources"]}, {"official", "institute"})
                 self.assertTrue(all(s["url"].startswith("https://") and s["scope"] for s in g["sources"]))
+
+
+class CivilServicesSplitTest(TestCase):
+    def test_ias_ips_ifs_are_separate_guides_and_legacy_title_still_resolves(self):
+        slugs = {government_career(t)["slug"] for t in ["IAS — Indian Administrative Service", "IPS — Indian Police Service", "IFS — Indian Foreign Service"]}
+        self.assertEqual(slugs, {"ias-officer", "ips-officer", "indian-foreign-service-officer"})
+        self.assertEqual(government_career("ias-ips-ifs-officer")["slug"], "ias-officer")
+        self.assertEqual(government_career("IAS / IPS / IFS Officer")["slug"], "ias-officer")
+
+    def test_detailed_guides_cover_start_to_end(self):
+        for slug in ["ias-officer", "ips-officer", "indian-foreign-service-officer"]:
+            with self.subTest(slug=slug):
+                d = government_career(slug)["governmentProfile"]["details"]
+                for key in ["quickFacts", "role", "categoryTable", "examStages", "passingRules", "steps", "calendar", "training", "careerLadder", "faqs", "related"]:
+                    self.assertTrue(d[key], key)
+                self.assertEqual(len(d["related"]), 2)
+                total = sum(int(p["marks"]) for s in d["examStages"][1:] for p in s["papers"] if p["counts"] == "Merit")
+                self.assertEqual(total, 2025)
+        self.assertIn("165 cm", " ".join(government_career("ips-officer")["governmentProfile"]["details"]["special"]["items"]))

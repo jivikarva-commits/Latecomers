@@ -16,7 +16,7 @@ const GOVERNMENT_TITLES = new Set([
 const GOVERNMENT_GUIDE_PATHS = {
   "ssc-cgl-officer-india": "/careers/inspector-auditor-examiner",
   "bank-po-india": "/careers/probationary-officer-po",
-  "upsc-civil-services-india": "/careers/ias-ips-ifs-officer",
+  "upsc-civil-services-india": "/careers/ias-officer",
 };
 
 export default function CareersExplore() {

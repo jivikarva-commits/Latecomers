@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ExternalLink, Landmark } from "lucide-react";
 import SEO from "./SEO";
+import CivilServiceGuide from "./CivilServiceGuide";
 
 const Bullets = ({ items }) => <ul className="list-disc pl-5 space-y-3 text-sm leading-7 text-muted2">{items.map((item) => <li key={item}>{item}</li>)}</ul>;
 
@@ -21,6 +22,7 @@ function References({ sources, kind, title }) {
 
 export default function GovernmentCareerReport({ career, embedded = false }) {
   const p = career.governmentProfile;
+  if (p.details) return <CivilServiceGuide career={career} embedded={embedded} />;
   const panel = "rounded-2xl border border-line bg-white p-5 sm:p-7 min-w-0";
   return <main className="w-full min-w-0 bg-[#F8F6FF] px-4 sm:px-6 py-6 sm:py-10">
     {!embedded && <SEO title={`${career.title} — Eligibility, Exam & Official Sources`} description={p.summary} path={`/careers/${career.slug}`} />}

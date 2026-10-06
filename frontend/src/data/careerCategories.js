@@ -150,7 +150,7 @@ export const CAREER_CATEGORIES = [
     subsections: [
       {
         title: "Civil Services",
-        roles: ["IAS / IPS / Indian Foreign Service", "State Services — DSP / BDO / Tahsildar"],
+        roles: ["IAS — Indian Administrative Service", "IPS — Indian Police Service", "IFS — Indian Foreign Service", "State Services — DSP / BDO / Tahsildar"],
       },
       {
         title: "Banking",
