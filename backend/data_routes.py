@@ -14,6 +14,7 @@ from pydantic import BaseModel
 
 from auth_routes import current_user, _resolve_user
 from career_catalog import ALLOWED_CAREER_SLUGS, DYNAMIC_CAREERS, FIELD_META, slugify
+from government_careers import government_career, government_careers
 from llm_client import ask_claude, extract_json
 from subscription_utils import consume_feature, ensure_feature_available
 
@@ -540,6 +541,9 @@ def _career_details_fresh(career: Dict) -> bool:
 
 
 def _normalize_public_career(career: Dict) -> Dict:
+    curated = government_career(career.get("slug")) or government_career(career.get("title"))
+    if curated:
+        return curated
     item = dict(career)
     item.pop("_id", None)
     item.setdefault("description", item.get("shortDescription", "Explore this career path."))
@@ -1136,7 +1140,15 @@ async def list_careers(request: Request, q: Optional[str] = None, limit: int = 2
     if q:
         flt["$or"] = [{"title": {"$regex": q, "$options": "i"}}, {"tags": {"$regex": q, "$options": "i"}}]
     items = await db(request).careers.find(flt, {"_id": 0}).limit(limit).to_list(limit)
-    return [_normalize_public_career(item) for item in items]
+    # Curated guides are available even before a corresponding Mongo record exists.
+    result, seen = [], set()
+    for item in items:
+        normalized = _normalize_public_career(item)
+        if normalized.get("slug") not in seen:
+            result.append(normalized)
+            seen.add(normalized.get("slug"))
+    result.extend(item for item in government_careers(q) if item["slug"] not in seen)
+    return result[:max(0, limit)]
 
 
 @router.get("/careers/{slug}/details")
@@ -1150,6 +1162,9 @@ async def get_career(slug: str, request: Request):
 
 
 async def _get_career_detail_by_slug(slug: str, request: Request):
+    curated = government_career(slug)
+    if curated:
+        return curated
     approved_slug = _approved_slug(slug)
     if not approved_slug:
         raise HTTPException(404, "Career is not in the approved catalog.")
@@ -1170,6 +1185,9 @@ async def generate_career(payload: CareerGenerateRequest, request: Request):
     title = re.sub(r"\s+", " ", payload.title).strip()
     if len(title) < 2:
         raise HTTPException(400, "Enter a valid career title.")
+    curated = government_career(title)
+    if curated:
+        return curated
     slug = _approved_slug(title)
     if not slug:
         raise HTTPException(400, "This career is not in the approved catalog.")

@@ -150,27 +150,27 @@ export const CAREER_CATEGORIES = [
     subsections: [
       {
         title: "Civil Services",
-        roles: ["IAS / IPS / IFS Officer", "State Service Officer (DSP, BDO, Tahsildar)"],
+        roles: ["IAS / IPS / Indian Foreign Service", "State Services — DSP / BDO / Tahsildar"],
       },
       {
         title: "Banking",
-        roles: ["Probationary Officer (PO)", "RBI Grade B Officer", "Bank Clerk"],
+        roles: ["Bank Probationary Officer (IBPS PO)", "RBI Grade B Officer — General", "Bank Clerk / Customer Service Associate"],
       },
       {
         title: "SSC",
-        roles: ["Inspector / Auditor / Examiner", "LDC / DEO / Postal Assistant", "Multi-Tasking Staff"],
+        roles: ["SSC CGL — Inspector / Auditor / Examiner", "SSC CHSL — LDC / JSA / DEO", "SSC Multi-Tasking Staff (MTS)"],
       },
       {
         title: "Railways",
-        roles: ["Junior Clerk / Station Master", "Track Maintainer / Helper"],
+        roles: ["Railway NTPC — Junior Clerk / Station Master", "Railway Level 1 — Track Maintainer / Assistants"],
       },
       {
-        title: "Defense",
-        roles: ["Army / Navy / Air Force Officer (NDA/CDS)", "Short Service Commission (AFCAT)"],
+        title: "Defence",
+        roles: ["Armed Forces Officer — NDA / CDS", "Air Force Officer — AFCAT"],
       },
       {
         title: "Police & State",
-        roles: ["Police Sub Inspector", "Village Revenue Officer (Talathi)", "Police Constable"],
+        roles: ["Police Sub-Inspector — State Recruitment", "Talathi — Maharashtra Revenue Service", "Police Constable — State Recruitment"],
       },
     ],
   },
@@ -313,14 +313,13 @@ export const CAREER_CATEGORIES = [
         ],
       },
       {
-        title: "Government Exam (12th eligible)",
+        title: "Government Exams (check post requirements)",
         roles: [
           "Army Soldier (GD / Technical / Clerk)",
           "NDA Officer",
-          "Police Constable",
-          "Postal / LIC / Bank Clerk",
-          "Railway Helper / Technician",
-          "Talathi / Revenue Clerk",
+          "Police Constable — State Recruitment",
+          "SSC CHSL — LDC / JSA / DEO",
+          "Railway Level 1 — Track Maintainer / Assistants",
           "SSC MTS",
         ],
       },

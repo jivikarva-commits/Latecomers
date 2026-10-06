@@ -303,7 +303,7 @@ export default function Dashboard() {
                     <div className="min-w-0">
                       <p className="font-heading font-bold text-[13px] sm:text-sm text-ink leading-tight truncate">{c.title}</p>
                       <span className="inline-block px-1.5 py-px rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold mt-0.5">
-                        {c.matchPercent}%
+                        {c.governmentProfile ? "Exam route" : `${c.matchPercent}%`}
                       </span>
                     </div>
                   </div>
@@ -317,9 +317,11 @@ export default function Dashboard() {
                 </div>
                 {c.matchReasons?.length > 0 && <p className="text-[10px] text-emerald-700 mt-1.5 line-clamp-1 font-medium">✓ {c.matchReasons[0]}</p>}
                 <div className="flex items-center gap-2 mt-2 text-[10px] sm:text-xs text-muted2">
-                  <span className="font-semibold text-ink">₹{c.avgSalary?.min}–{c.avgSalary?.max}L</span>
-                  <span>·</span>
-                  <span>{c.jobGrowth5Y}% <span className="text-emerald-600 font-semibold">{c.demand}</span></span>
+                  {c.governmentProfile ? <span>Official pay rules · Check eligibility</span> : <>
+                    <span className="font-semibold text-ink">₹{c.avgSalary?.min}–{c.avgSalary?.max}L</span>
+                    <span>·</span>
+                    <span>{c.jobGrowth5Y}% <span className="text-emerald-600 font-semibold">{c.demand}</span></span>
+                  </>}
                 </div>
               </Link>
             );
@@ -348,7 +350,7 @@ export default function Dashboard() {
                       <Ic size={15} />
                     </div>
                     <span className="px-1.5 py-px rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold">
-                      {c.matchPercent}%
+                      {c.governmentProfile ? "Exam route" : `${c.matchPercent}%`}
                     </span>
                   </div>
                   <p className="font-heading font-bold text-xs sm:text-sm text-ink mt-1.5 leading-tight line-clamp-2">{c.title}</p>
@@ -360,7 +362,7 @@ export default function Dashboard() {
                     ))}
                   </div>
                   <p className="text-[10px] text-muted2 mt-auto pt-1.5">
-                    ₹{c.avgSalary?.min}–{c.avgSalary?.max}L · {c.demand || "High"}
+                    {c.governmentProfile ? "Official pay rules · Check eligibility" : `₹${c.avgSalary?.min}–${c.avgSalary?.max}L · ${c.demand || "High"}`}
                   </p>
                 </Link>
               );

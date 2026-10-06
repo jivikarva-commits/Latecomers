@@ -31,7 +31,7 @@ const CareerRow = ({ c, match, saved, onSave, onOpen, isAiMatch }) => {
                 : "bg-brand-50 text-brand"
             }`}
           >
-            {match}%
+            {c.governmentProfile ? "Exam route" : `${match}%`}
           </span>
           <button
             onClick={(e) => {
@@ -54,8 +54,10 @@ const CareerRow = ({ c, match, saved, onSave, onOpen, isAiMatch }) => {
         ))}
       </div>
       <p className="text-[10px] sm:text-xs text-muted2 mt-auto pt-1.5">
-        Avg ₹{c.avgSalary?.min}–{c.avgSalary?.max} LPA · Growth {c.jobGrowth5Y}% ·{" "}
-        <span className="text-emerald-600 font-semibold">{c.demand}</span>
+        {c.governmentProfile ? "Official pay rules · Check eligibility" : <>
+          Avg ₹{c.avgSalary?.min}–{c.avgSalary?.max} LPA · Growth {c.jobGrowth5Y}% ·{" "}
+          <span className="text-emerald-600 font-semibold">{c.demand}</span>
+        </>}
       </p>
     </div>
   );
@@ -217,7 +219,7 @@ export default function Careers() {
                   <Ic size={17} />
                 </div>
                 <span className="inline-block px-1.5 py-px rounded-full bg-emerald-100 text-emerald-700 text-[10px] sm:text-[11px] font-bold whitespace-nowrap">
-                  {hasAiMatches ? "✨ " : ""}{match}%
+                  {c.governmentProfile ? "Exam route" : `${hasAiMatches ? "✨ " : ""}${match}%`}
                 </span>
               </div>
 
@@ -240,9 +242,10 @@ export default function Careers() {
               )}
 
               <div className="flex items-center gap-1.5 mt-auto pt-2 text-[10px] sm:text-xs text-muted2">
-                <span className="font-semibold text-ink">₹{c.avgSalary?.min}–{c.avgSalary?.max}L</span>
-                <span>·</span>
-                <span>{c.jobGrowth5Y}% <span className="text-emerald-600">{c.demand}</span></span>
+                <span className="font-semibold text-ink">{c.governmentProfile ? "Official pay rules" : `₹${c.avgSalary?.min}–${c.avgSalary?.max}L`}</span>
+                {!c.governmentProfile && <><span>·</span>
+                  <span>{c.jobGrowth5Y}% <span className="text-emerald-600">{c.demand}</span></span>
+                </>}
               </div>
             </Link>
           );

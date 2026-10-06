@@ -9,6 +9,11 @@ import { CAREER_CATEGORIES } from "../data/careerCategories";
 import { CAREER_GUIDES } from "../data/careerGuides";
 import { openCareerReportByTitle } from "../lib/careerNavigation";
 
+const GOVERNMENT_TITLES = new Set([
+  ...CAREER_CATEGORIES.find((c) => c.key === "government").subsections.flatMap((s) => s.roles),
+  "NDA Officer", "SSC MTS",
+]);
+
 export default function CareersExplore() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -119,7 +124,7 @@ export default function CareersExplore() {
         {career.description || career.group || "Explore salary, skills, demand, and roadmap."}
       </p>
       <div className="mt-2 sm:mt-3 flex items-center justify-between text-[11px] sm:text-xs">
-        <span className="font-semibold text-ink">Rs {career.avgSalary?.min || 3}-{career.avgSalary?.max || 12}L</span>
+        <span className="font-semibold text-ink">{career.category === "Government Jobs" || career.category === "Government Exam" || career.governmentProfile || GOVERNMENT_TITLES.has(career.title || career.role) ? "Official pay rules" : `Rs ${career.avgSalary?.min || 3}-${career.avgSalary?.max || 12}L`}</span>
         <span className="inline-flex items-center gap-1 text-brand font-semibold">View <ArrowRight size={12} /></span>
       </div>
     </button>
@@ -154,7 +159,7 @@ export default function CareersExplore() {
             </h1>
             <p className="text-muted2 mt-2 max-w-2xl text-sm sm:text-base">
               {activeCategory
-                ? `Browse roles under ${activeCategory.label} - tap any role to generate a detailed report.`
+                ? `Browse roles under ${activeCategory.label} - tap any role to read its career guide.`
                 : "Browse careers across technology, operations, business, healthcare, trades, creative work, and more."}
             </p>
           </div>

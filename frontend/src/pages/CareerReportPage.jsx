@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import GovernmentCareerReport from "../components/GovernmentCareerReport";
 import useAnchoredToggle from "../hooks/useAnchoredToggle";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -1590,7 +1591,7 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
   }, [career]);
   // Fetch AI insights on demand (lazy: when user opens Overview or Insights tab)
   useEffect(() => {
-    if (!career?.slug) return;
+    if (!career?.slug || career?.governmentProfile) return;
     if (aiInsights) return;
     if (tab !== "overview" && tab !== "insights") return;
     let cancelled = false;
@@ -1609,7 +1610,7 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
       }
     })();
     return () => { cancelled = true; };
-  }, [tab, career?.slug, aiInsights]);
+  }, [tab, career?.slug, career?.governmentProfile, aiInsights]);
 
   const regenerateInsights = async () => {
     if (!career?.slug) return;
@@ -1818,6 +1819,10 @@ export default function CareerReportPage({ slug: propSlug, embedded = false }) {
 
   if (status === "error") {
     return withShell(<ErrorState message={errorMsg} onRetry={retry} />);
+  }
+
+  if (career?.governmentProfile) {
+    return withShell(<GovernmentCareerReport career={career} embedded={embedded} />);
   }
 
   const matchScore = 89;

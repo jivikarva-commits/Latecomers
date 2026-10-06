@@ -54,7 +54,7 @@ const careerTracks = [
   ["UI/UX Designer", "Creative tech", "Design apps and websites. Figma is free to learn, portfolio matters more than degree.", "Creative", MapPinned],
   ["Social Media Manager", "Marketing", "Run brand pages, create content strategy. BPO communication skills transfer well.", "Fast start", Users],
   ["Medical Coder / Biller", "Healthcare", "Work-from-home friendly US healthcare sector. Three month training path.", "Stable", ClipboardCheck],
-  ["SSC / Banking Officer", "Government", "UPSC, SSC CGL, IBPS. Structured 6-12 month prep roadmaps with clear exams.", "Secure", ShieldCheck],
+  ["Government Career Guides", "Government", "Compare UPSC, SSC, banking, railway and state routes with official eligibility and source references.", "Exam routes", ShieldCheck],
 ];
 
 const blogs = [
@@ -259,7 +259,7 @@ export default function Landing() {
           <SectionHeading eyebrow="Career tracks" title="40+ paths. Real job titles. No fluff." text="From mainstream tech roles to hidden-gem careers - we map paths that match your actual background, not just your dream." light />
           <div className="mt-5 grid gap-2.5 sm:mt-10 sm:gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {careerTracks.map(([title, category, text, tag, Icon]) => (
-              <button key={title} type="button" onClick={() => openCareerReportByTitle(title, navigate)} className="rounded-xl border border-white/12 bg-white/6 p-3.5 text-left sm:rounded-2xl sm:p-5">
+              <button key={title} type="button" onClick={() => category === "Government" ? navigate("/careers-explore?field=government") : openCareerReportByTitle(title, navigate)} className="rounded-xl border border-white/12 bg-white/6 p-3.5 text-left sm:rounded-2xl sm:p-5">
                 <div className="mb-2.5 flex h-8 w-8 items-center justify-center rounded-lg bg-brand-100 text-brand sm:mb-4 sm:h-10 sm:w-10 sm:rounded-xl">
                   <Icon size={17} />
                 </div>
