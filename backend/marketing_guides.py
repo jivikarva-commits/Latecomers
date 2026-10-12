@@ -133,7 +133,7 @@ EARN_COMMON = [
 
 def _mkt(slug, title, short, headline, summary, **kw):
     return _guide(slug, title, short, headline, summary, group=GROUP, scope_prefix="Marketing", back=BACK, icon="Megaphone", color="#F97316",
-                  category="Digital Marketing", eligibility=MKT_ELIGIBILITY, test_topics="", interview_topics="", assignment="", **kw)
+                  category="Digital Marketing", eligibility=MKT_ELIGIBILITY, authority="Hired by brands, agencies, startups and freelance clients", test_topics="", interview_topics="", assignment="", **kw)
 
 
 SEO = _mkt(

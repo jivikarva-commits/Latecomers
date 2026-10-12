@@ -171,20 +171,23 @@ def _timeline(rows):
 def _guide(slug, title, short, headline, summary, *, duties, postings, facts, levels, steps, test_topics, interview_topics, assignment,
            checklist, timeline, prep, resources, ladder, special, mistakes, faqs, related_items, institutes, sources,
            group="Web & App Development", levels_title="Skill checklist by level", extra_sections=None, category="IT / Software / Tech",
-           scope_prefix="IT / Tech", back=None, icon="Code2", color="#2563EB", hiring=None, eligibility=None):
+           scope_prefix="IT / Tech", back=None, icon="Code2", color="#2563EB", hiring=None, eligibility=None,
+           authority="Hired by IT companies, startups, agencies and freelance clients", labels=None, exam_heading=None,
+           steps_first_label="Check before you start"):
     edu = EDUCATION.get(slug)
-    eligibility = ([f"Education: {edu[0][0].upper() + edu[0][1:]}."] if edu else []) + (eligibility or ELIGIBILITY)
+    required = edu[1].split("\n")[0].removeprefix("Required: ") if edu else ""
+    eligibility = ([f"Education: {required[0].upper() + required[1:]}"] if edu else []) + (eligibility or ELIGIBILITY)
     d = details(
-        service={"short": short, "full": title, "headline": headline, "seoTitle": f"{title} Career Guide", "authority": "Hired by IT companies, startups, agencies and freelance clients"},
+        service={"short": short, "full": title, "headline": headline, "seoTitle": f"{title} Career Guide", "authority": authority},
         quick_facts=[fact(f["label"], EDUCATION[slug][0][0].upper() + EDUCATION[slug][0][1:]) if f["label"] == "Education" and slug in EDUCATION else f for f in facts],
         role={"heading": f"What does a {title} do?", "intro": summary, "duties": duties, "postings": postings},
         eligibility=eligibility or ELIGIBILITY,
         category_table={"title": levels_title, "columns": ["Level", "You should be able to…"], "rows": levels,
                         "note": "Use this to check where you are before applying."},
         exam_stages=hiring or _hiring(test_topics, interview_topics, assignment),
-        exam_heading="Hiring process — what companies check",
+        exam_heading=exam_heading or "Hiring process — what companies check",
         passing_rules=checklist,
-        steps=[step("Education requirement", "Check before you start", EDUCATION[slug][1]), *steps] if slug in EDUCATION else steps,
+        steps=[step("Education requirement", steps_first_label, EDUCATION[slug][1]), *steps] if slug in EDUCATION else steps,
         calendar=_timeline(timeline),
         prep_plan=prep,
         free_resources=resources,
@@ -193,9 +196,9 @@ def _guide(slug, title, short, headline, summary, *, duties, postings, facts, le
         mistakes=mistakes,
         faqs=faqs,
         related_items=related_items,
-        related_heading="Related IT / Tech careers",
+        related_heading=f"Related {scope_prefix} careers",
         institutes=institutes,
-        labels={**LABELS, "back": back} if back else LABELS,
+        labels={**LABELS, **(labels or {}), **({"back": back} if back else {})},
         extra_sections=extra_sections,
     )
     srcs = [*sources]

@@ -89,3 +89,74 @@ EDUCATION = {
                                  "a graduation in your business area (BBA, BCom, BTech or the relevant field) plus entrepreneurship training such as the EDII PGDM or NIESBUD EDPs",
                                  "after 12th, take BBA, BCom, BTech or a degree in your chosen field; then an EDII programme, NIESBUD EDP or an incubator programme; consult a CA before registering"),
 }
+
+_COM_ROUTE = "after 12th (Commerce preferred), take BCom/BBA; add Tally and GST training alongside"
+
+EDUCATION.update({
+    "accounts-executive-tally-gst": _edu("graduation — BCom is what most job posts ask for; some accept BBA/BMS with accounting subjects",
+                                         "BCom/MCom plus Tally and GST training; CA/CMA Intermediate helps for senior accounts roles", _COM_ROUTE),
+    "gst-practitioner": _edu("as per Rule 83 of the CGST Rules, an Indian citizen with a graduate/postgraduate degree in Commerce, Law, Banking (including "
+                             "Higher Auditing) or Business Administration/Management, or a pass in the final exam of ICAI, ICSI or ICMAI (other routes exist "
+                             "for retired tax officers and old sales-tax practitioners); then you must pass the GST Practitioner exam conducted by NACIN",
+                             "BCom/MCom or LLB plus hands-on GST return filing practice",
+                             "after 12th, take BCom, BBA/BMS or a law degree; after graduation, enrol on the GST portal and clear the NACIN exam"),
+    "income-tax-consultant": _edu("graduation in Commerce (BCom/MCom) or Law (LLB) for most tax jobs; to represent clients before income-tax authorities you must "
+                                  "fall in a category the Income-tax Act allows, such as chartered accountant or legal practitioner",
+                                  "CA or CMA, or BCom plus LLB, for advisory and representation work",
+                                  "after 12th (Commerce preferred), take BCom; then CA/CMA, or an LLB if you want to appear before tax authorities as a legal practitioner"),
+    "financial-analyst": _edu("graduation — BCom, BBA, BA/BSc Economics, BSc Maths/Statistics or BTech", "an MBA (Finance), CA, CMA or CFA for most analyst roles in good companies",
+                              "after 12th (Maths preferred), take BCom, BBA, Economics or BTech; then MBA Finance, CA or CFA"),
+    "investment-banker-analyst": _edu("graduation plus, in most firms, an MBA (Finance) from a top B-school, CA or CFA",
+                                      "strong academics from a reputed college; IIM/top B-school MBA or CA is the most common entry route in India",
+                                      "after 12th, take BCom, BBA, Economics or BTech; then CAT for an MBA, or CA; CFA Level I can run alongside"),
+    "stock-market-trader-analyst": _edu("graduation (BCom, BBA, Economics, BSc Maths/Statistics or BTech) for broking and research jobs; dealers in equity derivatives need "
+                                        "NISM Series VIII; a SEBI-registered Research Analyst needs a graduate degree plus NISM Series XV (SEBI RA Regulations)",
+                                        "a finance degree or MBA (Finance)/CFA for research roles",
+                                        "after 12th, take BCom, BBA, Economics or BSc Maths; clear NISM VIII/XV during or after graduation"),
+    "mutual-fund-advisor": _edu("to sell mutual funds: pass NISM Series V-A and get an ARN from AMFI; to give fee-based advice as a SEBI-registered Investment "
+                                "Adviser: a graduate degree plus NISM Series X-A and X-B; most company jobs also ask for graduation",
+                                "BCom/BBA/Economics graduation; CFP or CFA for advisory roles",
+                                "after 12th, take BCom/BBA; clear NISM V-A (you can start as a distributor), then NISM X-A/X-B for advisory work"),
+    "sap-fico-consultant": _edu("graduation in Commerce or Finance (BCom/MCom, BBA/MBA Finance) or a CA/CMA qualification — consultants must understand accounting",
+                                "CA, CMA or MBA Finance plus the SAP Financial Accounting certification (C_TS4FI)",
+                                "after 12th, take BCom; then CA/CMA/MBA Finance and SAP FI training; BTech graduates need strong accounting basics first"),
+    "financial-modeler": _edu("graduation — BCom, BBA, Economics, BSc Maths/Statistics or BTech", "an MBA (Finance), CA, CMA or CFA plus advanced Excel and a modelling certificate",
+                              "after 12th (Maths preferred), take BCom, BBA, Economics or BTech; then MBA Finance/CA/CFA"),
+    "ca-chartered-accountant": _edu("ICAI rules: Foundation route — register after Class 10 and appear in the Foundation exam after appearing in Class 12; Direct Entry "
+                                    "to Intermediate — Commerce graduates/post-graduates with at least 55%, other graduates/post-graduates with at least 60%, or ICSI/ICMAI "
+                                    "Intermediate-pass students", "Commerce in Class 11–12 (Accountancy and Maths make Foundation easier)",
+                                    "Class 10 → register with ICAI Board of Studies → Class 12 + Foundation → Intermediate → 2-year Practical Training → Final"),
+    "cma-cost-accountant": _edu("ICMAI rules: admission to Foundation after Class 10, Foundation exam after Class 12; direct entry to Intermediate for graduates "
+                                "(except fine/performing arts), engineers, engineering students after 3rd year, or ICAI Intermediate-pass students",
+                                "Commerce in Class 11–12 or a BCom degree",
+                                "Class 12 → Foundation → Intermediate (2 groups) → 15 months practical training → Final (2 groups)"),
+    "cs-company-secretary": _edu("ICSI rules: CSEET for Indian nationals who have passed or are appearing in Class 12; graduates/post-graduates, CS Foundation pass, "
+                                 "CA Intermediate pass and CMA Final pass students are exempt from CSEET and can register directly for CS Executive",
+                                 "Commerce or Law background (BCom, BBA LLB, LLB)",
+                                 "Class 12 → CSEET → CS Executive → CS Professional → 21-month practical training → membership"),
+    "acca": _edu("ACCA's minimum entry is two A Levels and three GCSEs (or equivalent) in five subjects including English and Maths — Indian Class 12 results "
+                 "are assessed against this; if you don't meet it, start with ACCA Foundations in Accountancy, which has no academic entry requirement",
+                 "Commerce with Accountancy/Maths and good English; BCom, CA or CMA graduates get some exemptions",
+                 "Class 12 → ACCA registration (or FIA first) → Applied Knowledge → Applied Skills → Strategic Professional + ethics module + 36 months experience"),
+    "cfa": _edu("CFA Institute rules: a bachelor's degree, or a final-years undergraduate whose Level I exam is 23 months or less before graduation, or 4,000 hours of "
+                "work and/or higher education over at least three sequential years; plus a valid international passport",
+                "a finance, commerce, economics or maths background; many candidates are MBA, CA or finance graduates",
+                "after 12th, take BCom, BBA, Economics or BTech; register for Level I in your final undergraduate years or after graduation"),
+})
+
+# Short labels for the quick-facts box where the full rule is too long.
+_SHORT = {
+    "gst-practitioner": "Graduation in Commerce/Law/Banking/Business (CGST Rule 83) + NACIN exam",
+    "income-tax-consultant": "BCom/MCom or LLB; CA/CMA preferred",
+    "investment-banker-analyst": "Graduation + MBA (Finance), CA or CFA",
+    "stock-market-trader-analyst": "Graduation + NISM certification (VIII / XV)",
+    "mutual-fund-advisor": "NISM V-A + AMFI ARN (distributor); graduation + NISM X-A/X-B (adviser)",
+    "sap-fico-consultant": "BCom/MCom, MBA Finance or CA/CMA",
+    "ca-chartered-accountant": "Class 12 (Foundation) or graduation with 55%/60% (Direct Entry)",
+    "cma-cost-accountant": "Class 12 (Foundation) or graduation (Direct Entry)",
+    "cs-company-secretary": "Class 12 + CSEET, or graduation (CSEET exempt)",
+    "acca": "Class 12 meeting ACCA entry rules, or Foundations in Accountancy",
+    "cfa": "Bachelor's degree (or final-years student) or 4,000 hours work/education",
+    "accounts-executive-tally-gst": "BCom (most job posts)",
+}
+EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in _SHORT.items()})
