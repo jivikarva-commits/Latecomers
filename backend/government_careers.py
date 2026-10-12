@@ -6,6 +6,11 @@ Recruitment authorities take precedence over supplementary institute material.
 from copy import deepcopy
 from career_catalog import slugify
 from civil_services_guides import IAS, IPS, IFS, SHARED_SOURCES, SERVICE_SOURCES
+from ssc_guides import GUIDE_DETAILS as SSC_DETAILS, GUIDE_SOURCES as SSC_SOURCES
+from banking_guides import GUIDE_DETAILS as BANK_DETAILS, GUIDE_SOURCES as BANK_SOURCES
+from defence_guides import GUIDE_DETAILS as DEF_DETAILS, GUIDE_SOURCES as DEF_SOURCES
+from railway_guides import GUIDE_DETAILS as RAIL_DETAILS, GUIDE_SOURCES as RAIL_SOURCES
+from state_guides import GUIDE_DETAILS as STATE_DETAILS, GUIDE_SOURCES as STATE_SOURCES
 
 REVIEWED = "2026-10-06"
 NOTICE = (
@@ -36,7 +41,7 @@ SOURCES = {
     "rbi-institute": source("EduTap — RBI Grade B eligibility", "https://edutap.in/rbi-grade-b/eligibility/", "Cross-check of General-stream marks, age and category conditions.", "institute"),
     "cgl": source("SSC CGL 2026 notice (official legacy filename)", "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_cgl_2025.pdf", "Downloaded document is headed CGL 2026, uploaded 21 May 2026; post table and qualification section. Filename still says 2025."),
     "cgl-institute": source("Testbook — SSC CGL eligibility", "https://testbook.com/ssc-cgl-exam/eligibility-criteria", "Cross-check of post-specific age and degree requirements.", "institute"),
-    "chsl": source("SSC CHSL 2025 notification", "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_chsl_2025.pdf", "Sections 1, 5, 8 and examination scheme: LDC/JSA, DEO, age, qualifications and skill tests."),
+    "chsl": source("SSC CHSL 2026 notification", "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_chsl_2026.pdf", "Sections 1, 5, 8 and examination scheme: LDC/JSA, DEO, age, qualifications and skill tests."),
     "chsl-institute": source("Testbook — SSC CHSL eligibility", "https://testbook.com/ssc-chsl/eligibility-criteria", "Supplementary qualification cross-check; use the named official cycle for exact rules.", "institute"),
     "mts": source("SSC MTS and Havaldar 2025 notification", "https://ssc.gov.in/api/attachment/uploads/masterData/NoticeBoards/Notice_of_adv_mts_2025.pdf", "Age section 6, qualification section 9 and examination/PET scheme."),
     "mts-institute": source("Testbook — SSC MTS preparation and eligibility", "https://testbook.com/ssc-mts/coaching", "Class 10 qualification cross-check; commercial coaching is optional.", "institute"),
@@ -50,15 +55,15 @@ SOURCES = {
     "nda": source("UPSC NDA/NA II 2026 notification", "https://www.upsc.gov.in/sites/default/files/Notif-NDA-II-2026-Engl-200526.pdf", "Wing-specific education, date-of-birth window, marital status, written/SSB and medical requirements."),
     "cds": source("UPSC CDS II 2026 notification", "https://www.upsc.gov.in/sites/default/files/Notif-CDS-II-2026-Engl-200526.pdf", "Academy-specific education, age/date-of-birth windows, written papers, SSB and medical requirements."),
     "defence-institute": source("Adda247 — defence exam preparation", "https://www.adda247.com/defence-jobs/", "Supplementary NDA/CDS preparation material; commission and eligibility are governed by UPSC notices.", "institute"),
-    "afcat": source("Indian Air Force AFCAT 01/2026 notification", "https://www.careerairforce.gov.in/sites/default/files/inline-files/Notification-for-AFCAT-01-2026.pdf", "Branch-specific education, commission types, age at 1 January 2027, selection and pay."),
+    "afcat": source("Indian Air Force AFCAT 02/2026 notification", "https://afcat.edcil.co.in/assets/images/news/AFCAT_02_2026/Notification%20for%20AFCAT%20Cycle%2002-2026.pdf", "Branch-specific education, commission types, age at 1 January 2027, selection and pay."),
     "iaf": source("Indian Air Force — AFCAT entry", "https://www.careerairforce.gov.in/afcat-entry", "Flying, technical and non-technical entry routes; consult current advertisement for commission availability."),
     "afcat-institute": source("Adda247 — AFCAT eligibility", "https://www.adda247.com/defence-jobs/afcat-eligibility-criteria/", "Published cross-check for AFCAT 1/2026 branch-specific requirements.", "institute"),
     "police": source("Maharashtra Police — joining routes", "https://www.mahapolice.gov.in/join-mpd/", "Distinguishes UPSC IPS, state service DySP, MPSC PSI and constabulary recruitment."),
     "police-notices": source("Maharashtra Police — recruitment", "https://www.mahapolice.gov.in/police-recru.php/", "Current unit advertisements, service rules, physical tests, category exceptions and recruitment updates."),
     "psi-institute": source("Testbook — Maharashtra PSI eligibility (2024 reference)", "https://testbook.com/mpsc-psi/eligibility-criteria", "Historical degree/language cross-check only; not a current age or attempt-limit authority.", "institute"),
     "constable-institute": source("Testbook — Maharashtra Constable eligibility", "https://testbook.com/amp/maharashtra-police-constable/eligibility-criteria", "Supplementary Class 12 and physical-test cross-check.", "institute"),
-    "talathi": source("Maharashtra Talathi recruitment 2023 notification", "https://mahabhumi.gov.in/Mahabhumilink/Downloads/TalathiExam/तलाठी%20पदभरती%20-2023.pdf", "Historical Maharashtra qualification, examination and S-8 pay reference; not a 2026 vacancy notification."),
-    "talathi-institute": source("Testbook — Maharashtra Talathi eligibility", "https://testbook.com/maharashtra-talathi/eligibility-criteria", "Degree requirement cross-check only; current vacancies and recruitment route not independently confirmed here.", "institute"),
+    "talathi": source("Maharashtra Talathi recruitment 2023 notification", "https://mahabhumi.gov.in/Mahabhumilink/Downloads/TalathiExam/तलाठी%20पदभरती%20-2023.pdf", "2023 recruitment: S-8 pay reference. From 2026 Talathi (Gram Mahsul Adhikari) is recruited through MPSC Group-C."),
+    "talathi-institute": source("Testbook — Maharashtra Talathi eligibility", "https://testbook.com/maharashtra-talathi/eligibility-criteria", "Degree requirement cross-check only; MPSC corrigenda are the authority for the 2026 route.", "institute"),
 }
 
 
@@ -114,7 +119,7 @@ GUIDES = [
           "IFS here means Indian Foreign Service. Indian Forest Service (IFoS) shares the Prelims but has a separate Mains and subject-specific degree eligibility.",
           ["drishti"], ["IFS Officer", "Indian Foreign Service", "Diplomat"],
           slug="indian-foreign-service-officer", details=IFS, extra_sources=[*SHARED_SOURCES, *SERVICE_SOURCES["ifs"]]),
-    guide("State Services — DSP / BDO / Tahsildar", "State Service Officer (DSP, BDO, Tahsildar)", "State-specific • Maharashtra example", "MPSC State Services syllabus; eligibility must be checked for the chosen advertisement",
+    guide("State Services — DSP / BDO / Tahsildar", "State Service Officer (DSP, BDO, Tahsildar)", "State-specific • Maharashtra (MPSC)", "MPSC Advt 132/2025 (Combined Prelim 2026) and State Services Mains 2026",
           "State commissions recruit administrative, revenue and police officers. A combined exam does not guarantee that every named post is advertised each year.",
           ["A recognised bachelor's degree is the usual general-service route; certain posts require specific subjects or additional qualifications.",
            "Choose your state and exact post first. Age, cut-off date, language, domicile/category benefits and qualification deadlines are advertisement-specific.",
@@ -122,7 +127,7 @@ GUIDES = [
           ["Maharashtra reference: preliminary examination, main examination and interview.", "Post allocation and verification follow the applicable service rules; other states may use different schemes."],
           "State and post pay matrices apply. DSP, BDO and Tahsildar are not one pay scale; verify the advertised post's basic pay.",
           ["State history, geography, economy and governance", "General studies, language and the current mains syllabus"],
-          "There is no single all-India State Services eligibility rule. The linked MPSC syllabus is a reference; later amendments and your recruitment-year notice control.",
+          "There is no single all-India State Services rule. This guide follows Maharashtra (MPSC); other State PSCs have their own age, attempt and exam rules.",
           ["mpsc", "mpsc-scheme", "police", "mpsc-institute"], ["Maharashtra Public Service Commission (MPSC) Exam"]),
     guide("Bank Probationary Officer (IBPS PO)", "Probationary Officer (PO)", "Participating public-sector banks • IBPS", "CRP PO/MT XVI (2026 notification; 2027–28 vacancies)",
           "Entry to an officer role in participating banks, with probation and bank-specific service conditions. SBI PO is a separate recruitment.",
@@ -158,7 +163,7 @@ GUIDES = [
           ["Quantitative ability, reasoning, English and general awareness", "Computer knowledge, data-entry practice and any post-specific paper"],
           "Postal Assistant/Sorting Assistant appears under CGL in the reviewed notice, not the CHSL 2025 post list. Post preference and physical suitability matter.",
           ["cgl", "ssc", "cgl-institute"], ["SSC Exam"]),
-    guide("SSC CHSL — LDC / JSA / DEO", "LDC / DEO / Postal Assistant", "Staff Selection Commission • central departments", "CHSL 2025 notification",
+    guide("SSC CHSL — LDC / JSA / DEO", "LDC / DEO / Postal Assistant", "Staff Selection Commission • central departments", "CHSL 2026 notification",
           "Higher-secondary entry for clerical and data-entry posts. LDC/JSA and DEO have different skill tests and pay levels.",
           ["Class 12 or equivalent for LDC/JSA and most DEO posts. Specified DEO posts require Class 12 Science with Mathematics; check the department list.", "2025 notice: general age 18–27 as on 1 January 2026, with notified category relaxations."],
           ["Tier I and Tier II examinations, including prescribed computer knowledge and post-specific typing/skill tests.", "Document verification and any department-specific conditions; BRO posts have additional standards."],
@@ -206,7 +211,7 @@ GUIDES = [
           ["English, general awareness, numerical ability, reasoning and military aptitude", "AFSB preparation and branch-specific medical readiness"],
           "The 01/2026 notification includes Permanent Commission in the technical branch as well as SSC entries. Check current branch vacancies, tenure and degree-equivalence lists.",
           ["afcat", "iaf", "afcat-institute"]),
-    guide("Police Sub-Inspector — State Recruitment", "Police Sub Inspector", "State-specific • Maharashtra PSI example", "Official Maharashtra joining routes; current advertisement required",
+    guide("Police Sub-Inspector — State Recruitment", "Police Sub Inspector", "State-specific • Maharashtra (MPSC)", "MPSC Advt 011/2026 (Group-B Non-Gazetted Combined Prelim 2026)",
           "State police SI recruitment is separate from UPSC IPS and from SSC recruitment of Delhi Police/CAPF sub-inspectors.",
           ["Maharashtra PSI reference: recognised graduate degree and required Marathi knowledge. The current MPSC advertisement determines proof and result deadlines.", "Age, category relaxation, physical measurements, endurance and medical rules vary by state, category and recruitment route.", "Direct recruitment and departmental promotion/limited competitive routes have different eligibility; choose the correct advertisement."],
           ["Maharashtra uses the MPSC recruitment route for direct PSI entry.", "Follow the applicable written stages, physical assessment, interview where prescribed, document verification and medical checks in that scheme."],
@@ -214,15 +219,15 @@ GUIDES = [
           ["State general knowledge, language, reasoning and the notified written syllabus", "Fitness and physical-test preparation under the relevant state standards"],
           "Select your state before deciding eligibility. An MPSC PSI rule must not be applied automatically to UP, Rajasthan, other states or SSC CPO.",
           ["police", "mpsc", "psi-institute"], ["Police & State Exams"]),
-    guide("Talathi — Maharashtra Revenue Service", "Village Revenue Officer (Talathi)", "Maharashtra • not a universal VRO rule", "2023 official recruitment baseline; later cycle not verified",
+    guide("Talathi — Maharashtra Revenue Service", "Village Revenue Officer (Talathi)", "Maharashtra • MPSC Group-C", "MPSC Advt 017/2026 + corrigenda (22-07, 05-08, 09-09-2026)",
           "Village-level revenue and land-records work. Talathi, Patwari and Village Revenue Officer titles in different states do not imply identical eligibility.",
           ["The Maharashtra 2023 reference requires a recognised graduate degree; it is not a Class 12-only route.", "Marathi knowledge and the prescribed computer-qualification/compliance requirements apply.", "Use the current Maharashtra advertisement for age cut-off, relaxations, qualification deadlines and district/category conditions; historical concessions are not permanent rules."],
           ["2023 baseline: computer-based examination and document verification/merit process.", "Confirm the recruiting authority and exam scheme in the next applicable notification; do not assume the 2023 route is unchanged."],
           "2023 reference: S-8 basic-pay range ₹25,500–81,100 per month, plus applicable allowances. Not a 2026 in-hand salary claim.",
           ["2023 baseline: Marathi, English, general knowledge and intellectual/quantitative aptitude", "Use the current official syllabus before buying preparation material"],
-          "2026 vacancy and recruitment-route claims in coaching/news pages are not confirmed here. This historical guide must not be used as an open application notice.",
+          "Talathi is now called Gram Mahsul Adhikari and, from 2026, is recruited through MPSC's Group-C combined exam. Patwari/VRO posts in other states follow different rules.",
           ["talathi", "mpsc", "talathi-institute"], ["Talathi / Revenue Clerk"]),
-    guide("Police Constable — State Recruitment", "Police Constable", "State-specific • Maharashtra example", "Maharashtra Police joining/recruitment guidance",
+    guide("Police Constable — State Recruitment", "Police Constable", "State-specific • Maharashtra Police", "Maharashtra Police Bharti 2024-25 candidate instructions (12-11-2025)",
           "Constabulary recruitment is organised under state or force-specific rules. A Maharashtra qualification is not an all-India constable rule.",
           ["Maharashtra general constable entry uses Class 12/equivalent, subject to the qualifications and exceptions in the current unit advertisement.", "Age, reservation, domicile/language conditions, physical measurements, endurance and medical requirements must be checked in the selected state's notice.", "Driver, armed-police and other specialised posts can have extra licences or distinct requirements. SSC GD and RPF are separate recruitments."],
           ["Maharashtra reference: physical assessment and written examination, then prescribed document, medical and character checks.", "Order, marks and qualifying standards are controlled by the current recruitment rules."],
@@ -231,6 +236,18 @@ GUIDES = [
           "Do not copy one state's age, height or running requirements to another state, sex or category. Read applicable exceptions before ruling yourself eligible or ineligible.",
           ["police", "police-notices", "constable-institute"]),
 ]
+
+DETAILED_REVIEWED = "2026-10-12"
+DETAILED_GUIDES = {**SSC_DETAILS, **BANK_DETAILS, **DEF_DETAILS, **RAIL_DETAILS, **STATE_DETAILS}
+DETAILED_SOURCES = {**SSC_SOURCES, **BANK_SOURCES, **DEF_SOURCES, **RAIL_SOURCES, **STATE_SOURCES}
+
+for _g in GUIDES:
+    if _g["slug"] in DETAILED_GUIDES:
+        _g["details"] = DETAILED_GUIDES[_g["slug"]]
+        _g["reviewedAt"] = DETAILED_REVIEWED
+        _seen = set()
+        _g["sources"] = [s for s in [*DETAILED_SOURCES.get(_g["slug"], []), *_g["sources"]]
+                         if not (s["url"] in _seen or _seen.add(s["url"]))]
 
 _BY_ALIAS = {slugify(alias): g for g in GUIDES for alias in [g["slug"], *g["aliases"]]}
 

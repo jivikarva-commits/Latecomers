@@ -207,6 +207,8 @@ def _details(slug, service, role, quick_facts, service_steps, training, ladder, 
         "mistakes": [*extra_mistakes, *COMMON_MISTAKES],
         "faqs": faqs,
         "related": _related(slug),
+        "relatedHeading": "Same exam, other services",
+        "examHeading": "Exam pattern — 3 stages",
     }
 
 
