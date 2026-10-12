@@ -170,15 +170,16 @@ def _timeline(rows):
 
 def _guide(slug, title, short, headline, summary, *, duties, postings, facts, levels, steps, test_topics, interview_topics, assignment,
            checklist, timeline, prep, resources, ladder, special, mistakes, faqs, related_items, institutes, sources,
-           group="Web & App Development", levels_title="Skill checklist by level"):
+           group="Web & App Development", levels_title="Skill checklist by level", extra_sections=None, category="IT / Software / Tech",
+           scope_prefix="IT / Tech", back=None, icon="Code2", color="#2563EB", hiring=None, eligibility=None):
     d = details(
         service={"short": short, "full": title, "headline": headline, "seoTitle": f"{title} Career Guide", "authority": "Hired by IT companies, startups, agencies and freelance clients"},
         quick_facts=facts,
         role={"heading": f"What does a {title} do?", "intro": summary, "duties": duties, "postings": postings},
-        eligibility=ELIGIBILITY,
+        eligibility=eligibility or ELIGIBILITY,
         category_table={"title": levels_title, "columns": ["Level", "You should be able to…"], "rows": levels,
                         "note": "Use this to check where you are before applying."},
-        exam_stages=_hiring(test_topics, interview_topics, assignment),
+        exam_stages=hiring or _hiring(test_topics, interview_topics, assignment),
         exam_heading="Hiring process — what companies check",
         passing_rules=checklist,
         steps=steps,
@@ -192,7 +193,8 @@ def _guide(slug, title, short, headline, summary, *, duties, postings, facts, le
         related_items=related_items,
         related_heading="Related IT / Tech careers",
         institutes=institutes,
-        labels=LABELS,
+        labels={**LABELS, "back": back} if back else LABELS,
+        extra_sections=extra_sections,
     )
     srcs = [*sources]
     for ins in institutes:
@@ -204,11 +206,11 @@ def _guide(slug, title, short, headline, summary, *, duties, postings, facts, le
     srcs = [s for s in srcs if not (s["url"] in seen or seen.add(s["url"]))]
     return {
         "career_id": f"career-{slug}", "slug": slug, "title": title,
-        "category": "IT / Software / Tech", "field": "IT / Software / Tech", "icon": "Code2", "iconColor": "#2563EB",
-        "description": summary, "shortDescription": summary, "tags": ["IT / Tech", group],
+        "category": category, "field": category, "icon": icon, "iconColor": color,
+        "description": summary, "shortDescription": summary, "tags": [scope_prefix, group],
         "detailsGeneratedByAI": False, "dataSource": "editorial-tech-v1",
-        "guideProfile": {"title": title, "scope": f"IT / Tech • {group}", "sourceCycle": "Official docs and course pages listed under Sources",
-                         "reviewedAt": REVIEWED, "summary": summary, "eligibility": ELIGIBILITY, "sources": srcs, "details": d},
+        "guideProfile": {"title": title, "scope": f"{scope_prefix} • {group}", "sourceCycle": "Official docs and course pages listed under Sources",
+                         "reviewedAt": REVIEWED, "summary": summary, "eligibility": eligibility or ELIGIBILITY, "sources": srcs, "details": d},
     }
 
 

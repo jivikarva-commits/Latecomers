@@ -38,7 +38,7 @@ def related(slug, title, why):
 def details(*, service, quick_facts, role, eligibility, exam_stages, passing_rules, steps, prep_plan,
             free_resources, mistakes, faqs, related_items, category_table=None, attempt_rules=None,
             attempt_heading=None, calendar=None, training=None, career_ladder=None, special=None,
-            exam_heading=None, related_heading=None, institutes=None, labels=None):
+            exam_heading=None, related_heading=None, institutes=None, labels=None, extra_sections=None):
     seen = set()
     free_resources = [r for r in free_resources if not (r["url"] in seen or seen.add(r["url"]))]
     d = {
@@ -50,7 +50,7 @@ def details(*, service, quick_facts, role, eligibility, exam_stages, passing_rul
         "categoryTable": category_table, "attemptRules": attempt_rules, "attemptHeading": attempt_heading,
         "calendar": calendar, "training": training, "careerLadder": career_ladder, "special": special,
         "examHeading": exam_heading, "relatedHeading": related_heading,
-        "institutes": institutes, "labels": labels,
+        "institutes": institutes, "labels": labels, "extraSections": extra_sections,
     }
     d.update({k: v for k, v in optional.items() if v})
     return d

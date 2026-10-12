@@ -103,9 +103,10 @@ export default function CivilServiceGuide({ career, embedded = false }) {
         <nav aria-label="On this page" className="rounded-2xl border border-line bg-white p-4">
           <p className="text-xs font-semibold text-muted2 mb-2">On this page</p>
           <div className="flex flex-wrap gap-2">
-            {SECTIONS.filter((id) => has(d, id)).map((id) => (
+            {[...SECTIONS.filter((id) => has(d, id)).map((id) => [id, L.nav[id]]),
+              ...(d.extraSections || []).map((x) => [x.id, x.nav])].map(([id, label]) => (
               <button key={id} type="button" onClick={() => jump(id)} className="rounded-full border border-line bg-[#F8F6FF] px-3 py-1.5 text-xs font-semibold text-ink hover:border-brand hover:text-brand">
-                {L.nav[id]}
+                {label}
               </button>
             ))}
           </div>
@@ -236,6 +237,15 @@ export default function CivilServiceGuide({ career, embedded = false }) {
           <p className="text-xs leading-6 text-muted2 mt-3">{d.careerLadder.note}</p>
           {p.payNote && <p className="text-xs leading-6 text-muted2 mt-2">{p.payNote}</p>}
         </section>}
+
+        {(d.extraSections || []).map((x) => (
+          <section key={x.id} id={x.id} className={panel}>
+            <h2 className={h2}>{x.heading}</h2>
+            {x.intro && <p className={`${muted} mb-4`}>{x.intro}</p>}
+            {x.columns && <Table columns={x.columns} rows={x.rows} />}
+            {x.items && <Bullets items={x.items} />}
+          </section>
+        ))}
 
         {d.special && <section className="rounded-xl border border-brand/20 bg-brand-50 p-5 sm:p-6">
           <h2 className="font-bold text-ink mb-2">{d.special.title}</h2>
