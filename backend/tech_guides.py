@@ -1,6 +1,5 @@
 """IT / Tech — Web & App Development beginner guides (same structure as the government guides).
 
-Frontend Developer is intentionally not here: a separate in-progress guide covers it.
 Institute and course facts were checked on 2026-10-12 against the official pages linked below
 (C-DAC ACTS admission booklet Aug-2026 batch, NIELIT O Level booklet Rev 5.1, IIT Madras
 academics page, IGNOU BCA page, Coursera/Meta certificate pages and the official Google,
@@ -170,13 +169,14 @@ def _timeline(rows):
 
 
 def _guide(slug, title, short, headline, summary, *, duties, postings, facts, levels, steps, test_topics, interview_topics, assignment,
-           checklist, timeline, prep, resources, ladder, special, mistakes, faqs, related_items, institutes, sources):
+           checklist, timeline, prep, resources, ladder, special, mistakes, faqs, related_items, institutes, sources,
+           group="Web & App Development", levels_title="Skill checklist by level"):
     d = details(
         service={"short": short, "full": title, "headline": headline, "seoTitle": f"{title} Career Guide", "authority": "Hired by IT companies, startups, agencies and freelance clients"},
         quick_facts=facts,
         role={"heading": f"What does a {title} do?", "intro": summary, "duties": duties, "postings": postings},
         eligibility=ELIGIBILITY,
-        category_table={"title": "Skill checklist by level", "columns": ["Level", "You should be able to…"], "rows": levels,
+        category_table={"title": levels_title, "columns": ["Level", "You should be able to…"], "rows": levels,
                         "note": "Use this to check where you are before applying."},
         exam_stages=_hiring(test_topics, interview_topics, assignment),
         exam_heading="Hiring process — what companies check",
@@ -205,9 +205,9 @@ def _guide(slug, title, short, headline, summary, *, duties, postings, facts, le
     return {
         "career_id": f"career-{slug}", "slug": slug, "title": title,
         "category": "IT / Software / Tech", "field": "IT / Software / Tech", "icon": "Code2", "iconColor": "#2563EB",
-        "description": summary, "shortDescription": summary, "tags": ["IT / Tech", "Web & App Development"],
+        "description": summary, "shortDescription": summary, "tags": ["IT / Tech", group],
         "detailsGeneratedByAI": False, "dataSource": "editorial-tech-v1",
-        "guideProfile": {"title": title, "scope": "IT / Tech • Web & App Development", "sourceCycle": "Official docs and course pages listed under Sources",
+        "guideProfile": {"title": title, "scope": f"IT / Tech • {group}", "sourceCycle": "Official docs and course pages listed under Sources",
                          "reviewedAt": REVIEWED, "summary": summary, "eligibility": ELIGIBILITY, "sources": srcs, "details": d},
     }
 
@@ -220,6 +220,53 @@ JOB_STEPS = [
     step("Apply and prepare for interviews", "Job search", "Apply on company career pages, job portals and referrals. Practise coding questions and explain your projects."),
     step("Join, learn and grow", "First job", "Learn the team's codebase, ask for code reviews and keep building skills for the next level."),
 ]
+
+FRONTEND = _guide(
+    "frontend-developer", "Frontend Developer", "Frontend", "How to become a Frontend Developer",
+    "A frontend developer builds the part of a website or web app that people see and use — layouts, buttons, forms and interactions — with HTML, CSS and JavaScript.",
+    duties=["Turn designs (Figma) into responsive web pages", "Add interactions and fetch data from APIs with JavaScript",
+            "Make pages accessible for keyboard and screen-reader users", "Keep pages fast and fix layout bugs across browsers and phones",
+            "Work with designers, backend developers and testers"],
+    postings=["Product companies, startups, IT services, agencies and media companies", "Remote and freelance frontend work is common"],
+    facts=[fact("Education", "Degree helps; portfolio matters most"), fact("Time to job-ready", "About 6–9 months (typical)"),
+           fact("Core skills", "HTML, CSS, JavaScript"), fact("Then learn", "React (or Angular/Vue), Git, responsive design"),
+           fact("Job titles", "Frontend / UI / Web Developer"), fact("Hiring rounds", "Test → technical → assignment → HR"),
+           fact("Work mode", "Office, hybrid or remote"), fact("Portfolio", "3 deployed websites/apps")],
+    levels=[["Beginner", "Build static pages with semantic HTML and CSS"], ["Intermediate", "Responsive layouts (flexbox/grid), JavaScript DOM and API calls"],
+            ["Job-ready", "A framework like React, accessibility, performance, Git and deployed projects"]],
+    steps=[step("Learn HTML", "Weeks 1–3", "Semantic tags, forms, tables, links and images — the structure of every page."),
+           step("Learn CSS and responsive design", "Weeks 3–8", "Box model, flexbox, grid, media queries and mobile-first layouts."),
+           step("Learn JavaScript", "Months 2–4", "Variables, functions, arrays/objects, DOM events, fetch and async/await."),
+           GIT_STEP,
+           step("Learn a framework", "Months 4–6", "React is widely asked for; learn components, state, hooks and routing."),
+           step("Accessibility and performance", "Months 5–7", "Keyboard navigation, alt text, colour contrast, image optimisation and Lighthouse checks."),
+           *JOB_STEPS],
+    test_topics="HTML/CSS MCQs, JavaScript output questions, DSA basics",
+    interview_topics="CSS layout, JavaScript (closures, events, promises), DOM, React basics, accessibility and your projects",
+    assignment="Convert a design into a responsive page or build a small app with API data",
+    checklist=["You can turn a design into a responsive page that works on mobile and desktop.", "You can write JavaScript for interactions and API data.",
+               "Your pages are keyboard-accessible and fast.", "You have 3 deployed projects on GitHub with READMEs.", "You can explain CSS layout and JavaScript basics in interviews."],
+    timeline=[("HTML + CSS", "Months 1–2"), ("JavaScript", "Months 2–4"), ("Framework (React)", "Months 4–6"),
+              ("Accessibility + performance", "Months 5–7"), ("Portfolio + interview prep", "Months 7–9")],
+    prep=[{"phase": "Foundation", "duration": "Months 1–4", "focus": ["HTML, CSS, JavaScript", "Clone 3 real website layouts", "Git from day one"]},
+          {"phase": "Framework", "duration": "Months 4–7", "focus": ["React basics", "API data and forms", "Accessibility checks"]},
+          {"phase": "Get hired", "duration": "Months 7–9", "focus": ["3 deployed projects", "JavaScript interview questions", "Mock interviews"]}],
+    resources=[{"label": "MDN — Learn web development", "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development", "note": "Official beginner curriculum."},
+               {"label": "MDN — JavaScript guide", "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide", "note": "JavaScript reference."},
+               {"label": "react.dev — Learn React", "url": "https://react.dev/learn", "note": "Official React docs."}],
+    ladder=[["Start", "Frontend Intern / Trainee", "0–1 year", "Pages, components, bug fixes"], ["Junior", "Frontend Developer", "1–3 years", "Own features and UI"],
+            ["Mid", "Senior Frontend Engineer", "3–6 years", "Architecture, performance, mentoring"], ["Senior", "Frontend Lead / Architect", "6+ years", "Design systems and team decisions"]],
+    special=["Learn HTML, CSS and JavaScript well before a framework — interviews test fundamentals.",
+             "Accessibility and responsive design are expected, not extra.", "A good-looking, working portfolio site is itself a project."],
+    mistakes=["Jumping to React before JavaScript basics.", "Pages that break on mobile.", "Only tutorial clones without your own features.", "No live links on the resume."],
+    faqs=[{"q": "Frontend or full stack first?", "a": "Frontend first is easier to start and shows results quickly; add backend later if you want full stack roles."},
+          {"q": "Do I need to be good at design?", "a": "No, but you should follow designs accurately and know basic spacing, typography and colour."}],
+    related_items=[related("react-developer", "React Developer", "Go deeper into React"), related("full-stack-developer", "Full Stack Developer", "Add backend skills"),
+                   related("wordpress-developer", "WordPress Developer", "Client websites")],
+    institutes=[META_FE, NIELIT_O, CDAC_AC, IITM, IGNOU],
+    sources=[source("MDN — Learn web development", "https://developer.mozilla.org/en-US/docs/Learn_web_development", "Web fundamentals curriculum."),
+             source("react.dev — Learn", "https://react.dev/learn", "Official React documentation.")],
+)
 
 BACKEND = _guide(
     "backend-developer", "Backend Developer", "Backend", "How to become a Backend Developer",
@@ -591,7 +638,7 @@ SHOPIFY_DEV = _guide(
              source("Shopify developer documentation", "https://shopify.dev/docs/storefronts/themes", "Official theme and Liquid documentation.")],
 )
 
-GUIDES = [BACKEND, FULLSTACK, ANDROID, IOS, FLUTTER_DEV, REACT, WORDPRESS, SHOPIFY_DEV]
+GUIDES = [FRONTEND, BACKEND, FULLSTACK, ANDROID, IOS, FLUTTER_DEV, REACT, WORDPRESS, SHOPIFY_DEV]
 _BY_KEY = {}
 for _g in GUIDES:
     for _k in (_g["slug"], _g["title"]):

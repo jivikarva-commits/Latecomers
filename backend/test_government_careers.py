@@ -46,9 +46,9 @@ class GovernmentGuidesTest(TestCase):
         result = government_career("Bank Clerk")
         result["governmentProfile"]["eligibility"].clear()
         self.assertTrue(government_career("Bank Clerk")["governmentProfile"]["eligibility"])
-        self.assertIsNone(government_career("Frontend Developer"))
-        with patch.object(data_routes, "_ensure_catalog_career", new=AsyncMock(return_value={"slug": "frontend-developer"})), patch.object(data_routes, "_career_details_fresh", return_value=False), patch.object(data_routes, "_start_career_detail_generation") as generate, patch.object(data_routes, "_fallback_career_response", return_value={"fallback": True}):
-            self.assertEqual(asyncio.run(data_routes._get_career_detail_by_slug("frontend-developer", None)), {"fallback": True})
+        self.assertIsNone(government_career("DevOps Engineer"))
+        with patch.object(data_routes, "_ensure_catalog_career", new=AsyncMock(return_value={"slug": "devops-engineer"})), patch.object(data_routes, "_career_details_fresh", return_value=False), patch.object(data_routes, "_start_career_detail_generation") as generate, patch.object(data_routes, "_fallback_career_response", return_value={"fallback": True}):
+            self.assertEqual(asyncio.run(data_routes._get_career_detail_by_slug("devops-engineer", None)), {"fallback": True})
             generate.assert_called_once()
 
     def test_each_guide_has_review_scope_and_both_source_types(self):

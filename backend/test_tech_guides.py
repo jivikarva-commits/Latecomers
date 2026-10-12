@@ -4,7 +4,10 @@ from unittest.mock import patch
 
 import data_routes
 from career_catalog import ALLOWED_CAREER_SLUGS
-from tech_guides import GUIDES, tech_guide
+from data_ai_guides import GUIDES as DATA_AI_GUIDES
+from tech_guides import GUIDES as WEB_GUIDES, tech_guide
+
+GUIDES = [*WEB_GUIDES, *DATA_AI_GUIDES]
 
 
 class TechGuidesTest(TestCase):
@@ -12,7 +15,6 @@ class TechGuidesTest(TestCase):
         for g in GUIDES:
             with self.subTest(slug=g["slug"]):
                 self.assertIn(g["slug"], ALLOWED_CAREER_SLUGS)
-                self.assertEqual(tech_guide(g["title"])["slug"], g["slug"])
                 with patch.object(data_routes, "db", side_effect=AssertionError("no db")), \
                      patch.object(data_routes, "_start_career_detail_generation", side_effect=AssertionError("no AI")):
                     detail = asyncio.run(data_routes._get_career_detail_by_slug(g["slug"], None))
@@ -27,7 +29,18 @@ class TechGuidesTest(TestCase):
                 self.assertTrue(all(i["url"].startswith("https://") and i["covers"] and i["bestFor"] for i in d["institutes"]))
                 for key in ["quickFacts", "role", "steps", "examStages", "passingRules", "calendar", "prepPlan", "freeResources", "careerLadder", "faqs", "related"]:
                     self.assertTrue(d.get(key), key)
-                self.assertTrue(all(r["slug"] != "frontend-developer" for r in d["related"]))
 
-    def test_frontend_developer_is_left_to_its_own_guide(self):
-        self.assertIsNone(tech_guide("Frontend Developer"))
+    def test_frontend_developer_uses_the_new_structure(self):
+        self.assertEqual(tech_guide("Frontend Developer")["slug"], "frontend-developer")
+
+    def test_menu_titles_reach_guides_through_generate(self):
+        for g in GUIDES:
+            with self.subTest(title=g["title"]), patch.object(data_routes, "db", side_effect=AssertionError("no db")):
+                result = asyncio.run(data_routes.generate_career(data_routes.CareerGenerateRequest(title=g["title"]), None))
+                self.assertEqual(result["slug"], g["slug"])
+
+    def test_related_links_point_to_existing_tech_guides(self):
+        slugs = {g["slug"] for g in GUIDES}
+        for g in GUIDES:
+            with self.subTest(slug=g["slug"]):
+                self.assertTrue(all(r["slug"] in slugs for r in g["guideProfile"]["details"]["related"]))
