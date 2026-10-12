@@ -22,6 +22,11 @@ def fact(label, value):
     return {"label": label, "value": value}
 
 
+def institute(name, type_, url, covers, best_for, mode=None, duration=None, fee=None, eligibility=None):
+    return {"name": name, "type": type_, "url": url, "covers": covers, "bestFor": best_for,
+            "mode": mode, "duration": duration, "fee": fee, "eligibility": eligibility}
+
+
 def source(label, url, scope, kind="official"):
     return {"label": label, "url": url, "scope": scope, "kind": kind}
 
@@ -33,7 +38,7 @@ def related(slug, title, why):
 def details(*, service, quick_facts, role, eligibility, exam_stages, passing_rules, steps, prep_plan,
             free_resources, mistakes, faqs, related_items, category_table=None, attempt_rules=None,
             attempt_heading=None, calendar=None, training=None, career_ladder=None, special=None,
-            exam_heading=None, related_heading=None):
+            exam_heading=None, related_heading=None, institutes=None, labels=None):
     seen = set()
     free_resources = [r for r in free_resources if not (r["url"] in seen or seen.add(r["url"]))]
     d = {
@@ -45,6 +50,7 @@ def details(*, service, quick_facts, role, eligibility, exam_stages, passing_rul
         "categoryTable": category_table, "attemptRules": attempt_rules, "attemptHeading": attempt_heading,
         "calendar": calendar, "training": training, "careerLadder": career_ladder, "special": special,
         "examHeading": exam_heading, "relatedHeading": related_heading,
+        "institutes": institutes, "labels": labels,
     }
     d.update({k: v for k, v in optional.items() if v})
     return d

@@ -38,9 +38,6 @@ export default function GovernmentCareerReport({ career, embedded = false }) {
           <a className="text-brand underline" href="#government-sources">Read official sources and published institute cross-checks ↓</a>
         </div>
       </header>
-      <aside className="rounded-xl border border-amber-200 bg-amber-50 p-4 sm:p-5 text-sm leading-7 text-amber-950">
-        <h2 className="font-bold mb-1">Before you apply</h2><p>{p.notice}</p>
-      </aside>
       <section className={panel}><h2 className="font-heading text-xl font-bold text-ink mb-4">Eligibility & entry routes</h2><Bullets items={p.eligibility} /></section>
       <div className="grid gap-5 md:grid-cols-2">
         <section className={panel}><h2 className="font-heading text-xl font-bold text-ink mb-4">Selection process</h2><Bullets items={p.selection} /></section>
@@ -53,7 +50,7 @@ export default function GovernmentCareerReport({ career, embedded = false }) {
       <aside className="rounded-xl border border-brand/20 bg-brand-50 p-5 text-sm leading-7 text-ink"><h2 className="font-bold mb-1">Important distinction</h2><p>{p.caution}</p></aside>
       <section id="government-sources" className={`${panel} scroll-mt-24`}>
         <h2 className="font-heading text-xl font-bold text-ink mb-3">Sources & verification scope</h2>
-        <p className="text-sm text-muted2 leading-7 mb-6">Official recruitment notices control eligibility. Institute links are published reference material reviewed for cross-checking; they are not direct confirmations, partnerships or endorsements. Older source cycles are labelled above. Current vacancies, deadlines and individual eligibility are not certified by this guide.</p>
+        <p className="text-sm text-muted2 leading-7 mb-6">Official notifications and websites used for this guide.</p>
         <div className="grid gap-8 md:grid-cols-2">
           <References sources={p.sources} kind="official" title="Official authorities" />
           <References sources={p.sources} kind="institute" title="Published institute references" />

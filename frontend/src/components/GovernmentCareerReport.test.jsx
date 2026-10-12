@@ -22,7 +22,7 @@ test("shows source scope, qualifications and basic pay without generic AI statis
     await act(async () => root.render(<GovernmentCareerReport career={career} embedded />));
     expect(container.textContent).toContain("Graduation required");
     expect(container.textContent).toContain("CSA XV reference");
-    expect(container.textContent).toContain("not direct confirmations");
+    expect(container.textContent).not.toContain("Before you apply");
     expect(container.textContent).toContain("Basic pay is not take-home");
     expect(container.textContent).not.toMatch(/89%|6–12 months|coding|LPA/);
     expect([...container.querySelectorAll('a[target="_blank"]')].map((a) => a.href)).toEqual(["https://www.ibps.in/", "https://sathee.iitk.ac.in/"]);
