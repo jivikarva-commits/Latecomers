@@ -88,10 +88,9 @@ STARTUP_INDIA = institute(
     mode="Online", fee="Free", eligibility="Indian founders/startups (recognition as per DPIIT rules)")
 
 MKT_ELIGIBILITY = [
-    "There is no fixed exam or age limit — companies hire on skills, portfolio, results and communication.",
-    "Any graduation works (BBA, B.Com, BA, BMM/Mass Media, BSc, BTech). An MBA in marketing helps for some brand and management roles but is not required for most digital roles.",
+    "There is no entrance exam or age limit for private-sector marketing jobs — after the education check, selection is by portfolio, assignment and interviews.",
     "Strong written English (and a regional language for many Indian brands) is a big advantage.",
-    "You need a laptop, internet and willingness to learn tools and read numbers (analytics).",
+    "You need a laptop, internet and comfort with reading numbers (analytics).",
 ]
 
 
@@ -405,7 +404,7 @@ COPY = _mkt(
     special=["Bilingual copy (English + Hindi or a regional language) is a strong advantage in India.", "Mark spec work clearly as 'spec' in your portfolio."],
     mistakes=["Writing about features instead of benefits.", "Long, clever lines nobody understands.", "No portfolio — only certificates.", "Ignoring the brief."],
     faqs=[{"q": "Copywriter vs content writer?", "a": "Copywriters write short persuasive copy to drive action; content writers write longer informative content."},
-          {"q": "Do agencies need a degree?", "a": "Usually any graduation; the portfolio matters most."},
+          {"q": "Do agencies need a degree?", "a": "Yes — most agencies ask for graduation (BMM/BJMC, BA English or BFA are common). After that, your portfolio decides selection."},
           {"q": "Can I copywrite in Hindi?", "a": "Yes — Hindi and regional copywriters are in demand for Bharat-focused brands."}],
     related_items=[related("content-marketer-strategist", "Content Marketer", "Long-form content"), related("social-media-manager", "Social Media Manager", "Social copy"),
                    related("performance-marketing-manager", "Performance Marketing", "Ad copy testing")],
@@ -632,7 +631,7 @@ FOUNDER = _mkt(
     special=["Most businesses fail or change direction — keep costs low until you find what works.", "Consult a CA for registration, GST and taxes.",
              "Government recognition (Startup India) and MSME registration can unlock schemes — check eligibility."],
     mistakes=["Building for months without talking to customers.", "Raising or spending money too early.", "Mixing personal and business money.", "Ignoring compliance and taxes."],
-    faqs=[{"q": "Do I need a business degree?", "a": "No. Many founders learn by doing; programmes like EDII or NIESBUD EDPs can help structure your learning."},
+    faqs=[{"q": "Do I need a business degree?", "a": "There is no degree rule to register a business, but a graduation in your business area (BBA, BCom, BTech or the relevant field) plus training such as the EDII PGDM or NIESBUD EDPs is strongly recommended."},
           {"q": "Should I quit my job to start?", "a": "Many start as a side project and quit only after validation and some savings."},
           {"q": "How do I register a startup?", "a": "Choose a legal structure (consult a CA) and check Startup India recognition criteria on the official portal."},
           {"q": "Do I need funding?", "a": "Not always. Many profitable businesses grow from customer revenue."}],

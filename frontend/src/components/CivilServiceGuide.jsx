@@ -141,7 +141,7 @@ export default function CivilServiceGuide({ career, embedded = false }) {
                 <div className="min-w-0">
                   <p className="font-bold text-ink leading-7">{s.title}</p>
                   <p className="text-xs font-semibold text-brand">{s.when}</p>
-                  <p className={`${muted} mt-1`}>{s.detail}</p>
+                  <p className={`${muted} mt-1 whitespace-pre-line`}>{s.detail}</p>
                 </div>
               </li>
             ))}

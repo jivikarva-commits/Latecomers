@@ -114,10 +114,10 @@ INSTITUTE_SOURCES = {
 }
 
 LABELS = {
-    "nav": {"eligibility": "Who can start", "exam": "Hiring process", "passing": "Job-ready checklist", "calendar": "Timeline",
+    "nav": {"eligibility": "Education & eligibility", "exam": "Hiring process", "passing": "Job-ready checklist", "calendar": "Timeline",
             "prepare": "How to learn", "salary": "Career growth", "institutes": "Top institutes", "government-sources": "Sources"},
     "steps": "Step-by-step: from zero to your first job",
-    "eligibility": "Who can start — do you need a degree?",
+    "eligibility": "Education and eligibility",
     "passing": "Job-ready checklist",
     "calendar": "Learning timeline",
     "prepare": "How to learn (suggested plan)",
@@ -132,9 +132,8 @@ LABELS = {
 }
 
 ELIGIBILITY = [
-    "There is no fixed exam or age limit — companies hire on skills, projects and interviews.",
-    "Degree routes that help: BCA, B.Sc. Computer Science/IT, BE/BTech, MCA. Many large companies and campus drives ask for a degree (and sometimes minimum marks) — read each job post.",
-    "Without a CS degree you can still get hired, especially by startups, agencies and freelance clients, if your portfolio proves the skills.",
+    "There is no entrance exam or age limit for private-sector jobs — after the education check, selection is by tests, projects and interviews.",
+    "Many large companies and campus drives also set minimum marks and ask for no active backlogs — read each job post.",
     "You need a laptop/PC, a stable internet connection and 2–3 hours a day of practice.",
 ]
 
@@ -173,9 +172,11 @@ def _guide(slug, title, short, headline, summary, *, duties, postings, facts, le
            checklist, timeline, prep, resources, ladder, special, mistakes, faqs, related_items, institutes, sources,
            group="Web & App Development", levels_title="Skill checklist by level", extra_sections=None, category="IT / Software / Tech",
            scope_prefix="IT / Tech", back=None, icon="Code2", color="#2563EB", hiring=None, eligibility=None):
+    edu = EDUCATION.get(slug)
+    eligibility = ([f"Education: {edu[0][0].upper() + edu[0][1:]}."] if edu else []) + (eligibility or ELIGIBILITY)
     d = details(
         service={"short": short, "full": title, "headline": headline, "seoTitle": f"{title} Career Guide", "authority": "Hired by IT companies, startups, agencies and freelance clients"},
-        quick_facts=facts,
+        quick_facts=[fact(f["label"], EDUCATION[slug][0][0].upper() + EDUCATION[slug][0][1:]) if f["label"] == "Education" and slug in EDUCATION else f for f in facts],
         role={"heading": f"What does a {title} do?", "intro": summary, "duties": duties, "postings": postings},
         eligibility=eligibility or ELIGIBILITY,
         category_table={"title": levels_title, "columns": ["Level", "You should be able to…"], "rows": levels,
@@ -183,7 +184,7 @@ def _guide(slug, title, short, headline, summary, *, duties, postings, facts, le
         exam_stages=hiring or _hiring(test_topics, interview_topics, assignment),
         exam_heading="Hiring process — what companies check",
         passing_rules=checklist,
-        steps=[step("Education requirement", *EDUCATION[slug]), *steps] if slug in EDUCATION else steps,
+        steps=[step("Education requirement", "Check before you start", EDUCATION[slug][1]), *steps] if slug in EDUCATION else steps,
         calendar=_timeline(timeline),
         prep_plan=prep,
         free_resources=resources,
@@ -548,7 +549,7 @@ REACT = _guide(
              "Next.js knowledge helps for SEO-heavy and full stack React roles."],
     mistakes=["Starting React before JavaScript basics.", "Only to-do apps in the portfolio.", "Ignoring accessibility and mobile layouts."],
     faqs=[{"q": "React or Angular?", "a": "Both have jobs. React is very common in startups and product companies; Angular is used in many large enterprise projects. Check job posts in your target city."},
-          {"q": "Do I need a degree for React jobs?", "a": "Not always — many startups hire on portfolio and interviews; some large companies require a degree."}],
+          {"q": "Do I need a degree for React jobs?", "a": "Yes — most company job posts ask for a degree such as BE/BTech (CS/IT), BCA, BSc (CS/IT) or MCA, and large companies often set minimum marks. Your React portfolio is checked on top of the degree."}],
     related_items=[related("full-stack-developer", "Full Stack Developer", "Add backend to your React skills"), related("backend-developer", "Backend Developer", "Server side"),
                    related("shopify-developer", "Shopify Developer", "E-commerce frontend work")],
     institutes=[META_FE, REACT_DOCS, CDAC_AC, NIELIT_O, IITM],
