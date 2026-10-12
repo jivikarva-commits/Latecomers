@@ -5,9 +5,10 @@ from unittest.mock import patch
 import data_routes
 from career_catalog import ALLOWED_CAREER_SLUGS
 from data_ai_guides import GUIDES as DATA_AI_GUIDES
+from security_cloud_guides import GUIDES as SEC_CLOUD_GUIDES
 from tech_guides import GUIDES as WEB_GUIDES, tech_guide
 
-GUIDES = [*WEB_GUIDES, *DATA_AI_GUIDES]
+GUIDES = [*WEB_GUIDES, *DATA_AI_GUIDES, *SEC_CLOUD_GUIDES]
 
 
 class TechGuidesTest(TestCase):
@@ -44,3 +45,9 @@ class TechGuidesTest(TestCase):
         for g in GUIDES:
             with self.subTest(slug=g["slug"]):
                 self.assertTrue(all(r["slug"] in slugs for r in g["guideProfile"]["details"]["related"]))
+
+    def test_retired_certifications_are_not_listed(self):
+        for g in GUIDES:
+            names = " ".join(i["name"] for i in g["guideProfile"]["details"]["institutes"])
+            self.assertNotIn("AZ-500", names)
+            self.assertNotIn("AI-102", names)
