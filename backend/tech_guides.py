@@ -8,6 +8,7 @@ Apple, Flutter, WordPress and Shopify learning sites).
 from copy import deepcopy
 
 from career_catalog import slugify
+from education_steps import EDUCATION
 from gov_guide_kit import details, fact, institute, paper, related, source, stage, step
 
 REVIEWED = "2026-10-12"
@@ -182,7 +183,7 @@ def _guide(slug, title, short, headline, summary, *, duties, postings, facts, le
         exam_stages=hiring or _hiring(test_topics, interview_topics, assignment),
         exam_heading="Hiring process — what companies check",
         passing_rules=checklist,
-        steps=steps,
+        steps=[step("Education requirement", *EDUCATION[slug]), *steps] if slug in EDUCATION else steps,
         calendar=_timeline(timeline),
         prep_plan=prep,
         free_resources=resources,

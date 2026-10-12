@@ -42,3 +42,15 @@ class MarketingGuidesTest(TestCase):
                 self.assertGreaterEqual(len(d["faqs"]), 3)
                 self.assertTrue(all(r["slug"] in slugs for r in d["related"]))
                 self.assertEqual(d["labels"]["back"][0], "/careers-explore?field=marketing")
+
+
+class EducationStepTest(TestCase):
+    def test_every_tech_and_marketing_guide_starts_with_education(self):
+        from data_ai_guides import GUIDES as A
+        from security_cloud_guides import GUIDES as B
+        from tech_guides import GUIDES as C
+        for g in [*A, *B, *C, *GUIDES]:
+            with self.subTest(slug=g["slug"]):
+                first = g["guideProfile"]["details"]["steps"][0]
+                self.assertEqual(first["title"], "Education requirement")
+                self.assertGreater(len(first["detail"]), 120)
