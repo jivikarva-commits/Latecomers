@@ -160,3 +160,71 @@ _SHORT = {
     "accounts-executive-tally-gst": "BCom (most job posts)",
 }
 EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in _SHORT.items()})
+
+_DES_ROUTE = ("after 12th (any stream), take a B.Des through NID DAT or UCEED (IIT B.Des — IIT Guwahati and Roorkee need PCM), "
+              "or a BFA/BVA in Applied Art; an M.Des through CEED or NID DAT after graduation")
+_CS_JOB = "graduation in BE/BTech (CS/IT), BCA, BSc (CS/IT) or MCA"
+_FILM_ROUTE = ("after 12th, take a bachelor's degree (any discipline; BMM/BJMC/film studies helps), then the 3-year MFA in Cinema at "
+               "FTII Pune through FTII-ET or a film course at SRFTI Kolkata — or start as an assistant on sets")
+
+EDUCATION.update({
+    "graphic-designer": _edu("a design or fine-arts qualification — B.Des (Communication/Graphic Design), BFA/BVA (Applied Art) or a diploma in graphic/communication design",
+                             "a B.Des from NID/IIT or a reputed art college, plus a strong portfolio", _DES_ROUTE),
+    "brand-identity-designer": _edu("B.Des (Communication/Graphic Design) or BFA/BVA (Applied Art), usually with 2–3 years as a graphic designer",
+                                    "an M.Des (Graphic/Communication Design) or strong branding case studies", _DES_ROUTE),
+    "packaging-designer": _edu("B.Des (Communication, Industrial or Product Design) or BFA/BVA (Applied Art); technical packaging roles ask for a PG Diploma in Packaging (IIP), which needs a science/engineering degree with PCM",
+                               "design degree plus knowledge of print, materials and dielines", _DES_ROUTE),
+    "ui-designer": _edu("graduation in design (B.Des Communication/Interaction, BFA/BVA) or a related field (BCA, BSc IT, BTech) with a UI portfolio",
+                        "a B.Des/M.Des in Interaction or Communication Design", _DES_ROUTE),
+    "ux-designer-researcher": _edu("graduation in design (B.Des/M.Des Interaction Design), HCI, psychology or a related field",
+                                   "an M.Des (Interaction/Information Design) or a master's in HCI/psychology for research roles", _DES_ROUTE),
+    "product-designer": _edu("B.Des/M.Des (Interaction, Communication or Product Design) or a related degree, usually with 2–3 years of UI/UX work",
+                             "an M.Des from NID/IIT plus shipped product case studies", _DES_ROUTE),
+    "video-editor": _edu("graduation in Mass Media/Film (BMM, BJMC, BA Film Studies) or a diploma in film/video editing",
+                         "the MFA in Cinema (Editing) at FTII for film careers; a strong edit reel for all roles", _FILM_ROUTE),
+    "motion-graphics-designer": _edu("B.Des (Communication/Animation), BFA/BVA (Applied Art) or a diploma in animation/motion graphics",
+                                     "a design degree plus a motion reel", _DES_ROUTE),
+    "color-grading-artist": _edu("a degree or diploma in film/media, editing or cinematography (BMM, BJMC, film school)",
+                                 "film-school training plus DaVinci Resolve certification; most colourists start as editors or assistant colourists", _FILM_ROUTE),
+    "reels-short-form-editor": _edu("brands and agencies usually ask for graduation (BMM/BJMC/Mass Media preferred); freelance clients judge your portfolio",
+                                    "a mass-media degree plus a reel of short-form edits with results", "after 12th, take BMM/BJMC/Mass Media; learn editing alongside"),
+    "2d-3d-animator": _edu("B.Des (Animation Film Design), BFA/BVA (Animation/Applied Art), BSc Animation or a diploma in animation",
+                           "a design/animation degree from NID or a reputed college, plus a demo reel", _DES_ROUTE),
+    "vfx-artist": _edu("BSc Animation & VFX, B.Des, BFA/BVA or a diploma in VFX/compositing",
+                       "a VFX degree or diploma plus a breakdown reel", "after 12th (any stream), take BSc Animation & VFX, B.Des or BFA, or a VFX diploma"),
+    "game-designer": _edu("B.Des (Game/Interaction Design), BFA, or BTech/BCA for technical designers",
+                          "an M.Des in Digital Game Design or Toy & Game Design (NID) plus playable prototypes", _DES_ROUTE),
+    "game-developer-unity-unreal": _edu(_CS_JOB, "a CS degree plus published game projects; Unity certification helps",
+                                        "after 12th, take BTech/BE (CS/IT) — needs PCM — or BCA/BSc (CS/IT)"),
+    "ar-vr-developer": _edu(_CS_JOB, "a CS degree plus XR projects in Unity/Unreal", "after 12th, take BTech/BE (CS/IT) — needs PCM — or BCA/BSc (CS/IT)"),
+    "commercial-photographer": _edu("studios and agencies usually ask for a degree or diploma in photography, fine arts or design (B.Des Photography, BFA)",
+                                    "an M.Des in Photography Design (NID) or a professional photography diploma, plus a portfolio",
+                                    "after 12th (any stream), take a BFA/B.Des or photography diploma; assist working photographers"),
+    "cinematographer-dop": _edu("a degree or diploma in cinematography/film; FTII's MFA (Cinematography) needs a bachelor's degree in any discipline",
+                                "film-school training (FTII/SRFTI) and years as a camera assistant", _FILM_ROUTE),
+    "film-director": _edu("a bachelor's degree for film schools — FTII's MFA (Direction & Screenplay Writing) needs a degree in any discipline",
+                          "film-school training plus short films; many directors start as assistant directors", _FILM_ROUTE),
+    "drone-photographer-videographer": _edu("a DGCA Remote Pilot Certificate where the Drone Rules require one: age 18–65, Class 10 pass, and training plus a test at a DGCA-authorised Remote Pilot Training Organisation",
+                                            "photography/videography skills and a degree or diploma in media/photography for agency jobs",
+                                            "after Class 10/12, train at a DGCA-authorised RPTO; learn photography and editing alongside"),
+})
+_SHORT_DES = {
+    "packaging-designer": "B.Des/BFA; IIP PG Diploma for technical roles",
+    "reels-short-form-editor": "Graduation (BMM/BJMC preferred) for jobs",
+    "commercial-photographer": "Degree/diploma in photography, fine arts or design",
+    "cinematographer-dop": "Film degree/diploma; FTII MFA needs graduation",
+    "film-director": "Graduation + film school (FTII/SRFTI)",
+    "drone-photographer-videographer": "DGCA Remote Pilot Certificate (18–65, Class 10)",
+    "ui-designer": "B.Des/BFA or related degree + UI portfolio",
+    "ux-designer-researcher": "B.Des/M.Des, HCI or psychology",
+    "product-designer": "B.Des/M.Des + 2–3 years UI/UX",
+    "graphic-designer": "B.Des, BFA/BVA (Applied Art) or design diploma",
+    "brand-identity-designer": "B.Des/BFA + graphic design experience",
+    "video-editor": "BMM/BJMC/film degree or editing diploma",
+    "motion-graphics-designer": "B.Des/BFA or animation diploma",
+    "color-grading-artist": "Film/media degree or diploma",
+    "2d-3d-animator": "B.Des/BFA/BSc Animation or diploma",
+    "vfx-artist": "BSc Animation & VFX, B.Des/BFA or VFX diploma",
+    "game-designer": "B.Des (Game/Interaction) or BTech/BCA",
+}
+EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in _SHORT_DES.items()})
