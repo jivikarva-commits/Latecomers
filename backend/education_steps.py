@@ -228,3 +228,37 @@ _SHORT_DES = {
     "game-designer": "B.Des (Game/Interaction) or BTech/BCA",
 }
 EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in _SHORT_DES.items()})
+
+_LLB = ("an LL.B. recognised by the Bar Council of India — the 5-year integrated LL.B. after Class 12 or the 3-year LL.B. after graduation "
+        "(BCI's Legal Education Rules set a minimum of 45% in the qualifying exam for General and 40% for SC/ST candidates)")
+_MBA = ("graduation (at least 3 years after 10+2) and then an MBA/PGDM; IIMs ask for 50% in graduation (45% for SC/ST/PwD) and a CAT score — "
+        "final-year students can apply")
+_MBA_ROUTE = "after graduation, take CAT (IIMs and many top B-schools), XAT (XLRI and others) or CMAT (AICTE-approved institutes), then WAT/GD and interview"
+
+EDUCATION.update({
+    "lawyer-advocate": _edu(_LLB + "; then enrol with a State Bar Council and pass the All India Bar Examination (AIBE) for the Certificate of Practice",
+                            "an LL.B. from a National Law University (through CLAT) or a reputed law college",
+                            "after 12th (any stream), take CLAT/AILET or a state law entrance for the 5-year LL.B.; or graduate first and take the 3-year LL.B."),
+    "corporate-lawyer": _edu(_LLB + "; law firms also need you enrolled as an advocate",
+                             "an LL.B. from an NLU or top law school; an LL.M. or CS qualification helps for company-law work",
+                             "after 12th, take CLAT for a 5-year BA/BBA LL.B. at an NLU; internships at law firms every year"),
+    "judge-judiciary": _edu("an LL.B. and enrolment as an advocate; for Civil Judge (Junior Division) the Supreme Court (20 May 2025) directed a minimum of "
+                            "3 years' practice counted from provisional enrolment, applied through each High Court's recruitment rules; District Judge "
+                            "direct recruitment needs at least 7 years as an advocate (Article 233)",
+                            "strong LL.B. marks and courtroom practice; age limits and language requirements differ by state",
+                            "after 12th, LL.B. (5-year) or graduation + LL.B. (3-year) → enrol with the State Bar Council → practise → state judicial service exam"),
+    "mba-marketing-manager": _edu(_MBA, "an MBA/PGDM with Marketing specialisation from a reputed B-school; a BBA/BCom/BMS degree helps", _MBA_ROUTE),
+    "mba-finance-manager": _edu(_MBA, "an MBA/PGDM (Finance) — or CA/CFA — with strong accounting basics; BCom/BBA/Economics/engineering degrees are common", _MBA_ROUTE),
+    "mba-hr-manager": _edu(_MBA + "; TISS's MA in HRM & Labour Relations and XLRI's HRM programme are specialised routes",
+                           "an MBA/PGDM (HR) or MA HRM&LR; psychology or social-science degrees help", _MBA_ROUTE),
+    "mba-operations-manager": _edu(_MBA, "an MBA/PGDM (Operations/Supply Chain); engineering degrees are common", _MBA_ROUTE),
+})
+EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in {
+    "lawyer-advocate": "BCI-recognised LL.B. + Bar enrolment + AIBE",
+    "corporate-lawyer": "BCI-recognised LL.B. (NLU preferred)",
+    "judge-judiciary": "LL.B. + 3 years' practice (Civil Judge); 7 years (District Judge)",
+    "mba-marketing-manager": "Graduation + MBA/PGDM (Marketing)",
+    "mba-finance-manager": "Graduation + MBA/PGDM (Finance)",
+    "mba-hr-manager": "Graduation + MBA/PGDM (HR) or MA HRM&LR",
+    "mba-operations-manager": "Graduation + MBA/PGDM (Operations)",
+}.items()})
