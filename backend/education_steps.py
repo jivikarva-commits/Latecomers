@@ -357,3 +357,51 @@ EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in {
     "iot-engineer": "BTech ECE/EEE/CS or BSc Electronics/MCA",
     "robotics-engineer": "BTech Mechatronics/Robotics/Mech/ECE/CS",
 }.items()})
+
+_ITI_SM = "Class 10 pass with Science and Mathematics, minimum age 14"
+EDUCATION.update({
+    "makeup-artist": _edu("salons, studios and brands usually ask for 10th/12th pass plus a recognised makeup course — e.g. ITI Cosmetology (DGT, 1 year, Class 10 pass) or a "
+                          "Beauty & Wellness Sector Skill Council certificate such as Professional Make-up Artist",
+                          "a recognised certificate plus a strong portfolio of looks", "after 10th/12th, take ITI Cosmetology or a B&WSSC-aligned makeup course; build a portfolio"),
+    "mehendi-artist": _edu("no formal degree; a recognised short course helps — B&WSSC's Professional Make-up Artist pack includes simple mehendi designs as an option",
+                           "regular practice and a design portfolio; a beauty certificate if you want salon jobs", "start practising after school; join a recognised beauty/mehendi course"),
+    "hair-stylist": _edu("10th/12th pass plus a recognised hair course — ITI Cosmetology (1 year, Class 10) or B&WSSC Hair Dresser & Stylist certification",
+                         "a recognised certificate plus salon training", "after 10th, ITI Cosmetology or a B&WSSC-aligned hair course; train in a salon"),
+    "nail-art-technician": _edu("10th/12th pass plus a recognised nail course — B&WSSC Nail Technician certification or ITI Cosmetology",
+                                "a recognised certificate plus hygiene training and a portfolio", "after 10th/12th, take a B&WSSC-aligned nail technician course"),
+    "data-entry-operator": _edu("Class 10 pass is the minimum for ITI Data Entry Operator (DGT, 6 months); most office jobs ask for 12th pass or graduation with typing speed",
+                                "12th/graduation plus typing speed and a computer certificate (e.g. NIELIT CCC)", "after 10th, ITI Data Entry Operator (6 months) or COPA (1 year); improve typing speed"),
+    "electrician": _edu(f"ITI Electrician (DGT, 2 years; {_ITI_SM}) or a diploma in Electrical Engineering; working independently on installations needs the state electrical licence/permit",
+                        "ITI + apprenticeship, then a state wireman/electrical worker licence", "after 10th (Science + Maths), ITI Electrician or polytechnic diploma; then apprenticeship"),
+    "mobile-repair-technician": _edu("10th pass plus a recognised course — ITI Electronics Mechanic (DGT, 2 years) or an ESSCI-approved smartphone repair course",
+                                     "ITI/diploma in electronics plus hands-on repair experience", "after 10th, ITI Electronics Mechanic or a short ESSCI-aligned smartphone repair course"),
+    "ac-repair-technician": _edu(f"ITI Refrigeration and Air Conditioning Technician (DGT, 2 years; {_ITI_SM}) or a diploma in Mechanical/Refrigeration",
+                                 "ITI + apprenticeship with service companies", "after 10th (Science + Maths), ITI RAC Technician; then apprenticeship"),
+    "cctv-installer": _edu("ITI Electronics Mechanic/Electrician or a diploma; ESSCI's CCTV Installation Technician course lists a 3-year diploma (Electronics/Electrical/Mechanical) as its usual entry",
+                           "an electronics/electrical ITI or diploma plus networking basics", "after 10th, ITI Electronics Mechanic/Electrician or a polytechnic diploma; then CCTV training"),
+    "automobile-technician": _edu(f"ITI Mechanic Motor Vehicle (DGT, 2 years; {_ITI_SM}) or a diploma in Automobile/Mechanical Engineering",
+                                  "ITI + apprenticeship at a dealership/workshop", "after 10th (Science + Maths), ITI Mechanic Motor Vehicle; then apprenticeship"),
+    "yoga-instructor": _edu("a Yoga Certification Board (Ministry of Ayush) certificate — Level 1 Yoga Protocol Instructor, Level 2 Yoga Wellness Instructor or Level 3 Yoga Teacher & Evaluator; "
+                            "degrees such as BSc/MSc Yoga help for teaching posts",
+                            "YCB certification plus a degree/diploma in yoga for schools and institutions", "after 12th, take a YCB-aligned yoga course or a degree in yoga; clear the YCB certification"),
+    "fitness-trainer": _edu("12th pass plus a recognised fitness-trainer certification; gyms usually ask for a certificate and CPR/first-aid training",
+                            "a B.P.Ed/BSc in physical education or sports science (e.g. LNIPE) for senior and institutional roles",
+                            "after 12th, take a recognised fitness certification; consider B.P.Ed/BSc Sports Science for growth"),
+    "interior-design-assistant": _edu(f"ITI Interior Design & Decoration (DGT, 1 year; {_ITI_SM}) or a diploma/degree in interior design",
+                                      "a diploma/degree in interior design plus software skills (AutoCAD/SketchUp)", "after 10th, ITI Interior Design & Decoration; after 12th, a diploma or B.Des/BSc in interior design"),
+    "cnc-machine-operator": _edu("ITI Machinist/Turner or Operator Advanced Machine Tool, or a diploma in Mechanical/Tool & Die; CNC programming courses at MSME Technology Centres help",
+                                 "ITI + CNC programming training and apprenticeship", "after 10th (Science + Maths), ITI Machinist/Turner; then CNC training and apprenticeship"),
+    "army-soldier-gd-technical-clerk": _edu("Agniveer (Indian Army) — General Duty: Class 10 with 45% aggregate and 33% in each subject; Technical: 10+2 Science (PCM + English) with 50% aggregate and 40% in each; "
+                                            "Clerk/Store Keeper Technical: 10+2 any stream with 60% aggregate, 50% in each subject and 50% in English and Maths/Accounts — as per recent notifications",
+                                            "physical fitness and meeting the age limit in the current notification (17.5–21 in most recent notifications)",
+                                            "after 10th/12th, register on joinindianarmy.nic.in when the Agniveer notification opens; train for the written exam and physical test"),
+})
+EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in {
+    "makeup-artist": "10th/12th + recognised makeup course", "mehendi-artist": "No degree; recognised course helps",
+    "hair-stylist": "10th/12th + ITI Cosmetology / B&WSSC course", "nail-art-technician": "10th/12th + B&WSSC nail course",
+    "data-entry-operator": "10th (ITI 6 months); 12th/grad for most jobs", "electrician": "ITI Electrician (2 yrs) + state licence",
+    "mobile-repair-technician": "10th + ITI/ESSCI course", "ac-repair-technician": "ITI RAC Technician (2 yrs)", "cctv-installer": "ITI/diploma (electronics/electrical)",
+    "automobile-technician": "ITI Mechanic Motor Vehicle (2 yrs)", "yoga-instructor": "Yoga Certification Board certificate",
+    "fitness-trainer": "12th + recognised fitness certification", "interior-design-assistant": "ITI Interior Design (1 yr) or diploma",
+    "cnc-machine-operator": "ITI Machinist/Turner + CNC training", "army-soldier-gd-technical-clerk": "GD: 10th 45%; Tech: 12th PCM 50%; Clerk: 12th 60%",
+}.items()})
