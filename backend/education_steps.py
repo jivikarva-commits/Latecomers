@@ -301,3 +301,36 @@ EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in {
     "nutritionist-dietitian": "BND/BSc Nutrition; MSc for dietitian roles",
     "pharmacist": "D.Pharm/B.Pharm + State Pharmacy Council registration",
 }.items()})
+
+_IHM = "after 12th (any stream, with English), take NCHM JEE for the 3-year B.Sc. Hospitality & Hotel Administration at an IHM (no age bar), or a 1.5-year IHM diploma"
+EDUCATION.update({
+    "cabin-crew-air-hostess": _edu("10+2 (12th pass) — airlines set their own criteria; for example IndiGo's trainee cabin attendant posting asks for female Indian nationals aged 18–27, "
+                                   "10+2, minimum height 155 cm, weight proportionate to BMI and fluent English and Hindi",
+                                   "graduation (any stream, hospitality/aviation helps) and strong communication; selected crew complete airline training and medical fitness as per DGCA rules",
+                                   "after 12th, prepare for airline drives on official careers portals; a hospitality or aviation degree alongside is optional"),
+    "airport-ground-staff": _edu("12th pass or graduation depending on the post — airline customer-service roles usually ask for graduation; AAI posts list exact qualifications in each notice",
+                                 "graduation plus customer-service skills; aviation/hospitality courses help",
+                                 "after 12th, take any graduation (BBA Aviation/hospitality helps) and apply to airline, ground-handling or AAI recruitment"),
+    "aviation-operations-manager": _edu("graduation and usually an MBA/BBA in Aviation or general management — e.g. RGNAU's MBA (Aviation Management) needs a bachelor's with 50% (5% relaxation SC/ST/PwD)",
+                                        "an aviation management degree plus airline/airport experience",
+                                        "after 12th, take BBA (Aviation Management) — RGNAU asks for 50% in 10+2 — or any degree, then an MBA via CAT/XAT/CMAT/CUET-PG"),
+    "hotel-front-office-executive": _edu("12th pass with English for IHM diplomas; most hotel chains prefer the B.Sc. Hospitality & Hotel Administration or a front-office diploma",
+                                         "IHM B.Sc. HHA or Diploma in Front Office Operations, plus good English", _IHM),
+    "f-and-b-manager": _edu("B.Sc. Hospitality & Hotel Administration (or an equivalent hotel-management degree) and several years in F&B service; food-safety training such as FSSAI FoSTaC is expected",
+                            "an IHM degree plus progression from F&B associate to supervisor", _IHM),
+    "event-manager": _edu("graduation — BBA/BMS, hotel management, tourism, mass media or event management are common",
+                          "an MBA/PG diploma in event management or tourism (e.g. IITTM) plus event experience",
+                          "after 12th, take BBA/BMS, hotel management or tourism; volunteer at events during college"),
+    "cruise-line-hospitality-staff": _edu("hospitality training (IHM diploma/degree or equivalent) plus DG Shipping-approved STCW basic safety training and an Indian CDC (needs an INDoS number and DG Shipping medical)",
+                                          "an IHM degree/diploma, hotel experience and good English",
+                                          "after 12th, complete an IHM diploma/degree, gain hotel experience, then do STCW courses at a DG Shipping-approved institute and apply through approved recruiters"),
+})
+EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in {
+    "cabin-crew-air-hostess": "12th pass + airline criteria (age, height, language)",
+    "airport-ground-staff": "12th/graduation (as per post)",
+    "aviation-operations-manager": "Graduation + BBA/MBA Aviation (preferred)",
+    "hotel-front-office-executive": "12th with English; IHM degree/diploma preferred",
+    "f-and-b-manager": "Hotel-management degree + F&B experience",
+    "event-manager": "Graduation (BBA/BMS/hospitality/tourism)",
+    "cruise-line-hospitality-staff": "Hospitality training + STCW + CDC",
+}.items()})
