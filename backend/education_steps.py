@@ -334,3 +334,26 @@ EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in {
     "event-manager": "Graduation (BBA/BMS/hospitality/tourism)",
     "cruise-line-hospitality-staff": "Hospitality training + STCW + CDC",
 }.items()})
+
+_ENGG_ROUTE = "after 12th with Physics, Chemistry and Maths, take BTech/BE through JEE Main or state CETs; after 10th, a 3-year diploma followed by lateral-entry BTech"
+EDUCATION.update({
+    "blockchain-developer": _edu(f"graduation in {_CS}", "a CS degree plus strong programming, cryptography basics and deployed smart contracts or blockchain projects", _CS_ROUTE),
+    "web3-developer": _edu(f"graduation in {_CS}", "a CS degree plus full-stack web skills and deployed Web3 apps", _CS_ROUTE),
+    "drone-pilot-operator": _edu("a DGCA Remote Pilot Certificate where the Drone Rules require one — age 18–65, Class 10 pass, training and a test at a DGCA-authorised RPTO",
+                                 "for survey/mapping and industry roles, a diploma/degree in geomatics, civil, agriculture or engineering helps",
+                                 "after Class 10/12, train at a DGCA-authorised RPTO; add a diploma or degree for technical drone roles"),
+    "ev-technician-engineer": _edu("Technician: ITI 'Mechanic Electric Vehicle' (DGT, 2 years, Class 10 pass, minimum age 14) or a diploma in Automobile/Electrical; "
+                                   "Engineer: BTech/BE in Electrical, Electronics, Mechanical or Automobile Engineering",
+                                   "BTech (Electrical/Electronics/Mechanical) plus EV-specific training in batteries, motors and power electronics",
+                                   "after 10th, ITI EV trade or a polytechnic diploma; after 12th PCM, BTech through JEE Main/state CETs"),
+    "iot-engineer": _edu("graduation in BE/BTech (ECE/EEE/CS/IT/Instrumentation), BSc Electronics or MCA",
+                         "an electronics/CS degree plus C-DAC's PG Certificate in Embedded Systems Design (24 weeks, includes IoT) or equivalent projects", _ENGG_ROUTE),
+    "robotics-engineer": _edu("graduation in BE/BTech (Mechatronics, Robotics, Mechanical, Electrical/Electronics or CS); research roles often need an MTech/MS",
+                              "a mechatronics/robotics degree, ROS and control-systems skills, plus projects (e.g. e-Yantra)", _ENGG_ROUTE),
+})
+EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in {
+    "drone-pilot-operator": "DGCA Remote Pilot Certificate (18–65, Class 10)",
+    "ev-technician-engineer": "ITI EV trade/diploma (technician) or BTech (engineer)",
+    "iot-engineer": "BTech ECE/EEE/CS or BSc Electronics/MCA",
+    "robotics-engineer": "BTech Mechatronics/Robotics/Mech/ECE/CS",
+}.items()})

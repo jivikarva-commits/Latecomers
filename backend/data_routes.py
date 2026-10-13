@@ -24,6 +24,7 @@ from design_film_guides import design_guide
 from law_mgmt_guides import law_mgmt_guide
 from healthcare_guides import healthcare_guide
 from aviation_guides import aviation_guide
+from emerging_guides import emerging_guide
 from llm_client import ask_claude, extract_json
 from subscription_utils import consume_feature, ensure_feature_available
 
@@ -1171,7 +1172,7 @@ async def get_career(slug: str, request: Request):
 
 
 async def _get_career_detail_by_slug(slug: str, request: Request):
-    curated = government_career(slug) or tech_guide(slug) or data_ai_guide(slug) or security_cloud_guide(slug) or marketing_guide(slug) or finance_guide(slug) or design_guide(slug) or law_mgmt_guide(slug) or healthcare_guide(slug) or aviation_guide(slug)
+    curated = government_career(slug) or tech_guide(slug) or data_ai_guide(slug) or security_cloud_guide(slug) or marketing_guide(slug) or finance_guide(slug) or design_guide(slug) or law_mgmt_guide(slug) or healthcare_guide(slug) or aviation_guide(slug) or emerging_guide(slug)
     if curated:
         return curated
     approved_slug = _approved_slug(slug)
@@ -1194,7 +1195,7 @@ async def generate_career(payload: CareerGenerateRequest, request: Request):
     title = re.sub(r"\s+", " ", payload.title).strip()
     if len(title) < 2:
         raise HTTPException(400, "Enter a valid career title.")
-    curated = government_career(title) or tech_guide(title) or data_ai_guide(title) or security_cloud_guide(title) or marketing_guide(title) or finance_guide(title) or design_guide(title) or law_mgmt_guide(title) or healthcare_guide(title) or aviation_guide(title)
+    curated = government_career(title) or tech_guide(title) or data_ai_guide(title) or security_cloud_guide(title) or marketing_guide(title) or finance_guide(title) or design_guide(title) or law_mgmt_guide(title) or healthcare_guide(title) or aviation_guide(title) or emerging_guide(title)
     if curated:
         return curated
     slug = _approved_slug(title)
