@@ -83,14 +83,35 @@ STATE = details(
                    "Final merit = mains merit papers + interview (2,025 marks).",
                    "Posts are allotted by merit, your post preferences, reservation and medical/physical fitness."],
     steps=[
-        step("Check eligibility", "Before the advertisement", "Degree (or final year), Marathi knowledge, age on 1 April."),
-        step("Complete profile + KYC on mpsconline.gov.in", "Before applying", "MPSC requires account KYC; upload valid reservation certificates."),
+        step("Check eligibility", "Before the advertisement",
+             "You need a recognised degree in any subject (final-year students can write the prelim), knowledge of Marathi, and the right age on 1 April of the exam year. "
+             "Some posts need specific degrees, and police posts also have physical standards checked before appointment. "
+             "Read Appendix-1 of the advertisement to see which posts are offered this year and their exact rules."),
+        step("Complete profile + KYC on mpsconline.gov.in", "Before applying",
+             "Create your profile on mpsconline.gov.in and complete the account KYC that MPSC requires before you can apply. "
+             "Upload valid reservation certificates, such as non-creamy layer or EWS, issued for the correct financial year. "
+             "Do this well before the application window, because a missing KYC or a wrong certificate is a common reason for trouble later."),
         step("Apply for the combined prelim", "2026 cycle: 31 Dec 2025 – 20 Jan 2026", "Choose services, mains optional subject and medium now. Fee ₹544 / ₹344."),
-        step("Write the prelim", "2026 cycle: 31 May 2026", "Download hall ticket from your MPSC profile."),
-        step("Apply separately for State Services Mains", "After the prelim result", "Separate mains application and fee for each service."),
-        step("Write the descriptive mains", "As per the mains notification", "Nine papers including two qualifying language papers."),
-        step("Interview, medical and allocation", "After mains result", "Medical test as per post; physical measurements for posts like police."),
-        step("Appointment and probation", "After final result", "Departmental training and probation as per service rules."),
+        step("Write the prelim", "2026 cycle: 31 May 2026",
+             "Download your hall ticket from your MPSC profile before the exam. "
+             "The prelim has two compulsory papers: General Studies, and a qualifying aptitude paper with Marathi and English comprehension. "
+             "It only shortlists you for mains, and separate mains cut-offs are fixed for each service."),
+        step("Apply separately for State Services Mains", "After the prelim result",
+             "After the prelim result, fill a separate mains application and pay a separate fee for each service you qualify for. "
+             "Watch mpsc.gov.in for the mains notification and corrigenda, because dates can change. "
+             "If you miss this application, you cannot write the mains even after clearing the prelim."),
+        step("Write the descriptive mains", "As per the mains notification",
+             "The mains has nine descriptive papers, including two qualifying language papers (Marathi and English) where you need 25%. "
+             "The essay, four General Studies papers and two optional papers count for your merit out of 1,750. "
+             "Practise timed answer writing in your chosen medium for months before this exam."),
+        step("Interview, medical and allocation", "After mains result",
+             "Candidates who clear the mains face a 275-mark interview, and the final merit is out of 2,025. "
+             "You also take a medical test as per the post, with physical measurements for posts like police. "
+             "Posts are then allotted by merit, your post preferences, reservation and medical/physical fitness."),
+        step("Appointment and probation", "After final result",
+             "After the final result, you are appointed to your allotted post and complete departmental training and probation as per the service rules. "
+             "You can be posted anywhere in Maharashtra. "
+             "Over time, promotions within the state service follow, and senior officers can be nominated to the IAS/IPS from the state quota."),
     ],
     calendar={"label": "MPSC Civil Services Gazetted Combined Prelim 2026 (Advt 132/2025)",
               "rows": [{"event": "Application window", "date": "31 December 2025 – 20 January 2026"},
@@ -156,13 +177,34 @@ PSI = details(
     passing_rules=["Prelim only shortlists.", "Physical test: 60% minimum, qualifying only.",
                    "Final merit = mains + interview.", "Physical measurements are re-checked before appointment."],
     steps=[
-        step("Check eligibility and height", "Before applying", "Degree, age window, 165 cm (men) / 157 cm (women)."),
-        step("Complete MPSC profile + KYC", "Before applying", "On mpsconline.gov.in."),
-        step("Apply for the Group-B Combined Prelim", "2026: 10 – 30 April 2026", "Fee ₹394 (open) / ₹294 (reserved, EWS, orphan, PwBD)."),
-        step("Write the prelim", "2026: 14 June 2026", "Hall ticket about 7 days before on your profile."),
-        step("Apply for and write the mains", "After prelim result", "Separate application and fee."),
-        step("Physical test", "After mains result", "100 marks, need 60."),
-        step("Interview and appointment", "After physical test", "Then training at the Maharashtra Police Academy, Nashik."),
+        step("Check eligibility and height", "Before applying",
+             "You need a degree, knowledge of Marathi and an age within the window (19 to 31 for the open category on 1 August 2026, higher for some categories). "
+             "Men need a height of at least 165 cm plus the chest standard, and women need at least 157 cm. "
+             "Measure yourself honestly before you start preparing, because these measurements are re-checked before appointment."),
+        step("Complete MPSC profile + KYC", "Before applying",
+             "Create your profile on mpsconline.gov.in and complete the account KYC before the application window opens. "
+             "If you claim a reserved category, upload valid certificates issued for the correct financial year. "
+             "A complete profile lets you apply quickly and download your hall tickets later."),
+        step("Apply for the Group-B Combined Prelim", "2026: 10 – 30 April 2026",
+             "Apply for the Group-B (Non-Gazetted) Combined Prelim and pay the fee of ₹394 (open) or ₹294 (reserved, EWS, orphan, PwBD). "
+             "This prelim is common for ASO, State Tax Inspector and PSI, and the mains cut-off is fixed separately for each post. "
+             "Read the advertisement and its corrigenda before submitting, because MPSC often changes dates or adds posts."),
+        step("Write the prelim", "2026: 14 June 2026",
+             "Your hall ticket appears on your MPSC profile about 7 days before the exam. "
+             "The prelim is a 100-mark objective test that only shortlists you for the mains. "
+             "Practise previous MPSC papers, which are available on mpsc.gov.in, to get used to the level."),
+        step("Apply for and write the mains", "After prelim result",
+             "After the prelim result, fill the separate mains application and pay its fee. "
+             "The Group-B Main Exam carries 400 marks, and these marks plus the interview make your final merit. "
+             "Start mains preparation early instead of waiting for the prelim result."),
+        step("Physical test", "After mains result",
+             "The physical test carries 100 marks, and you need at least 60 to be called for the interview. "
+             "These marks are only qualifying and are not added to your final merit. "
+             "Start running and strength training from day one, because fitness cannot be built in a few weeks."),
+        step("Interview and appointment", "After physical test",
+             "The interview carries 40 marks, and final selection is based on mains (400) plus interview (40). "
+             "Selected candidates then train at the Maharashtra Police Academy, Nashik, for about 11 months before posting. "
+             "Prepare interview answers about policing, law and current affairs of Maharashtra."),
     ],
     calendar={"label": "MPSC Group-B (Non-Gazetted) Combined Prelim 2026 (Advt 011/2026)",
               "rows": [{"event": "Application window", "date": "10 – 30 April 2026"}, {"event": "Prelim", "date": "14 June 2026"},
@@ -181,7 +223,8 @@ PSI = details(
                        "Each state has its own age, height and test rules — do not copy Maharashtra's rules to another state."]},
     mistakes=MPSC_MISTAKES[:3] + ["Ignoring fitness until after the mains — the physical test needs 60%."],
     faqs=[{"q": "Can women apply for PSI?", "a": "Yes. The height requirement for women is 157 cm."},
-          {"q": "Can a final-year student apply?", "a": "Yes for the prelim, but the degree must be complete before the mains application deadline."}],
+          {"q": "Can a final-year student apply?", "a": "Yes for the prelim, but the degree must be complete before the mains application deadline. "
+                                                       "If your result will come after that date, you cannot go on to the mains, so plan your attempt around your result."}],
     related_items=[related("police-constable", "Police Constable (Maharashtra)", "12th-pass police route"),
                    related("ips-officer", "IPS", "All-India police officer route via UPSC"),
                    related("state-service-officer-dsp-bdo-tahsildar", "MPSC State Services", "DySP and other gazetted posts")],
@@ -224,12 +267,27 @@ TALATHI = details(
     passing_rules=["Prelim only shortlists for mains.", "Final selection is by mains merit, post option and reservation.",
                    "Earlier Talathi recruitment (2023) was a separate district exam — the 2026 route is MPSC."],
     steps=[
-        step("Check eligibility", "Before applying", "Degree, Marathi knowledge, age on the last date of application."),
-        step("Complete MPSC profile + KYC", "Before applying", "On mpsconline.gov.in."),
+        step("Check eligibility", "Before applying",
+             "You need a degree in any subject, knowledge of Marathi, and the right age on the last date of application. "
+             "A computer qualification as per the Maharashtra IT rules is also required for appointment. "
+             "PESA-area posts have extra residence rules for local Scheduled Tribe candidates, so read them carefully if you apply for those posts."),
+        step("Complete MPSC profile + KYC", "Before applying",
+             "Create your profile on mpsconline.gov.in and complete the account KYC before the application window opens. "
+             "If you claim a reserved category, upload valid certificates issued for the correct financial year. "
+             "A complete profile lets you apply quickly and download your hall ticket later."),
         step("Apply for Group-C Combined Prelim and choose Talathi", "2026: closed 10 August 2026", "Fee ₹394 / ₹294 / ₹44. PESA-area applicants follow the extra rules in the 05-08-2026 corrigendum."),
-        step("Write the prelim", "3 January 2027", "Hall ticket on your MPSC profile."),
-        step("Apply for and write the combined mains", "After prelim result", "400 marks."),
-        step("Document verification and appointment", "After final result", "Collector/appointing authority issues the order."),
+        step("Write the prelim", "3 January 2027",
+             "Download your hall ticket from your MPSC profile before the exam. "
+             "The Group-C Combined Prelim is a 100-mark objective test on OMR sheets at district centres, and it only shortlists you for the mains. "
+             "Practise previous MPSC papers on OMR sheets so you are comfortable with the format."),
+        step("Apply for and write the combined mains", "After prelim result",
+             "After the prelim result, fill the separate mains application and pay its fee (₹544 / ₹344). "
+             "The Group-C Combined Mains carries 400 marks, and the merit list is made from these marks. "
+             "Revise Marathi and English grammar, Maharashtra GK, revenue basics and arithmetic for this exam."),
+        step("Document verification and appointment", "After final result",
+             "After the final result, your documents are verified before appointment. "
+             "The Collector or appointing authority then issues your appointment order for a post in the district. "
+             "Keep your degree, computer qualification and category certificates ready so the process is not delayed."),
     ],
     calendar={"label": "MPSC Group-C Combined Prelim 2026 (Advt 017/2026)",
               "rows": [{"event": "Advertisement", "date": "25 June 2026 (2,619 posts)"},
@@ -247,8 +305,11 @@ TALATHI = details(
                        "Recruitment moved to MPSC's Group-C combined exam (1,539 posts added on 22 July 2026).",
                        "Talathi / Patwari / VRO in other states have different rules."]},
     mistakes=MPSC_MISTAKES,
-    faqs=[{"q": "Can a 12th pass become a Talathi?", "a": "No. A degree in any subject is required."},
-          {"q": "Is the Talathi exam separate now?", "a": "In 2026 it is part of MPSC's Group-C Services Combined Prelim (exam on 3 January 2027)."}],
+    faqs=[{"q": "Can a 12th pass become a Talathi?", "a": "No, a 12th pass cannot become a Talathi. A degree in any subject is required. "
+                                                          "If you are 12th pass, you can look at Maharashtra Police Constable, which needs 12th (HSC), while you finish your degree."},
+          {"q": "Is the Talathi exam separate now?", "a": "No, in 2026 it is part of MPSC's Group-C Services Combined Prelim (exam on 3 January 2027). "
+                                                         "Earlier, the 2023 Talathi recruitment was a separate district exam. "
+                                                         "Watch MPSC corrigenda for any further changes to dates or posts."}],
     related_items=[related("state-service-officer-dsp-bdo-tahsildar", "MPSC State Services", "Gazetted state officer route"),
                    related("police-constable", "Police Constable (Maharashtra)", "12th-pass state job"),
                    related("ldc-deo-postal-assistant", "SSC CHSL", "Central clerical route")],
@@ -292,12 +353,30 @@ CONSTABLE = details(
     ],
     passing_rules=["Physical test 50% minimum to reach the written test.", "Written test 40% minimum.", "Merit list combines physical and written marks per category."],
     steps=[
-        step("Check age, height and 12th", "Before applying", "Measure height and chest honestly before preparing."),
-        step("Apply online for one unit", "Bharti 2024-25: 29 October – 30 November 2025", "On policerecruitment2025.mahait.org."),
-        step("Train for the physical test", "Start immediately", "1,600 m (men) / 800 m (women), 100 m sprint and shot put."),
-        step("Physical test", "District schedule", "Carry hall ticket and ID."),
-        step("Written test", "After physical", "Need 40%."),
-        step("Document verification, medical and training", "After merit list", "About 9 months at a police training school."),
+        step("Check age, height and 12th", "Before applying",
+             "You need 12th (HSC) pass and an age of 18–28 (open) or 18–33 (backward classes, EWS and orphans) on 30 November 2025 for Bharti 2024-25, with other relaxations listed in the instructions. "
+             "Men need a height of 165 cm plus the chest standard, and women need 155 cm. "
+             "Measure your height and chest honestly before preparing, so you do not train for months for a test you cannot qualify for."),
+        step("Apply online for one unit", "Bharti 2024-25: 29 October – 30 November 2025",
+             "Apply on policerecruitment2025.mahait.org for one police unit, that is, a city commissionerate or a district. "
+             "Read the unit-wise advertisement for vacancies and special rules, such as the extra language test for the Gadchiroli unit. "
+             "Do not apply to more than one unit if the rules allow only one."),
+        step("Train for the physical test", "Start immediately",
+             "The physical test has a long run (1,600 m for men, 800 m for women), a 100 m sprint and shot put. "
+             "Start training immediately, because running endurance takes months to build. "
+             "Practise shot put technique as well, not only running."),
+        step("Physical test", "District schedule",
+             "Carry your hall ticket and ID on the day of the test. "
+             "The physical test carries 50 marks, and you need at least 50% to be called for the written test. "
+             "Warm up properly and pace your long run instead of sprinting at the start."),
+        step("Written test", "After physical",
+             "The written test is an objective test of 100 marks, and you are disqualified if you score below 40%. "
+             "Prepare Marathi grammar, arithmetic, reasoning and Maharashtra/India general knowledge, and solve previous police bharti papers. "
+             "Your final merit combines your physical and written marks, so every mark counts."),
+        step("Document verification, medical and training", "After merit list",
+             "After the merit list, your original certificates and medical fitness are checked before appointment. "
+             "Selected candidates then train for about 9 months at a police training school. "
+             "Remember the LMV licence and computer certificate conditions, which must be met within the time the rules allow."),
     ],
     calendar={"label": "Maharashtra Police Bharti 2024-25 (official instructions)",
               "rows": [{"event": "Online applications", "date": "29 October – 30 November 2025"},
@@ -316,7 +395,8 @@ CONSTABLE = details(
                        "Other states and central forces (SSC GD, RPF) have completely different rules."]},
     mistakes=["Applying to more than one unit if the rules allow only one.", "Not training for the 1,600 m run early enough.",
               "Ignoring the LMV licence requirement.", "Using another state's height or running standards."],
-    faqs=[{"q": "Is graduation needed?", "a": "No. 12th (HSC) pass is the minimum for constable."},
+    faqs=[{"q": "Is graduation needed?", "a": "No, graduation is not needed for constable. 12th (HSC) pass is the minimum qualification. "
+                                             "If you are a graduate, you can also look at the MPSC PSI route for an officer post."},
           {"q": "What is the height for women?", "a": "155 cm (Bharti 2024-25). ST candidates get 5 cm relaxation."}],
     related_items=[related("police-sub-inspector", "Maharashtra PSI", "Officer route after graduation"),
                    related("multi-tasking-staff", "SSC MTS", "10th-pass central government job"),

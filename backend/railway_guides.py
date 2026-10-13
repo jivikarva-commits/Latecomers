@@ -86,13 +86,31 @@ NTPC = details(
                    "Posts are allotted by merit + the post/zone preferences you gave in your form."],
     steps=[
         step("Pick your level", "Before applying", "12th pass → undergraduate posts. Graduate → graduate posts (you can apply to both notices if eligible)."),
-        step("Check post requirements", "Before applying", "Typing for typist posts; eyesight A-2 for Station Master/Goods Train Manager."),
+        step("Check post requirements", "Before applying",
+             "Typist posts need typing skill, and Station Master and Goods Train Manager need the A-2 eyesight standard (6/9, 6/9 without glasses). "
+             "Check these before you fill post preferences, because if you fail the medical standard for your post you are not given another post. "
+             "If you wear glasses, look closely at clerk posts, which mostly have the easier C-2 standard."),
         step("Apply on rrbapply.gov.in", "Graduate: 21 Oct – 20 Nov 2025 · Undergraduate: 28 Oct – 27 Nov 2025", "Choose ONE RRB, fill post/zone preferences, upload live photo and pay the fee. A paid modification window follows."),
-        step("Write CBT 1", "As per RRB schedule", "Download the city slip and e-call letter from your RRB website."),
-        step("Write CBT 2", "After CBT 1 result", "Merit exam."),
-        step("Typing test or CBAT if your post needs it", "After CBT 2", "Carry a vision certificate for CBAT (Station Master/Traffic Assistant)."),
-        step("Document verification and medical", "After final stage", "Shortlisted 1:1 with vacancies."),
-        step("Empanelment, appointment and training", "After medical", "Railway training before posting; rules depend on the post."),
+        step("Write CBT 1", "As per RRB schedule",
+             "Download the city slip and e-call letter from your RRB website before the exam. "
+             "CBT 1 is a screening test common to all posts, with 1/3 mark cut for each wrong answer, and about 15 times the vacancies go on to CBT 2. "
+             "Try the mock tests on the RRB website so the exam screen feels familiar."),
+        step("Write CBT 2", "After CBT 1 result",
+             "CBT 2 is the merit exam, so it decides your rank for most posts. "
+             "It covers the same three subjects as CBT 1 (general awareness, mathematics and reasoning) with more questions, and the same 1/3 negative marking applies. "
+             "Analyse your CBT 1 mistakes and fix weak topics before this exam."),
+        step("Typing test or CBAT if your post needs it", "After CBT 2",
+             "Typist posts, such as Junior Clerk cum Typist, have a qualifying typing test, and Station Master/Traffic Assistant candidates take the Computer Based Aptitude Test (CBAT). "
+             "Carry the vision certificate that the CEN asks for when you go for CBAT (Station Master/Traffic Assistant). "
+             "CBAT has no negative marking, but you must reach the minimum score in every test battery."),
+        step("Document verification and medical", "After final stage",
+             "Candidates are shortlisted 1:1 with vacancies, so being called for document verification means you are close to selection. "
+             "Original certificates are checked, and you must pass the railway medical test (including eyesight) for your post. "
+             "Carry every certificate the call letter lists, in original."),
+        step("Empanelment, appointment and training", "After medical",
+             "Selected candidates are empanelled, and the railway then issues the appointment. "
+             "You get railway training before posting, and the training rules depend on the post. "
+             "Shift duty is common in operations posts, so be ready for it from the start."),
     ],
     calendar={"label": "Current NTPC notices (CEN 06/2025 graduate and 07/2025 undergraduate)",
               "rows": [{"event": "Graduate applications", "date": "21 October – 20 November 2025"},
@@ -115,7 +133,8 @@ NTPC = details(
                        "If you fail the medical standard for your post, you are not given another post."]},
     mistakes=RAIL_MISTAKES,
     faqs=[{"q": "Can a 12th pass become Station Master?", "a": "No. Station Master is a graduate post. 12th-pass candidates can apply for clerk and trains clerk posts."},
-          {"q": "Is there an interview?", "a": "No. Selection is through CBTs, skill test (if any), document verification and medical."},
+          {"q": "Is there an interview?", "a": "No, Railway NTPC has no interview. Selection is through CBTs, skill test (if any), document verification and medical. "
+                                              "Your CBT 2 score, plus CBAT for Station Master, decides your merit."},
           {"q": "Do I need glasses-free eyesight?", "a": "For A-2 posts like Station Master and Goods Train Manager, yes (6/9, 6/9 without glasses). Clerk posts have easier standards."}],
     related_items=[related("track-maintainer-helper", "Railway Level 1", "10th/ITI railway posts"),
                    related("ldc-deo-postal-assistant", "SSC CHSL", "12th-pass central government clerk posts"),
@@ -163,12 +182,30 @@ LEVEL1 = details(
                    "PET is pass/fail and compulsory unless exempted.",
                    "You must meet the medical standard of the post you are allotted."],
     steps=[
-        step("Check qualification and post", "Before applying", "See Annexure A: some posts need ITI/NAC, and each has a medical standard."),
-        step("Apply on rrbapply.gov.in", "CEN 09/2025: 31 January – 2 March 2026", "Choose ONE RRB/railway, fill post preferences, upload live photo, pay the fee."),
-        step("Prepare and write the CBT", "As announced", "10th-level maths and science, reasoning, current affairs."),
-        step("Train for PET", "From the day you apply", "Practise carrying weight and running 1 km."),
-        step("PET, DV and medical", "After CBT result", "Carry originals; medical as per post."),
-        step("Appointment", "After empanelment", "Joining in the allotted railway unit."),
+        step("Check qualification and post", "Before applying",
+             "See Annexure A of the CEN: some posts need ITI/NAC instead of only 10th, and each post has its own medical standard. "
+             "A diploma or engineering degree does not replace a required ITI or apprenticeship certificate unless the CEN says so. "
+             "Your qualification must also be complete by the closing date, because candidates awaiting results cannot apply."),
+        step("Apply on rrbapply.gov.in", "CEN 09/2025: 31 January – 2 March 2026",
+             "Choose ONE RRB/railway, fill your post preferences, upload a live photo and pay the fee. "
+             "Applying to more than one RRB gets all your applications rejected, so pick one carefully. "
+             "Order your post preferences by the work you want and the medical standard you can meet."),
+        step("Prepare and write the CBT", "As announced",
+             "Prepare 10th-level maths and science, reasoning and current affairs, because these four areas make up the 100-question test. "
+             "The test is 90 minutes long, with 1/3 mark cut for each wrong answer. "
+             "Use the mock tests on the RRB website to practise in the real exam format."),
+        step("Train for PET", "From the day you apply",
+             "Practise carrying weight and running 1 km, because PET is pass/fail and compulsory unless you are exempt. "
+             "Weight carrying comes first, and if you fail it you do not get to run. "
+             "Train 3–4 times a week and build up slowly to avoid injury."),
+        step("PET, DV and medical", "After CBT result",
+             "About 3 times the vacancies are called for PET, and those who pass go on to document verification and the medical test. "
+             "Carry all original certificates, and expect a medical test as per the standard of your post. "
+             "If you do not meet the medical standard of the post you are allotted, you cannot join it."),
+        step("Appointment", "After empanelment",
+             "Selected candidates are empanelled by merit and their choices, and then join in the allotted railway unit. "
+             "Outdoor, shift-based work is common in Level 1 posts, so be ready for it. "
+             "Later promotions follow railway departmental rules."),
     ],
     calendar={"label": "CEN 09/2025 (Level 1)",
               "rows": [{"event": "Online applications", "date": "31 January – 2 March 2026"},
@@ -186,8 +223,10 @@ LEVEL1 = details(
                        "A diploma or engineering degree does not replace a required ITI/apprenticeship certificate.",
                        "Course-completed Act apprentices have reserved vacancies and are exempt from PET."]},
     mistakes=RAIL_MISTAKES + ["Not practising the PET — fail the weight carry and you are out."],
-    faqs=[{"q": "Is Railway Level 1 the same as Group D?", "a": "Yes — 'Group D' posts are now notified as posts in Level 1 of the 7th CPC pay matrix."},
-          {"q": "Can a graduate apply?", "a": "Yes, if they also meet the 10th/ITI requirement of the post; a higher degree does not replace a required ITI."}],
+    faqs=[{"q": "Is Railway Level 1 the same as Group D?", "a": "Yes, in everyday use — the posts people call 'Group D' are now notified as posts in Level 1 of the 7th CPC pay matrix. "
+                                                               "The official CEN 09/2025 uses the Level 1 name, so search for 'Level 1' when you look for the notice."},
+          {"q": "Can a graduate apply?", "a": "Yes, if they also meet the 10th/ITI requirement of the post. "
+                                            "A higher degree does not replace a required ITI, so check Annexure A for the exact qualification of each post you choose."}],
     related_items=[related("junior-clerk-station-master", "Railway NTPC", "12th and graduate railway posts"),
                    related("multi-tasking-staff", "SSC MTS", "10th-pass central government jobs"),
                    related("police-constable", "Police Constable", "State police route")],

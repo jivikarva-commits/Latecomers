@@ -95,19 +95,32 @@ IDA = institute("Indian Dietetic Association — Registered Dietitian (RD)", "Pr
 # ---------- Guides ----------
 NURSE = _hc(
     "nursing-officer-staff-nurse", "Nursing Officer / Staff Nurse", "Nursing", "How to become a Nursing Officer / Staff Nurse",
-    "A nurse cares for patients — giving medicines, monitoring health, assisting doctors, educating families — in hospitals, clinics and communities. Government hospitals call the post Nursing Officer.",
+    "A nurse cares for patients — giving medicines, monitoring health, assisting doctors, educating families — in hospitals, clinics and communities. "
+    "Government hospitals call the post Nursing Officer.",
     duties=["Assess and monitor patients", "Give medicines and treatments as prescribed", "Assist in procedures and emergencies", "Maintain records and handover",
             "Infection control and patient safety", "Educate patients and families"],
     postings=["Government and private hospitals, AIIMS and central institutes, armed forces, community health, abroad"],
     facts=[fact("Education", "B.Sc. Nursing / GNM"), fact("Regulator", "Indian Nursing Council + State Nursing Councils"), fact("B.Sc. Nursing", "4 years; 10+2 PCB + English, 45%"),
            fact("Registration", "Registered Nurse & Midwife with State Nursing Council"), fact("Central govt jobs", "AIIMS NORCET (Nursing Officer)"), fact("Shifts", "Day/night rotations")],
     levels=[["Student", "Anatomy, nursing foundations, clinical postings"], ["New nurse", "Ward care, documentation, medication safety"], ["Experienced", "Speciality units (ICU, OT, NICU)"]],
-    steps=[step("Choose the course", "After 12th (PCB + English)", "B.Sc. Nursing (4 years) is the main route; GNM is still offered in some states."),
-           step("Take the entrance", "Before admission", "State/institute entrances; some central institutes use NEET."),
-           step("Complete course and clinicals", "4 years", "Hospital postings in every year."),
-           step("Register with the State Nursing Council", "After passing", "Registered Nurse & Registered Midwife."),
-           step("Apply for jobs", "After registration", "Private hospitals or government exams like AIIMS NORCET."),
-           step("Specialise / study further", "Later", "Post-basic diplomas, M.Sc. Nursing (55% in B.Sc. + 1 year experience).")],
+    steps=[step("Choose the course", "After 12th (PCB + English)", "B.Sc. Nursing (4 years) is the main route to become a registered nurse, and GNM is still offered in some states. "
+                                                                   "INC requires 10+2 with Physics, Chemistry, Biology and English, with 45% aggregate, for B.Sc. Nursing. "
+                                                                   "Check that the college is recognised by INC and your State Nursing Council before you take admission."),
+           step("Take the entrance", "Before admission", "Admission is through state or institute entrance exams, and some central institutes use NEET. "
+                                                         "Read each institute's prospectus for its exam, dates and seat rules. "
+                                                         "Revise your Class 12 Physics, Chemistry and Biology well while you prepare."),
+           step("Complete course and clinicals", "4 years", "The course has hospital clinical postings in every year along with theory classes. "
+                                                            "Use these postings to practise procedures, documentation and patient communication under supervision. "
+                                                            "Clinical confidence helps you in interviews and in your first job."),
+           step("Register with the State Nursing Council", "After passing", "After passing, register with your State Nursing Council as a Registered Nurse and Registered Midwife. "
+                                                                            "Registration is needed to work as a nurse and to apply for exams such as AIIMS NORCET. "
+                                                                            "Keep your registration certificate safe and renew it as your state council requires."),
+           step("Apply for jobs", "After registration", "Apply to private hospitals, or prepare for government exams such as AIIMS NORCET for Nursing Officer posts. "
+                                                        "NORCET has Prelims and Mains computer-based tests, so start practising in your final year. "
+                                                        "Check each notification for the current age limit and eligibility."),
+           step("Specialise / study further", "Later", "Later, you can do post-basic diplomas in specialities or an M.Sc. Nursing. "
+                                                       "INC requires 55% in your B.Sc. Nursing and 1 year of work experience for M.Sc. Nursing. "
+                                                       "Specialising helps you move into units such as ICU, OT or NICU, or into teaching.")],
     hiring=_stages(("Entrance", "Admission to B.Sc. Nursing.", [paper("State/institute entrance or NEET (as applicable)", "Varies", "Varies", "Check the institute's prospectus")], "Merit for a seat."),
                    ("4 years", "Theory + clinical postings.", "Pass all years."), ("After passing", "State Nursing Council registration.", "Registered Nurse & Midwife."),
                    ("Recruitment", "Hospitals and NORCET.", [paper("AIIMS NORCET (for AIIMS Nursing Officer)", "Prelims + Mains (CBT)", "As notified", "GNM needs 2 years' experience in a 50+ bed hospital")], "Selection by merit.")),
@@ -120,9 +133,15 @@ NURSE = _hc(
     special=["INC has planned to replace GNM with B.Sc. Nursing; GNM admissions still run in some states — check your state before choosing.",
              "Working abroad needs that country's nursing licence exam in addition to Indian registration."],
     mistakes=["Joining an unrecognised college.", "Not registering after passing.", "Ignoring documentation and medication safety."],
-    faqs=[{"q": "Can arts/commerce students do B.Sc. Nursing?", "a": "No — INC requires 10+2 with Physics, Chemistry, Biology and English."},
-          {"q": "What is the minimum age?", "a": "17 years on or before 31 December of the admission year (INC)."},
-          {"q": "Can GNM nurses apply for AIIMS?", "a": "Yes, NORCET accepts GNM with 2 years' experience in a hospital of at least 50 beds, plus registration."}],
+    faqs=[{"q": "Can arts/commerce students do B.Sc. Nursing?", "a": "No, INC requires 10+2 with Physics, Chemistry, Biology and English for B.Sc. Nursing. "
+                                                                     "GNM, where it is still offered, accepts 10+2 with English and prefers science, as per INC's eligibility criteria. "
+                                                                     "Check the INC eligibility page and your state's current rules before choosing."},
+          {"q": "What is the minimum age?", "a": "INC sets the minimum age at 17 years on or before 31 December of the admission year. "
+                                                 "INC's eligibility criteria give no upper age limit for B.Sc. Nursing. "
+                                                 "Government job exams such as NORCET set their own age limits."},
+          {"q": "Can GNM nurses apply for AIIMS?", "a": "Yes, NORCET accepts GNM nurses with 2 years' experience in a hospital of at least 50 beds, along with registration. "
+                                                        "B.Sc. Nursing graduates do not need this experience to apply. "
+                                                        "Always confirm the rules in the current NORCET notification."}],
     related_items=[related("physiotherapist", "Physiotherapist", "Allied health"), related("lab-technician-dmlt", "Lab Technician", "Diagnostics"), related("pharmacist", "Pharmacist", "Medicines")],
     institutes=[INC, AIIMS, JIPMER, PGIMER, IGNOU],
     sources=[source("Indian Nursing Council — eligibility criteria", "https://indiannursingcouncil.org/eligibility-criteria", "B.Sc., GNM, Post Basic and M.Sc. Nursing."),
@@ -135,16 +154,33 @@ NURSE = _hc(
 
 PHYSIO = _hc(
     "physiotherapist", "Physiotherapist", "Physiotherapy", "How to become a Physiotherapist",
-    "A physiotherapist helps people move better and recover from injury, surgery, stroke or chronic pain using exercise, manual therapy and electrotherapy.",
+    "A physiotherapist helps people move better and recover from injury, surgery, stroke or chronic pain using exercise, manual therapy and electrotherapy. "
+    "They assess how a person moves, plan treatment and track progress over many sessions. "
+    "Physiotherapists work in hospitals, rehab centres, sports teams, clinics, home care and their own practice.",
     duties=["Assess movement and function", "Plan exercise and treatment programmes", "Use manual therapy and electrotherapy", "Rehabilitate after surgery, injury or stroke",
             "Educate patients on posture and prevention", "Track progress"],
     postings=["Hospitals, rehab centres, sports teams, clinics, home care, own practice"],
     facts=[fact("Education", "BPT"), fact("Course (NCAHP curriculum)", "4 years + 1-year internship"), fact("Eligibility", "10+2 PCB, 50% aggregate, NEET appeared, age 17+"),
            fact("Regulator", "NCAHP (Act 2021)"), fact("Specialise", "MPT — ortho, neuro, sports, cardio"), fact("Own clinic", "Possible after experience")],
     levels=[["Student", "Anatomy, physiology, exercise therapy"], ["Intern", "Supervised patient care"], ["Practitioner", "Independent assessment and treatment plans"]],
-    steps=[step("10+2 with PCB (50%)", "School", "NCAHP curriculum requires 50% aggregate in PCB."), step("Take NEET and counselling", "After 12th", "NCAHP lists NEET appearance; check your state's notice."),
-           step("Complete BPT", "4 years", "Theory and clinical training."), step("1-year internship", "After 4 years", "Rotations in ortho, neuro, cardio, paediatrics."),
-           step("Register", "As per NCAHP/state rules", "Follow registration notices."), step("Work or do MPT", "After BPT", "Hospitals, sports, rehab or specialisation.")],
+    steps=[step("10+2 with PCB (50%)", "School", "Take Physics, Chemistry and Biology in Class 11 and 12. "
+                                                 "The NCAHP physiotherapy curriculum requires 50% aggregate in PCB. "
+                                                 "Strong Biology also makes anatomy and physiology easier during the course."),
+           step("Take NEET and counselling", "After 12th", "The NCAHP curriculum lists appearing in NEET as a condition for BPT admission. "
+                                                           "Seats are filled through state or university counselling, so check your state's notice for the current year. "
+                                                           "Apply on time and keep your documents ready for counselling."),
+           step("Complete BPT", "4 years", "BPT has 4 years of theory and clinical training in subjects such as anatomy, physiology and exercise therapy. "
+                                           "Practise assessment skills carefully, because every treatment plan starts with a good assessment. "
+                                           "Choose a college that follows the NCAHP curriculum."),
+           step("1-year internship", "After 4 years", "After 4 years of study, you complete a 1-year internship with rotations in ortho, neuro, cardio and paediatrics. "
+                                                      "You treat real patients under supervision and learn how hospital departments work. "
+                                                      "Use this year to find the area you want to specialise in."),
+           step("Register", "As per NCAHP/state rules", "Register as a physiotherapist as per NCAHP or your state's rules. "
+                                                        "Registration rules are changing under the NCAHP Act, 2021, so follow official notices closely. "
+                                                        "Keep your degree, internship and registration documents ready for jobs."),
+           step("Work or do MPT", "After BPT", "Work in hospitals, sports teams, rehab centres or home care, or do an MPT to specialise. "
+                                               "MPT options include ortho, neuro, sports and cardio physiotherapy. "
+                                               "Many physiotherapists open their own clinic after gaining experience.")],
     hiring=_stages(("NEET + counselling", "Admission to BPT.", [paper("NEET (UG)", "As per NTA", "As per NTA", "Check your state's BPT counselling")], "Seat by merit."),
                    ("5 years", "4 years study + 1-year internship.", "Pass all exams and internship."), ("After BPT", "Registration under NCAHP/state rules.", "Registered physiotherapist."),
                    ("Recruitment", "Hospitals, clinics, sports bodies.", [paper("Interview + practical assessment", "Practical", "—", "Show assessment skills")], "Offer.")),
@@ -156,9 +192,15 @@ PHYSIO = _hc(
             ["Senior", "Head of Physiotherapy / clinic owner", "8+ years", "Department or practice"]],
     special=["Some older college pages still show BPT as 4.5 years; NCAHP's curriculum lists 4 years plus a 1-year internship — confirm with your college."],
     mistakes=["Choosing a college not following NCAHP standards.", "Skipping internship learning.", "Weak communication with patients."],
-    faqs=[{"q": "Is NEET needed for BPT?", "a": "NCAHP's physiotherapy curriculum lists NEET appearance; check your state/university notice for the current admission year."},
-          {"q": "How long is BPT?", "a": "Under the NCAHP curriculum: 4 years of study plus a 1-year internship."},
-          {"q": "Can I open my own clinic?", "a": "Many physiotherapists do after gaining experience and following registration rules."}],
+    faqs=[{"q": "Is NEET needed for BPT?", "a": "NCAHP's physiotherapy curriculum lists appearing in NEET as a condition for admission. "
+                                                "Rules can differ by state and university, so check the official notice for the current admission year. "
+                                                "Do not assume last year's rules still apply."},
+          {"q": "How long is BPT?", "a": "Under the NCAHP curriculum, BPT is 4 years of study plus a 1-year internship. "
+                                         "Some older college pages still show 4.5 years, so confirm with your college. "
+                                         "Plan for five years in total before you start working."},
+          {"q": "Can I open my own clinic?", "a": "Many physiotherapists open their own clinic after gaining experience. "
+                                                  "You must follow the registration rules that apply in your state. "
+                                                  "Working in hospitals first helps you build skills, contacts and patient trust."}],
     related_items=[related("nursing-officer-staff-nurse", "Nursing Officer", "Patient care"), related("nutritionist-dietitian", "Nutritionist / Dietitian", "Wellness"), related("radiology-technician", "Radiology Technician", "Allied health")],
     institutes=[NCAHP, SVNIRTAR, NILD, JIPMER],
     sources=[source("NCAHP — Physiotherapy curriculum", "https://ncahp.abdm.gov.in/curriculum", "Eligibility (10+2 PCB 50%, NEET) and duration (4 years + 1-year internship).")],
@@ -170,16 +212,33 @@ PHYSIO = _hc(
 
 CODER = _hc(
     "medical-coder", "Medical Coder", "Medical Coding", "How to become a Medical Coder",
-    "A medical coder converts doctors' notes into standard codes (ICD-10-CM, CPT, HCPCS) used for insurance claims — a large job market in India serving US healthcare.",
+    "A medical coder converts doctors' notes into standard codes (ICD-10-CM, CPT, HCPCS) used for insurance claims — a large job market in India serving US healthcare. "
+    "It is a desk job that needs anatomy knowledge, accuracy and strict data privacy. "
+    "Most companies hire life-science or health graduates, and the AAPC CPC certificate strengthens your profile.",
     duties=["Read medical records", "Assign ICD-10-CM, CPT and HCPCS codes", "Follow coding guidelines and payer rules", "Meet accuracy and productivity targets",
             "Query physicians when notes are unclear", "Protect patient data"],
     postings=["Medical coding and RCM companies, hospitals, health-tech"],
     facts=[fact("Education", "Life-science/health graduation"), fact("Certification", "AAPC CPC (100 Qs, 4 hrs, 70%)"), fact("Without 2 yrs experience", "CPC-A (Apprentice)"),
            fact("Core skills", "Anatomy, terminology, guidelines, accuracy"), fact("Work", "Desk job; often night/US shifts"), fact("Data", "Strict privacy rules")],
     levels=[["Beginner", "Anatomy, terminology, code-book navigation"], ["Certified", "CPC passed; accurate coding"], ["Specialist", "Speciality coding, audit, QA"]],
-    steps=[step("Learn anatomy and terminology", "Months 1–2", "Body systems and medical terms."), step("Learn code sets", "Months 2–4", "ICD-10-CM, CPT, HCPCS and guidelines."),
-           step("Practise real charts", "Months 3–5", "Timed practice."), step("Pass the CPC", "Months 4–6", "100 questions, 4 hours, 70%."),
-           step("Join a coding company", "After CPC", "Trainee/coder roles."), step("Specialise", "Later", "Surgery, E/M, risk adjustment, audit.")],
+    steps=[step("Learn anatomy and terminology", "Months 1–2", "Learn the body systems and the common medical terms used in doctors' notes. "
+                                                               "You cannot code correctly if you do not understand what the doctor wrote. "
+                                                               "Make your own glossary of terms and revise it daily."),
+           step("Learn code sets", "Months 2–4", "Learn how ICD-10-CM, CPT and HCPCS codes work, along with the official coding guidelines. "
+                                                 "Focus on understanding the guidelines instead of memorising codes. "
+                                                 "The guidelines tell you which code is correct in each situation."),
+           step("Practise real charts", "Months 3–5", "Practise coding sample medical charts under timed conditions. "
+                                                      "This builds the speed and accuracy that coding companies measure every day. "
+                                                      "Review every mistake and find the guideline that explains the right answer."),
+           step("Pass the CPC", "Months 4–6", "The AAPC CPC exam has 100 questions in 4 hours, and you need 70% to pass. "
+                                              "Practise with mock tests and learn to find codes quickly in the approved code books. "
+                                              "If you do not have 2 years' experience, you will first get the CPC-A (Apprentice) designation."),
+           step("Join a coding company", "After CPC", "Apply for trainee or coder roles at medical coding and RCM companies, hospitals and health-tech firms. "
+                                                      "Expect a coding test and an interview that check your speed and accuracy. "
+                                                      "Many coding jobs have US-time shifts, so be ready for night work."),
+           step("Specialise", "Later", "With experience, you can specialise in areas such as surgery, E/M, risk adjustment or audit. "
+                                       "Specialists and auditors handle more complex charts and quality checks. "
+                                       "Keep your code books current, because coding standards update every year.")],
     hiring=_stages(("Graduation", "A life-science/health degree is preferred by most companies.", [], "Degree completed."),
                    ("Months 1–5", "Anatomy, terminology, code sets.", "Coding accuracy in practice."), ("CPC exam", "AAPC certification.", "Pass with 70% (CPC-A until experience requirement is met)."),
                    ("Recruitment", "Coding/RCM companies.", [paper("Coding test + interview", "MCQ/charts", "30–90 min", "Speed and accuracy")], "Offer as coder/trainee.")),
@@ -190,9 +249,15 @@ CODER = _hc(
     ladder=[["Start", "Trainee / Medical Coder", "0–2 years", "Coding"], ["Mid", "Senior Coder / QA Analyst", "2–5 years", "Quality"], ["Senior", "Team Lead / Coding Auditor / Manager", "5+ years", "Teams and audits"]],
     special=["Many coding jobs have US-time shifts.", "Coding standards update every year — keep current code books."],
     mistakes=["Skipping anatomy.", "Memorising codes instead of learning guidelines.", "Ignoring data privacy."],
-    faqs=[{"q": "Is a degree needed?", "a": "Most companies ask for a life-science or health graduation; CPC certification strengthens your profile."},
-          {"q": "What is CPC-A?", "a": "The apprentice designation given to CPC passers without the required 2 years' experience."},
-          {"q": "Can freshers join?", "a": "Yes, many companies hire trainee coders and train them."}],
+    faqs=[{"q": "Is a degree needed?", "a": "Most companies ask for a life-science or health graduation for coding jobs. "
+                                            "CPC certification strengthens your profile and helps you grow faster. "
+                                            "Check each company's job post for its exact education rule."},
+          {"q": "What is CPC-A?", "a": "CPC-A is the apprentice designation given to people who pass the CPC exam without the required 2 years' experience. "
+                                       "You can work as a coder with it while you gain experience. "
+                                       "Once you meet AAPC's experience rules, you can apply to have the apprentice status removed."},
+          {"q": "Can freshers join?", "a": "Yes, many companies hire trainee coders and train them. "
+                                           "You still need good anatomy knowledge and must clear the company's coding test. "
+                                           "Starting CPC preparation early improves your chances."}],
     related_items=[related("medical-biller", "Medical Biller", "Revenue cycle"), related("pharmacist", "Pharmacist", "Life-science route"), related("lab-technician-dmlt", "Lab Technician", "Allied health")],
     institutes=[AAPC_CPC, AHIMA, NCAHP, HSSC],
     sources=[source("AAPC — Taking the CPC exam", "https://aapc.com/certifications/cpc/taking-the-cpc-exam", "100 questions, 4 hours, 70% pass."),
@@ -205,15 +270,32 @@ CODER = _hc(
 
 BILLER = _hc(
     "medical-biller", "Medical Biller", "Medical Billing", "How to become a Medical Biller",
-    "A medical biller prepares and submits insurance claims, follows up on denials and collects payments — the revenue cycle (RCM) of hospitals and US healthcare providers.",
+    "A medical biller prepares and submits insurance claims, follows up on denials and collects payments — the revenue cycle (RCM) of hospitals and US healthcare providers. "
+    "It is a desk job that needs clear communication, Excel skills and attention to detail. "
+    "Many roles serve US processes, so night shifts are common.",
     duties=["Create and submit claims", "Check eligibility and authorisation", "Post payments", "Work on denials and appeals", "Follow up with insurers", "Report on collections"],
     postings=["RCM companies, hospitals, health-tech, TPAs and insurance desks"],
     facts=[fact("Education", "Graduation"), fact("Certification", "AAPC CPB (135 Qs, 4 hrs)"), fact("Core skills", "Claims, insurance, communication, Excel"),
            fact("Work", "Desk job; often US shifts"), fact("Indian hospitals", "Also need TPA/insurance billing")],
     levels=[["Beginner", "Billing basics and terminology"], ["Intermediate", "Claims, denials, AR follow-up"], ["Senior", "Process improvement and team lead"]],
-    steps=[step("Graduate", "3 years", "Commerce/life-science degrees are common."), step("Learn RCM basics", "Months 1–2", "Eligibility, claims, payments, denials."),
-           step("Learn codes at a basic level", "Months 2–3", "Enough to read claims."), step("Optional CPB", "Months 3–5", "AAPC certification."),
-           step("Join an RCM company", "After training", "AR caller / billing executive."), step("Grow", "Later", "Team lead, QA, process roles.")],
+    steps=[step("Graduate", "3 years", "Complete a graduation, since most billing jobs ask for a degree. "
+                                       "Commerce and life-science degrees are common, but most companies accept any graduation. "
+                                       "Work on your English communication during college, because many roles involve calls with US insurers."),
+           step("Learn RCM basics", "Months 1–2", "Learn how the revenue cycle works, from eligibility checks to claims, payments and denials. "
+                                                  "Understand why a claim gets paid, delayed or denied. "
+                                                  "This big picture helps you fix problems instead of just following steps."),
+           step("Learn codes at a basic level", "Months 2–3", "Learn enough about medical codes to read and check claims. "
+                                                              "You do not need to code like a medical coder, but you must be able to spot obvious errors. "
+                                                              "This also helps you understand many denial reasons."),
+           step("Optional CPB", "Months 3–5", "You can take the AAPC Certified Professional Biller (CPB) exam, which has 135 questions in 4 hours. "
+                                              "It is optional, but it proves your knowledge and helps you grow. "
+                                              "Practise with mock tests before you book the exam."),
+           step("Join an RCM company", "After training", "Apply for AR caller or billing executive roles at RCM companies and hospitals. "
+                                                         "Expect a communication test and an interview, often focused on clear English for US calls. "
+                                                         "Be ready for night shifts if the process serves US clients."),
+           step("Grow", "Later", "With experience, you can move into senior executive, QA, team lead or process roles. "
+                                 "Understanding denial patterns and making clear reports in Excel helps you get promoted. "
+                                 "Keep learning payer rules, because they change over time.")],
     hiring=_stages(("Graduation", "Most billing jobs ask for a degree.", [], "Degree done."), ("Months 1–3", "RCM training.", "Understand the claim cycle."),
                    ("Optional", "AAPC CPB.", "Pass the CPB exam."), ("Recruitment", "RCM companies and hospitals.", [paper("Communication test + interview", "Voice/written", "30–60 min", "Clear English for US calls")], "Offer.")),
     checklist=["You understand the revenue cycle.", "You can read claims and denials.", "You communicate clearly.", "You can use Excel and billing software."],
@@ -223,9 +305,15 @@ BILLER = _hc(
     ladder=[["Start", "AR Caller / Billing Executive", "0–2 years", "Claims"], ["Mid", "Senior Executive / QA", "2–5 years", "Quality"], ["Senior", "Team Lead / RCM Manager", "5+ years", "Operations"]],
     special=["Night shifts are common for US-process billing."],
     mistakes=["Weak communication skills.", "Not learning denial reasons.", "Ignoring data privacy."],
-    faqs=[{"q": "Coder vs biller?", "a": "Coders assign codes from records; billers submit claims and follow up on payments."},
-          {"q": "Is CPB required?", "a": "Not always; it helps for growth."},
-          {"q": "Which degree?", "a": "Most companies accept any graduation; commerce or life-science helps."}],
+    faqs=[{"q": "Coder vs biller?", "a": "Coders read medical records and assign codes, while billers submit claims and follow up on payments. "
+                                         "Both work in the revenue cycle and are often in the same company. "
+                                         "Coding needs more anatomy knowledge, while billing needs more communication skills."},
+          {"q": "Is CPB required?", "a": "CPB is not always required for billing jobs. "
+                                         "It helps for growth because it proves your knowledge of the revenue cycle. "
+                                         "You can start working first and take the exam later."},
+          {"q": "Which degree?", "a": "Most companies accept any graduation for billing roles. "
+                                      "Commerce or life-science degrees help because they cover accounts or medical basics. "
+                                      "Good English communication matters as much as the degree."}],
     related_items=[related("medical-coder", "Medical Coder", "Coding"), related("pharmacist", "Pharmacist", "Healthcare"), related("nursing-officer-staff-nurse", "Nursing Officer", "Clinical")],
     institutes=[AAPC_CPB, AAPC_CPC, AHIMA, HSSC],
     sources=[source("AAPC — Taking the CPC and CPB exams", "https://aapc.com/certifications/cpc-and-cpb/taking-the-cpc-and-cpb-exams", "CPB format.")],
@@ -237,15 +325,32 @@ BILLER = _hc(
 
 LAB = _hc(
     "lab-technician-dmlt", "Lab Technician / DMLT", "Medical Lab Technology", "How to become a Medical Lab Technician (DMLT / BMLS)",
-    "A medical lab technician tests blood, urine and other samples so doctors can diagnose disease — in hospital labs, diagnostic chains and blood banks.",
+    "A medical lab technician tests blood, urine and other samples so doctors can diagnose disease — in hospital labs, diagnostic chains and blood banks. "
+    "The job needs accuracy, quality control and strict biosafety. "
+    "You can enter through a DMLT diploma or a BMLS degree after 10+2 with PCB.",
     duties=["Collect and process samples", "Run tests on analysers", "Follow quality control", "Record and report results", "Maintain equipment", "Follow biosafety rules"],
     postings=["Hospital labs, diagnostic chains, blood banks, research labs"],
     facts=[fact("Education", "DMLT or BMLS"), fact("DMLT (NCAHP)", "2 years incl. 6 months lab posting"), fact("BMLS (NCAHP)", "4 years incl. 1-year internship"),
            fact("Eligibility", "10+2 with PCB"), fact("Core skills", "Accuracy, biosafety, analysers"), fact("Skill route", "Healthcare SSC certificates")],
     levels=[["Student", "Biochemistry, pathology, microbiology basics"], ["Technician", "Run tests with QC"], ["Senior", "Supervise lab sections"]],
-    steps=[step("10+2 with PCB", "School", "Required for DMLT/BMLS."), step("Choose DMLT or BMLS", "After 12th", "DMLT 2 years; BMLS 4 years (degree)."),
-           step("Complete training", "During course", "Clinical lab posting/internship."), step("Register as per rules", "After course", "Follow NCAHP/state notices."),
-           step("Join a lab", "After", "Hospital or diagnostic chain."), step("Upgrade", "Later", "BMLS/MSc for senior roles.")],
+    steps=[step("10+2 with PCB", "School", "Take Physics, Chemistry and Biology in Class 11 and 12. "
+                                           "NCAHP curricula require 10+2 with PCB for both DMLT and BMLS. "
+                                           "Biology and Chemistry are the base of the lab subjects you will study."),
+           step("Choose DMLT or BMLS", "After 12th", "DMLT is a 2-year diploma, while BMLS is a 4-year degree that includes a 1-year internship. "
+                                                     "DMLT gets you working faster, while BMLS opens more senior and government roles. "
+                                                     "Check that the course follows NCAHP standards before taking admission."),
+           step("Complete training", "During course", "Your course includes a clinical lab posting or internship, where you work with real samples. "
+                                                      "Learn sample handling, analysers, quality control and biosafety carefully. "
+                                                      "Mistakes in the lab can affect a patient's diagnosis, so build careful habits early."),
+           step("Register as per rules", "After course", "After the course, register as per NCAHP or state rules wherever registration applies. "
+                                                         "Registration rules are changing under the NCAHP Act, 2021, so follow official notices. "
+                                                         "Keep your certificates ready for job applications."),
+           step("Join a lab", "After", "Apply to hospital labs, diagnostic chains, blood banks or research labs. "
+                                       "Expect a practical test and an interview on quality control and biosafety. "
+                                       "Hospital labs run 24x7, so be ready for shift work."),
+           step("Upgrade", "Later", "DMLT holders can upgrade through a BMLS or other degree programmes as per university rules. "
+                                    "An MSc can lead to senior, quality or lab manager roles. "
+                                    "Keep learning new analysers and quality systems as you grow.")],
     hiring=_stages(("Admission", "DMLT/BMLS admission.", [paper("Merit / entrance", "Varies", "Varies", "BMLS can use NEET-appeared candidates with 50% in 10+2 science")], "Seat."),
                    ("2–4 years", "Course + lab posting.", "Pass all exams."), ("After course", "Registration as per NCAHP/state rules.", "Registered where applicable."),
                    ("Recruitment", "Labs and hospitals.", [paper("Practical + interview", "Practical", "—", "Know QC and biosafety")], "Offer.")),
@@ -256,9 +361,15 @@ LAB = _hc(
     ladder=[["Start", "Lab Technician", "0–3 years", "Testing"], ["Mid", "Senior Technician / Section in-charge", "3–8 years", "Supervision"], ["Senior", "Lab Manager / Quality Manager", "8+ years", "Lab operations"]],
     special=["Biosafety and quality control are core — accredited labs follow strict procedures."],
     mistakes=["Sample labelling errors.", "Skipping QC.", "Poor biosafety."],
-    faqs=[{"q": "DMLT or BMLS?", "a": "DMLT is faster (2 years); BMLS (4 years) opens more senior and government roles."},
-          {"q": "Is PCB required?", "a": "Yes, NCAHP curricula require 10+2 with Physics, Chemistry and Biology."},
-          {"q": "Can DMLT holders upgrade?", "a": "Yes, through degree programmes as per university rules."}],
+    faqs=[{"q": "DMLT or BMLS?", "a": "DMLT is faster at 2 years, while BMLS takes 4 years. "
+                                      "BMLS opens more senior and government roles. "
+                                      "Choose DMLT if you need to start working sooner, and upgrade later if you want."},
+          {"q": "Is PCB required?", "a": "Yes, NCAHP curricula require 10+2 with Physics, Chemistry and Biology. "
+                                         "Students from other streams cannot join these courses directly. "
+                                         "Check the college's admission notice for any minimum marks rules."},
+          {"q": "Can DMLT holders upgrade?", "a": "Yes, DMLT holders can upgrade through degree programmes as per university rules. "
+                                                  "A degree helps you move into senior and government roles. "
+                                                  "Check the admission rules of the university you want to join."}],
     related_items=[related("radiology-technician", "Radiology Technician", "Diagnostics"), related("nursing-officer-staff-nurse", "Nursing Officer", "Clinical"), related("pharmacist", "Pharmacist", "Healthcare")],
     institutes=[NCAHP, AIIMS, PGIMER, HSSC],
     sources=[source("NCAHP — DMLT and MLS curricula", "https://ncahp.abdm.gov.in/curriculum", "Eligibility and duration.")],
@@ -270,15 +381,32 @@ LAB = _hc(
 
 RADIO = _hc(
     "radiology-technician", "Radiology Technician", "Radiology", "How to become a Radiology Technician (Radiographer)",
-    "A radiology technician operates X-ray, CT and MRI equipment to take medical images safely, positioning patients and following radiation protection rules.",
+    "A radiology technician operates X-ray, CT and MRI equipment to take medical images safely, positioning patients and following radiation protection rules. "
+    "They work closely with radiologists, who read and report the images. "
+    "Radiation safety rules are set by the Atomic Energy Regulatory Board (AERB).",
     duties=["Position patients for scans", "Operate X-ray, CT and MRI machines", "Follow radiation safety", "Ensure image quality", "Maintain equipment logs", "Assist radiologists"],
     postings=["Hospitals, diagnostic centres, imaging chains"],
     facts=[fact("Education", "DMRIT or BSc MRIT"), fact("Diploma (NCAHP)", "2.5 years incl. 6 months internship"), fact("Degree (NCAHP)", "4 years incl. 1-year internship"),
            fact("Eligibility", "10+2 PCB; age 17+"), fact("Safety", "Radiation protection (AERB rules)"), fact("Specialise", "CT, MRI, mammography")],
     levels=[["Student", "Anatomy, physics, positioning"], ["Technician", "Routine X-ray/CT"], ["Specialist", "MRI/CT/interventional imaging"]],
-    steps=[step("10+2 with PCB", "School", "Required."), step("Choose DMRIT or BSc MRIT", "After 12th", "Diploma by 10+2 merit; degree via NEET-based selection per NCAHP curriculum."),
-           step("Complete course + internship", "2.5–4 years", "Hands-on imaging."), step("Learn radiation safety", "During course", "Protection of patients and staff."),
-           step("Join a hospital/diagnostic centre", "After", "Radiographer roles."), step("Specialise", "Later", "CT/MRI.")],
+    steps=[step("10+2 with PCB", "School", "Take Physics, Chemistry and Biology in Class 11 and 12, as the NCAHP curricula require. "
+                                           "Physics helps you understand how imaging machines and radiation work. "
+                                           "You must also be at least 17 years old for admission."),
+           step("Choose DMRIT or BSc MRIT", "After 12th", "The diploma (DMRIT) admits students on 10+2 merit, while the BSc MRIT uses NEET-based selection as per the NCAHP curriculum. "
+                                                          "The diploma takes 2.5 years and the degree takes 4 years, both including an internship. "
+                                                          "Check your state's admission notice for the current year."),
+           step("Complete course + internship", "2.5–4 years", "Complete your course and internship with plenty of hands-on imaging practice. "
+                                                               "Learn patient positioning for common studies, image quality checks and how to work with radiologists. "
+                                                               "The internship is where you build the confidence employers look for."),
+           step("Learn radiation safety", "During course", "Learn how to protect patients and staff from radiation using shielding, dose limits and safe distances. "
+                                                           "AERB rules set these safety standards, and every centre has its own protocols. "
+                                                           "Following them strictly is a core part of the job."),
+           step("Join a hospital/diagnostic centre", "After", "Apply for radiographer or X-ray technician roles at hospitals, diagnostic centres and imaging chains. "
+                                                              "Expect a practical test on positioning and safety, plus an interview. "
+                                                              "Hospitals need imaging for emergencies and inpatients, so be ready for shift work."),
+           step("Specialise", "Later", "With experience, you can specialise in CT, MRI or mammography. "
+                                       "Advanced imaging roles need more training in equipment and safety checks. "
+                                       "A BSc MRIT makes it easier to move into these roles.")],
     hiring=_stages(("Admission", "DMRIT/BSc MRIT.", [paper("10+2 merit (diploma) / NEET (BSc MRIT, per NCAHP)", "Varies", "Varies", "Check your state")], "Seat."),
                    ("2.5–4 years", "Course + internship.", "Pass all exams."), ("After course", "Registration as per NCAHP/state rules.", "Registered where applicable."),
                    ("Recruitment", "Hospitals and imaging centres.", [paper("Practical + interview", "Practical", "—", "Positioning and safety")], "Offer.")),
@@ -290,9 +418,15 @@ RADIO = _hc(
     ladder=[["Start", "Radiographer / X-ray Technician", "0–3 years", "Routine imaging"], ["Mid", "CT/MRI Technologist", "3–8 years", "Advanced imaging"], ["Senior", "Chief Technologist", "8+ years", "Department"]],
     special=["Radiation safety rules are set by the Atomic Energy Regulatory Board (AERB) — follow your centre's protocols strictly."],
     mistakes=["Ignoring shielding and dose limits.", "Poor positioning.", "Not checking implants before MRI."],
-    faqs=[{"q": "Diploma or degree?", "a": "Diploma (2.5 years) is faster; BSc MRIT (4 years) opens CT/MRI and senior roles."},
-          {"q": "Is NEET needed?", "a": "NCAHP's BSc MRIT curriculum uses NEET-based selection; diploma admissions are on 10+2 merit."},
-          {"q": "Is radiation dangerous?", "a": "Risks are controlled by following safety rules, shielding and dose monitoring."}],
+    faqs=[{"q": "Diploma or degree?", "a": "The diploma (2.5 years) is faster, while the BSc MRIT (4 years) opens CT, MRI and senior roles. "
+                                           "Choose the diploma if you want to start working sooner. "
+                                           "You can study further later to move into advanced imaging."},
+          {"q": "Is NEET needed?", "a": "NCAHP's BSc MRIT curriculum uses NEET-based selection, while diploma admissions are on 10+2 merit. "
+                                        "Rules can differ by state and institute. "
+                                        "Check the official admission notice for the current year."},
+          {"q": "Is radiation dangerous?", "a": "Radiation risks are controlled by following safety rules, shielding and dose monitoring. "
+                                                "AERB sets these rules, and your centre's protocols must be followed strictly. "
+                                                "These rules exist to keep both patients and staff safe."}],
     related_items=[related("lab-technician-dmlt", "Lab Technician", "Diagnostics"), related("nursing-officer-staff-nurse", "Nursing Officer", "Clinical"), related("physiotherapist", "Physiotherapist", "Allied health")],
     institutes=[NCAHP, AIIMS, PGIMER, JIPMER],
     sources=[source("NCAHP — Diploma and BSc MRIT curricula", "https://ncahp.abdm.gov.in/curriculum", "Eligibility and duration."),
@@ -305,15 +439,32 @@ RADIO = _hc(
 
 NUTRI = _hc(
     "nutritionist-dietitian", "Nutritionist / Dietitian", "Nutrition", "How to become a Nutritionist / Dietitian",
-    "A nutritionist or dietitian plans diets for health and disease — in hospitals (clinical dietitian), wellness, sports, food industry and public health.",
+    "A nutritionist or dietitian plans diets for health and disease — in hospitals (clinical dietitian), wellness, sports, food industry and public health. "
+    "Clinical dietitians usually need a master's degree, hospital training and often the Registered Dietitian (RD) credential. "
+    "Qualified professionals are different from social-media 'nutritionists', and employers check degrees.",
     duties=["Assess patients' nutrition", "Plan therapeutic diets", "Counsel clients", "Work with doctors and kitchens", "Run community nutrition programmes", "Track progress"],
     postings=["Hospitals, clinics, wellness and fitness, food industry, public health, own practice"],
     facts=[fact("Education", "BND/BSc Nutrition; MSc for dietitians"), fact("BND (NCAHP)", "4 years incl. 6 months clinical training"), fact("Entry", "10+2 science, 50%"),
            fact("Credential", "Registered Dietitian (Indian Dietetic Association)"), fact("Core skills", "Clinical nutrition, counselling")],
     levels=[["Student", "Nutrition science, biochemistry"], ["Nutritionist", "Diet plans and counselling"], ["Clinical Dietitian", "Hospital therapeutic diets (MSc + RD)"]],
-    steps=[step("10+2 science", "School", "Chemistry and Biology; 50% for BND (NCAHP)."), step("Bachelor's in Nutrition", "3–4 years", "BND (Hons) or BSc Food & Nutrition."),
-           step("Master's", "2 years", "MSc Nutrition & Dietetics for clinical roles."), step("Hospital internship", "During/after", "Clinical exposure."),
-           step("RD credential (optional)", "After", "Indian Dietetic Association exam."), step("Work or practise", "After", "Hospitals, wellness, sports.")],
+    steps=[step("10+2 science", "School", "Take science with Chemistry and Biology in Class 11 and 12. "
+                                          "The NCAHP Nutrition and Dietetics curriculum asks for 50% in 10+2 science for the BND. "
+                                          "Chemistry and Biology are the base of nutrition science."),
+           step("Bachelor's in Nutrition", "3–4 years", "Do a BND (Hons) or a BSc in Food & Nutrition. "
+                                                        "The NCAHP BND runs for 4 years, including 6 months of clinical training. "
+                                                        "Choose a recognised college with good lab and hospital exposure."),
+           step("Master's", "2 years", "Do an MSc in Nutrition & Dietetics if you want clinical hospital roles. "
+                                       "The master's goes deeper into therapeutic diets for diseases. "
+                                       "Hospitals often prefer dietitians with this qualification."),
+           step("Hospital internship", "During/after", "Complete a hospital internship to work with doctors and real patients. "
+                                                       "You will learn to plan diets for conditions such as diabetes and kidney disease. "
+                                                       "This clinical exposure is needed for dietitian roles and for the RD credential."),
+           step("RD credential (optional)", "After", "After your PG and hospital training, you can take the Indian Dietetic Association's Registered Dietitian (RD) exam. "
+                                                     "It is not legally required, but many hospitals prefer RDs. "
+                                                     "Check IDA's latest notice for eligibility and exam dates."),
+           step("Work or practise", "After", "Work in hospitals, wellness and fitness companies, sports, the food industry or public health programmes. "
+                                             "With experience, many dietitians start their own practice. "
+                                             "Always base your advice on evidence, not food fads.")],
     hiring=_stages(("Admission", "Nutrition degree.", [paper("Merit / university entrance", "Varies", "Varies", "Check science subject rules")], "Seat."),
                    ("3–6 years", "Bachelor's + Master's + internship.", "Pass and complete training."), ("After MSc", "IDA RD exam (optional but valued).", "Registered Dietitian."),
                    ("Recruitment", "Hospitals and wellness companies.", [paper("Interview + case study", "Discussion", "—", "Plan a diet for a case")], "Offer.")),
@@ -325,9 +476,15 @@ NUTRI = _hc(
     ladder=[["Start", "Nutritionist / Dietitian", "0–3 years", "Counselling"], ["Mid", "Senior / Clinical Dietitian", "3–8 years", "Hospital diets"], ["Senior", "Chief Dietitian / practice owner", "8+ years", "Department"]],
     special=["Social-media 'nutritionist' titles are not the same as a qualified dietitian — clients and hospitals check degrees and RD status."],
     mistakes=["Giving medical diet advice without proper training.", "No clinical internship.", "Following fads instead of evidence."],
-    faqs=[{"q": "Nutritionist vs dietitian?", "a": "Dietitians usually have clinical training (MSc + hospital internship) and often the RD credential; nutritionists work more in wellness and community."},
-          {"q": "Can commerce students become dietitians?", "a": "Nutrition degrees usually need 10+2 science (Chemistry and Biology)."},
-          {"q": "Is RD compulsory?", "a": "Not legally, but many hospitals prefer Registered Dietitians."}],
+    faqs=[{"q": "Nutritionist vs dietitian?", "a": "Dietitians usually have clinical training, such as an MSc and a hospital internship, and often the RD credential. "
+                                                   "Nutritionists work more in wellness, fitness and community programmes. "
+                                                   "Hospitals usually hire dietitians to plan patient diets."},
+          {"q": "Can commerce students become dietitians?", "a": "Nutrition degrees usually need 10+2 science with Chemistry and Biology. "
+                                                                 "So commerce students generally cannot join these degrees directly. "
+                                                                 "Check each university's admission rules, since subject requirements can vary."},
+          {"q": "Is RD compulsory?", "a": "RD is not legally compulsory. "
+                                          "However, many hospitals prefer Registered Dietitians for clinical roles. "
+                                          "If you want a hospital career, plan to take the RD exam after your PG and training."}],
     related_items=[related("physiotherapist", "Physiotherapist", "Wellness"), related("nursing-officer-staff-nurse", "Nursing Officer", "Clinical"), related("pharmacist", "Pharmacist", "Healthcare")],
     institutes=[NCAHP, NIN, LADY_IRWIN, IDA, IGNOU],
     sources=[source("NCAHP — Nutrition and Dietetics curriculum", "https://ncahp.abdm.gov.in/curriculum", "Entry and duration."), source("Indian Dietetic Association", "https://idaindia.com/", "RD credential.")],
@@ -339,15 +496,31 @@ NUTRI = _hc(
 
 PHARMA = _hc(
     "pharmacist", "Pharmacist", "Pharmacy", "How to become a Pharmacist",
-    "A pharmacist dispenses medicines, checks prescriptions, advises patients and manages drug stocks — in hospitals, retail pharmacies and the pharma industry.",
+    "A pharmacist dispenses medicines, checks prescriptions, advises patients and manages drug stocks — in hospitals, retail pharmacies and the pharma industry. "
+    "You need a D.Pharm or B.Pharm from a PCI-approved institution and registration with your State Pharmacy Council. "
+    "Under the Pharmacy Act, only registered pharmacists can dispense medicines in pharmacies.",
     duties=["Check and dispense prescriptions", "Counsel patients on correct use", "Manage stock and storage", "Report adverse drug reactions", "Follow drug laws", "Work in industry roles (QA, production, regulatory)"],
     postings=["Hospitals, retail pharmacy chains, pharma companies, government health services"],
     facts=[fact("Education", "D.Pharm / B.Pharm"), fact("Regulator", "Pharmacy Council of India"), fact("Registration", "State Pharmacy Council (Pharmacy Act, 1948)"),
            fact("D.Pharm", "2 years"), fact("B.Pharm", "4 years"), fact("Eligibility", "10+2 with PCB or PCM"), fact("D.Pharm exit exam", "Regulations 2022; check PCI circulars for status")],
     levels=[["Student", "Pharmaceutics, pharmacology, chemistry"], ["Registered pharmacist", "Dispensing and counselling"], ["Senior", "Hospital/industry specialist roles"]],
-    steps=[step("10+2 with PCB or PCM", "School", "Physics and Chemistry with Biology or Maths."), step("Choose D.Pharm or B.Pharm", "After 12th", "PCI-approved institution only."),
-           step("Complete course and training", "2–4 years", "Practical/hospital training as per regulations."), step("Register with the State Pharmacy Council", "After passing", "Required to practise as a pharmacist."),
-           step("Work", "After registration", "Hospital, retail or industry."), step("Higher study", "Optional", "M.Pharm (e.g. NIPER) or Pharm.D.")],
+    steps=[step("10+2 with PCB or PCM", "School", "Take Physics and Chemistry with either Biology or Maths in Class 11 and 12. "
+                                                  "Both PCB and PCM students can join pharmacy courses. "
+                                                  "Strong Chemistry helps a lot in pharmacy subjects."),
+           step("Choose D.Pharm or B.Pharm", "After 12th", "Choose D.Pharm (2 years) for faster entry into dispensing, or B.Pharm (4 years) for industry and higher study. "
+                                                           "Join only a PCI-approved institution, because registration depends on it. "
+                                                           "Check the approved list on the PCI website before paying any fee."),
+           step("Complete course and training", "2–4 years", "Complete the course along with the practical or hospital training set by PCI regulations. "
+                                                             "Learn dispensing, drug storage and patient counselling carefully. "
+                                                             "These are the skills you will use every day at work."),
+           step("Register with the State Pharmacy Council", "After passing", "Register with your State Pharmacy Council after passing, because registration is required to practise as a pharmacist. "
+                                                                             "D.Pharm exit-exam rules have changed several times, so check the latest PCI circular. "
+                                                                             "Keep copies of your certificates and registration ready."),
+           step("Work", "After registration", "Work in a hospital pharmacy, a retail chain, the pharma industry or government health services. "
+                                              "Hospital and retail roles focus on dispensing and counselling, while industry roles include QA, production and regulatory work. "
+                                              "Choose based on whether you prefer working with patients or with manufacturing."),
+           step("Higher study", "Optional", "You can do an M.Pharm, for example at NIPER through its joint entrance, or a Pharm.D. Higher study opens research, industry and specialist roles. "
+                                            "Decide based on the career you want in the long run.")],
     hiring=_stages(("Admission", "D.Pharm/B.Pharm admission.", [paper("State/university entrance or merit", "Varies", "Varies", "Check PCI approval")], "Seat."),
                    ("2–4 years", "Course + practical training.", "Pass all exams."), ("After passing", "State Pharmacy Council registration (and D.Pharm exit exam as notified).", "Registered pharmacist."),
                    ("Recruitment", "Hospitals, chains, industry.", [paper("Interview / written test", "Varies", "—", "Know drugs and dosage")], "Offer.")),
@@ -359,9 +532,13 @@ PHARMA = _hc(
     special=["Only registered pharmacists can dispense in pharmacies under the Pharmacy Act — registration is essential.",
              "PCI's D.Pharm exit-exam rules have changed several times; in February 2026 PCI asked state councils to register passed-out D.Pharm candidates — check the latest circular."],
     mistakes=["Joining a non-approved college.", "Not registering.", "Dispensing without checking prescriptions."],
-    faqs=[{"q": "Can PCM students do pharmacy?", "a": "Yes — 10+2 with Physics and Chemistry plus Biology or Mathematics is accepted."},
-          {"q": "D.Pharm or B.Pharm?", "a": "D.Pharm is faster for retail/hospital dispensing; B.Pharm opens industry and higher study."},
-          {"q": "Can I open a medical store?", "a": "Drug licences need a registered pharmacist, along with state drug-control approvals."}],
+    faqs=[{"q": "Can PCM students do pharmacy?", "a": "Yes, 10+2 with Physics and Chemistry plus Biology or Mathematics is accepted. "
+                                                      "So both PCB and PCM students can join D.Pharm and B.Pharm. Check each college's admission rules for minimum marks."},
+          {"q": "D.Pharm or B.Pharm?", "a": "D.Pharm is faster and suits retail and hospital dispensing. "
+                                            "B.Pharm opens industry jobs and higher study such as M.Pharm. Choose based on how soon you want to work and where you want to grow."},
+          {"q": "Can I open a medical store?", "a": "Drug licences need a registered pharmacist, along with state drug-control approvals. "
+                                                    "You can run the store yourself if you are registered, or employ a registered pharmacist. "
+                                                    "Check your state drug control department's rules before you start."}],
     related_items=[related("nursing-officer-staff-nurse", "Nursing Officer", "Clinical"), related("medical-coder", "Medical Coder", "Life-science route"), related("lab-technician-dmlt", "Lab Technician", "Diagnostics")],
     institutes=[PCI, NIPER, AIIMS, JIPMER],
     sources=[source("Pharmacy Council of India", "https://www.pci.nic.in/", "Regulations, approvals and circulars.")],

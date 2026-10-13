@@ -102,15 +102,27 @@ CGL = details(
                    "Post allotment = your rank + the posts you chose in the Online Option Form. Once a post is allotted, SSC does not change it.",
                    "Marks of multi-shift exams are normalised by SSC's published formula."],
     steps=[
-        step("Check eligibility", "Before applying", "Graduate (or final-year with result by 1 August), within the age band of the posts you want, Indian citizen."),
-        step("Pick your target posts", "Month 1", "Read the post table in the notice: pay level, age limit, and whether the post needs physical tests or a special degree."),
+        step("Check eligibility", "Before applying",
+             "You must be an Indian citizen and a graduate, or a final-year student whose degree result is declared by 1 August (the cut-off date for CGL 2026). "
+             "Your age must also fit the age band of each post you want, because CGL posts have different age limits. "
+             "Check both against the post table in the notice before you pay the fee."),
+        step("Pick your target posts", "Month 1",
+             "Read the post table in the notice and note each post's pay level, age limit, and whether it needs physical tests or a special degree. "
+             "Shortlist only the posts you are eligible for and would really like to do, because they become your post preferences later. "
+             "This also shows whether you need extra preparation, such as the Statistics paper for JSO or fitness for Inspector posts with physical standards."),
         step("Prepare for Tier-I and Tier-II together", "4–6 months before Tier-I (typical)", "Same subjects in both tiers, with Tier-II harder. Practise typing from the start."),
         _reg_step("May–June (CGL 2026 window: 21 May – 22 June 2026)"),
         step("Write Tier-I", "August–September", "Download the admit card from ssc.gov.in. Check the tentative answer key and challenge wrong answers (₹100 per question) if needed."),
         step("Write Tier-II", "About 3 months after Tier-I", "Paper-I for everyone (plus Paper-II/III only if shortlisted for JSO/SI-II or AAO/AAccO). Data Entry Speed Test is on the same day."),
         step("Submit post preferences", "Before the final result (when SSC opens the Option Form)", "Compulsory. If you skip it you will not be considered for any post; choices cannot be changed later."),
-        step("Final result and allocation", "After Tier-II", "SSC allots a post using merit and your preferences, then sends dossiers to the department."),
-        step("Verification, medical and joining", "After allocation", "Department checks documents, medical (and physical tests for some posts) and issues the appointment letter."),
+        step("Final result and allocation", "After Tier-II",
+             "SSC allots a post using your merit and the preferences you gave in the Option Form, then sends your dossier to that department. "
+             "Once a post is allotted, SSC does not change it, so the order of your preferences really matters. "
+             "Check the result notice on ssc.gov.in to see which post and department you have been given."),
+        step("Verification, medical and joining", "After allocation",
+             "The department you are allotted checks your original documents and medical fitness, and some posts also have physical tests at this stage. "
+             "If you clear these checks, the department issues your appointment letter. "
+             "Keep your certificates, including category certificates, ready in the format the notice asks for so joining is not delayed."),
         step("Probation and training", "After joining", "Department-specific training. AAO/AAccO must pass the Subordinate Audit/Accounts Service exam during probation."),
     ],
     calendar={"label": "SSC CGL 2026 (official notice dated 21-05-2026)",
@@ -137,7 +149,8 @@ CGL = details(
                        "These checks happen after the final result. Fail them and you may not be considered for any other post — choose preferences carefully."]},
     mistakes=SSC_MISTAKES,
     faqs=[{"q": "Can final-year students apply?", "a": "Yes, but your degree result must be declared by the cut-off date (1 August 2026 for CGL 2026). A result still being processed is not enough."},
-          {"q": "Is there an interview?", "a": "No. Selection is based on computer-based exams, skill tests and document verification."},
+          {"q": "Is there an interview?", "a": "No, there is no interview in SSC CGL. Selection is based on the computer-based exams, skill tests and document verification. "
+                                              "This means your Tier-II score and your post preferences decide which job you get."},
           {"q": "Which CGL post is best?", "a": "It depends on what you want: Inspector posts have field work, ASO posts are desk/policy work in Delhi ministries, Audit posts are accounts work. Compare pay level, location and physical requirements before filling preferences."},
           {"q": "Can I write the exam in Hindi?", "a": "Yes. Questions are in English and Hindi, except the English sections."}],
     related_items=[related("ldc-deo-postal-assistant", "SSC CHSL — LDC / JSA / DEO", "12th-pass SSC route"),
@@ -191,14 +204,29 @@ CHSL = details(
                    "Post allotment = rank + the posts you chose in the Online Option Form; no change after allotment.",
                    "If two candidates tie, SSC applies the tie-break order given in the notice."],
     steps=[
-        step("Check eligibility", "Before applying", "12th result declared by the cut-off date, age 18–27 on 1 August, Indian citizen."),
-        step("Decide LDC/JSA or DEO", "Month 1", "DEO needs a faster data-entry skill test; DEO in three ministries needs 12th Science with Maths."),
+        step("Check eligibility", "Before applying",
+             "You must be an Indian citizen with your 12th result declared by the cut-off date in the notice. "
+             "Your age must be 18–27 on 1 August (1 August 2026 for CHSL 2026), with extra years allowed for some categories. "
+             "Check this carefully before you pay the fee, so you do not prepare for an exam you cannot qualify for."),
+        step("Decide LDC/JSA or DEO", "Month 1",
+             "LDC/JSA posts have a typing test, while DEO posts have a faster data-entry skill test, and DEO posts in three named offices also need 12th Science with Maths. "
+             "Decide early which posts you are aiming for, because your daily practice will be different. "
+             "If you are eligible for both, practise typing and data entry so you can keep both options open."),
         step("Prepare for both tiers", "4–6 months before Tier-I (typical)", "Arithmetic, reasoning, English grammar and GK. Practise typing daily from day one."),
         _reg_step("September–October (CHSL 2026 window: 7 September – 7 October 2026)"),
-        step("Write Tier-I", "As announced by SSC", "Download the admit card from ssc.gov.in and check the answer key afterwards."),
-        step("Write Tier-II and the typing/skill test", "After the Tier-I result", "Both sessions are on the same day."),
+        step("Write Tier-I", "As announced by SSC",
+             "Download the admit card from ssc.gov.in and carry the documents it asks for to the exam centre. "
+             "After the exam, check the tentative answer key and challenge any wrong answer within the time SSC allows. "
+             "Remember that 0.50 marks are cut for each wrong answer, so avoid blind guessing."),
+        step("Write Tier-II and the typing/skill test", "After the Tier-I result",
+             "Tier-II has two sessions on the same day: Session I covers Maths, Reasoning, English, General Awareness and Computer Knowledge, and Session II is the typing test (LDC/JSA) or the data-entry skill test (DEO). "
+             "Your merit comes from Sections I and II, but you must also qualify the computer and skill sections. "
+             "Practise typing on a computer, because accuracy is checked as well as speed."),
         step("Submit post preferences", "Before the final result", "Compulsory Online Option Form. Missing it = not considered."),
-        step("Final result, document verification and joining", "After Tier-II", "User departments verify original 12th certificates and other documents, then issue appointment letters."),
+        step("Final result, document verification and joining", "After Tier-II",
+             "After the final result, SSC sends your details to the department allotted to you. "
+             "That department verifies your original 12th certificate and other documents, then issues the appointment letter. "
+             "Keep your category and other certificates ready in the format the notice asks for, so joining is not delayed."),
     ],
     calendar={"label": "SSC CHSL 2026 (official notice dated 07-09-2026)",
               "rows": [{"event": "Online applications", "date": "7 September – 7 October 2026"},
@@ -219,9 +247,13 @@ CHSL = details(
                        "Typing speed is checked on a computer for accuracy, not just speed.",
                        "Once a post is allotted, SSC will not change it even if you fail that post's requirements later."]},
     mistakes=SSC_MISTAKES,
-    faqs=[{"q": "Can I apply while in 12th?", "a": "Yes, if your 12th result is declared by the cut-off date (7 October 2026 for CHSL 2026)."},
-          {"q": "Is there an interview?", "a": "No. Selection is through the computer-based exams and a typing/skill test."},
-          {"q": "Can I take the exam in my regional language?", "a": "Yes for most parts — the notice lists Hindi, English and several regional languages (English sections are in English)."}],
+    faqs=[{"q": "Can I apply while in 12th?", "a": "Yes, if your 12th result is declared by the cut-off date (7 October 2026 for CHSL 2026). "
+                                                  "A result that the board is still processing on that date is not enough. "
+                                                  "If your result will come later, prepare now and apply in the next CHSL cycle."},
+          {"q": "Is there an interview?", "a": "No, there is no interview for CHSL posts. Selection is through the computer-based exams and a typing/skill test, followed by document verification. "
+                                              "Your Tier-II marks decide your rank, so put most of your effort there."},
+          {"q": "Can I take the exam in my regional language?", "a": "Yes for most parts. You choose the exam medium in the application form from the notice's list, which includes Hindi, English and several regional languages. "
+                                                                    "The English language sections are always in English, and the typing test is in Hindi or English only."}],
     related_items=[related("inspector-auditor-examiner", "SSC CGL", "Graduate-level SSC posts"),
                    related("multi-tasking-staff", "SSC MTS", "10th-pass SSC route"),
                    related("junior-clerk-station-master", "Railway NTPC", "12th-pass railway clerk route")],
@@ -269,13 +301,31 @@ MTS = details(
                    "Havaldar also requires passing PET/PST.",
                    "Final allotment uses merit + your 'post cum State/UT' preference."],
     steps=[
-        step("Check eligibility", "Before applying", "10th pass, age within 18–25 (or 18–27 for Havaldar), Indian citizen."),
-        step("Choose MTS, Havaldar or both", "Month 1", "Havaldar needs physical fitness (walk test) and height/chest standards."),
-        step("Prepare", "3–4 months before the exam (typical)", "Class 6–10 maths, reasoning puzzles, basic English grammar and GK."),
+        step("Check eligibility", "Before applying",
+             "You must be an Indian citizen who has passed 10th (Matriculation) from a recognised board by the cut-off date. "
+             "Your age must be 18–25 for MTS, or 18–27 for Havaldar and some MTS posts, with extra years allowed for some categories. "
+             "The age date moves forward with each new cycle, so confirm it in the latest notice."),
+        step("Choose MTS, Havaldar or both", "Month 1",
+             "Havaldar needs physical fitness, including a walking test and height, chest or weight standards, while MTS has no physical test. "
+             "You can opt for both, and if you fail the Havaldar PET/PST you can still be considered for MTS on your exam merit. "
+             "Choose Havaldar only if you are ready to train for the walk and meet the measurements."),
+        step("Prepare", "3–4 months before the exam (typical)",
+             "Study Class 6–10 maths, reasoning puzzles, basic English grammar and general knowledge. "
+             "Give Session I (maths and reasoning) proper attention, because if you fail it your Session II is not even checked. "
+             "Solve previous SSC papers in timed conditions to build speed."),
         _reg_step("June–July (MTS 2025 window: 26 June – 24 July 2025)"),
-        step("Write the computer exam", "As announced by SSC", "Two sessions back-to-back on the same day."),
-        step("PET/PST (Havaldar only)", "After the CBE result", "Conducted by CBIC/CBN at their centres."),
-        step("Final result, document verification and joining", "After the result", "Department verifies your 10th certificate and other documents."),
+        step("Write the computer exam", "As announced by SSC",
+             "The computer exam has two sessions back-to-back on the same day, and you must attempt both. "
+             "Session I (maths and reasoning) has no negative marking but must be qualified, while Session II (general awareness and English) decides your merit and cuts 1 mark per wrong answer. "
+             "Download your admit card from ssc.gov.in before the exam date."),
+        step("PET/PST (Havaldar only)", "After the CBE result",
+             "Shortlisted Havaldar candidates take the walking test and physical measurements, conducted by CBIC/CBN at their centres. "
+             "This test is only for Havaldar, and failing it does not stop you from being considered for MTS. "
+             "Practise brisk walking over the test distance for weeks before the test."),
+        step("Final result, document verification and joining", "After the result",
+             "SSC allots your post and State/UT using your Session II merit and the preferences you gave. "
+             "The department then verifies your 10th certificate and other documents before issuing the appointment letter. "
+             "Keep your certificates ready, because missing documents can delay joining."),
     ],
     calendar={"label": "Last official cycle: SSC MTS & Havaldar 2025 (notice dated 26-06-2025)",
               "rows": [{"event": "Online applications", "date": "26 June – 24 July 2025"},
@@ -292,8 +342,10 @@ MTS = details(
                        "There is no interview and no typing test.",
                        "The syllabus for General Awareness is up to 10th standard."]},
     mistakes=SSC_MISTAKES[:2] + ["Skipping Session I preparation — if you fail it, your Session II is not even checked."],
-    faqs=[{"q": "Is MTS a permanent government job?", "a": "Yes, it is a regular Group 'C' central government post in Pay Level 1."},
-          {"q": "Is negative marking there in both sessions?", "a": "No. Session I has no negative marking; Session II has 1 mark cut per wrong answer."}],
+    faqs=[{"q": "Is MTS a permanent government job?", "a": "Yes, it is a regular Group 'C' central government post in Pay Level 1. "
+                                                          "You work in a central government office, and DA, HRA and other allowances are paid on top of basic pay as per the rules."},
+          {"q": "Is negative marking there in both sessions?", "a": "No, only Session II has negative marking. Session I has no negative marking, while Session II cuts 1 mark for each wrong answer. "
+                                                                   "So attempt every Session I question, but avoid blind guessing in Session II."}],
     related_items=[related("ldc-deo-postal-assistant", "SSC CHSL", "Next step up after 12th"),
                    related("track-maintainer-helper", "Railway Level 1", "10th/ITI railway route"),
                    related("police-constable", "Police Constable", "State police route")],

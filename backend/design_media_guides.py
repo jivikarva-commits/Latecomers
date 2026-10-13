@@ -8,18 +8,33 @@ VM = "Video & Motion"
 
 EDITOR = _des(
     "video-editor", "Video Editor", "Video Editing", "How to become a Video Editor",
-    "A video editor turns raw footage into a clear, engaging story — cutting shots, adding music, sound, graphics and colour for YouTube, ads, films and TV.", VM,
+    "A video editor turns raw footage into a clear, engaging story — cutting shots, adding music, sound, graphics and colour for YouTube, ads, films and TV. "
+    "Editors decide the pacing and what the audience sees, so they shape how a story feels. "
+    "Selection is based mainly on a showreel of your best edits.", VM,
     duties=["Organise and review footage", "Cut the story and pacing", "Add music, sound effects and voice-over", "Add titles, graphics and basic colour",
             "Export for different platforms", "Revise from director/client feedback"],
     postings=["Production houses, ad agencies, YouTube channels, TV, OTT and freelance"],
     facts=[fact("Education", "BMM/BJMC/film degree or diploma"), fact("Time to job-ready", "About 6–9 months of practice"), fact("Core skills", "Storytelling, pacing, sound, software"),
            fact("Tools", "Premiere Pro, DaVinci Resolve, Final Cut Pro"), fact("Hiring rounds", "Showreel → edit test → interview → HR"), fact("Film school", "FTII MFA (Editing) — 11 seats")],
     levels=[["Beginner", "Basic cuts, music and titles"], ["Intermediate", "Story pacing, sound mixing, colour basics"], ["Job-ready", "Fast, polished edits across formats"]],
-    steps=[step("Learn editing software", "Months 1–2", "Premiere Pro or DaVinci Resolve (free version available)."),
-           step("Learn storytelling and pacing", "Months 2–4", "Cut on action, J/L cuts, rhythm and structure."),
-           step("Learn sound and colour basics", "Months 3–5", "Clean audio, music levels and basic colour correction."),
-           step("Edit real projects", "Months 4–8", "Weddings, YouTube creators, college events, short films."),
-           step("Make a showreel", "Months 6–9", "1–2 minutes of your best work."), step("Apply / freelance", "After reel", "Assistant editor or editor roles.")],
+    steps=[step("Learn editing software", "Months 1–2", "Pick one editing program, Premiere Pro or DaVinci Resolve, and learn it well; Resolve has a free version. "
+                                                        "Learn to import footage, cut clips, add titles and export a finished video. "
+                                                        "Use keyboard shortcuts from the start, because speed matters in real jobs."),
+           step("Learn storytelling and pacing", "Months 2–4", "Study cutting on action, J and L cuts, rhythm and story structure. "
+                                                               "Watch films and videos you like and note where and why each cut happens. "
+                                                               "Good pacing keeps viewers watching, and it is the skill that most separates good editors from average ones."),
+           step("Learn sound and colour basics", "Months 3–5", "Learn to clean up audio, balance music and voice levels, and do basic colour correction. "
+                                                               "Viewers forgive average visuals but quickly leave a video with bad sound. "
+                                                               "These basics make your edits look and feel professional."),
+           step("Edit real projects", "Months 4–8", "Edit weddings, YouTube videos, college events and short films for real people. "
+                                                    "Real projects teach you to meet deadlines, organise large amounts of footage and handle feedback. "
+                                                    "Always keep a backup of your project files."),
+           step("Make a showreel", "Months 6–9", "Combine your best clips into a 1–2 minute showreel, with the strongest work at the start. "
+                                                 "Keep it short and include only work you are proud of. "
+                                                 "Recruiters check the showreel before they call anyone for an interview."),
+           step("Apply / freelance", "After reel", "Apply for assistant editor or editor roles at production houses, ad agencies, YouTube channels, TV and OTT. "
+                                                   "Expect an edit test where you cut given footage into a 60-second piece. "
+                                                   "Freelancing alongside your job search also helps you build experience and contacts.")],
     hiring=_hiring("Edit given footage into a 60-second piece", "Your editing choices, workflow, software and how you take feedback", "Your showreel is checked first."),
     checklist=["You can cut a clear story.", "Your sound is clean and balanced.", "You can export for every platform.", "You have a strong 1–2 minute showreel."],
     timeline=_timeline(("Software", "Months 1–2"), ("Storytelling", "Months 2–4"), ("Sound + colour", "Months 3–5"), ("Projects + reel", "Months 4–9")),
@@ -30,9 +45,15 @@ EDITOR = _des(
             ["Senior", "Senior / Lead Editor", "5+ years", "Films, shows, campaigns"], ["Top", "Post-production Supervisor", "8+ years", "Post teams"]],
     special=["Use only licensed music and footage — copyright claims can remove videos."],
     mistakes=["No backup of project files.", "Bad audio.", "Long showreel with weak clips."],
-    faqs=[{"q": "Premiere or DaVinci Resolve?", "a": "Both are used; Resolve has a free version, Premiere is common in agencies."},
-          {"q": "Do I need a film degree?", "a": "Many jobs ask for a media/film degree or diploma; your reel decides selection."},
-          {"q": "What PC do I need?", "a": "A recent multi-core CPU, 16 GB RAM and a decent GPU make editing smooth."}],
+    faqs=[{"q": "Premiere or DaVinci Resolve?", "a": "Both are widely used, so either is a good first choice. "
+                                                     "Resolve has a free version that is great for learning, while Premiere Pro is common in agencies. "
+                                                     "Once you master one, switching to the other is much easier."},
+          {"q": "Do I need a film degree?", "a": "Many jobs ask for a media or film degree or diploma. "
+                                                 "Still, your showreel decides selection more than your certificate. "
+                                                 "If you cannot join a film school, focus on real projects and a strong reel."},
+          {"q": "What PC do I need?", "a": "A recent multi-core CPU, 16 GB RAM and a decent graphics card (GPU) make editing smooth. "
+                                           "You can start on a modest computer by editing with lower-resolution proxy files. "
+                                           "Upgrade your system as your projects and income grow."}],
     related_items=[related("reels-short-form-editor", "Reels / Short Form Editor", "Short-form"), related("color-grading-artist", "Color Grading Artist", "Specialise in colour"),
                    related("motion-graphics-designer", "Motion Graphics Designer", "Add motion")],
     institutes=[FTII, SRFTI, RESOLVE, ADOBE, MESC],
@@ -46,16 +67,33 @@ EDITOR = _des(
 
 MOTION = _des(
     "motion-graphics-designer", "Motion Graphics Designer", "Motion Graphics", "How to become a Motion Graphics Designer",
-    "A motion graphics designer animates text, shapes, logos and illustrations for ads, explainer videos, social media, titles and apps.", VM,
+    "A motion graphics designer animates text, shapes, logos and illustrations for ads, explainer videos, social media, titles and apps. "
+    "The work combines graphic design with timing and movement to explain ideas or grab attention. "
+    "Studios and clients hire mainly on a short, strong motion reel.", VM,
     duties=["Design and animate titles, logos and infographics", "Create explainer and social animations", "Work from storyboards and style frames",
             "Sync animation to music and voice-over", "Deliver in many formats", "Collaborate with editors and designers"],
     postings=["Ad agencies, studios, broadcast/OTT, tech companies, freelance"],
     facts=[fact("Education", "B.Des/BFA or animation diploma"), fact("Core skills", "Design, timing, easing, storytelling"), fact("Tools", "After Effects, Illustrator, Blender/Cinema 4D"),
            fact("Hiring rounds", "Motion reel → test → interview → HR"), fact("Portfolio", "30–60 second motion reel")],
     levels=[["Beginner", "Keyframes and easing on text"], ["Intermediate", "Explainers, logo animations, shape layers"], ["Job-ready", "Polished reel with design and 2D/3D motion"]],
-    steps=[step("Design basics", "Months 1–2", "Typography, layout and colour."), step("After Effects", "Months 1–4", "Keyframes, graph editor, shape layers, masks."),
-           step("Animation principles", "Months 2–5", "Timing, easing, anticipation, follow-through."), step("Add 3D basics", "Months 4–8", "Blender or Cinema 4D."),
-           step("Make a reel", "Months 6–9", "Your best 30–60 seconds."), step("Apply / freelance", "After reel", "Junior motion designer roles.")],
+    steps=[step("Design basics", "Months 1–2", "Learn typography, layout and colour first, because good motion starts with good design. "
+                                               "Practise making still style frames that already look finished before anything moves. "
+                                               "Weak design cannot be fixed by animation alone."),
+           step("After Effects", "Months 1–4", "Learn keyframes, the graph editor, shape layers and masks in After Effects. "
+                                               "Recreate simple animations you see in ads to understand how they are built. "
+                                               "After Effects is widely used for 2D motion work in studios and agencies."),
+           step("Animation principles", "Months 2–5", "Study timing, easing, anticipation and follow-through so that movement feels natural. "
+                                                      "Compare a linear move with an eased one to see the difference for yourself. "
+                                                      "These principles are what separate amateur motion from professional work."),
+           step("Add 3D basics", "Months 4–8", "Learn the basics of 3D in Blender, which is free, or in Cinema 4D. "
+                                               "Simple 3D logos and objects make your reel stand out. "
+                                               "2D skills are enough to start, so add 3D only after your 2D work is solid."),
+           step("Make a reel", "Months 6–9", "Edit your best work into a 30–60 second reel set to music. "
+                                             "Put your strongest pieces first and cut anything average. "
+                                             "A short, strong reel gets more attention than a long one."),
+           step("Apply / freelance", "After reel", "Apply for junior motion designer roles at ad agencies, studios, broadcast and OTT teams and tech companies. "
+                                                   "Expect a test where you animate a logo or a 10-second social ad from given assets. "
+                                                   "Freelance projects can also help you grow your reel while you search.")],
     hiring=_hiring("Animate a logo or 10-second social ad from given assets", "Animation principles, workflow and your reel"),
     checklist=["You understand easing and timing.", "You can animate type and shapes cleanly.", "You can export for web and broadcast.", "Your reel is short and strong."],
     timeline=_timeline(("Design", "Months 1–2"), ("After Effects", "Months 1–4"), ("Principles", "Months 2–5"), ("3D + reel", "Months 4–9")),
@@ -64,9 +102,15 @@ MOTION = _des(
     ladder=[["Start", "Junior Motion Designer", "0–2 years", "Animation tasks"], ["Mid", "Motion Designer", "2–5 years", "Own projects"], ["Senior", "Senior / Lead Motion Designer", "5+ years", "Direction"]],
     special=["Good motion starts with good design — style frames first, then animation."],
     mistakes=["Linear (no easing) motion.", "Overusing templates.", "Reels that are too long."],
-    faqs=[{"q": "Do I need 3D?", "a": "2D is enough to start; 3D basics make you more employable."},
-          {"q": "Motion graphics vs animation?", "a": "Motion graphics focuses on design elements and text; character animation focuses on characters."},
-          {"q": "Is a degree needed?", "a": "Many job posts ask for a design/animation degree or diploma; your reel decides selection."}],
+    faqs=[{"q": "Do I need 3D?", "a": "2D is enough to start your career in motion graphics. "
+                                      "Learning 3D basics later makes you more employable and lets you take on more types of projects. "
+                                      "Blender is free, so you can learn 3D without spending money on software."},
+          {"q": "Motion graphics vs animation?", "a": "Motion graphics focuses on design elements such as text, shapes, logos and icons. "
+                                                      "Character animation focuses on bringing characters to life with acting and body movement. "
+                                                      "Both use the same animation principles, but the daily skills and tools differ."},
+          {"q": "Is a degree needed?", "a": "Many job posts ask for a design or animation degree or diploma. "
+                                            "However, your reel decides selection more than your certificate. "
+                                            "Keep improving your reel even while you study."}],
     related_items=[related("video-editor", "Video Editor", "Editing"), related("2d-3d-animator", "2D / 3D Animator", "Character animation"), related("graphic-designer", "Graphic Designer", "Design base")],
     institutes=[NID, ADOBE, UNREAL, MESC],
     sources=[source("NID Admissions Handbook 2027-28", "https://admissions.nid.edu/", "Animation Film Design and Graphic Design programmes.")],
@@ -79,17 +123,33 @@ MOTION = _des(
 
 COLOR = _des(
     "color-grading-artist", "Color Grading Artist", "Colour Grading", "How to become a Color Grading Artist (Colourist)",
-    "A colourist adjusts the colour, contrast and look of footage so shots match and the film, ad or show has the right mood.", VM,
+    "A colourist adjusts the colour, contrast and look of footage so shots match and the film, ad or show has the right mood. "
+    "They work with the director and the DOP to create a consistent look, mostly in DaVinci Resolve. "
+    "Most colourists start as editors or assistant colourists in post-production houses.", VM,
     duties=["Balance and match shots", "Create looks with the director and DOP", "Use scopes and colour management", "Work with RAW and log footage",
             "Deliver for cinema, TV and web", "Fix skin tones and continuity"],
     postings=["Post-production houses, ad production, film/OTT, freelance"],
     facts=[fact("Education", "Film/media degree or diploma"), fact("Core skills", "Colour theory, scopes, colour management"), fact("Main tool", "DaVinci Resolve"),
            fact("Usual entry", "Editor or assistant colourist first"), fact("Hiring rounds", "Grading reel → test grade → interview")],
     levels=[["Beginner", "Primary correction with scopes"], ["Intermediate", "Shot matching, secondaries, log/RAW"], ["Job-ready", "Consistent looks, colour management, deliverables"]],
-    steps=[step("Learn colour theory and scopes", "Months 1–2", "Waveform, vectorscope, white balance, exposure."),
-           step("Learn the DaVinci Resolve Color page", "Months 1–4", "Nodes, primaries, secondaries, qualifiers."), step("Colour management", "Months 3–6", "Log, LUTs, Rec.709 and delivery."),
-           step("Grade lots of footage", "Months 4–12", "Short films, music videos, ads."), step("Assist a colourist", "Year 1+", "Most colourists learn in post houses."),
-           step("Build a before/after reel", "Ongoing", "Show a range of looks.")],
+    steps=[step("Learn colour theory and scopes", "Months 1–2", "Learn to read the waveform and vectorscope, and to judge white balance and exposure. "
+                                                                "Scopes show the real values in an image, so you do not depend only on your eyes or your screen. "
+                                                                "Practise correcting badly exposed clips until you can fix them quickly."),
+           step("Learn the DaVinci Resolve Color page", "Months 1–4", "Learn nodes, primary and secondary corrections, and qualifiers on the Color page. "
+                                                                      "The official Blackmagic Design training books and lesson files are a good place to start. "
+                                                                      "Build simple, tidy node trees so you can find and change any adjustment later."),
+           step("Colour management", "Months 3–6", "Understand log footage, LUTs, Rec.709 and delivery standards. "
+                                                   "Colour management keeps colours correct from the camera all the way to the final screen. "
+                                                   "Learn the delivery specs for cinema, TV and web, because each needs different settings."),
+           step("Grade lots of footage", "Months 4–12", "Grade short films, music videos and ads to build speed and judgement. "
+                                                        "Ask student filmmakers for footage if you do not have your own. "
+                                                        "Each new project teaches you to handle different cameras, light and skin tones."),
+           step("Assist a colourist", "Year 1+", "Look for assistant colourist or editor jobs in post-production houses, where most colourists learn. "
+                                                 "You will prepare and conform projects while watching how senior colourists work with clients. "
+                                                 "This experience teaches you speed and client handling that courses cannot."),
+           step("Build a before/after reel", "Ongoing", "Make a reel that shows each shot before and after your grade. "
+                                                        "Include a range of looks, from natural to stylised, and show that you can match shots. "
+                                                        "Update the reel whenever you finish a better project.")],
     hiring=_hiring("Grade and match a given scene", "Scopes, node structure, colour management and your reel", "Your before/after grading reel is checked first."),
     checklist=["You read scopes confidently.", "You can match shots.", "You understand log/RAW and colour spaces.", "You have a before/after reel."],
     timeline=_timeline(("Theory + scopes", "Months 1–2"), ("Resolve", "Months 1–4"), ("Colour management", "Months 3–6"), ("Projects + assisting", "Months 4–12+")),
@@ -98,9 +158,15 @@ COLOR = _des(
     ladder=[["Start", "Assistant Colourist / Editor", "0–2 years", "Prep and conform"], ["Mid", "Colourist", "2–6 years", "Ads and shows"], ["Senior", "Senior Colourist", "6+ years", "Films and premium work"]],
     special=["A calibrated monitor matters — grading on an uncalibrated laptop screen can mislead you."],
     mistakes=["Grading without scopes.", "Over-stylised looks.", "Ignoring delivery specs."],
-    faqs=[{"q": "Is DaVinci Resolve free?", "a": "There is a free version; the Studio version adds features."},
-          {"q": "Do I need a film degree?", "a": "Post houses often prefer film/media training; your reel matters most."},
-          {"q": "How do people start?", "a": "Usually as editors or assistant colourists in post-production houses."}],
+    faqs=[{"q": "Is DaVinci Resolve free?", "a": "Yes, there is a free version of DaVinci Resolve that is enough for learning and many projects. "
+                                                 "The paid Studio version adds extra features used in professional work. "
+                                                 "Start with the free version and upgrade only when your work needs it."},
+          {"q": "Do I need a film degree?", "a": "Post-production houses often prefer people with film or media training. "
+                                                 "However, your grading reel matters most when they decide. "
+                                                 "Strong before/after work can open doors even without a film degree."},
+          {"q": "How do people start?", "a": "Most people start as editors or assistant colourists in post-production houses. "
+                                             "They learn by preparing projects and watching senior colourists work. "
+                                             "Grading short films on the side helps you build a reel at the same time."}],
     related_items=[related("video-editor", "Video Editor", "Entry route"), related("cinematographer-dop", "Cinematographer / DOP", "Works closely"), related("vfx-artist", "VFX Artist", "Post-production")],
     institutes=[RESOLVE, FTII, SRFTI, MESC],
     sources=[source("Blackmagic Design — DaVinci Resolve training", "https://www.blackmagicdesign.com/products/davinciresolve/training", "Training and certification.")],
@@ -113,16 +179,30 @@ COLOR = _des(
 
 REELS = _des(
     "reels-short-form-editor", "Reels / Short Form Editor", "Short-form Editing", "How to become a Reels / Short Form Editor",
-    "A short-form editor makes fast, engaging vertical videos — Instagram Reels, YouTube Shorts and ads — with strong hooks, captions, sound and pacing.", VM,
+    "A short-form editor makes fast, engaging vertical videos — Instagram Reels, YouTube Shorts and ads — with strong hooks, captions, sound and pacing. "
+    "The goal is to stop people from scrolling and keep them watching till the end. "
+    "There is a lot of freelance work, and clients mainly judge you by your sample reels.", VM,
     duties=["Edit vertical videos with strong hooks", "Add captions, text and sound effects", "Follow trends and platform specs", "Repurpose long videos into shorts",
             "Track views and retention", "Work fast to deadlines"],
     postings=["Creators, brands, agencies, edtech and media companies; lots of freelance work"],
     facts=[fact("Education", "Graduation for jobs"), fact("Time to job-ready", "About 2–4 months of daily practice"), fact("Core skills", "Hooks, pacing, captions, trends"),
            fact("Tools", "Premiere Pro, CapCut, DaVinci Resolve"), fact("Hiring rounds", "Sample reels → test edit → interview"), fact("Key metric", "Retention and watch time")],
     levels=[["Beginner", "Clean cuts with captions"], ["Intermediate", "Hooks, sound design, motion text"], ["Job-ready", "Reels that hold attention, made fast and on brand"]],
-    steps=[step("Learn an editor", "Weeks 1–3", "CapCut or Premiere Pro."), step("Study hooks and retention", "Weeks 2–6", "First 2 seconds, pacing, payoff."),
-           step("Captions and sound", "Weeks 3–6", "Readable captions, SFX, music beats."), step("Edit 30 reels", "Months 2–3", "For yourself or creators."),
-           step("Find clients or a job", "Month 3+", "Creators, local brands, agencies.")],
+    steps=[step("Learn an editor", "Weeks 1–3", "Start with CapCut or Premiere Pro and learn to cut clips, add text and export vertical video. "
+                                                "CapCut is quick to learn, while Premiere Pro is a common professional tool. "
+                                                "Practise every day with your own clips."),
+           step("Study hooks and retention", "Weeks 2–6", "Study how the best reels grab attention in the first 2 seconds and hold it with fast pacing and a clear payoff. "
+                                                          "Watch popular reels in your niche and note how each one opens. "
+                                                          "A strong hook decides whether people keep watching or scroll away."),
+           step("Captions and sound", "Weeks 3–6", "Learn to add clear, readable captions, sound effects and music that matches the cuts. "
+                                                   "Many people watch without sound, so captions carry the message. "
+                                                   "Use only licensed or platform-library music to avoid muted or blocked videos."),
+           step("Edit 30 reels", "Months 2–3", "Edit 30 reels, either for your own page or for creators who need help. "
+                                               "Volume builds speed and helps you discover what works. "
+                                               "Pick your best 10 or more as sample reels for clients."),
+           step("Find clients or a job", "Month 3+", "Pitch to creators, local brands and agencies with your sample reels and any results they got. "
+                                                     "Brands and agencies usually ask for graduation for jobs, while freelance clients mainly check your work. "
+                                                     "Deliver edits fast and reliably to get repeat work.")],
     hiring=_hiring("Turn a 5-minute video into 2 reels", "Your hooks, pacing, captions and results", "Your sample reels and their numbers are checked first."),
     checklist=["Your first 2 seconds hook viewers.", "Captions are clean and readable.", "You know each platform's specs.", "You have 10+ sample reels."],
     timeline=_timeline(("Editor basics", "Weeks 1–3"), ("Hooks + captions", "Weeks 2–6"), ("30 reels", "Months 2–3"), ("Clients / job", "Month 3+")),
@@ -132,9 +212,15 @@ REELS = _des(
     ladder=[["Start", "Short-form Editor", "0–2 years", "Reels"], ["Mid", "Senior Editor / Content Producer", "2–4 years", "Series and strategy"], ["Senior", "Creative Lead", "4+ years", "Content teams"]],
     special=["Use licensed or platform-library music — copyrighted tracks can be muted or blocked."],
     mistakes=["Slow openings.", "Unreadable captions.", "Copying trends that don't fit the brand."],
-    faqs=[{"q": "Can I use only my phone?", "a": "You can start with CapCut on a phone; jobs usually expect desktop tools too."},
-          {"q": "Do I need a degree?", "a": "Brands and agencies usually ask for graduation; freelance clients mainly check your reels."},
-          {"q": "How do I get first clients?", "a": "Edit samples for 2–3 creators, then pitch with results."}],
+    faqs=[{"q": "Can I use only my phone?", "a": "You can start with CapCut on a phone and learn the basics of hooks and captions. "
+                                                 "Jobs at agencies and brands usually expect desktop tools such as Premiere Pro or DaVinci Resolve too. "
+                                                 "Move to a computer once you start getting regular work."},
+          {"q": "Do I need a degree?", "a": "Brands and agencies usually ask for graduation for full-time roles. "
+                                            "Freelance clients mainly check your reels and the results they got. "
+                                            "You can start freelancing while you complete your degree."},
+          {"q": "How do I get first clients?", "a": "Offer to edit sample reels for 2–3 creators to build proof of your work. "
+                                                    "Then pitch new clients using those reels and any growth in views they saw. "
+                                                    "Good results and fast delivery bring referrals."}],
     related_items=[related("video-editor", "Video Editor", "Long-form"), related("motion-graphics-designer", "Motion Graphics Designer", "Motion text"),
                    related("graphic-designer", "Graphic Designer", "Thumbnails and visuals")],
     institutes=[ADOBE, RESOLVE, META_CERT, MESC],
@@ -151,16 +237,33 @@ AG = "Animation / VFX / Gaming"
 
 ANIMATOR = _des(
     "2d-3d-animator", "2D / 3D Animator", "Animation", "How to become a 2D / 3D Animator",
-    "An animator brings characters and objects to life — in 2D (drawn) or 3D (computer models) — for films, series, ads, games and education.", AG,
+    "An animator brings characters and objects to life — in 2D (drawn) or 3D (computer models) — for films, series, ads, games and education. "
+    "Animators use principles such as timing, spacing and weight to make movement believable. "
+    "Studios hire mainly on a short demo reel of your best shots.", AG,
     duties=["Animate characters and objects from storyboards", "Apply animation principles (timing, spacing, weight)", "Lip-sync and acting shots",
             "Work with modellers, riggers and lighters", "Revise from director feedback", "Deliver shots on schedule"],
     postings=["Animation studios, game studios, ad production, edtech, freelance"],
     facts=[fact("Education", "B.Des/BFA/BSc Animation or diploma"), fact("Core skills", "12 principles, acting, timing"), fact("Tools", "Toon Boom Harmony, Blender, Maya"),
            fact("Hiring rounds", "Demo reel → animation test → interview"), fact("Skill council", "MESC Animator qualification pack")],
     levels=[["Beginner", "Bouncing ball, walk cycles"], ["Intermediate", "Body mechanics, lip-sync"], ["Job-ready", "Acting shots with weight and appeal in a short reel"]],
-    steps=[step("Drawing and observation", "Months 1–3", "Gesture drawing and movement studies."), step("12 animation principles", "Months 1–4", "Bouncing ball, pendulum, walk cycle."),
-           step("Pick 2D or 3D software", "Months 3–6", "Toon Boom/Krita (2D) or Blender/Maya (3D)."), step("Body mechanics + acting", "Months 6–12", "Jumps, lifts, dialogue shots."),
-           step("Demo reel", "Months 10–14", "About 1 minute of best shots."), step("Apply to studios", "After reel", "Junior animator roles.")],
+    steps=[step("Drawing and observation", "Months 1–3", "Practise gesture drawing and study how people and animals move in real life. "
+                                                         "Carry a sketchbook and draw quick poses every day. "
+                                                         "Strong observation makes your animation feel natural, whether you choose 2D or 3D."),
+           step("12 animation principles", "Months 1–4", "Learn the 12 principles of animation with classic exercises such as the bouncing ball, the pendulum and the walk cycle. "
+                                                         "These simple tests teach timing, spacing and weight. "
+                                                         "Every studio expects animators to know them well."),
+           step("Pick 2D or 3D software", "Months 3–6", "Choose Toon Boom or Krita for 2D, or Blender or Maya for 3D, and learn one tool well. "
+                                                        "Krita and Blender are free, so you can start without buying software. "
+                                                        "Studios care more about the quality of your animation than which software you used."),
+           step("Body mechanics + acting", "Months 6–12", "Animate jumps, lifts and dialogue shots to show weight and emotion. "
+                                                          "Film yourself acting out the shot as reference before you animate it. "
+                                                          "This is the level of work studios expect in a demo reel."),
+           step("Demo reel", "Months 10–14", "Put about 1 minute of your best shots into a demo reel, with the strongest shot first. "
+                                             "Leave out weak or unfinished work. "
+                                             "A short reel with a few great shots beats a long one."),
+           step("Apply to studios", "After reel", "Apply for junior animator roles at animation studios, game studios and ad production houses. "
+                                                  "Expect an animation test using a given rig or audio clip. "
+                                                  "Show that you take critique well, because animators work on daily feedback.")],
     hiring=_hiring("Animate a short shot from a given rig or audio clip", "Principles, acting choices and your reel", "Your demo reel is checked first."),
     checklist=["Your animation has clear timing and weight.", "You can lip-sync.", "You know one major software well.", "You have a short demo reel."],
     timeline=_timeline(("Drawing + principles", "Months 1–4"), ("Software", "Months 3–6"), ("Mechanics + acting", "Months 6–12"), ("Reel", "Months 10–14")),
@@ -172,8 +275,10 @@ ANIMATOR = _des(
     special=["Studios hire on the demo reel — keep it short with your best shots first."],
     mistakes=["Skipping fundamentals for flashy effects.", "Long reels.", "Not taking critique."],
     faqs=[{"q": "2D or 3D?", "a": "3D has more studio jobs in India; 2D is strong in series and ads. Principles are the same."},
-          {"q": "Do I need to draw?", "a": "Essential for 2D; very helpful for 3D planning."},
-          {"q": "Degree or diploma?", "a": "Both are accepted; NID's Animation Film Design is among the most respected programmes."}],
+          {"q": "Do I need to draw?", "a": "Drawing is essential for 2D animation. It is also very helpful in 3D for planning poses and thumbnails before you animate. Daily sketching improves both."},
+          {"q": "Degree or diploma?", "a": "Both degrees and diplomas are accepted in the animation industry. "
+                                           "NID's Animation Film Design is among the most respected programmes. "
+                                           "Whichever you choose, your demo reel decides your job."}],
     related_items=[related("vfx-artist", "VFX Artist", "Visual effects"), related("game-designer", "Game Designer", "Games"), related("motion-graphics-designer", "Motion Graphics Designer", "Motion design")],
     institutes=[NID, MESC, UNREAL, UNITY],
     sources=[source("NID Admissions Handbook 2027-28", "https://admissions.nid.edu/", "Animation Film Design programme."),
@@ -187,16 +292,33 @@ ANIMATOR = _des(
 
 VFX = _des(
     "vfx-artist", "VFX Artist", "VFX", "How to become a VFX Artist",
-    "A VFX artist creates and combines visual effects with live-action footage — compositing, rotoscoping, matchmoving, simulations and CGI — for films, OTT and ads.", AG,
+    "A VFX artist creates and combines visual effects with live-action footage — compositing, rotoscoping, matchmoving, simulations and CGI — for films, OTT and ads. "
+    "Most work happens in studios with a pipeline, where each artist handles one part of every shot. "
+    "Beginners usually start in roto, paint or matchmove roles.", AG,
     duties=["Rotoscoping and paint/cleanup", "Compositing CG with live footage", "Tracking and matchmoving", "Simulations (fire, smoke, water)",
             "Matching lighting and colour", "Delivering shots to the pipeline"],
     postings=["VFX studios (film, OTT, ads), post-production houses"],
     facts=[fact("Education", "BSc Animation & VFX, B.Des/BFA or diploma"), fact("Entry roles", "Roto, paint, matchmove"), fact("Tools", "Nuke, After Effects, Houdini, Blender"),
            fact("Hiring rounds", "Breakdown reel → test → interview"), fact("Work style", "Shift and deadline based")],
     levels=[["Beginner", "Roto and keying"], ["Intermediate", "Compositing and tracking"], ["Job-ready", "Seamless comps with a breakdown reel"]],
-    steps=[step("Basics of compositing", "Months 1–3", "Layers, alpha, keying, roto."), step("Learn Nuke or After Effects", "Months 2–6", "Node-based compositing."),
-           step("Tracking and matchmove", "Months 4–8", "Camera tracking."), step("CG and simulations (optional)", "Months 6–12", "Blender/Houdini."),
-           step("Breakdown reel", "Months 9–12", "Show before/after layers."), step("Join a studio", "After reel", "Roto/paint/matchmove artist.")],
+    steps=[step("Basics of compositing", "Months 1–3", "Learn how layers, alpha channels, keying and rotoscoping work. "
+                                                       "Practise keying green-screen footage and cutting out moving objects frame by frame. "
+                                                       "These are the tasks most beginners do in their first studio job."),
+           step("Learn Nuke or After Effects", "Months 2–6", "Learn compositing in After Effects first, then move to Nuke's node-based workflow. "
+                                                             "Nuke is the studio standard, and its free non-commercial version lets you practise at home. "
+                                                             "Rebuild simple shots from start to finish to understand each step."),
+           step("Tracking and matchmove", "Months 4–8", "Learn camera tracking so that added CG or effects move exactly with the filmed camera. "
+                                                        "Practise on your own handheld footage that has clear tracking points. "
+                                                        "Matchmove is also a common entry-level role in studios."),
+           step("CG and simulations (optional)", "Months 6–12", "If you want to go further, learn CG in Blender and simulations such as fire, smoke and water in Houdini. "
+                                                                "Houdini has a free apprentice version for learning. "
+                                                                "This step is optional, so finish your compositing basics first."),
+           step("Breakdown reel", "Months 9–12", "Make a breakdown reel that shows each shot before and after, with the layers you added in between. "
+                                                 "Breakdowns prove exactly what you did yourself in each shot. "
+                                                 "Studios check this reel before calling you for a test."),
+           step("Join a studio", "After reel", "Apply for roto, paint or matchmove artist roles at VFX studios and post-production houses. "
+                                               "Expect a test where you roto or composite a given shot. "
+                                               "Learn the studio pipeline well before choosing a specialisation.")],
     hiring=_hiring("Composite or roto a given shot", "Pipeline knowledge, software and your breakdowns", "Your breakdown reel is checked first."),
     checklist=["You can roto and key cleanly.", "You can composite to match light and grain.", "You can track a camera.", "Your breakdown reel shows layers."],
     timeline=_timeline(("Compositing basics", "Months 1–3"), ("Nuke/AE", "Months 2–6"), ("Tracking", "Months 4–8"), ("Reel", "Months 9–12")),
@@ -207,9 +329,15 @@ VFX = _des(
             ["Senior", "Senior Artist / Lead", "5–8 years", "Sequences"], ["Top", "VFX Supervisor", "8+ years", "Show supervision"]],
     special=["Most people start in roto/paint — learn the pipeline before specialising."],
     mistakes=["Reels without breakdowns.", "Ignoring grain and light matching.", "Learning many tools shallowly."],
-    faqs=[{"q": "Is VFX the same as animation?", "a": "No — VFX combines effects with filmed footage; animation creates movement."},
-          {"q": "Which software first?", "a": "After Effects or Fusion to start; Nuke is the studio standard for compositing."},
-          {"q": "Are hours long?", "a": "Deadlines can mean long shifts, especially near release."}],
+    faqs=[{"q": "Is VFX the same as animation?", "a": "No, VFX combines effects and CG with filmed footage, while animation creates movement for characters and objects. "
+                                                      "VFX artists make added elements look real inside live-action shots. "
+                                                      "The two fields share some tools, but the daily work is different."},
+          {"q": "Which software first?", "a": "Start with After Effects or Fusion to learn compositing basics. "
+                                              "Nuke is the studio standard for compositing, so learn it next. "
+                                              "Go deep in one tool rather than learning many tools shallowly."},
+          {"q": "Are hours long?", "a": "Deadlines can mean long shifts, especially near a film's release. "
+                                        "Work is often shift-based and planned around delivery dates. "
+                                        "Good time management and clear communication with your lead help a lot."}],
     related_items=[related("2d-3d-animator", "2D / 3D Animator", "Animation"), related("color-grading-artist", "Color Grading Artist", "Post"), related("motion-graphics-designer", "Motion Graphics Designer", "Motion")],
     institutes=[MESC, UNREAL, RESOLVE, NID],
     sources=[source("MESC", "https://www.mescindia.org/", "Qualification packs for media roles.")],
@@ -222,16 +350,33 @@ VFX = _des(
 
 GAME_DESIGNER = _des(
     "game-designer", "Game Designer", "Game Design", "How to become a Game Designer",
-    "A game designer decides how a game works and feels — rules, levels, mechanics, progression, balance and player experience — and documents and prototypes those ideas.", AG,
+    "A game designer decides how a game works and feels — rules, levels, mechanics, progression, balance and player experience — and documents and prototypes those ideas. "
+    "They work with artists, programmers and producers and test ideas through playtests. "
+    "Playable prototypes matter more in hiring than long design documents.", AG,
     duties=["Design mechanics, levels and progression", "Write design documents", "Prototype in an engine", "Balance gameplay with data",
             "Run playtests and iterate", "Work with artists, programmers and producers"],
     postings=["Game studios (mobile, PC/console), edtech games, indie"],
     facts=[fact("Education", "B.Des (Game/Interaction) or BTech/BCA"), fact("Core skills", "Systems thinking, level design, writing, prototyping"), fact("Tools", "Unity, Unreal, spreadsheets"),
            fact("Hiring rounds", "Portfolio/prototypes → design test → interview"), fact("Specialised programme", "NID M.Des Digital Game Design (Bengaluru)")],
     levels=[["Beginner", "Analyse games and write design docs"], ["Intermediate", "Prototype mechanics in an engine"], ["Job-ready", "Playable prototypes with playtest data"]],
-    steps=[step("Play and analyse games", "Ongoing", "Write breakdowns of mechanics and loops."), step("Learn an engine", "Months 1–4", "Unity or Unreal (Blueprints)."),
-           step("Make small games", "Months 3–9", "Game jams and one-mechanic prototypes."), step("Level and systems design", "Months 6–12", "Balance, economy, progression."),
-           step("Portfolio of playable work", "Months 9–12", "2–3 polished prototypes."), step("Apply", "After portfolio", "Junior/associate game designer roles.")],
+    steps=[step("Play and analyse games", "Ongoing", "Play many kinds of games and write short breakdowns of their mechanics and core loops. "
+                                                     "Ask why a level feels fun or frustrating and how the game teaches its rules. "
+                                                     "This habit builds the design vocabulary you will use in interviews."),
+           step("Learn an engine", "Months 1–4", "Learn Unity, or Unreal with Blueprints, using the free official learning pathways. "
+                                                 "You do not need to be an expert programmer, but you must be able to build simple prototypes. "
+                                                 "An engine lets you test your ideas instead of only writing about them."),
+           step("Make small games", "Months 3–9", "Join game jams and build small prototypes that each test one mechanic. "
+                                                  "Finishing small games teaches you more than starting one huge project. "
+                                                  "Share them with friends and watch how they play."),
+           step("Level and systems design", "Months 6–12", "Learn to design levels, balance difficulty, plan game economies and set progression. "
+                                                           "Use spreadsheets to tune numbers such as rewards and costs. "
+                                                           "Playtest often and change values based on what you observe."),
+           step("Portfolio of playable work", "Months 9–12", "Polish 2–3 prototypes that anyone can download or play in a browser. "
+                                                             "Add a short design document and notes on what you changed after playtests. "
+                                                             "Recruiters prefer playable work over long documents."),
+           step("Apply", "After portfolio", "Apply for junior or associate game designer roles at mobile, PC and console studios. "
+                                            "Expect a design test where you design a level or feature and write a short design doc. "
+                                            "Be ready to break down a game you love and explain your design choices.")],
     hiring=_hiring("Design a level or feature and write a short design doc", "Your design reasoning, playtesting and favourite games"),
     checklist=["You can write clear design docs.", "You can prototype in an engine.", "You run playtests and iterate.", "You have playable portfolio games."],
     timeline=_timeline(("Engine", "Months 1–4"), ("Small games", "Months 3–9"), ("Systems", "Months 6–12"), ("Portfolio", "Months 9–12")),
@@ -242,9 +387,15 @@ GAME_DESIGNER = _des(
             ["Senior", "Senior / Lead Designer", "5–8 years", "Game direction"], ["Top", "Creative Director", "8+ years", "Vision"]],
     special=["Playable prototypes beat long design documents in hiring."],
     mistakes=["Only ideas, no prototypes.", "Huge first projects.", "Ignoring playtest feedback."],
-    faqs=[{"q": "Do game designers code?", "a": "Basic scripting or Blueprints helps a lot; deep programming is the developer's job."},
-          {"q": "Which degree?", "a": "Design (B.Des/M.Des Game Design) or CS; NID offers M.Des in Digital Game Design."},
-          {"q": "How do I start?", "a": "Join game jams and finish small games."}],
+    faqs=[{"q": "Do game designers code?", "a": "Basic scripting or Unreal Blueprints helps a lot, because it lets you build and test your own ideas. "
+                                                "Deep programming is usually the game developer's job. "
+                                                "Learn enough to make simple prototypes on your own."},
+          {"q": "Which degree?", "a": "A design degree, such as a B.Des or M.Des in Game Design, or a computer science degree are the common routes. "
+                                      "NID offers an M.Des in Digital Game Design at its Bengaluru campus. "
+                                      "Your playable portfolio still matters most when studios hire."},
+          {"q": "How do I start?", "a": "Join game jams and finish small games, even very simple ones. "
+                                        "Finishing teaches you scope, testing and teamwork. "
+                                        "Share your games online to get feedback and build your portfolio."}],
     related_items=[related("game-developer-unity-unreal", "Game Developer", "Build games"), related("ar-vr-developer", "AR/VR Developer", "XR"), related("2d-3d-animator", "2D / 3D Animator", "Game art")],
     institutes=[NID, UCEED, UNITY, UNREAL],
     sources=[source("NID M.Des Admissions Handbook 2027-28", "https://admissions.nid.edu/", "Digital Game Design and Toy & Game Design.")],
@@ -257,15 +408,32 @@ GAME_DESIGNER = _des(
 
 GAME_DEV = _des(
     "game-developer-unity-unreal", "Game Developer (Unity/Unreal)", "Game Development", "How to become a Game Developer (Unity/Unreal)",
-    "A game developer programs games in engines like Unity (C#) or Unreal (C++/Blueprints) — gameplay, UI, physics, AI, performance and builds for mobile, PC and consoles.", AG,
+    "A game developer programs games in engines like Unity (C#) or Unreal (C++/Blueprints) — gameplay, UI, physics, AI, performance and builds for mobile, PC and consoles. "
+    "They turn design ideas, art and sound into a game that runs smoothly. "
+    "Studios hire based on your coding skill and the games you have finished.", AG,
     duties=["Program gameplay features", "Integrate art, animation and audio", "Build UI and menus", "Optimise performance", "Fix bugs and ship builds", "Use version control with the team"],
     postings=["Mobile and PC/console game studios, edtech, simulation and XR companies"],
     facts=[fact("Education", "BTech/BCA/BSc CS/MCA"), fact("Languages", "C# (Unity), C++ (Unreal)"), fact("Core skills", "Programming, maths, engine APIs, debugging"),
            fact("Hiring rounds", "Coding test → technical → game task → HR"), fact("Certification", "Unity Certified User / Associate (optional)")],
     levels=[["Beginner", "Programming basics and a simple game"], ["Intermediate", "Complete small games with clean code"], ["Job-ready", "Published games, optimisation and teamwork with Git"]],
-    steps=[step("Programming basics", "Months 1–3", "C# or C++, OOP and data structures."), step("Learn Unity or Unreal", "Months 2–5", "Official learning pathways."),
-           step("Build small games", "Months 4–9", "Clone classics, then add your own twist."), step("Game maths and performance", "Months 6–10", "Vectors, physics, profiling."),
-           step("Publish 1–2 games", "Months 9–12", "Play Store, itch.io or web."), step("Apply", "After portfolio", "Junior game developer roles.")],
+    steps=[step("Programming basics", "Months 1–3", "Learn C# (for Unity) or C++ (for Unreal), along with object-oriented programming (OOP) and basic data structures. "
+                                                    "Solve small coding exercises daily to get comfortable. "
+                                                    "Strong programming basics make learning an engine much easier."),
+           step("Learn Unity or Unreal", "Months 2–5", "Follow the free official learning pathways on Unity Learn or the Epic Developer Community. "
+                                                       "Build along with each tutorial instead of only watching it. "
+                                                       "Unity is common for mobile games, while Unreal suits high-end PC and console work."),
+           step("Build small games", "Months 4–9", "Clone simple classic games, then add your own twist to them. "
+                                                   "Small, finished games teach you the full process from idea to working build. "
+                                                   "Use Git from the start to track your code."),
+           step("Game maths and performance", "Months 6–10", "Learn vectors, basic physics and how to use the engine's profiler. "
+                                                             "These skills help you code movement, collisions and cameras correctly. "
+                                                             "Profiling shows why a game is slow, which matters a lot on low-end phones."),
+           step("Publish 1–2 games", "Months 9–12", "Publish 1–2 small games on the Play Store, itch.io or the web. "
+                                                    "Publishing teaches you about builds, testing and player feedback. "
+                                                    "Studios trust candidates who have finished and shipped games."),
+           step("Apply", "After portfolio", "Apply for junior game developer roles at mobile and PC/console studios, edtech, simulation and XR companies. "
+                                            "Expect a coding test, a technical interview and a small gameplay task in the engine. "
+                                            "Be ready to walk through the code of your own games.")],
     hiring=_hiring("Build a small gameplay feature in the engine", "Programming, engine knowledge, maths and your games"),
     checklist=["You write clean C#/C++.", "You know one engine well.", "You can optimise and debug.", "You have published playable games."],
     timeline=_timeline(("Programming", "Months 1–3"), ("Engine", "Months 2–5"), ("Small games", "Months 4–9"), ("Publish", "Months 9–12")),
@@ -276,9 +444,15 @@ GAME_DEV = _des(
             ["Top", "Technical Director", "8+ years", "Tech vision"]],
     special=["Studios check your published games and code — finish and ship small projects."],
     mistakes=["Starting with a huge open-world idea.", "No version control.", "Ignoring performance on low-end phones."],
-    faqs=[{"q": "Unity or Unreal?", "a": "Unity is common for mobile games; Unreal for high-end PC/console and virtual production."},
-          {"q": "Is a CS degree needed?", "a": "Most studios ask for BTech/BCA/BSc CS/MCA; strong published games help a lot."},
-          {"q": "Is Unity certification required?", "a": "Optional — it can help freshers stand out."}],
+    faqs=[{"q": "Unity or Unreal?", "a": "Unity is common for mobile games, while Unreal is used for high-end PC and console games and virtual production. "
+                                         "Both are free to start learning. "
+                                         "Pick one based on the kind of games you want to make, and learn it deeply."},
+          {"q": "Is a CS degree needed?", "a": "Most studios ask for a BTech, BCA, BSc in Computer Science or MCA. "
+                                               "Strong published games and clean code help a lot in selection. "
+                                               "If you are still studying, start building and publishing small games now."},
+          {"q": "Is Unity certification required?", "a": "No, Unity certification is optional. "
+                                                         "It can help freshers stand out by showing proven engine skills. "
+                                                         "Your published games and code still matter more to studios."}],
     related_items=[related("game-designer", "Game Designer", "Design side"), related("ar-vr-developer", "AR/VR Developer", "XR"), related("vfx-artist", "VFX Artist", "Real-time effects")],
     institutes=[UNITY, UNREAL, UCEED, MESC],
     sources=[source("Unity certifications", "https://unity.com/products/unity-certifications", "Certification levels."),
@@ -292,16 +466,33 @@ GAME_DEV = _des(
 
 ARVR = _des(
     "ar-vr-developer", "AR/VR Developer", "AR/VR", "How to become an AR/VR Developer",
-    "An AR/VR (XR) developer builds immersive apps — VR training, AR shopping, spatial apps and simulations — usually with Unity or Unreal for headsets and phones.", AG,
+    "An AR/VR (XR) developer builds immersive apps — VR training, AR shopping, spatial apps and simulations — usually with Unity or Unreal for headsets and phones. "
+    "The work needs strong programming, 3D maths and careful attention to user comfort and performance. "
+    "XR studios, edtech and training simulation, real estate, healthcare, automotive and enterprise companies hire XR developers.", AG,
     duties=["Build XR apps in Unity/Unreal", "Handle tracking, input and interaction", "Optimise for headset frame rates", "Integrate 3D assets and UI",
             "Test for comfort and usability", "Deploy to headsets and phones"],
     postings=["XR studios, edtech/training simulation, real estate, healthcare, automotive and enterprise"],
     facts=[fact("Education", "BTech/BCA/BSc CS/MCA"), fact("Core skills", "Unity/Unreal, 3D maths, interaction design"), fact("Platforms", "VR headsets, Apple Vision Pro, Android/iOS AR"),
            fact("Hiring rounds", "Coding test → XR task → interview"), fact("Key need", "Smooth performance for comfort")],
     levels=[["Beginner", "Programming + engine basics"], ["Intermediate", "XR interaction and tracking"], ["Job-ready", "Optimised XR apps deployed to devices"]],
-    steps=[step("Programming and engine basics", "Months 1–4", "C# + Unity or C++/Blueprints + Unreal."), step("XR fundamentals", "Months 3–6", "Tracking, input, comfort, spatial UI."),
-           step("Build for a device", "Months 5–9", "Headset or phone AR."), step("Optimise", "Months 6–10", "Frame rate, draw calls, lighting."),
-           step("Portfolio", "Months 8–12", "2–3 XR demos with videos."), step("Apply", "After portfolio", "XR developer roles.")],
+    steps=[step("Programming and engine basics", "Months 1–4", "Learn C# with Unity, or C++ and Blueprints with Unreal. "
+                                                               "Build simple 3D scenes and interactions before you move on to XR. "
+                                                               "Most XR job posts expect solid programming skills."),
+           step("XR fundamentals", "Months 3–6", "Learn how tracking, input, comfort and spatial UI work in XR. "
+                                                 "Study how users move, point and grab in 3D so your interactions feel natural. "
+                                                 "Comfort matters, because poor design and low frame rates can make people feel sick."),
+           step("Build for a device", "Months 5–9", "Build and run your apps on a real headset, or on a phone for AR. "
+                                                    "Testing only in the editor hides problems with performance, tracking and comfort. "
+                                                    "Phone AR is a cheaper way to start if you do not have a headset."),
+           step("Optimise", "Months 6–10", "Learn to keep the frame rate smooth by reducing draw calls, simplifying lighting and using light assets. "
+                                           "Use the engine's profiler to find what slows your app down. "
+                                           "In XR, smooth performance is part of the design, not an extra."),
+           step("Portfolio", "Months 8–12", "Build 2–3 XR demos and record clear videos of them running on a device. "
+                                            "Employers may not have your hardware, so videos show your work quickly. "
+                                            "Add a short write-up explaining your interaction and optimisation choices."),
+           step("Apply", "After portfolio", "Apply for XR developer roles at XR studios, training simulation companies and enterprises. "
+                                            "Expect a coding test and a small XR interaction task. "
+                                            "Be ready to explain how you avoid motion sickness and optimise for headsets.")],
     hiring=_hiring("Build a small XR interaction", "Engine, XR input, performance and your demos"),
     checklist=["You can build and deploy XR apps.", "You understand comfort and performance.", "You know XR interaction patterns.", "You have recorded demos."],
     timeline=_timeline(("Engine", "Months 1–4"), ("XR basics", "Months 3–6"), ("Device builds", "Months 5–9"), ("Portfolio", "Months 8–12")),
@@ -310,9 +501,15 @@ ARVR = _des(
     ladder=[["Start", "XR Developer", "0–2 years", "Features"], ["Mid", "Senior XR Developer", "2–5 years", "Apps"], ["Senior", "XR Lead / Architect", "5+ years", "Products"]],
     special=["Low frame rates cause motion sickness — performance is part of the design."],
     mistakes=["Ignoring comfort.", "Testing only in the editor, not on a device.", "Heavy assets."],
-    faqs=[{"q": "Do I need a headset?", "a": "Very helpful for testing; phone AR is a cheaper start."},
-          {"q": "Unity or Unreal for XR?", "a": "Unity is widely used for XR apps; Unreal for high-fidelity experiences."},
-          {"q": "Which degree?", "a": "Most job posts ask for a CS/IT degree."}],
+    faqs=[{"q": "Do I need a headset?", "a": "A headset is very helpful for testing VR apps properly. "
+                                             "Phone AR is a cheaper way to start learning XR. "
+                                             "Buy a headset once you are sure you want to build VR apps."},
+          {"q": "Unity or Unreal for XR?", "a": "Unity is widely used for XR apps. "
+                                                "Unreal is chosen for high-fidelity experiences with very detailed graphics. "
+                                                "Learn one engine well first, then explore the other if a job needs it."},
+          {"q": "Which degree?", "a": "Most XR job posts ask for a CS or IT degree, such as BTech, BCA, BSc CS or MCA. "
+                                      "A strong portfolio of XR demos also matters a lot. "
+                                      "Keep your demos updated as devices and tools change."}],
     related_items=[related("game-developer-unity-unreal", "Game Developer", "Engine skills"), related("game-designer", "Game Designer", "Experience design"), related("ui-designer", "UI Designer", "Spatial UI")],
     institutes=[UNITY, UNREAL, VISIONOS, UCEED],
     sources=[source("Unity certifications", "https://unity.com/products/unity-certifications", "Certification levels."),

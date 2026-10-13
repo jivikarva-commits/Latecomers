@@ -97,8 +97,9 @@ OPTIONAL_SUBJECTS = (
 def _steps(service_specific):
     return [
         {"title": "Check your eligibility", "when": "Before anything else",
-         "detail": "Indian citizen (compulsory for IAS, IPS and IFS) · Graduate in any subject from a recognised university (final-year students may apply) · "
-                   "At least 21 and under the upper age limit on 1 August of the exam year · Attempts left for your category."},
+         "detail": "You must be an Indian citizen (compulsory for IAS, IPS and IFS) and a graduate in any subject from a recognised university; final-year students may also apply. "
+                   "On 1 August of the exam year you must be at least 21 and under the upper age limit for your category, and you must still have attempts left. "
+                   "Check your age and attempts in the category table below before you start preparing, so you do not spend a year on an exam you cannot sit."},
         {"title": "Understand the exam and choose your optional", "when": "Month 1",
          "detail": "Download the latest UPSC CSE notification and syllabus. Solve one previous-year Prelims paper to see the level. "
                    "Pick an optional you can enjoy for 1–2 years and that has a clear syllabus — not just what is popular."},
@@ -106,19 +107,22 @@ def _steps(service_specific):
          "detail": "Start with NCERT basics, read a daily newspaper, then move to standard books, Mains answer writing and Prelims mock tests. "
                    "Coaching is optional; many candidates prepare with free official material and test series."},
         {"title": "Register and apply online", "when": "January–February (notification window ~3 weeks)",
-         "detail": "On upsconline.nic.in: create an account → Universal Registration Number (URN, one time in life) → Common Application Form "
-                   "(photo, live photo, signature, ID) → CSE exam form (optional subject, Mains medium, compulsory Indian language, centres) → pay fee. "
-                   "Fee: ₹100 (Prelims) + ₹200 later for Mains. Women, SC, ST and PwBD candidates pay no fee. No changes are allowed after submission."},
+         "detail": "On upsconline.nic.in, create an account and get your Universal Registration Number (URN, made once in your life), fill the Common Application Form "
+                   "with your photo, live photo, signature and photo ID, then fill the CSE exam form (optional subject, Mains medium, compulsory Indian language, centres and service preferences) and pay the fee. "
+                   "The fee is ₹100 for Prelims plus ₹200 later for Mains, and women, SC, ST and PwBD candidates pay no fee. "
+                   "Check every field carefully before you submit, because no changes are allowed after submission."},
         {"title": "Write Prelims", "when": "Late May",
-         "detail": "Download the e-admit card from the UPSC site (sent ~1 week before). Reach 30 minutes early; face authentication is done at the venue. "
+         "detail": "Download the e-admit card from the UPSC site (released about a week before the exam; it is not sent by post or email). Reach 30 minutes early; face authentication is done at the venue. "
                    "Clear CSAT (33%) and the GS cut-off."},
         {"title": "Confirm Mains form and pay ₹200", "when": "Within 10 days of the Prelims result",
-         "detail": "Logging in during this window is mandatory — if you miss it you cannot write Mains."},
+         "detail": "If you qualify Prelims, log in to upsconline.nic.in during this window, update or reconfirm your details, submit the form and pay ₹200 (women, SC, ST and PwBD candidates are exempt). "
+                   "This login is mandatory, and if you miss it UPSC will not issue your Mains e-admit card, so you cannot write Mains. "
+                   "Check the UPSC website daily after the Prelims result so the window does not pass unnoticed."},
         {"title": "Write Mains", "when": "August–September",
          "detail": "Nine 3-hour descriptive papers over about five days. Clear both language papers (25%) and the written cut-off."},
         {"title": "Fill details and upload degree proof", "when": "Within 15 days of the Mains result",
          "detail": "Upload proof of graduation (if you applied in final year), update education, work, achievements and category documents. "
-                   "Service preferences and, for IAS/IPS, home-cadre preferences are filled when UPSC asks — choose carefully, they cannot be changed later."},
+                   "Your service preferences are given in the application form and, for IAS/IPS, home-cadre preferences are filled when UPSC asks — choose carefully, they cannot be changed later."},
         {"title": "Face the Interview", "when": "January–April",
          "detail": "Board interview of 275 marks at UPSC, New Delhi. Original documents are verified at this stage."},
         {"title": "Final result and service allocation", "when": "Usually April–May",
@@ -215,11 +219,13 @@ def _details(slug, service, role, quick_facts, service_steps, training, ladder, 
 COMMON_FAQS = [
     {"q": "Can I apply while in the final year of graduation?",
      "a": "Yes. You can write Prelims and Mains in your final year. You must upload proof of passing your degree when you qualify for the interview."},
-    {"q": "Do I need a minimum percentage in graduation?", "a": "No. Any recognised graduate degree is enough; marks do not matter."},
+    {"q": "Do I need a minimum percentage in graduation?",
+     "a": "No, there is no minimum percentage for the Civil Services Examination. Any recognised graduate degree is enough, so your graduation marks do not matter for eligibility. "
+          "What counts is your performance in Prelims, Mains and the interview."},
     {"q": "Can I write the exam in Hindi or another Indian language?",
      "a": "Yes. Prelims papers are in Hindi and English. Mains answers (except Paper A and Paper B) can be written in English or any language in the Eighth Schedule of the Constitution."},
     {"q": "Is coaching compulsory?",
-     "a": "No. UPSC does not require coaching. Many candidates use NCERTs, standard books, official sources and test series. Coaching can help with structure but does not guarantee selection."},
+     "a": "No, UPSC does not require coaching. Many candidates prepare with NCERTs, standard books, official sources and test series. Coaching can help with structure but does not guarantee selection."},
 ]
 
 # ---------- Service-specific blocks ----------
@@ -246,9 +252,13 @@ IAS = _details(
     ],
     [
         {"title": "Medical exam and appointment", "when": "After the final result",
-         "detail": "Medical examination by the government medical board, police/character verification, then appointment as IAS probationer and State cadre allocation."},
+         "detail": "After the final result you go through a medical examination by the government medical board and police/character verification. "
+                   "Once these are cleared, you are appointed as an IAS probationer and allocated a State cadre. "
+                   "Fill the verification forms truthfully and keep your documents ready, because mistakes can delay your appointment."},
         {"title": "Training at LBSNAA, then first posting", "when": "From about August–September",
-         "detail": "Foundation Course with all services, IAS Professional Course, one year of district training, then the first posting as Assistant Collector / SDM."},
+         "detail": "Training starts with the Foundation Course at LBSNAA together with officers of all services, followed by the IAS Professional Course and one year of district training in your State cadre. "
+                   "After training you get your first posting as Assistant Collector / SDM. "
+                   "Use the district training to learn how a Collector's office really works, because you will soon be running one part of it yourself."},
     ],
     {"intro": "All training is at the Lal Bahadur Shastri National Academy of Administration (LBSNAA), Mussoorie, except the district phase.",
      "phases": [
@@ -305,7 +315,9 @@ IPS = _details(
         {"title": "Medical and physical standards check", "when": "After the final result",
          "detail": "The medical board checks the IPS physical standards (height, chest, eyesight and fitness). You must meet them to be allocated IPS."},
         {"title": "Training at LBSNAA and SVPNPA, then first posting", "when": "From about August–September",
-         "detail": "Foundation Course at LBSNAA, then Basic Course at SVPNPA Hyderabad with district practical training, then posting as Assistant Superintendent of Police (ASP)."},
+         "detail": "Training starts with the Foundation Course at LBSNAA, followed by the Basic Course at SVPNPA Hyderabad with district practical training in your State cadre. "
+                   "After training you are posted as Assistant Superintendent of Police (ASP). "
+                   "SVPNPA's outdoor training is physically demanding, so keep up your fitness from the day of the final result."},
     ],
     {"intro": "After the common Foundation Course, IPS probationers train at Sardar Vallabhbhai Patel National Police Academy (SVPNPA), Hyderabad. "
               "Outdoor training includes physical fitness, drill, weapons, horse riding and field craft.",
@@ -366,7 +378,9 @@ IFS = _details(
     ],
     [
         {"title": "Medical exam and appointment", "when": "After the final result",
-         "detail": "Medical examination and verification, then appointment as an IFS officer trainee in the Ministry of External Affairs."},
+         "detail": "After the final result you go through a medical examination and verification of your character and documents. "
+                   "Once these are cleared, you are appointed as an IFS officer trainee in the Ministry of External Affairs. "
+                   "Keep your documents ready and fill the verification forms truthfully, because mistakes can delay your appointment."},
         {"title": "Training and language posting", "when": "From about August–September",
          "detail": "Foundation Course at LBSNAA, diplomatic training at SSIFS New Delhi, then posting to a mission abroad where your compulsory foreign language is spoken. You must pass the language exam to be confirmed in service."},
     ],

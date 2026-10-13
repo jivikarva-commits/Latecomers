@@ -109,7 +109,9 @@ def _srcs(*items):
 
 DATA_ANALYST = _guide(
     "data-analyst", "Data Analyst", "Data Analyst", "How to become a Data Analyst",
-    "A data analyst turns raw business data into answers — cleaning data, finding trends and presenting them in reports and dashboards that help teams decide.",
+    "A data analyst turns raw business data into answers — cleaning data, finding trends and presenting them in reports and dashboards that help teams decide. "
+    "Graduates from any stream can enter this field, because Excel, SQL and a BI tool matter more than your degree subject. "
+    "It is also a common first step for people who later move into data science.",
     duties=["Collect and clean data from spreadsheets, databases and tools", "Write SQL queries to answer business questions",
             "Build dashboards in Power BI, Tableau or Excel", "Find trends, compare periods and explain what changed", "Present findings to managers in simple language"],
     postings=["E-commerce, banking, fintech, consulting, IT services, healthcare and startups", "Office, hybrid or remote"],
@@ -120,11 +122,26 @@ DATA_ANALYST = _guide(
     levels=[["Beginner", "Excel formulas, pivot tables, charts and basic statistics (mean, median, percentages)"],
             ["Intermediate", "SQL joins and GROUP BY, one BI tool, cleaning messy data"],
             ["Job-ready", "End-to-end projects: question → SQL/Python → dashboard → clear recommendations"]],
-    steps=[step("Master Excel", "Month 1", "Formulas (IF, XLOOKUP), pivot tables, charts and data cleaning."),
-           step("Learn SQL", "Months 1–3", "SELECT, WHERE, JOINs, GROUP BY, subqueries and window functions."),
-           step("Learn statistics basics", "Months 2–3", "Averages, distributions, percentages, correlation and simple A/B test ideas."),
-           step("Learn one BI tool", "Months 3–4", "Power BI (PL-300 path) or Tableau — build interactive dashboards."),
-           step("Add Python (optional but valuable)", "Months 4–6", "pandas for cleaning and analysis, matplotlib/seaborn for charts."),
+    steps=[step("Master Excel", "Month 1",
+                "Learn formulas (IF, XLOOKUP), pivot tables, charts and data cleaning. "
+                "Practise on messy real-world data, such as a sales sheet with blanks and duplicates, and turn it into a clear summary. "
+                "Excel is used in almost every office, so it is often the first thing tested."),
+           step("Learn SQL", "Months 1–3",
+                "Learn SELECT, WHERE, JOINs, GROUP BY, subqueries and window functions. "
+                "Practise every day by asking simple business questions of a sample database and answering them with queries. "
+                "SQL is asked in almost every data analyst interview, so give it the most practice time."),
+           step("Learn statistics basics", "Months 2–3",
+                "Learn averages, distributions, percentages, correlation and the simple ideas behind A/B tests. "
+                "Focus on knowing when each measure makes sense, for example when the median tells a truer story than the average. "
+                "This helps you avoid wrong conclusions and explain your numbers with confidence."),
+           step("Learn one BI tool", "Months 3–4",
+                "Learn Power BI (the free PL-300 path on Microsoft Learn) or Tableau and build interactive dashboards. "
+                "Pick the tool that appears more often in job posts for your city and stick with it. "
+                "Make each dashboard answer a clear business question rather than just showing many charts."),
+           step("Add Python (optional but valuable)", "Months 4–6",
+                "Learn pandas for cleaning and analysis, and matplotlib or seaborn for charts. "
+                "Python is not needed for many entry roles, but it saves time on large or repeated tasks. "
+                "It is often asked for in mid-level roles, so starting early helps you grow."),
            GIT_STEP, *JOB_STEPS],
     test_topics="Excel, SQL queries, aptitude and basic statistics",
     interview_topics="SQL (joins, GROUP BY, window functions), Excel, KPIs, case questions and walking through your dashboards",
@@ -144,7 +161,9 @@ DATA_ANALYST = _guide(
              "Data analyst is a common entry point into data science."],
     mistakes=["Learning many tools but no SQL depth.", "Dashboards with lots of charts but no clear insight.", "Projects without a business question."],
     faqs=[{"q": "Can a commerce or arts graduate become a data analyst?", "a": "Yes. Excel, SQL and a BI tool matter more than your stream; build projects to prove it."},
-          {"q": "Do I need Python?", "a": "Not for many entry roles, but it helps you grow and is often asked for mid-level roles."}],
+          {"q": "Do I need Python?", "a": "Not for many entry roles, but it helps you grow and is often asked for mid-level roles. "
+                                          "Get strong in Excel, SQL and one BI tool first, then add Python with pandas. "
+                                          "Python is especially useful when data is too large or messy for Excel."}],
     related_items=[related("power-bi-tableau-analyst", "Power BI / Tableau Analyst", "Focus on dashboards"), related("sql-database-analyst", "SQL / Database Analyst", "Focus on SQL"),
                    related("data-scientist", "Data Scientist", "Next step with ML")],
     institutes=[GOOGLE_DA, MS_PL300, CDAC_BDA, IITM_DS, IBM_DS],
@@ -154,7 +173,9 @@ DATA_ANALYST = _guide(
 
 BUSINESS_ANALYST = _guide(
     "business-analyst", "Business Analyst", "Business Analyst", "How to become a Business Analyst",
-    "A business analyst connects business teams and tech teams — understanding problems, writing clear requirements and using data to recommend improvements.",
+    "A business analyst connects business teams and tech teams — understanding problems, writing clear requirements and using data to recommend improvements. "
+    "Clear communication and writing matter as much as tools in this role. "
+    "Graduates from commerce, management, engineering and other fields can enter it with the right skills and case studies.",
     duties=["Talk to users and managers to understand problems and goals", "Write requirements, user stories and process maps",
             "Analyse data to size problems and measure results", "Work with developers and testers so the right thing gets built", "Present recommendations and track impact"],
     postings=["IT services, banks, consulting firms, product companies and startups", "Often a client-facing role"],
@@ -165,11 +186,26 @@ BUSINESS_ANALYST = _guide(
     levels=[["Beginner", "Write clear user stories and process steps; Excel basics"],
             ["Intermediate", "Gather requirements, map processes, basic SQL and dashboards"],
             ["Job-ready", "Complete case study: problem → requirements → data → recommendation"]],
-    steps=[step("Learn how businesses work", "Month 1", "Basics of sales, operations, finance and how software projects run (Agile/Scrum)."),
-           step("Learn requirements skills", "Months 1–3", "Stakeholder interviews, user stories, acceptance criteria, BRDs and process maps."),
-           step("Learn data basics", "Months 2–4", "Excel, SQL basics and one dashboard tool to support decisions with numbers."),
-           step("Build case studies", "Months 3–5", "Pick a real app or process, document problems, requirements and a data-backed recommendation."),
-           step("Consider a BA certification", "Optional", "IIBA's ECBA is designed as the first business analysis credential."),
+    steps=[step("Learn how businesses work", "Month 1",
+                "Learn the basics of sales, operations and finance, and how software projects run (Agile and Scrum). "
+                "Read about how a typical company makes money and how a team plans and delivers work in short cycles. "
+                "This context helps you ask the right questions when you talk to stakeholders."),
+           step("Learn requirements skills", "Months 1–3",
+                "Learn stakeholder interviews, user stories, acceptance criteria, BRDs and process maps. "
+                "Practise by writing user stories and a simple process map for an app you use every day. "
+                "Clear, testable requirements are the main thing a business analyst delivers."),
+           step("Learn data basics", "Months 2–4",
+                "Learn Excel, SQL basics and one dashboard tool so you can support decisions with numbers. "
+                "Use them to size a problem, for example how many orders are delayed and where. "
+                "Data-backed recommendations are far more convincing than opinions in meetings."),
+           step("Build case studies", "Months 3–5",
+                "Pick a real app or process, then document its problems, the requirements to fix them and a data-backed recommendation. "
+                "Show a measurable outcome you would track, so the reader sees the impact of your idea. "
+                "Well-written case studies, together with sample user stories, can carry your portfolio in interviews."),
+           step("Consider a BA certification", "Optional",
+                "IIBA's ECBA is designed as the first business analysis credential for beginners. "
+                "It is optional, but it can help freshers and career switchers show commitment on a resume. "
+                "Check the current eligibility, fees and exam details in the ECBA handbook on the IIBA website."),
            *JOB_STEPS],
     test_topics="Aptitude, logical reasoning, Excel and basic SQL",
     interview_topics="Requirement gathering scenarios, user stories, process improvement, SQL basics, stakeholder handling and your case studies",
@@ -187,8 +223,11 @@ BUSINESS_ANALYST = _guide(
     special=["BA roles vary: IT BAs focus on requirements; data-oriented BAs lean on SQL and dashboards. Read the job post.",
              "Communication and clear writing are as important as tools."],
     mistakes=["Only learning tools without requirement-writing practice.", "Case studies with no measurable outcome.", "Ignoring Agile basics."],
-    faqs=[{"q": "Is MBA required to become a business analyst?", "a": "No. Many BAs are graduates from commerce, engineering or other fields; MBA helps for some consulting roles."},
-          {"q": "Business analyst or data analyst?", "a": "Data analysts focus on analysing data; business analysts focus on problems and requirements, using data as support."}],
+    faqs=[{"q": "Is MBA required to become a business analyst?", "a": "No. Many BAs are graduates from commerce, engineering or other fields; MBA helps for some consulting roles. "
+                                                                      "Requirement-writing skills, data basics and good case studies matter more for entry roles."},
+          {"q": "Business analyst or data analyst?", "a": "Data analysts focus on analysing data; business analysts focus on problems and requirements, using data as support. "
+                                                          "If you enjoy talking to people and shaping solutions, BA may suit you better. "
+                                                          "If you prefer working deeply with numbers and queries, start with data analyst."}],
     related_items=[related("data-analyst", "Data Analyst", "More hands-on data work"), related("power-bi-tableau-analyst", "Power BI / Tableau Analyst", "Dashboard specialist"),
                    related("sql-database-analyst", "SQL / Database Analyst", "Query skills")],
     institutes=[IIBA_ECBA, GOOGLE_DA, IITM_DS, CDAC_BDA, GOOGLE_BI],
@@ -198,7 +237,9 @@ BUSINESS_ANALYST = _guide(
 
 DATA_SCIENTIST = _guide(
     "data-scientist", "Data Scientist", "Data Scientist", "How to become a Data Scientist",
-    "A data scientist uses statistics, programming and machine learning to find patterns in data and build models that predict or recommend.",
+    "A data scientist uses statistics, programming and machine learning to find patterns in data and build models that predict or recommend. "
+    "The role needs a strong base in maths and statistics, not just knowledge of tools. "
+    "Many people start as data analysts and move into data science once their skills and projects grow.",
     duties=["Frame business problems as data problems", "Clean and explore large datasets with Python and SQL", "Build and evaluate machine learning models",
             "Run experiments (A/B tests) and statistical analyses", "Explain results and work with engineers to put models in production"],
     postings=["Product companies, banks/fintech, e-commerce, consulting and research", "Often needs a strong maths/statistics base"],
@@ -208,10 +249,22 @@ DATA_SCIENTIST = _guide(
            fact("Common entry", "Many start as data analysts first"), fact("Portfolio", "3 end-to-end ML projects")],
     levels=[["Beginner", "Python, pandas, SQL and descriptive statistics"], ["Intermediate", "Probability, hypothesis testing, regression and classification with scikit-learn"],
             ["Job-ready", "Feature engineering, model evaluation, explaining models and end-to-end projects"]],
-    steps=[step("Learn Python and SQL", "Months 1–3", "Python basics, pandas, NumPy and SQL queries."),
-           step("Learn maths and statistics", "Months 2–5", "Probability, distributions, hypothesis tests, linear algebra and calculus basics."),
-           step("Learn machine learning", "Months 4–8", "Regression, classification, clustering, model evaluation and scikit-learn."),
-           step("Do end-to-end projects", "Months 7–11", "From messy data to a model and a clear write-up; deploy one as a simple app."),
+    steps=[step("Learn Python and SQL", "Months 1–3",
+                "Learn Python basics, pandas, NumPy and SQL queries. "
+                "Practise by cleaning and exploring public datasets until loading, filtering and summarising data feels routine. "
+                "A large part of real data work is preparing data, so these tools matter a lot."),
+           step("Learn maths and statistics", "Months 2–5",
+                "Learn probability, distributions, hypothesis tests, linear algebra and the basics of calculus. "
+                "Focus on understanding what each idea means and when to use it, not just on formulas. "
+                "Statistics depth is what separates good data scientists from people who only run tools."),
+           step("Learn machine learning", "Months 4–8",
+                "Learn regression, classification, clustering and model evaluation using scikit-learn. "
+                "For every model you train, check it on data it has not seen and explain why it works or fails. "
+                "Interviewers care more about your reasoning than about the highest accuracy score."),
+           step("Do end-to-end projects", "Months 7–11",
+                "Take each project from messy data to a model and a clear write-up, and deploy one as a simple app. "
+                "Start every project with a real business question so the result means something. "
+                "Projects that stop at a notebook with no explanation are a common mistake to avoid."),
            GIT_STEP, *JOB_STEPS],
     test_topics="Python, SQL, statistics and probability, aptitude",
     interview_topics="Statistics (p-values, distributions), ML (bias-variance, overfitting, metrics), SQL, Python and your projects",
@@ -231,7 +284,9 @@ DATA_SCIENTIST = _guide(
              "A master's degree helps for some research-heavy roles but is not mandatory everywhere."],
     mistakes=["Only Kaggle-style accuracy chasing without business context.", "Skipping statistics.", "Projects that stop at a notebook with no explanation."],
     faqs=[{"q": "Do I need a master's degree?", "a": "Not always. Strong projects and fundamentals can get you in, though some roles prefer a master's."},
-          {"q": "Data scientist or ML engineer?", "a": "Data scientists focus on analysis and modelling; ML engineers focus on building and running models in production."}],
+          {"q": "Data scientist or ML engineer?", "a": "Data scientists focus on analysis and modelling; ML engineers focus on building and running models in production. "
+                                                       "Choose data science if you enjoy statistics and explaining findings to business teams. "
+                                                       "Choose ML engineering if you enjoy software engineering, deployment and building reliable systems."}],
     related_items=[related("data-analyst", "Data Analyst", "Common entry point"), related("ml-engineer", "ML Engineer", "Production ML"),
                    related("ai-prompt-engineer", "AI / Prompt Engineer", "Generative AI apps")],
     institutes=[IITM_DS, CDAC_BDA, IBM_DS, GOOGLE_ADA, ML_SPEC],
@@ -242,7 +297,9 @@ DATA_SCIENTIST = _guide(
 
 ML_ENGINEER = _guide(
     "ml-engineer", "ML Engineer", "ML Engineer", "How to become a Machine Learning (ML) Engineer",
-    "An ML engineer builds, deploys and maintains machine learning models in real products — combining software engineering with machine learning.",
+    "An ML engineer builds, deploys and maintains machine learning models in real products — combining software engineering with machine learning. "
+    "The job is software engineering first, so coding and data structures are tested as much as ML knowledge. "
+    "Many people reach this role after working as software or data engineers.",
     duties=["Turn prototype models into reliable services", "Build data and training pipelines", "Deploy models as APIs and monitor their performance",
             "Optimise models for speed and cost", "Work with data scientists, backend and DevOps teams"],
     postings=["Product companies, AI startups, e-commerce, fintech and cloud teams", "Strong software engineering skills expected"],
@@ -252,10 +309,22 @@ ML_ENGINEER = _guide(
            fact("Hiring rounds", "DSA test → ML + system design → HR"), fact("Portfolio", "2–3 deployed ML projects")],
     levels=[["Beginner", "Python, data structures, statistics and basic ML"], ["Intermediate", "Train and evaluate models; deep learning with TensorFlow/PyTorch"],
             ["Job-ready", "Deploy models as APIs, pipelines, monitoring, Docker and cloud"]],
-    steps=[step("Strong programming base", "Months 1–3", "Python, data structures and algorithms, Git and clean code."),
-           step("Maths for ML", "Months 2–4", "Linear algebra, probability, statistics and calculus basics."),
-           step("Machine learning and deep learning", "Months 4–9", "Classical ML, neural networks, and one framework (TensorFlow or PyTorch)."),
-           step("MLOps and deployment", "Months 8–12", "Serve models with an API, Docker, experiment tracking, monitoring and a cloud platform."),
+    steps=[step("Strong programming base", "Months 1–3",
+                "Learn Python, data structures and algorithms, Git and how to write clean code. "
+                "Solve coding problems regularly, because DSA and coding rounds are common in ML engineering interviews. "
+                "Good engineering habits make your models easier to test, deploy and maintain."),
+           step("Maths for ML", "Months 2–4",
+                "Learn linear algebra, probability, statistics and the basics of calculus. "
+                "Focus on the ideas that explain how models learn, such as vectors, gradients and probability. "
+                "This makes it much easier to understand why a model behaves the way it does."),
+           step("Machine learning and deep learning", "Months 4–9",
+                "Learn classical ML, neural networks and one framework (TensorFlow or PyTorch). "
+                "Train and evaluate models on real datasets, and compare simple models with deep learning before choosing. "
+                "Learn one framework well instead of switching between them."),
+           step("MLOps and deployment", "Months 8–12",
+                "Learn to serve models with an API and Docker, track experiments, monitor models and use a cloud platform. "
+                "Deploy at least one model so others can send it data and get predictions back. "
+                "A deployed model shows the production skills that separate ML engineers from notebook-only learners."),
            GIT_STEP, *JOB_STEPS],
     test_topics="Data structures & algorithms, Python, ML MCQs",
     interview_topics="ML fundamentals, deep learning, model deployment, ML system design, DSA and your projects",
@@ -273,7 +342,9 @@ ML_ENGINEER = _guide(
     special=["ML engineering is software engineering first — DSA and coding rounds are common.", "Many people move into ML engineering after working as software or data engineers.",
              "Cloud ML certifications (e.g. Google Cloud Professional ML Engineer) are for experienced engineers, not beginners."],
     mistakes=["Only notebooks — no deployed model.", "Skipping DSA and software engineering.", "Chasing the newest model instead of fundamentals."],
-    faqs=[{"q": "Can a fresher become an ML engineer?", "a": "Possible with strong CS skills and projects, but many start as software or data engineers and move in later."},
+    faqs=[{"q": "Can a fresher become an ML engineer?", "a": "Possible with strong CS skills and projects, but many start as software or data engineers and move in later. "
+                                                             "If you are a fresher, aim for software or data roles on teams that work with ML. "
+                                                             "Keep building deployed ML projects so you can move across when a chance comes."},
           {"q": "TensorFlow or PyTorch?", "a": "Either is fine; learn one well. Both are widely used."}],
     related_items=[related("data-scientist", "Data Scientist", "Modelling and analysis"), related("ai-prompt-engineer", "AI / Prompt Engineer", "LLM applications"),
                    related("backend-developer", "Backend Developer", "Serving models via APIs")],
@@ -284,7 +355,9 @@ ML_ENGINEER = _guide(
 
 AI_PROMPT = _guide(
     "ai-prompt-engineer", "AI / Prompt Engineer", "AI / Prompt Engineer", "How to become an AI / Prompt Engineer",
-    "An AI / prompt engineer builds useful applications on top of large language models (LLMs) — designing prompts, connecting company data (RAG), and testing that answers are accurate and safe.",
+    "An AI / prompt engineer builds useful applications on top of large language models (LLMs) — designing prompts, connecting company data (RAG), and testing that answers are accurate and safe. "
+    "Most jobs in this area want prompting together with coding in Python or JavaScript, not prompting alone. "
+    "The field changes fast, so lasting principles such as clear prompts, evaluation and safety matter more than any single tool.",
     duties=["Design and test prompts for chatbots, writing tools and automation", "Connect LLMs to company documents with retrieval (RAG) and vector databases",
             "Build AI features with LLM APIs in Python or JavaScript", "Evaluate outputs for accuracy, safety and cost", "Work with product teams to automate real workflows"],
     postings=["AI startups, product companies, IT services and in-house automation teams", "Fast-changing field — keep learning"],
@@ -294,11 +367,26 @@ AI_PROMPT = _guide(
            fact("Note", "Pure 'prompt-only' jobs are fewer; prompting + coding is in demand"), fact("Portfolio", "2–3 working AI apps with demos")],
     levels=[["Beginner", "Write clear prompts, use few-shot examples and structured outputs"], ["Intermediate", "Call LLM APIs from code, build a chatbot, basic RAG"],
             ["Job-ready", "Evaluation sets, guardrails, agents/tool use, cost and latency control"]],
-    steps=[step("Learn Python basics", "Month 1", "Functions, JSON, HTTP requests and environment variables."),
-           step("Learn prompting principles", "Months 1–2", "Clear instructions, examples, step-by-step reasoning, structured output and iteration."),
-           step("Build with LLM APIs", "Months 2–4", "Chatbots, summarisers and classifiers using an LLM API and official docs."),
-           step("Add RAG and tools", "Months 3–6", "Embeddings, vector databases, retrieval, function/tool calling and simple agents."),
-           step("Evaluate and secure", "Months 5–7", "Test sets, measuring accuracy, prompt-injection risks, privacy and cost."),
+    steps=[step("Learn Python basics", "Month 1",
+                "Learn functions, JSON, HTTP requests and environment variables in Python. "
+                "These are exactly the pieces you need to call an AI model from code and handle its replies. "
+                "Keep API keys in environment variables and never paste them into code you share."),
+           step("Learn prompting principles", "Months 1–2",
+                "Learn to write clear instructions, give examples, ask for step-by-step reasoning, request structured output and improve prompts through iteration. "
+                "Use the official prompting guides from model providers and test each change on the same set of inputs. "
+                "Good prompting is a repeatable skill, not a collection of tricks."),
+           step("Build with LLM APIs", "Months 2–4",
+                "Build chatbots, summarisers and classifiers using an LLM API and its official docs. "
+                "Start with one small, useful tool, such as a summariser for long emails, and make it reliable. "
+                "Working apps in your portfolio matter far more than lists of prompts."),
+           step("Add RAG and tools", "Months 3–6",
+                "Learn embeddings, vector databases, retrieval, function or tool calling and simple agents. "
+                "Build a chatbot that answers questions from a set of documents and shows which document each answer came from. "
+                "RAG is one of the most common tasks in AI engineering jobs and hiring assignments."),
+           step("Evaluate and secure", "Months 5–7",
+                "Learn to build test sets, measure accuracy, and handle prompt-injection risks, privacy and cost. "
+                "Never judge an AI app by saying it looks good; measure it on real examples and record the failures. "
+                "Never put private or customer data into AI tools without permission."),
            GIT_STEP, *JOB_STEPS],
     test_topics="Python coding and API basics",
     interview_topics="Prompt design, RAG architecture, evaluation, hallucinations, safety, cost/latency and your AI apps",
@@ -310,26 +398,32 @@ AI_PROMPT = _guide(
           {"phase": "Build", "duration": "Months 2–6", "focus": ["LLM API apps", "RAG", "Tool use / agents"]},
           {"phase": "Get hired", "duration": "Months 6–8", "focus": ["Evaluation + safety", "2–3 demo apps", "Mock interviews"]}],
     resources=[{"label": "OpenAI — Prompt engineering guide", "url": "https://platform.openai.com/docs/guides/prompt-engineering", "note": "Official prompting guide."},
-               {"label": "Anthropic — Claude Academy", "url": "https://www.anthropic.com/learn", "note": "Official learning to work and build with Claude."},
+               {"label": "Anthropic — Claude Academy", "url": "https://academy.claude.com/", "note": "Official learning to work and build with Claude."},
                {"label": "Microsoft — Generative AI for Beginners", "url": "https://github.com/microsoft/generative-ai-for-beginners", "note": "21-lesson open course."}],
     ladder=[["Start", "Junior AI Engineer / AI Developer", "0–2 years", "Prompts, integrations, evaluations"], ["Mid", "AI / LLM Engineer", "2–5 years", "Own AI features end to end"],
             ["Senior", "Senior AI Engineer", "5+ years", "Architecture, safety and platform"], ["Next", "AI Lead / Architect", "7+ years", "AI strategy and teams"]],
     special=["Most jobs want prompting plus coding — not prompting alone.", "Tools and model names change fast; principles (clear prompts, evaluation, RAG) last.",
              "Never put private or customer data into tools without permission."],
     mistakes=["Only collecting prompt tricks without building apps.", "No evaluation — just 'it looks good'.", "Ignoring prompt injection and data privacy."],
-    faqs=[{"q": "Can I become a prompt engineer without coding?", "a": "Some content/ops roles use prompting without coding, but most AI engineering roles need Python or JavaScript."},
-          {"q": "Which model should I learn?", "a": "Learn principles that work across models; practise with at least one major LLM API."}],
+    faqs=[{"q": "Can I become a prompt engineer without coding?", "a": "Some content and operations roles use prompting without coding, but most AI engineering roles need Python or JavaScript. "
+                                                                       "Pure prompt-only jobs are fewer, while prompting plus coding is in demand. "
+                                                                       "Even basic Python lets you build and test real AI tools, which widens your options a lot."},
+          {"q": "Which model should I learn?", "a": "Learn principles that work across models; practise with at least one major LLM API. "
+                                                    "Model names and features change quickly, but clear prompting, evaluation and RAG skills carry over. "
+                                                    "Read the official documentation of the API you use, as it is the most up-to-date guide."}],
     related_items=[related("ml-engineer", "ML Engineer", "Train and deploy models"), related("data-scientist", "Data Scientist", "Data and modelling"),
                    related("backend-developer", "Backend Developer", "APIs around AI features")],
     institutes=[DLAI_PROMPT, MS_GENAI, CDAC_AI, IITM_DS],
     sources=_srcs(source("OpenAI — Prompt engineering", "https://platform.openai.com/docs/guides/prompt-engineering", "Official prompting guide."),
-                  source("Anthropic — Claude Academy", "https://www.anthropic.com/learn", "Official Claude learning.")),
+                  source("Anthropic — Claude Academy", "https://academy.claude.com/", "Official Claude learning.")),
     group=GROUP,
 )
 
 BI_ANALYST = _guide(
     "power-bi-tableau-analyst", "Power BI / Tableau Analyst", "BI Analyst", "How to become a Power BI / Tableau Analyst",
-    "A Power BI / Tableau analyst builds interactive dashboards and reports so managers can track performance and spot problems quickly.",
+    "A Power BI / Tableau analyst builds interactive dashboards and reports so managers can track performance and spot problems quickly. "
+    "Almost every industry that tracks sales, finance or operations needs these skills. "
+    "It is one of the quicker data roles to enter, and graduates from any stream can learn it.",
     duties=["Connect to data sources and clean data (Power Query / Tableau Prep)", "Build data models and measures (DAX in Power BI)",
             "Design clear, interactive dashboards", "Automate and schedule reports", "Manage access and security for reports"],
     postings=["Almost every industry that tracks sales, finance or operations", "Office, hybrid or remote"],
@@ -339,11 +433,23 @@ BI_ANALYST = _guide(
            fact("Good for", "Commerce, BBA and MIS executives upskilling"), fact("Portfolio", "3 public dashboards")],
     levels=[["Beginner", "Import data, build basic charts and filters"], ["Intermediate", "Data modelling, DAX measures / calculated fields, interactive dashboards"],
             ["Job-ready", "Performance, row-level security, design best practices and storytelling"]],
-    steps=[step("Excel and data basics", "Month 1", "Pivot tables, charts and clean tabular data."),
+    steps=[step("Excel and data basics", "Month 1",
+                "Learn pivot tables, charts and how to keep tabular data clean. "
+                "Practise turning a messy sheet into a tidy table with one row per record and clear column names. "
+                "BI tools work best with clean data, so this habit saves you hours later."),
            step("Pick Power BI or Tableau", "Months 1–3", "Power BI: Power Query, data model, DAX. Tableau: calculated fields, LOD basics, dashboards."),
-           step("Learn SQL basics", "Months 2–3", "Most BI data comes from databases."),
-           step("Design great dashboards", "Months 3–4", "Clear KPIs, layout, colour and storytelling for business users."),
-           step("Get certified (optional)", "Months 4–5", "Microsoft PL-300 for Power BI or a Tableau certification."),
+           step("Learn SQL basics", "Months 2–3",
+                "Learn SQL basics, because most BI data comes from databases. "
+                "Practise SELECT, JOINs and GROUP BY so you can pull and shape the exact data a dashboard needs. "
+                "Analysts who know some SQL depend less on others and are shortlisted more easily."),
+           step("Design great dashboards", "Months 3–4",
+                "Learn to choose clear KPIs and use good layout, colour and storytelling for business users. "
+                "Start every dashboard from the questions a manager wants answered, then pick the simplest chart for each one. "
+                "A dashboard that answers a question beats a beautiful one full of charts that nobody uses."),
+           step("Get certified (optional)", "Months 4–5",
+                "Consider Microsoft PL-300 for Power BI or a Tableau certification. "
+                "A certificate is not required, but it can help freshers get shortlisted. "
+                "PL-300 must be renewed every 12 months through a free online assessment, so plan for that."),
            *JOB_STEPS],
     test_topics="Excel, SQL basics and a BI tool test",
     interview_topics="DAX/calculated fields, data modelling (star schema), dashboard design, SQL and walkthrough of your dashboards",
@@ -362,7 +468,9 @@ BI_ANALYST = _guide(
              "Microsoft PL-300 must be renewed every 12 months (free online renewal)."],
     mistakes=["Beautiful dashboards that don't answer a question.", "Skipping data modelling and DAX basics.", "No SQL at all."],
     faqs=[{"q": "Power BI or Tableau?", "a": "Learn one deeply first; the concepts transfer. Check which tool appears more in jobs you want."},
-          {"q": "Is certification required?", "a": "No, but PL-300 or a Tableau certification can help freshers get shortlisted."}],
+          {"q": "Is certification required?", "a": "No, but PL-300 or a Tableau certification can help freshers get shortlisted. "
+                                                   "Interviewers still check your skills with tool tests and by asking you to explain your dashboards. "
+                                                   "Build three public dashboards first, then add a certification if you want an extra signal."}],
     related_items=[related("data-analyst", "Data Analyst", "Broader analysis role"), related("sql-database-analyst", "SQL / Database Analyst", "Stronger SQL"),
                    related("business-analyst", "Business Analyst", "Requirements and decisions")],
     institutes=[MS_PL300, TABLEAU_CERT, GOOGLE_BI, GOOGLE_DA],
@@ -373,7 +481,9 @@ BI_ANALYST = _guide(
 
 SQL_ANALYST = _guide(
     "sql-database-analyst", "SQL / Database Analyst", "SQL Analyst", "How to become a SQL / Database Analyst",
-    "A SQL / database analyst writes queries to pull, check and organise data from databases, and helps keep data accurate and fast to access.",
+    "A SQL / database analyst writes queries to pull, check and organise data from databases, and helps keep data accurate and fast to access. "
+    "Banks, IT services, telecom and e-commerce companies all rely on this work. "
+    "SQL is a skill that keeps paying off, and this role is often a stepping stone to data engineering or database administration.",
     duties=["Write SQL queries and reports for business teams", "Check data quality and fix inconsistencies", "Create views and stored procedures",
             "Help design tables and indexes", "Support analysts, developers and database administrators"],
     postings=["Banks, IT services, telecom, e-commerce and any data-heavy business", "Often a stepping stone to data engineering or DBA roles"],
@@ -383,10 +493,22 @@ SQL_ANALYST = _guide(
            fact("Next steps", "Data engineer, DBA, data analyst"), fact("Portfolio", "Query sets + 1 database design project")],
     levels=[["Beginner", "SELECT, WHERE, ORDER BY, basic JOINs and aggregates"], ["Intermediate", "Subqueries, CTEs, window functions, views"],
             ["Job-ready", "Query performance (indexes), normalisation, stored procedures and data quality checks"]],
-    steps=[step("Learn SQL basics", "Month 1", "Install MySQL/PostgreSQL or use SQL Server; practise SELECT, filters and JOINs."),
-           step("Advanced SQL", "Months 2–3", "GROUP BY, subqueries, CTEs, window functions, CASE and date functions."),
-           step("Database design", "Months 3–4", "Keys, normalisation, indexes, views and stored procedures."),
-           step("Add a reporting tool", "Months 4–5", "Excel or Power BI to present query results."),
+    steps=[step("Learn SQL basics", "Month 1",
+                "Install MySQL or PostgreSQL, or use SQL Server, and practise SELECT, filters and JOINs. "
+                "The free Microsoft Learn Transact-SQL path and the official PostgreSQL tutorial are good places to start. "
+                "Write queries every day, even short ones, until the syntax feels natural."),
+           step("Advanced SQL", "Months 2–3",
+                "Learn GROUP BY, subqueries, CTEs, window functions, CASE and date functions. "
+                "Practise on realistic datasets with business questions, such as monthly sales by region or the top customers each quarter. "
+                "Window functions come up often in interviews, so do not skip them."),
+           step("Database design", "Months 3–4",
+                "Learn keys, normalisation, indexes, views and stored procedures. "
+                "Design a small database yourself, such as one for a school or a shop, and explain why you chose each table and key. "
+                "Good design keeps data accurate and makes queries faster."),
+           step("Add a reporting tool", "Months 4–5",
+                "Learn Excel or Power BI to present your query results clearly. "
+                "Business teams want answers they can read quickly, not raw tables of numbers. "
+                "Combining SQL with a reporting tool widens the roles you can apply for."),
            GIT_STEP, *JOB_STEPS],
     test_topics="SQL query writing, database MCQs and aptitude",
     interview_topics="Joins, GROUP BY vs window functions, indexes, normalisation, query optimisation and real query scenarios",

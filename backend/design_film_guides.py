@@ -11,7 +11,9 @@ PF = "Photography & Film"
 
 PHOTOGRAPHER = _des(
     "commercial-photographer", "Commercial Photographer", "Commercial Photography", "How to become a Commercial Photographer",
-    "A commercial photographer shoots images that sell — products, food, fashion, interiors, corporate portraits and ad campaigns — for brands, e-commerce and agencies.", PF,
+    "A commercial photographer shoots images that sell — products, food, fashion, interiors, corporate portraits and ad campaigns — for brands, e-commerce and agencies. "
+    "The work needs strong lighting skills, careful retouching and good client handling. "
+    "Many photographers start by assisting a working photographer.", PF,
     duties=["Plan shoots from a brief and mood board", "Set up lighting and camera", "Direct models, stylists and assistants", "Shoot products, people or spaces",
             "Retouch and deliver images", "Handle usage rights, quotes and invoices"],
     postings=["Studios, e-commerce companies, ad agencies, brands and freelance"],
@@ -20,9 +22,24 @@ PHOTOGRAPHER = _des(
            fact("Common entry", "Assistant to a working photographer"), fact("Top programme", "NID M.Des Photography Design")],
     levels=[["Beginner", "Exposure, composition, natural light"], ["Intermediate", "Studio lighting, product and portrait shoots, retouching"],
             ["Job-ready", "Consistent commercial-quality work, client workflow and usage rights"]],
-    steps=[step("Camera basics", "Months 1–2", "Exposure triangle, focus, lenses and composition."), step("Learn lighting", "Months 2–5", "Strobes, softboxes, light shaping for products and people."),
-           step("Editing and retouching", "Months 3–6", "Lightroom and Photoshop."), step("Assist professionals", "Months 4–12", "Learn sets, clients and workflow."),
-           step("Build a niche portfolio", "Months 6–12", "Product, food, fashion or interiors."), step("Get clients / studio job", "After portfolio", "E-commerce studios, agencies, brands.")],
+    steps=[step("Camera basics", "Months 1–2", "Learn the exposure triangle (aperture, shutter speed and ISO), focus, lenses and composition. "
+                                               "Shoot in manual mode every day until you can control exposure without thinking. "
+                                               "These basics matter more than owning an expensive camera."),
+           step("Learn lighting", "Months 2–5", "Learn to use strobes, softboxes and other light-shaping tools for products and people. "
+                                                "Practise simple setups, such as one light with a reflector, before adding more lights. "
+                                                "Control of light is what makes commercial images look professional."),
+           step("Editing and retouching", "Months 3–6", "Learn Lightroom for organising and colour, and Photoshop for detailed retouching. "
+                                                        "Commercial clients expect clean, consistent images, so practise removing dust, fixing colour and keeping skin natural. "
+                                                        "Avoid over-editing, which makes images look fake."),
+           step("Assist professionals", "Months 4–12", "Work as an assistant to a professional photographer to learn sets, client handling and workflow. "
+                                                       "You will see how shoots are planned, priced and delivered. "
+                                                       "Contacts you make while assisting often lead to your first clients."),
+           step("Build a niche portfolio", "Months 6–12", "Choose one niche, such as product, food, fashion or interiors, and build a focused portfolio in it. "
+                                                          "A focused portfolio tells clients exactly what you do well. "
+                                                          "Shoot test projects for local businesses to add real work."),
+           step("Get clients / studio job", "After portfolio", "Apply to e-commerce studios and agencies, and pitch to brands directly with your portfolio. "
+                                                               "Expect a test shoot of a product or a portrait. "
+                                                               "Use written agreements for image usage and payment terms from your very first client.")],
     hiring=_hiring("Test shoot of a product or portrait", "Lighting setups, workflow, retouching and your portfolio"),
     checklist=["You control light confidently.", "You can retouch to commercial standards.", "You have a focused portfolio.", "You understand quotes, contracts and image usage rights."],
     timeline=_timeline(("Camera basics", "Months 1–2"), ("Lighting", "Months 2–5"), ("Retouching", "Months 3–6"), ("Assisting + portfolio", "Months 4–12")),
@@ -32,9 +49,15 @@ PHOTOGRAPHER = _des(
             ["Senior", "Senior / Studio Photographer", "5+ years", "Campaigns"], ["Top", "Studio owner / Creative Director", "Long term", "Business"]],
     special=["Use written agreements for image usage, model releases and payment terms."],
     mistakes=["Buying gear before learning light.", "Unfocused portfolio.", "No contracts."],
-    faqs=[{"q": "Do I need an expensive camera?", "a": "Lighting and skill matter more; many start with an entry-level camera and one good lens."},
-          {"q": "Is a degree required?", "a": "Studios and agencies often ask for a photography/design degree or diploma; freelance clients judge your portfolio."},
-          {"q": "Which niche pays best?", "a": "It varies — product/e-commerce gives steady volume; advertising campaigns pay more per shoot."}],
+    faqs=[{"q": "Do I need an expensive camera?", "a": "No, lighting and skill matter more than an expensive camera. "
+                                                       "Many photographers start with an entry-level camera and one good lens. "
+                                                       "Spend on lighting and learning before you buy more gear."},
+          {"q": "Is a degree required?", "a": "Studios and agencies often ask for a photography or design degree or diploma. "
+                                              "Freelance clients mostly judge your portfolio. "
+                                              "A degree helps for jobs, but your images decide whether clients hire you."},
+          {"q": "Which niche pays best?", "a": "It varies, and there is no official data on earnings by niche. "
+                                               "Product and e-commerce shoots give steady volume, while advertising campaigns usually pay more per shoot. "
+                                               "Choose a niche you enjoy and can practise often."}],
     related_items=[related("drone-photographer-videographer", "Drone Photographer", "Aerial"), related("cinematographer-dop", "Cinematographer / DOP", "Moving image"),
                    related("packaging-designer", "Packaging Designer", "Product visuals")],
     institutes=[NID, ADOBE, MESC],
@@ -48,16 +71,33 @@ PHOTOGRAPHER = _des(
 
 DOP = _des(
     "cinematographer-dop", "Cinematographer / DOP", "Cinematography", "How to become a Cinematographer / Director of Photography (DOP)",
-    "A cinematographer (DOP) designs how a film, ad or show looks — camera, lenses, framing, movement and lighting — and leads the camera and lighting team.", PF,
+    "A cinematographer (DOP) designs how a film, ad or show looks — camera, lenses, framing, movement and lighting — and leads the camera and lighting team. "
+    "They work closely with the director to turn the story into images. "
+    "Most DOPs rise through years of work, from camera assistant to operator to DOP.", PF,
     duties=["Plan the visual style with the director", "Choose camera, lenses and lighting", "Design shots and camera movement", "Lead camera, grip and lighting crews",
             "Work with the colourist on the final look", "Manage schedules on set"],
     postings=["Film, OTT, ads, music videos, documentaries"],
     facts=[fact("Education", "Film degree/diploma; FTII MFA needs graduation"), fact("Film school", "FTII MFA Cinematography — 3 years, 11 seats"),
            fact("Core skills", "Lighting, composition, camera, leadership"), fact("Usual path", "Camera assistant → operator → DOP"), fact("Hiring", "Showreel and references")],
     levels=[["Beginner", "Camera basics and composition"], ["Intermediate", "Lighting scenes, lenses and movement"], ["Professional", "Consistent visual storytelling and crew leadership"]],
-    steps=[step("Learn camera and lenses", "Months 1–3", "Exposure, focal length, sensor size, frame rates."), step("Learn lighting", "Months 2–8", "Three-point, motivated light, night and day exteriors."),
-           step("Shoot short films", "Months 4–12", "Collaborate with student directors."), step("Film school (optional)", "After graduation", "FTII MFA via FTII-ET or SRFTI."),
-           step("Assist on sets", "Year 1+", "Camera assistant/focus puller to learn professional workflow."), step("Build a showreel", "Ongoing", "Your best-lit scenes.")],
+    steps=[step("Learn camera and lenses", "Months 1–3", "Learn exposure, focal length, sensor size and frame rates, and how each one changes the image. "
+                                                         "Shoot test clips with different lenses to see the effect for yourself. "
+                                                         "This knowledge lets you choose the right camera and lens for every scene."),
+           step("Learn lighting", "Months 2–8", "Learn three-point lighting, motivated light, and how to light night scenes and day exteriors. "
+                                                "Study film stills and try to recreate their lighting with simple lamps. "
+                                                "Lighting is the core skill of a cinematographer."),
+           step("Shoot short films", "Months 4–12", "Shoot short films with student or new directors to practise visual storytelling. "
+                                                    "Each film teaches you to plan shots, work with a team and solve problems on set. "
+                                                    "These films also become your first showreel material."),
+           step("Film school (optional)", "After graduation", "If you want formal training, apply for the FTII MFA in Cinematography through FTII-ET, or for the SRFTI programmes. "
+                                                              "FTII needs a bachelor's degree, and seats in each specialisation are limited. "
+                                                              "Film school is optional, but it gives deep training and industry networks."),
+           step("Assist on sets", "Year 1+", "Work as a camera assistant or focus puller to learn professional workflow on real sets. "
+                                             "You will learn how large crews work, how equipment is handled and how DOPs work with directors. "
+                                             "Many DOPs build their careers through these assisting years."),
+           step("Build a showreel", "Ongoing", "Put your best-lit scenes into a short showreel and update it as you improve. "
+                                               "Show variety, such as day, night, interior and exterior scenes. "
+                                               "Directors and producers check your showreel and references before hiring you.")],
     hiring=_hiring("Shoot or light a short scene", "Your visual choices, lighting plans and how you work with directors", "Your showreel and references are checked first."),
     checklist=["You can light scenes with intention.", "You know lenses and camera systems.", "You have shot several short films.", "You have a strong showreel."],
     timeline=_timeline(("Camera + lighting", "Months 1–8"), ("Short films", "Months 4–12"), ("Film school / assisting", "Years 1–3"), ("Showreel", "Ongoing")),
@@ -67,9 +107,15 @@ DOP = _des(
             ["Senior", "DOP for features/OTT", "6+ years", "Large crews"]],
     special=["FTII admission is through its own entrance test (FTII-ET); seats per specialisation are limited (11 for Cinematography)."],
     mistakes=["Focusing on gear over light.", "Not collaborating with directors.", "Weak showreel."],
-    faqs=[{"q": "Is film school necessary?", "a": "Not mandatory, but FTII/SRFTI training and networks help; many DOPs also rise by assisting."},
-          {"q": "What's needed for FTII?", "a": "A bachelor's degree in any discipline and clearing FTII-ET."},
-          {"q": "How long to become a DOP?", "a": "Often several years of assisting and shooting smaller projects."}],
+    faqs=[{"q": "Is film school necessary?", "a": "Film school is not mandatory to become a DOP. "
+                                                  "FTII and SRFTI training and networks help, but many DOPs also rise by assisting on sets. "
+                                                  "Choose the route that fits your situation, and keep shooting either way."},
+          {"q": "What's needed for FTII?", "a": "You need a bachelor's degree in any discipline and must clear the FTII entrance test (FTII-ET). "
+                                                "Seats in each specialisation are limited, so prepare well. "
+                                                "Check the latest FTII prospectus for current rules and dates."},
+          {"q": "How long to become a DOP?", "a": "It often takes several years of assisting and shooting smaller projects. "
+                                                  "Most people move from camera assistant to operator, and then to DOP on shorts and ads. "
+                                                  "Keep building your showreel and contacts throughout."}],
     related_items=[related("film-director", "Film Director", "Works closely"), related("color-grading-artist", "Color Grading Artist", "Final look"), related("drone-photographer-videographer", "Drone Videographer", "Aerial shots")],
     institutes=[FTII, SRFTI, NID, MESC],
     sources=[source("FTII Admission Prospectus FTII-ET-2025-26", "https://ftii.ac.in/ftii-prospectus-et-2025-26", "MFA Cinematography eligibility and seats.")],
@@ -83,16 +129,33 @@ DOP = _des(
 
 DIRECTOR = _des(
     "film-director", "Film Director", "Film Direction", "How to become a Film Director",
-    "A film director turns a script into a film — guiding actors, camera, sound and editing — and is responsible for the creative vision of films, series, ads and documentaries.", PF,
+    "A film director turns a script into a film — guiding actors, camera, sound and editing — and is responsible for the creative vision of films, series, ads and documentaries. "
+    "Directing is project-based, and producers or platforms fund projects based on your past films and pitches. "
+    "Many directors start as assistant directors and make short films to prove themselves.", PF,
     duties=["Develop the script and vision", "Cast and rehearse actors", "Plan shots with the DOP", "Lead the crew on set", "Supervise editing and sound", "Present to producers and platforms"],
     postings=["Films, OTT series, ads, music videos, documentaries"],
     facts=[fact("Education", "Graduation + film school"), fact("Film school", "FTII MFA Direction & Screenplay Writing — 3 years, 11 seats"),
            fact("Core skills", "Storytelling, working with actors, visual language, leadership"), fact("Usual path", "Assistant director → shorts/ads → features"),
            fact("Hiring", "Short films and references; producers fund projects")],
     levels=[["Beginner", "Write and shoot micro-shorts"], ["Intermediate", "Direct actors and complete short films"], ["Professional", "Lead full crews and deliver ads/series/films"]],
-    steps=[step("Watch and analyse films", "Ongoing", "Study scenes, structure and performance."), step("Write and make short films", "Months 1–12", "Finish small films with friends."),
-           step("Learn screenwriting", "Months 3–12", "Structure, scenes, dialogue."), step("Film school (optional)", "After graduation", "FTII MFA via FTII-ET or SRFTI."),
-           step("Work as an assistant director", "Years 1–3", "Learn sets, scheduling and production."), step("Make your calling-card film", "Ongoing", "Festivals and platforms.")],
+    steps=[step("Watch and analyse films", "Ongoing", "Watch films closely and study how scenes are structured, shot and performed. "
+                                                      "Pause on scenes you like and ask why each shot and cut was chosen. "
+                                                      "This habit trains your eye and builds your visual language."),
+           step("Write and make short films", "Months 1–12", "Write and shoot small films with friends, even using a phone. "
+                                                             "Finishing films teaches you more than planning big ones. "
+                                                             "Pay attention to sound, because poor sound can ruin good images."),
+           step("Learn screenwriting", "Months 3–12", "Learn story structure, scene writing and dialogue. "
+                                                      "Write short scripts regularly and get honest feedback from others. "
+                                                      "A strong script is the base of every good film."),
+           step("Film school (optional)", "After graduation", "If you want formal training, apply for the FTII MFA in Direction & Screenplay Writing through FTII-ET, or for the SRFTI programmes. "
+                                                              "FTII needs a bachelor's degree in any discipline. "
+                                                              "Film school gives training and networks, but it is not required."),
+           step("Work as an assistant director", "Years 1–3", "Work as an assistant director to learn sets, scheduling and production. "
+                                                              "You will see how a director handles actors, crew and time pressure. "
+                                                              "Many directors build their contacts and skills through AD work."),
+           step("Make your calling-card film", "Ongoing", "Make one strong short film that shows your voice, and send it to festivals and platforms. "
+                                                          "A calling-card film helps producers and platforms trust you with bigger projects. "
+                                                          "Keep making new films while you pitch.")],
     hiring=[stage("Step 1 — Short films and showreel", "Ongoing", "Your films are your portfolio.", [paper("2–3 completed short films", "Links", "—", "Finish films; quality over length")], "Clear voice and craft."),
             stage("Step 2 — Assistant director work", "Years 1–3", "Most directors learn on professional sets.", [], "Reliable, organised work on set."),
             stage("Step 3 — Pitch and get funded", "When ready", "Pitch scripts to producers, platforms or brands.", [paper("Pitch deck + script", "Document", "—", "Know your budget and audience")], "A producer or platform backs the project.")],
@@ -104,9 +167,15 @@ DIRECTOR = _des(
             ["Senior", "Feature/Series Director", "6+ years", "Long-form"]],
     special=["Directing is project-based and uncertain — many directors also work in ads, writing or editing."],
     mistakes=["Never finishing films.", "Ignoring sound.", "Writing without feedback."],
-    faqs=[{"q": "Do I need film school?", "a": "Not required, but FTII/SRFTI give training and networks; many directors start as ADs."},
-          {"q": "What's needed for FTII Direction?", "a": "A bachelor's degree in any discipline and clearing FTII-ET."},
-          {"q": "Can I start with a phone?", "a": "Yes — focus on story, performance and sound."}],
+    faqs=[{"q": "Do I need film school?", "a": "Film school is not required to become a director. "
+                                               "FTII and SRFTI give training and networks, but many directors start as assistant directors. "
+                                               "What matters most is completed films that show your voice."},
+          {"q": "What's needed for FTII Direction?", "a": "You need a bachelor's degree in any discipline and must clear the FTII entrance test (FTII-ET). "
+                                                          "Seats are limited, so prepare your application well. "
+                                                          "Check the latest FTII prospectus for current rules and dates."},
+          {"q": "Can I start with a phone?", "a": "Yes, you can start making films with a phone. "
+                                                  "Focus on story, performance and sound, because these matter more than the camera. "
+                                                  "Learn the basics on simple equipment and upgrade only when your films need it."}],
     related_items=[related("cinematographer-dop", "Cinematographer / DOP", "Visual partner"), related("video-editor", "Video Editor", "Post-production"), related("color-grading-artist", "Color Grading Artist", "Final look")],
     institutes=[FTII, SRFTI, NID, MESC],
     sources=[source("FTII Admission Prospectus FTII-ET-2025-26", "https://ftii.ac.in/ftii-prospectus-et-2025-26", "MFA Direction & Screenplay Writing eligibility and seats.")],
@@ -120,18 +189,33 @@ DIRECTOR = _des(
 
 DRONE_PILOT = _des(
     "drone-photographer-videographer", "Drone Photographer / Videographer", "Drone", "How to become a Drone Photographer / Videographer",
-    "A drone photographer/videographer shoots aerial images and video for real estate, weddings, films, events, surveys and tourism — flying safely and legally under India's Drone Rules.", PF,
+    "A drone photographer/videographer shoots aerial images and video for real estate, weddings, films, events, surveys and tourism — flying safely and legally under India's Drone Rules. "
+    "Commercial work generally needs a DGCA Remote Pilot Certificate and a registered drone. "
+    "Clients hire you based on your certificate, safe flying and aerial reel.", PF,
     duties=["Plan flights and check airspace zones", "Fly safely and capture aerial shots", "Follow the Drone Rules and permissions", "Edit and grade footage",
             "Maintain drone and batteries", "Deliver images and video to clients"],
     postings=["Real estate, weddings/events, film/ads, tourism, infrastructure and survey companies"],
     facts=[fact("Education", "DGCA Remote Pilot Certificate (18–65, Class 10)"), fact("Law", "Drone Rules, 2021 (as amended)"), fact("Training", "DGCA-authorised RPTO"),
            fact("Platform", "Digital Sky (registration, airspace map)"), fact("Core skills", "Safe flying, composition, editing"), fact("Airspace", "Green / yellow / red zones")],
     levels=[["Beginner", "Simulator and basic flying"], ["Certified", "Remote Pilot Certificate and safe operations"], ["Professional", "Cinematic aerials, planning and client work"]],
-    steps=[step("Learn the rules", "Week 1", "Drone categories, registration, airspace zones and where flying is prohibited."),
-           step("Train at a DGCA-authorised RPTO", "About 1–2 weeks (varies)", "Training plus proficiency test; the Remote Pilot Certificate is issued through Digital Sky."),
-           step("Register your drone", "Before commercial use", "Unique identification number on Digital Sky, as per rules."),
-           step("Practise aerial cinematography", "Months 1–3", "Smooth moves, reveals, orbits, composition."), step("Learn editing", "Months 1–3", "Edit and grade aerial footage."),
-           step("Get clients", "After portfolio", "Real estate, events, tourism, production houses.")],
+    steps=[step("Learn the rules", "Week 1", "Learn the drone categories, registration rules, airspace zones and the places where flying is prohibited. "
+                                             "Read the Drone Rules and practise using the Digital Sky airspace map. "
+                                             "Knowing the rules keeps people safe and keeps you out of legal trouble."),
+           step("Train at a DGCA-authorised RPTO", "About 1–2 weeks (varies)", "Join a DGCA-authorised Remote Pilot Training Organisation (RPTO) for training and a proficiency test. "
+                                                                               "After you pass, the Remote Pilot Certificate is issued through Digital Sky. "
+                                                                               "Check that the RPTO is authorised before you pay any fee."),
+           step("Register your drone", "Before commercial use", "Register your drone on Digital Sky to get its unique identification number, as the rules require. "
+                                                                "Do this before any commercial flight. "
+                                                                "Keep your registration and certificate details ready on every shoot."),
+           step("Practise aerial cinematography", "Months 1–3", "Practise smooth moves such as reveals and orbits, with good composition. "
+                                                                "Fly slowly and steadily, because shaky, fast movements look amateur. "
+                                                                "Practise only in permitted areas, and check the airspace map every time."),
+           step("Learn editing", "Months 1–3", "Learn to edit and colour grade your aerial footage, for example in DaVinci Resolve. "
+                                               "Many clients want a finished video, not raw clips. "
+                                               "Good editing makes your aerial reel look professional."),
+           step("Get clients", "After portfolio", "Pitch to real estate firms, event planners, tourism businesses and production houses with your aerial reel. "
+                                                  "Show your certificate and explain your safety checklist when you meet clients. "
+                                                  "Back up all footage and consider insurance before you take paid work.")],
     hiring=_hiring("Fly and shoot a short aerial sequence", "Safety, rules, flight planning and your reel", "Your certificate and aerial reel are checked first."),
     checklist=["You hold a Remote Pilot Certificate where required.", "Your drone is registered.", "You check airspace zones before every flight.", "You have a smooth aerial reel."],
     timeline=_timeline(("Rules", "Week 1"), ("RPTO training", "1–2 weeks"), ("Practice", "Months 1–3"), ("Clients", "Month 3+")),
@@ -143,9 +227,15 @@ DRONE_PILOT = _des(
     special=["Never fly in red zones or without required permission; check the Digital Sky airspace map before every flight.",
              "Nano drones and micro drones for non-commercial use have exemptions — commercial work generally needs a certified pilot."],
     mistakes=["Flying without checking zones.", "No insurance or backups.", "Shaky, fast movements."],
-    faqs=[{"q": "Who can get a Remote Pilot Certificate?", "a": "Persons aged 18–65 who have passed Class 10, after training and a test at a DGCA-authorised RPTO."},
-          {"q": "Do I need permission for every flight?", "a": "Green zones generally need no permission; yellow and red zones need permission as per the rules — always check the airspace map."},
-          {"q": "Is a degree needed?", "a": "Not for the certificate; media/photography training helps for agency jobs."}],
+    faqs=[{"q": "Who can get a Remote Pilot Certificate?", "a": "Persons aged 18–65 who have passed Class 10 can get one after training and a test at a DGCA-authorised RPTO. "
+                                                                "The certificate is issued through the Digital Sky platform. "
+                                                                "Check the latest Drone Rules and amendments before you enrol."},
+          {"q": "Do I need permission for every flight?", "a": "Green zones generally need no permission, while yellow and red zones need permission as per the rules. "
+                                                               "Always check the Digital Sky airspace map before every flight. "
+                                                               "Never fly in a red zone without the required permission."},
+          {"q": "Is a degree needed?", "a": "No degree is needed for the Remote Pilot Certificate. "
+                                            "Media or photography training helps if you want jobs with agencies and production houses. "
+                                            "Strong flying and editing skills matter most to clients."}],
     related_items=[related("commercial-photographer", "Commercial Photographer", "Photography"), related("cinematographer-dop", "Cinematographer / DOP", "Film"), related("video-editor", "Video Editor", "Editing")],
     institutes=[DRONE, RESOLVE, ADOBE, MESC],
     sources=[source("Ministry of Civil Aviation — Drone Rules, 2021", "https://www.civilaviation.gov.in/", "Remote Pilot Certificate, registration and airspace rules.")],

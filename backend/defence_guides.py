@@ -60,7 +60,7 @@ NDA_CDS = details(
     eligibility=["NDA: unmarried male/female; Indian citizen (or Nepal subject / specified migrants with a certificate). NDA II 2026: born between 1 January 2008 and 1 January 2011.",
                  "NDA education: Army wing — 12th pass (any stream). Air Force and Navy wings and Naval Academy 10+2 entry — 12th with Physics, Chemistry and Maths. Students in 12th can apply.",
                  "CDS education: IMA and OTA — any graduation. Indian Naval Academy — B.E./B.Tech or B.Sc. with Physics (and Physics & Maths in 12th). Air Force Academy — graduation with Physics & Maths in 12th, or B.E./B.Tech. Final-year students can apply.",
-                 "CDS II 2026 age: IMA and INA 19–24 (born 2 July 2003 – 1 July 2008); AFA 20–24 (up to 26 with a DGCA CPL); OTA men and women 19–25 (born 2 July 2002 – 1 July 2008). Unmarried, except AFA candidates 25+ as per notice.",
+                 "CDS II 2026 age: IMA and INA 19–24 (born 1 July 2003 – 1 July 2008); AFA 20–24 (up to 26 with a DGCA CPL); OTA men and women 19–25 (born 1 July 2002 – 1 July 2008). Unmarried, except AFA candidates 25+ as per notice.",
                  "You must not marry until training is complete."],
     category_table=None,
     attempt_rules=["There is no attempt limit for NDA or CDS — you can try every cycle while you fit the age window.",
@@ -86,12 +86,24 @@ NDA_CDS = details(
                    "You must be medically fit to be admitted."],
     steps=[
         step("Check your route", "Before applying", "After 12th → NDA. After graduation → CDS (or AFCAT for the Air Force)."),
-        step("Check age window and marital status", "Before applying", "Each academy has a fixed date-of-birth range in the notice."),
+        step("Check age window and marital status", "Before applying",
+             "Each academy has a fixed date-of-birth range in the notice, so check the exact dates for the academy you want rather than one common age range. "
+             "You must also be unmarried as the notice requires, and you must not marry until training is complete. "
+             "If you fall outside the window by even one day, you cannot apply for that course."),
         step("Apply on upsconline.nic.in", "NDA/CDS II 2026: 20 May – 9 June 2026", "Create your URN (one-time), Common Application Form, then the exam form. Fee: NDA ₹100, CDS ₹200; SC/ST, women and eligible wards pay nothing."),
-        step("Write the UPSC exam", "NDA/CDS II 2026: 13 September 2026", "Download the e-admit card from the UPSC site."),
-                step("Attend the SSB", "A few months after the result", "Carry original documents (10th/12th or degree). Stage I screening, then Stage II over about 4 days."),
-        step("Medical examination", "After SSB recommendation", "Service medical board checks eyesight, height-weight, fitness, etc."),
-        step("Final merit and joining", "Before course starts", "NDA 158th course & INA (10+2) start 1 July 2027; IMA, INA and AFA in July 2027; OTA in October 2027."),
+        step("Write the UPSC exam", "NDA/CDS II 2026: 13 September 2026",
+             "Download the e-admit card from the UPSC site; it is issued in the week before the exam. "
+             "Entry to the venue closes 30 minutes before each session, and face authentication is done at the venue, so reach early. "
+             "Negative marking applies, so answer only when you are reasonably sure."),
+        step("Attend the SSB", "A few months after the result", "Carry original documents (10th/12th or degree). Stage I screening, then Stage II over about 4 days."),
+        step("Medical examination", "After SSB recommendation",
+             "A service medical board checks your eyesight, height-weight, overall fitness and other medical standards. "
+             "You must be medically fit to be admitted, even if your written and SSB marks are high. "
+             "Read the medical standards in the notice before you start preparing, so you are not surprised at this stage."),
+        step("Final merit and joining", "Before course starts",
+             "Final merit is your written marks plus your SSB marks, filled against vacancies separately for men and women. "
+             "For the II 2026 cycle, the NDA 158th course and the Naval Academy (10+2) course start on 1 July 2027; IMA, INA and AFA also start in July 2027, and OTA starts in October 2027. "
+             "Watch for your joining instructions and keep your original documents ready."),
         step("Training and commission", "Joining onwards", "NDA: 3 years (JNU degree) then 1 year at IMA/INA/AFA; CDS: directly at IMA/INA/AFA/OTA. Commissioned as Lieutenant / Sub-Lieutenant / Flying Officer."),
     ],
     calendar={"label": "NDA II and CDS II 2026 (UPSC notices dated 20-05-2026)",
@@ -128,7 +140,8 @@ NDA_CDS = details(
     mistakes=DEFENCE_MISTAKES,
     faqs=[{"q": "Can girls apply for NDA?", "a": "Yes. Unmarried female candidates are eligible for NDA; vacancies and merit lists are separate for men and women."},
           {"q": "Can I apply for NDA while in 12th?", "a": "Yes. You must show the 12th pass certificate as per the deadline in the notice."},
-          {"q": "Is there an attempt limit?", "a": "No. Only the age window and marital status limit you."},
+          {"q": "Is there an attempt limit?", "a": "No, there is no attempt limit for NDA or CDS. Only the age window and marital status limit you. "
+                                                 "Both exams are held twice a year, so you can try in every cycle while you are eligible."},
           {"q": "Do I need coaching for SSB?", "a": "Not compulsory. SSB checks personality and officer-like qualities; honest practice, fitness and clear communication matter most."}],
     related_items=[related("short-service-commission-afcat", "Air Force Officer — AFCAT", "Graduate route into the Air Force"),
                    related("ips-officer", "IPS", "Uniformed leadership through UPSC CSE"),
@@ -177,12 +190,30 @@ AFCAT = details(
                    "Pass AFSB Stage I and Stage II (and CPSS for flying).",
                    "Be medically fit, then make it to the merit list for your branch."],
     steps=[
-        step("Choose your branch", "Before applying", "Flying, Ground Duty Technical, or Ground Duty Non-Technical — each has its own degree rules."),
-        step("Apply on afcat.edcil.co.in", "AFCAT 02/2026: 20 May – 19 June 2026", "Fill the online form, choose branch preferences and pay ₹550 + GST."),
-        step("Write AFCAT", "AFCAT 02/2026: 8 August 2026", "Reach by 0800 hrs; gates close at 0930 hrs."),
-        step("AFSB", "After the result", "Carry original documents; Stage I screening on day 1."),
-        step("Medical and merit list", "After AFSB", "Final selection depends on merit and vacancies."),
-        step("Training and commission", "July 2027 for the 02/2026 cycle", "About 62 weeks (Flying and Technical) or 50 weeks (Non-Technical) at Air Force training establishments, then commissioned as Flying Officer."),
+        step("Choose your branch", "Before applying",
+             "Choose between Flying, Ground Duty (Technical) and Ground Duty (Non-Technical), because each has its own degree and subject rules. "
+             "Flying and Technical need Physics and Maths in 12th, and the normal upper age limit is lower for Flying (24) than for Ground Duty (26). "
+             "Read the branch table in the notice and confirm you meet the exact degree rule before you apply."),
+        step("Apply on afcat.edcil.co.in", "AFCAT 02/2026: 20 May – 19 June 2026",
+             "Fill the online form on afcat.edcil.co.in, choose your branch preferences and pay ₹550 + GST. "
+             "Use only this official portal, because the older AFCAT site no longer takes applications. "
+             "Save your login details and a copy of the submitted form, because you will need them at later stages."),
+        step("Write AFCAT", "AFCAT 02/2026: 8 August 2026",
+             "Reach the centre by 0800 hours, because the gates close at 0930 hours and nobody is let in after that. "
+             "The test has 100 questions in 2 hours, with 3 marks for each correct answer and 1 mark cut for each wrong one. "
+             "Answer the questions you are sure of first and skip wild guesses."),
+        step("AFSB", "After the result",
+             "Carry your original documents, because they are checked on day 1 along with the Stage I screening tests. "
+             "If you clear Stage I, you take psychology tests, group tests and an interview over the next days, and Flying candidates also take CPSS. "
+             "Practise speaking clearly in groups and know your own application details well."),
+        step("Medical and merit list", "After AFSB",
+             "After AFSB recommendation, you have a medical examination at an IAF medical establishment. "
+             "Final selection depends on merit, medical fitness and the vacancies in your branch. "
+             "Keep yourself fit and follow the medical standards in the notice, so a small problem does not stop you at this stage."),
+        step("Training and commission", "July 2027 for the 02/2026 cycle",
+             "Training lasts about 62 weeks (Flying and Technical) or 50 weeks (Non-Technical) at Air Force training establishments, then you are commissioned as a Flying Officer. "
+             "Your commission is Permanent or Short Service depending on your branch and the notice. "
+             "You must stay unmarried during training, and physical training includes running, swimming and rope climbing."),
     ],
     calendar={"label": "AFCAT 02/2026 (courses commencing July 2027)",
               "rows": [{"event": "Online applications", "date": "20 May – 19 June 2026"},
@@ -212,7 +243,8 @@ AFCAT = details(
                        "Applications moved to afcat.edcil.co.in; the older AFCAT site no longer takes applications."]},
     mistakes=DEFENCE_MISTAKES[1:] + ["Guessing blindly — each wrong answer costs 1 mark."],
     faqs=[{"q": "Can women apply through AFCAT?", "a": "Yes. Men and women can apply for Flying and Ground Duty branches."},
-          {"q": "Is AFCAT the same as CDS for the Air Force?", "a": "No. CDS (UPSC) gives Air Force Academy entry for the Flying branch; AFCAT is the Air Force's own exam for Flying and Ground Duty branches."}],
+          {"q": "Is AFCAT the same as CDS for the Air Force?", "a": "No, they are two different exams. CDS (UPSC) gives Air Force Academy entry for the Flying branch; AFCAT is the Air Force's own exam for Flying and Ground Duty branches. "
+                                                                  "If you want a Ground Duty branch, prepare for AFCAT rather than CDS."}],
     related_items=[related("army-navy-air-force-officer-nda-cds", "NDA / CDS", "UPSC officer entry for all three services"),
                    related("ips-officer", "IPS", "Uniformed leadership through UPSC CSE")],
 )

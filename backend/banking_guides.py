@@ -89,15 +89,39 @@ PO = details(
                    "Scores from different shifts are normalised (equi-percentile method).",
                    "Provisional allotment to a bank depends on merit, your bank preference and vacancies."],
     steps=[
-        step("Finish graduation first", "Before the notice", "IBPS checks that you are already a graduate on the day you register."),
-        step("Prepare for Prelims and Mains together", "4–6 months before Prelims (typical)", "Same subjects; Mains is harder and adds banking awareness and a descriptive paper."),
+        step("Finish graduation first", "Before the notice",
+             "IBPS checks that you are already a graduate, with a valid mark-sheet or degree, on the day you register. "
+             "Final-year students cannot apply, so plan your first attempt for the cycle after your result is declared. "
+             "You can still start preparing during your final year."),
+        step("Prepare for Prelims and Mains together", "4–6 months before Prelims (typical)",
+             "Prelims and Mains test the same core subjects, but Mains is harder and adds banking awareness and a descriptive paper. "
+             "Preparing for both together saves time, because the gap between the two exams is short. "
+             "Read banking and financial news daily and practise one essay or letter every week."),
         step("Register on ibps.in", "July (CRP XVI: 1–21 July 2026)", "Fill the form, upload photo, signature and the documents asked, pay the fee. Biometric data (photo, right thumb impression) is captured at exam stages. A 2-day edit window opens after registration closes."),
-        step("Optional: Pre-Examination Training", "August", "Free online training for some SC/ST/OBC/minority candidates who opt for it in the form."),
-        step("Write Prelims", "August", "Download the call letter from ibps.in."),
-        step("Write Mains", "October", "Online objective tests + descriptive paper (about 3 hours 10 minutes at the venue)."),
-        step("Personality Test", "November", "Self-report test; mandatory to be called for the interview."),
-        step("Interview and document verification", "November–December", "Carry original certificates; candidature is cancelled without valid documents."),
-        step("Provisional allotment and joining", "January 2027 (tentative)", "Allotted bank completes medical, verification and issues joining letter; you start on probation."),
+        step("Optional: Pre-Examination Training", "August",
+             "IBPS may arrange online pre-exam training for a limited number of SC/ST/OBC/minority candidates who opt for it in the application form. "
+             "If you are eligible and want it, fill the training column in the online application, because that is where IBPS asks for it. "
+             "Attending this training does not give any right to selection, so keep up your own practice."),
+        step("Write Prelims", "August",
+             "Download the call letter from ibps.in and carry it with the documents it asks for. "
+             "You must clear the cut-off in each of the three sections, and 0.25 marks are cut for each wrong answer. "
+             "Attempt the questions you are sure of first, and avoid wild guessing."),
+        step("Write Mains", "October",
+             "Mains has online objective tests and a descriptive paper (essay and comprehension), about 3 hours 10 minutes in total at the venue. "
+             "You need a minimum score in each test and in total, and Mains counts for 80% of your final score. "
+             "Practise full-length mocks with the descriptive paper included, so you do not run out of energy at the end."),
+        step("Personality Test", "November",
+             "This is a self-report test, and your personality profile is shared with the interview panel. "
+             "It is not qualifying, but you must appear in it to be called for the interview. "
+             "Answer honestly and consistently rather than trying to guess the 'right' answers."),
+        step("Interview and document verification", "November–December",
+             "Carry your original certificates, because your candidature is cancelled without valid documents. "
+             "The interview carries 100 marks and needs at least 40% (35% for SC/ST/OBC/PwBD), and it makes up 20% of your final score. "
+             "Prepare to talk about your graduation subject, your home state and current banking news."),
+        step("Provisional allotment and joining", "January 2027 (tentative)",
+             "IBPS provisionally allots you to a bank using your merit, your bank preferences and the vacancies reported by banks. "
+             "The allotted bank then completes medical and verification checks and issues the joining letter, and you start on probation. "
+             "Once an allotment is made, no request for change is accepted, so order your bank preferences carefully."),
     ],
     calendar={"label": "IBPS CRP PO/MT-XVI (vacancies of 2027-28)",
               "rows": [{"event": "Online registration + fee", "date": "1 – 21 July 2026"},
@@ -120,9 +144,12 @@ PO = details(
                        "Probation period, any service bond and posting are decided by the bank you are allotted.",
                        "Participating banks in CRP XVI: Bank of Baroda, Bank of India, Bank of Maharashtra, Canara Bank, Central Bank of India, Indian Bank, Indian Overseas Bank, PNB, Punjab & Sind Bank, UCO Bank, Union Bank of India."]},
     mistakes=BANK_MISTAKES,
-    faqs=[{"q": "Can final-year students apply for IBPS PO?", "a": "No. You must already be a graduate with a valid mark-sheet/degree on the day you register."},
-          {"q": "Is there an attempt limit?", "a": "The IBPS PO notice does not set one — only the age limit applies."},
-          {"q": "Can I choose my bank?", "a": "You give preferences; allotment depends on your merit, preferences and vacancies reported by banks."}],
+    faqs=[{"q": "Can final-year students apply for IBPS PO?", "a": "No, final-year students cannot apply. You must already be a graduate with a valid mark-sheet/degree on the day you register. "
+                                                                   "If your result is still pending, use the time to prepare and apply in the next cycle."},
+          {"q": "Is there an attempt limit?", "a": "The IBPS PO notice does not set one, so only the age limit applies. "
+                                                 "You can apply every year until you cross the upper age limit for your category."},
+          {"q": "Can I choose my bank?", "a": "You give bank preferences, but you cannot pick a bank directly. "
+                                            "Allotment depends on your merit, your preferences and the vacancies reported by banks, and it cannot be changed once made."}],
     related_items=[related("bank-clerk", "Bank Clerk (IBPS CSA)", "Clerical entry into the same banks"),
                    related("rbi-grade-b-officer", "RBI Grade B", "Officer job at India's central bank"),
                    related("inspector-auditor-examiner", "SSC CGL", "Graduate-level central government jobs")],
@@ -174,13 +201,34 @@ CSA = details(
                    "You must clear every section and the overall cut-off.",
                    "LLPT is qualifying — it must be passed (or exempted by your 10th mark-sheet) before joining."],
     steps=[
-        step("Finish graduation and get a computer certificate", "Before the notice", "Graduation must be complete on the registration date; computers studied as a subject also counts."),
-        step("Choose your State/UT", "Before applying", "You can apply for only one State/UT, and you must know its local language."),
-        step("Register on ibps.in", "August (CSA XVI: 1–21 August 2026)", "Fill the form, upload documents, choose exam medium and local language, pay the fee."),
-        step("Write Prelims", "October", "Download the call letter from ibps.in."),
-        step("Write Mains", "November–December", "Your merit for allotment comes from this exam."),
-        step("Provisional allotment", "March 2027 (tentative)", "Based on State-wise merit and vacancies."),
-        step("LLPT, document verification and joining", "Before joining", "Bank checks documents, local language and medical fitness."),
+        step("Finish graduation and get a computer certificate", "Before the notice",
+             "Your graduation must be complete, with a valid mark-sheet or degree, on the day you register. "
+             "You also need computer literacy: a certificate, diploma or degree in computers, or computers/IT studied as a subject in school or college. "
+             "If you have none of these, do a short computer course before the notice comes out."),
+        step("Choose your State/UT", "Before applying",
+             "You can apply for vacancies in only one State/UT, and you must be able to read, write, speak and understand its local language. "
+             "Your posting will be in that State/UT, so choose one where you are happy to live and work. "
+             "Choosing a State whose language you do not know can cost you the job at the language test stage."),
+        step("Register on ibps.in", "August (CSA XVI: 1–21 August 2026)",
+             "Fill the online form, upload the documents asked for, choose your exam medium and local language, and pay the fee. "
+             "Check every detail before the edit window closes, because changes are not allowed after that. "
+             "Save the registration number and password, as you need them to download call letters."),
+        step("Write Prelims", "October",
+             "Download the call letter from ibps.in and carry it with the documents it asks for. "
+             "Each section has its own 20-minute timer and its own cut-off, and 0.25 marks are cut for each wrong answer. "
+             "Practise sectional timed tests so you can finish each section in time."),
+        step("Write Mains", "November–December",
+             "Your merit for allotment comes only from this exam, and cut-offs are State/UT-wise. "
+             "You must clear every section and the overall cut-off, with 0.25 marks cut for each wrong answer. "
+             "Give extra time to general and financial awareness, because it is not part of Prelims."),
+        step("Provisional allotment", "March 2027 (tentative)",
+             "Provisional allotment to a bank is based on State-wise merit, your preferences and the vacancies reported by banks. "
+             "It is not yet an offer of appointment, because the allotted bank still checks your eligibility and documents. "
+             "Once an allotment is made, no request for change is accepted."),
+        step("LLPT, document verification and joining", "Before joining",
+             "The allotted bank checks your documents, your local language and your medical fitness before you join. "
+             "The language test (LLPT) is qualifying, and you are exempt if your 10th or higher mark-sheet shows you studied that language. "
+             "If you fail the LLPT, you will not be appointed, so practise reading and writing the language early."),
     ],
     calendar={"label": "IBPS CRP CSA-XVI (vacancies of 2027-28)",
               "rows": [{"event": "Online registration + fee", "date": "1 – 21 August 2026"},
@@ -200,9 +248,12 @@ CSA = details(
                        "SBI Junior Associate, RRB Office Assistant, insurance and postal recruitments are separate.",
                        "Exams are offered in English, Hindi and the regional language listed for your State/UT."]},
     mistakes=BANK_MISTAKES + ["Choosing a State whose local language you cannot read and write."],
-    faqs=[{"q": "Can a 12th pass apply for IBPS Clerk?", "a": "No. Graduation is compulsory (except a specific rule for long-serving ex-servicemen)."},
-          {"q": "Is there an interview?", "a": "No. Final selection is based on Mains marks, plus the language test and documents."},
-          {"q": "Can I apply for more than one State?", "a": "No. You apply for vacancies in one State/UT only."}],
+    faqs=[{"q": "Can a 12th pass apply for IBPS Clerk?", "a": "No, graduation is compulsory, except under a specific rule for long-serving ex-servicemen. "
+                                                              "If you are 12th pass now, finish your degree first and look at SSC CHSL or Railway NTPC undergraduate posts in the meantime."},
+          {"q": "Is there an interview?", "a": "No, IBPS CSA has no interview. Final selection is based on Mains marks, plus the language test and documents. "
+                                              "This makes your Mains score the single most important part of your preparation."},
+          {"q": "Can I apply for more than one State?", "a": "No, you apply for vacancies in one State/UT only. "
+                                                            "Pick the State whose local language you know well, because you must pass its language test to be appointed."}],
     related_items=[related("probationary-officer-po", "Bank PO (IBPS)", "Officer entry in the same banks"),
                    related("ldc-deo-postal-assistant", "SSC CHSL", "12th-pass clerical government jobs"),
                    related("rbi-grade-b-officer", "RBI Grade B", "Central bank officer route")],
@@ -257,19 +308,37 @@ RBI = details(
                    "Eligibility is checked at the interview — if you are ineligible, candidature is cancelled even after clearing exams.",
                    "General and DEPR/DSIM are separate applications with separate fees."],
     steps=[
-        step("Check eligibility and your stream", "Before the notice", "General stream needs 60% in graduation or 55% in PG; DEPR/DSIM need specific Master's degrees."),
-        step("Prepare for Phase I and II together", "6–9 months before Phase I (typical)", "Economics, finance and management for Phase II take the longest."),
+        step("Check eligibility and your stream", "Before the notice",
+             "The General stream needs at least 60% in graduation or 55% in post-graduation (lower for SC/ST/PwBD), while DEPR and DSIM need specific Master's degrees. "
+             "Check your age on the notice's cut-off date and, if you are General or EWS, how many Phase I attempts you have used. "
+             "The marks rule is strict, so confirm your aggregate percentage before you apply."),
+        step("Prepare for Phase I and II together", "6–9 months before Phase I (typical)",
+             "Economics, finance and management for Phase II take the longest, so start them early instead of waiting for the Phase I result. "
+             "The gap between Phase I and Phase II is only a few weeks, which is not enough to learn these subjects from scratch. "
+             "Practise Phase I reasoning and quant daily alongside, because you must clear every Phase I section first."),
         step("Apply on opportunities.rbi.org.in", "When the RBI notice is out (PY 2025: 10–30 September 2025)", "Pay ₹850 + GST (₹100 + GST for SC/ST/PwBD). Choose 4 preferred centres for each phase."),
-        step("Write Phase I", "PY 2025: 18 October 2025", "Online objective test."),
-        step("Write Phase II", "PY 2025: 6 December 2025", "Three papers; you must attend all shifts."),
-        step("Interview and document verification", "After Phase II result", "Carry original documents; eligibility is decided here."),
-        step("Medical, joining and probation", "After final result", "Join as Officer in Grade 'B' on probation; posting anywhere in India."),
+        step("Write Phase I", "PY 2025: 18 October 2025",
+             "Phase I is an online objective test of general awareness, reasoning, English and quantitative aptitude. "
+             "You must clear each section and the overall cut-off, and 0.25 marks are cut for each wrong answer. "
+             "It is only a screening test, so its marks do not count in the final merit."),
+        step("Write Phase II", "PY 2025: 6 December 2025",
+             "Phase II has three papers: Economic & Social Issues, English writing skills, and Finance & Management. "
+             "You must attend all the shifts and appear in all three papers to be considered for the interview. "
+             "Papers I and III are half objective and half descriptive, so practise writing short, clear answers."),
+        step("Interview and document verification", "After Phase II result",
+             "Carry your original documents, because RBI checks your eligibility only at this stage. "
+             "If you turn out to be ineligible, your candidature is cancelled even after clearing both phases. "
+             "Prepare to discuss the economy, banking regulation and your own background."),
+        step("Medical, joining and probation", "After final result",
+             "After the final result and medical checks, you join as Officer in Grade 'B' on probation. "
+             "You can be posted to an RBI office anywhere in India. "
+             "Promotion to higher grades later follows RBI's internal promotion policy."),
     ],
     calendar={"label": "RBI Grade B — last cycle read from the official site (Panel Year 2025)",
               "rows": [{"event": "Online application", "date": "10 – 30 September 2025"},
                        {"event": "Phase I (General)", "date": "18 October 2025"},
                        {"event": "Phase II (General)", "date": "6 December 2025"},
-                       {"event": "Panel Year 2026 cycle", "date": "Reported as advertised in April 2026 — confirm on opportunities.rbi.org.in"}],
+                       {"event": "Panel Year 2026 cycle", "date": "Advertised 29 April 2026 (Advt. RBISB/DA/01/2026-27); General Phase II held 25 July 2026 — read its rules on opportunities.rbi.org.in"}],
               "note": "RBI dates change every year. Apply only through opportunities.rbi.org.in."},
     prep_plan=[{"phase": "Phase I base", "duration": "Months 1–3", "focus": ["Reasoning and quant daily", "Static GK + 6 months current affairs", "English reading"]},
                {"phase": "Phase II subjects", "duration": "Months 3–7", "focus": ["Economic & Social Issues: growth, inflation, poverty, budget, Economic Survey", "Finance & Management: RBI functions, financial markets, management theories", "Write one descriptive answer and one essay daily"]},
@@ -290,7 +359,8 @@ RBI = details(
     mistakes=["Applying with 59% in graduation — the 60% (or 55% PG) rule is strict for General candidates.",
               "Leaving Economic & Social Issues and Finance preparation till after Phase I.",
               "Ignoring the 6-attempt limit (General/EWS) — every Phase-I appearance counts."],
-    faqs=[{"q": "Is RBI Grade B the same as a bank PO?", "a": "No. RBI is the central bank and regulator; Grade B is a higher entry grade with different exams and pay."},
+    faqs=[{"q": "Is RBI Grade B the same as a bank PO?", "a": "No, they are different jobs. RBI is the central bank and regulator; Grade B is a higher entry grade with different exams and pay. "
+                                                             "A bank PO works in a public sector bank's branches, while an RBI officer works on regulation, policy and central banking."},
           {"q": "Do I need an economics degree?", "a": "Not for the General stream — any graduation with 60% (or PG with 55%) works. DEPR needs a Master's in Economics/Finance."}],
     related_items=[related("probationary-officer-po", "Bank PO (IBPS)", "Officer entry in public sector banks"),
                    related("ias-officer", "IAS", "UPSC civil services route"),

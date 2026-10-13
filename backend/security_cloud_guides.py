@@ -194,7 +194,9 @@ def _r(slug, title, why):
 
 ETHICAL_HACKER = _guide(
     "ethical-hacker-penetration-tester", "Ethical Hacker / Penetration Tester", "Pentester", "How to become an Ethical Hacker / Penetration Tester",
-    "An ethical hacker (penetration tester) legally attacks an organisation's systems, websites and networks — with written permission — to find weaknesses before criminals do, and reports how to fix them.",
+    "An ethical hacker (penetration tester) legally attacks an organisation's systems, websites and networks — with written permission — to find weaknesses before criminals do, and reports how to fix them. "
+    "The role needs strong networking, Linux and web basics before any hacking tools make sense. "
+    "Many pentesters start as SOC analysts or network and system admins, and practise only in legal labs until they are hired.",
     duties=["Plan tests with the client and agree on scope and permission", "Scan networks and applications for vulnerabilities",
             "Exploit weaknesses safely to prove risk", "Write clear reports with evidence and fixes", "Retest after fixes and advise developers"],
     postings=["Security consultancies, Big-4/IT services, banks, product companies", "Often project-based with client reports"],
@@ -204,11 +206,26 @@ ETHICAL_HACKER = _guide(
            fact("Legal rule", "Test only with written permission"), fact("Portfolio", "Lab write-ups, CTFs, responsible-disclosure reports")],
     levels=[["Beginner", "Networking (TCP/IP, ports), Linux commands and how websites work"], ["Intermediate", "Scanning, web vulnerabilities (OWASP Top 10), basic exploitation in labs"],
             ["Job-ready", "Full test methodology, privilege escalation, Active Directory basics and professional reports"]],
-    steps=[step("Learn networking and Linux", "Months 1–3", "TCP/IP, DNS, HTTP, ports, Linux and Windows command line."),
-           step("Learn security fundamentals", "Months 2–4", "CIA triad, common attacks, cryptography basics, OWASP Top 10."),
-           step("Practise in legal labs", "Months 4–9", "Use training labs and CTFs (PortSwigger, Cisco Ethical Hacker labs) — never real targets without permission."),
-           step("Learn scripting", "Months 4–8", "Bash and Python to automate scanning and parsing."),
-           step("Get a certification", "Months 9–14", "CEH for recognition, OSCP for hands-on credibility (harder)."),
+    steps=[step("Learn networking and Linux", "Months 1–3",
+                "Learn TCP/IP, DNS, HTTP and ports, plus the Linux and Windows command line. "
+                "Set up a couple of virtual machines at home and practise moving around, managing files and checking network connections. "
+                "Running hacking tools without understanding networking is one of the most common beginner mistakes."),
+           step("Learn security fundamentals", "Months 2–4",
+                "Learn the CIA triad, common attacks, cryptography basics and the OWASP Top 10. "
+                "For each attack, learn both how it works and how defenders stop it. "
+                "This understanding helps you write useful fixes in your reports, not just find problems."),
+           step("Practise in legal labs", "Months 4–9",
+                "Use training labs and CTFs (PortSwigger, Cisco Ethical Hacker labs) and never test real targets without permission. "
+                "Write a short note for every lab you solve, explaining the weakness, how you found it and how to fix it. "
+                "Lab write-ups are a safe, legal portfolio, because hacking real systems without written permission is illegal in India."),
+           step("Learn scripting", "Months 4–8",
+                "Learn Bash and Python to automate scanning and parsing. "
+                "Start by writing small scripts that save you time in labs, such as sorting scan results or checking a list of URLs. "
+                "Scripting also helps you understand what tools are really doing behind the scenes."),
+           step("Get a certification", "Months 9–14",
+                "Take CEH for recognition or OSCP for hands-on credibility (OSCP is harder). "
+                "CEH is widely recognised by HR teams in India, while OSCP is a hands-on exam respected by technical teams. "
+                "Many people do CEH first and OSCP later, but lab practice matters more than collecting certificates."),
            GIT_STEP, *JOB_STEPS],
     test_topics="Networking, OS, web security and security MCQs",
     interview_topics="OWASP Top 10, TCP/IP, scanning and exploitation steps, privilege escalation, reporting and a walkthrough of your labs",
@@ -238,7 +255,9 @@ ETHICAL_HACKER = _guide(
 
 SOC = _guide(
     "soc-analyst-l1-l2", "SOC Analyst (L1/L2)", "SOC Analyst", "How to become a SOC Analyst (L1/L2)",
-    "A SOC (Security Operations Centre) analyst watches an organisation's security alerts 24×7, checks whether they are real attacks, and responds or escalates.",
+    "A SOC (Security Operations Centre) analyst watches an organisation's security alerts 24×7, checks whether they are real attacks, and responds or escalates. "
+    "SOC L1 is one of the most common entry points into cybersecurity in India. "
+    "The work is often shift-based, and it builds the investigation skills needed for later security roles.",
     duties=["Monitor alerts in a SIEM (e.g. Splunk, Microsoft Sentinel)", "Triage alerts: false positive or real incident", "Investigate logs from endpoints, firewalls and cloud",
             "Escalate and help contain incidents (L2 investigates deeper)", "Write incident tickets and improve detection rules"],
     postings=["IT services, managed security providers (MSSPs), banks and large companies", "Often shift-based (24×7)"],
@@ -248,11 +267,26 @@ SOC = _guide(
            fact("Work pattern", "Rotational shifts common"), fact("Portfolio", "Home lab + incident write-ups")],
     levels=[["L1 ready", "Networking, Windows/Linux logs, common attacks, SIEM basics and ticketing"], ["L2 ready", "Deeper investigation, threat hunting queries, malware basics, incident response steps"],
             ["Next level", "Detection engineering, automation and threat intelligence"]],
-    steps=[step("Learn networking and operating systems", "Months 1–2", "TCP/IP, ports, DNS, Windows event logs and Linux logs."),
-           step("Learn security fundamentals", "Months 2–3", "Common attacks (phishing, malware, brute force), MITRE ATT&CK basics and the incident lifecycle."),
-           step("Learn a SIEM", "Months 3–5", "Search logs, build dashboards and alerts in Splunk or Microsoft Sentinel (KQL)."),
-           step("Build a home lab", "Months 4–6", "Collect logs from a few VMs, simulate simple attacks and investigate them."),
-           step("Get an entry certification", "Months 5–7", "ISC2 CC or Security+, then SC-200 if you use Microsoft tools."),
+    steps=[step("Learn networking and operating systems", "Months 1–2",
+                "Learn TCP/IP, ports and DNS, and how to read Windows event logs and Linux logs. "
+                "Practise by looking at the logs on your own computer and finding events such as logins and failed sign-ins. "
+                "Every alert you will handle as an analyst is built on this knowledge."),
+           step("Learn security fundamentals", "Months 2–3",
+                "Learn common attacks (phishing, malware, brute force), MITRE ATT&CK basics and the incident lifecycle. "
+                "For each attack, note what traces it leaves in logs, because that is how you will spot it. "
+                "Knowing the incident steps helps you decide when to close an alert and when to escalate it."),
+           step("Learn a SIEM", "Months 3–5",
+                "Learn to search logs and build dashboards and alerts in Splunk or Microsoft Sentinel (KQL). "
+                "Use free training material from the vendors and practise writing searches that answer simple questions, such as who logged in at night. "
+                "Interviewers often ask you to explain or write SIEM queries, so hands-on practice matters more than theory."),
+           step("Build a home lab", "Months 4–6",
+                "Collect logs from a few virtual machines, simulate simple attacks and investigate them. "
+                "Write up each investigation the way you would in a real ticket, with what happened and what you recommend. "
+                "These write-ups prove your skills when you have no work experience yet."),
+           step("Get an entry certification", "Months 5–7",
+                "Take ISC2 CC or Security+, then SC-200 if you work with Microsoft tools. "
+                "An entry certification helps your resume get past the first screening for L1 roles. "
+                "Check each exam page for the current version and fee before you register."),
            *JOB_STEPS],
     test_topics="Networking, OS, security fundamentals MCQs",
     interview_topics="Alert triage scenarios, log analysis, phishing investigation, ports/protocols, SIEM queries and the incident response process",
@@ -269,8 +303,12 @@ SOC = _guide(
             ["Senior", "SOC L3 / Threat Hunter", "4–7 years", "Hunting and detection engineering"], ["Next", "SOC Manager / Security Architect", "7+ years", "Lead SOC and strategy"]],
     special=["SOC L1 is one of the most common entry points into cybersecurity in India.", "Microsoft SC-200's English version is being updated on 21 October 2026 — check the study guide."],
     mistakes=["Skipping networking and log basics.", "Only theory — no hands-on SIEM practice.", "Escalating everything without first-level analysis."],
-    faqs=[{"q": "Is SOC work only night shifts?", "a": "Many SOCs run 24×7 with rotating shifts; day-only roles exist but are fewer."},
-          {"q": "Which certification first?", "a": "ISC2 CC or CompTIA Security+ for basics; SC-200 if your target employer uses Microsoft security tools."}],
+    faqs=[{"q": "Is SOC work only night shifts?", "a": "Many SOCs run 24×7 with rotating shifts; day-only roles exist but are fewer. "
+                                                       "Ask about the shift pattern during your interview so you know what to expect. "
+                                                       "Shift patterns differ between companies, so compare them when you get offers."},
+          {"q": "Which certification first?", "a": "ISC2 CC or CompTIA Security+ for basics; SC-200 if your target employer uses Microsoft security tools. "
+                                                   "ISC2 CC needs no work experience, so it suits complete beginners. "
+                                                   "Pair any certificate with a home lab, because interviews test hands-on log analysis."}],
     related_items=[_r("ethical-hacker-penetration-tester", "Ethical Hacker", "Offensive security"), _r("cyber-forensics-analyst", "Cyber Forensics Analyst", "Deep investigations"),
                    _r("network-security-engineer", "Network Security Engineer", "Firewalls and network defence")],
     institutes=[NETACAD_JCA, NETACAD_DEF, ISC2_CC, MS_SC200, CDAC_CSF],
@@ -280,7 +318,9 @@ SOC = _guide(
 
 NET_SEC = _guide(
     "network-security-engineer", "Network Security Engineer", "Network Security", "How to become a Network Security Engineer",
-    "A network security engineer designs and manages firewalls, VPNs and secure network setups so that an organisation's network stays protected and available.",
+    "A network security engineer designs and manages firewalls, VPNs and secure network setups so that an organisation's network stays protected and available. "
+    "Strong networking is the foundation, so most people in this role start as network or NOC engineers. "
+    "Telecom firms, banks, data centres and IT services companies all hire for these skills.",
     duties=["Configure and manage firewalls, VPNs and IDS/IPS", "Segment networks and control access", "Monitor traffic and respond to network attacks",
             "Patch and harden network devices", "Document network security policies and audits"],
     postings=["IT services, telecom, banks, data centres and enterprises", "Often on-site or hybrid"],
@@ -290,10 +330,22 @@ NET_SEC = _guide(
            fact("Common entry", "Network engineer or NOC first"), fact("Portfolio", "Lab topologies and configs")],
     levels=[["Beginner", "OSI/TCP-IP, subnetting, basic routing and switching"], ["Intermediate", "ACLs, VLANs, firewall rules, site-to-site VPN"],
             ["Job-ready", "Network segmentation, IDS/IPS, logging, hardening and troubleshooting"]],
-    steps=[step("Master networking", "Months 1–4", "Subnetting, routing, switching, VLANs — CCNA level."),
-           step("Learn security fundamentals", "Months 3–5", "Threats, cryptography, VPNs, authentication."),
-           step("Practise on labs", "Months 4–8", "Packet Tracer or virtual labs: firewalls, ACLs, VPNs and IDS."),
-           step("Get certified", "Months 6–10", "CCNA, then Security+ or a firewall vendor certification."),
+    steps=[step("Master networking", "Months 1–4",
+                "Learn subnetting, routing, switching and VLANs to CCNA level. "
+                "Practise subnetting until you can do it quickly and accurately, because it is tested in almost every interview. "
+                "You cannot secure a network well until you understand how traffic moves through it."),
+           step("Learn security fundamentals", "Months 3–5",
+                "Learn about threats, cryptography, VPNs and authentication. "
+                "Connect each idea to the network, for example how a VPN protects traffic between two offices. "
+                "This gives you the reasons behind every firewall rule you will write."),
+           step("Practise on labs", "Months 4–8",
+                "Use Packet Tracer or virtual labs to practise firewalls, ACLs, VPNs and IDS. "
+                "Save your lab topologies and configurations, and write short notes on what each one protects against. "
+                "These saved labs become your portfolio and help you answer configuration questions in interviews."),
+           step("Get certified", "Months 6–10",
+                "Get CCNA first, then Security+ or a firewall vendor certification. "
+                "Vendor skills such as Palo Alto, Fortinet or Cisco are often listed in job posts, so check which ones employers near you want. "
+                "Check each exam page for the current version and fee before you register."),
            *JOB_STEPS],
     test_topics="Networking (subnetting, routing), security MCQs",
     interview_topics="Firewall rules, VPN types, VLANs, ACLs, IDS vs IPS, troubleshooting scenarios",
@@ -310,7 +362,9 @@ NET_SEC = _guide(
             ["Senior", "Senior Network Security Engineer", "5–8 years", "Design and audits"], ["Next", "Security Architect", "8+ years", "Enterprise security design"]],
     special=["Strong networking is the foundation — most network security engineers start in networking roles.", "Vendor skills (Palo Alto, Fortinet, Cisco) are often listed in job posts."],
     mistakes=["Skipping subnetting and routing basics.", "Only theory with no lab configs.", "Ignoring Linux and logging."],
-    faqs=[{"q": "Is CCNA enough?", "a": "CCNA is a strong start for networking; add security skills (Security+, firewall vendor training) for network security roles."}],
+    faqs=[{"q": "Is CCNA enough?", "a": "CCNA is a strong start for networking; add security skills (Security+, firewall vendor training) for network security roles. "
+                                        "Many people first work in a NOC or network engineer role and move into security with experience. "
+                                        "Hands-on lab practice matters as much as the certificate in interviews."}],
     related_items=[_r("network-engineer-ccna", "Network Engineer (CCNA)", "Networking first"), _r("soc-analyst-l1-l2", "SOC Analyst", "Security monitoring"),
                    _r("cloud-security-engineer", "Cloud Security Engineer", "Security in the cloud")],
     institutes=[CDAC_ITISS, CISCO_CCNA, NETACAD_NET, COMPTIA_SEC, IGNOU_PGDIS],
@@ -320,7 +374,9 @@ NET_SEC = _guide(
 
 FORENSICS = _guide(
     "cyber-forensics-analyst", "Cyber Forensics Analyst", "Cyber Forensics", "How to become a Cyber Forensics Analyst",
-    "A cyber (digital) forensics analyst collects and examines digital evidence from computers, phones, networks and cloud accounts to find out what happened in a cyber incident or crime.",
+    "A cyber (digital) forensics analyst collects and examines digital evidence from computers, phones, networks and cloud accounts to find out what happened in a cyber incident or crime. "
+    "The work must be careful and well documented, because mistakes can make evidence unusable. "
+    "Police cyber cells, forensic labs, banks and consulting firms hire for this role, and government posts follow their own recruitment notices.",
     duties=["Acquire disk, memory and mobile images without changing evidence", "Analyse files, logs, browser and email artefacts",
             "Rebuild a timeline of an incident", "Maintain chain of custody", "Write reports that can be used in investigations or court"],
     postings=["Police cyber cells and forensic labs, consulting firms, banks and incident-response teams", "Some government roles need specific qualifications — check notices"],
@@ -330,11 +386,26 @@ FORENSICS = _guide(
            fact("Key rule", "Never change original evidence"), fact("Portfolio", "Case-study reports from practice images")],
     levels=[["Beginner", "OS and file-system basics, networking and Linux"], ["Intermediate", "Disk/memory imaging, artefact analysis, timeline building"],
             ["Job-ready", "End-to-end case: acquisition → analysis → report with chain of custody"]],
-    steps=[step("Build IT foundations", "Months 1–3", "Windows/Linux internals, file systems, networking."),
-           step("Learn forensic process", "Months 3–6", "Evidence acquisition, hashing, chain of custody and legal basics (IT Act, 2000)."),
-           step("Practise on sample cases", "Months 5–10", "Analyse practice disk/memory images and write reports."),
-           step("Specialise", "Months 9–14", "Mobile, network, cloud or malware forensics."),
-           step("Certify or study further", "Months 10–18", "CHFI, C-DAC PGCP-CSF or IGNOU PGDIS."),
+    steps=[step("Build IT foundations", "Months 1–3",
+                "Learn Windows and Linux internals, file systems and networking. "
+                "Explore where an operating system stores user activity, such as browser history, recent files and logs. "
+                "Forensic analysis is only as good as your understanding of how computers record what happens."),
+           step("Learn forensic process", "Months 3–6",
+                "Learn evidence acquisition, hashing, chain of custody and legal basics (IT Act, 2000). "
+                "Practise making a copy of evidence, checking it with a hash and working only on the verified copy. "
+                "Never change original evidence, because even small mistakes can make it unusable in an investigation."),
+           step("Practise on sample cases", "Months 5–10",
+                "Analyse practice disk and memory images and write reports on what you find. "
+                "Build a timeline of events for each case and state clear conclusions without heavy jargon. "
+                "These case reports become your portfolio for interviews."),
+           step("Specialise", "Months 9–14",
+                "Choose a speciality such as mobile, network, cloud or malware forensics. "
+                "Pick the area that matches the employers you are targeting, for example cloud for companies or mobile for police cases. "
+                "A clear speciality makes your profile easier to match with job openings."),
+           step("Certify or study further", "Months 10–18",
+                "Consider CHFI, C-DAC PGCP-CSF or IGNOU PGDIS to strengthen your profile. "
+                "CHFI is not meant for complete beginners, while the C-DAC and IGNOU programmes give structured training with a project. "
+                "For government lab posts, check the exact qualification listed in each recruitment notice."),
            *JOB_STEPS],
     test_topics="OS, file systems, networking and security MCQs",
     interview_topics="Evidence handling, imaging, artefacts, timelines, chain of custody and a case walkthrough",
@@ -361,7 +432,9 @@ FORENSICS = _guide(
 
 CLOUD_SEC = _guide(
     "cloud-security-engineer", "Cloud Security Engineer", "Cloud Security", "How to become a Cloud Security Engineer",
-    "A cloud security engineer protects applications and data running on AWS, Azure or Google Cloud — identity, network controls, encryption, monitoring and compliance.",
+    "A cloud security engineer protects applications and data running on AWS, Azure or Google Cloud — identity, network controls, encryption, monitoring and compliance. "
+    "This is usually not a first job, so most people reach it after a few years in cloud, sysadmin or security roles. "
+    "Plan your path step by step: cloud basics, security basics, deep skills on one cloud, then specialisation.",
     duties=["Design least-privilege identity and access (IAM)", "Secure cloud networks, storage and workloads", "Set up logging, monitoring and alerting",
             "Automate security checks in infrastructure-as-code and CI/CD", "Respond to cloud incidents and support audits"],
     postings=["Product companies, banks/fintech, cloud consultancies and MSSPs", "Usually an experienced role — rarely a first job"],
@@ -371,11 +444,26 @@ CLOUD_SEC = _guide(
            fact("Note", "Microsoft AZ-500 retired on 31 Aug 2026"), fact("Portfolio", "Secure cloud lab with IaC")],
     levels=[["Foundation", "Cloud basics, networking, Linux and security fundamentals"], ["Intermediate", "IAM policies, VPC design, encryption, logging on one cloud"],
             ["Job-ready", "Secure architecture, IaC security, incident response and compliance on a cloud platform"]],
-    steps=[step("Get cloud fundamentals", "Months 1–3", "Start with AWS Cloud Practitioner, Azure AZ-900 or Google Cloud basics."),
-           step("Build security fundamentals", "Months 2–5", "ISC2 CC or Security+ level knowledge."),
-           step("Go deep on one cloud", "Months 4–10", "Associate-level cloud skills (AWS SAA, AZ-104 or Google ACE)."),
-           step("Gain experience", "1–3 years", "Work as cloud engineer, sysadmin or SOC analyst."),
-           step("Specialise in cloud security", "After experience", "AWS Security Specialty, Google Cloud Security Engineer or CCSP."),
+    steps=[step("Get cloud fundamentals", "Months 1–3",
+                "Start with AWS Cloud Practitioner, Azure AZ-900 or Google Cloud basics. "
+                "Use the provider's free training and create a free-tier account to try core services yourself. "
+                "Set budget alerts from day one so practice does not turn into an unexpected bill."),
+           step("Build security fundamentals", "Months 2–5",
+                "Build security knowledge to the level of ISC2 CC or Security+. "
+                "Focus on identity and access, encryption, networking security and incident response, because these come up in every cloud security role. "
+                "You can take the exam or simply study to that level."),
+           step("Go deep on one cloud", "Months 4–10",
+                "Build associate-level cloud skills (AWS SAA, AZ-104 or Google ACE). "
+                "Deploy real projects with IAM, private networks, storage and logging so you understand how the pieces fit together. "
+                "Pick the cloud that appears most in the jobs you want, because concepts transfer later."),
+           step("Gain experience", "1–3 years",
+                "Work as a cloud engineer, sysadmin or SOC analyst to build real-world experience. "
+                "Volunteer for security-related tasks in that job, such as access reviews, logging or fixing misconfigurations. "
+                "This experience is what employers look for before hiring a cloud security engineer."),
+           step("Specialise in cloud security", "After experience",
+                "Earn AWS Security Specialty, Google Cloud Security Engineer or CCSP once you have the experience. "
+                "These certifications are aimed at experienced professionals, so check each one's recommended experience first. "
+                "Combine them with a secure cloud lab built using infrastructure as code to show hands-on skill."),
            *JOB_STEPS],
     test_topics="Cloud, networking and security fundamentals",
     interview_topics="IAM design, VPC/network security, encryption and key management, logging, incident scenarios and cloud architecture",
@@ -392,7 +480,9 @@ CLOUD_SEC = _guide(
             ["Senior", "Senior Cloud Security Engineer", "5–8 years", "Architecture and governance"], ["Next", "Cloud Security Architect", "8+ years", "Enterprise cloud security"]],
     special=["This is usually not a first job — plan a path through cloud or security roles.", "Microsoft retired the Azure Security Engineer (AZ-500) certification on 31 August 2026."],
     mistakes=["Collecting cloud certificates without hands-on work.", "Ignoring IAM — most cloud breaches involve misconfigured access.", "Skipping networking basics."],
-    faqs=[{"q": "Which cloud should I choose?", "a": "Pick the one most common in your target jobs (AWS is widely used; Azure and Google Cloud are common too) and go deep."}],
+    faqs=[{"q": "Which cloud should I choose?", "a": "Pick the one most common in your target jobs (AWS is widely used; Azure and Google Cloud are common too) and go deep. "
+                                                    "Security ideas such as least-privilege access, encryption and logging work the same way on every cloud. "
+                                                    "Once you know one platform well, learning a second one is much faster."}],
     related_items=[_r("cloud-engineer-aws-azure-gcp", "Cloud Engineer", "The usual starting point"), _r("devops-engineer", "DevOps Engineer", "Pipelines and automation"),
                    _r("soc-analyst-l1-l2", "SOC Analyst", "Security operations")],
     institutes=[AWS_SEC, GCP_SEC, ISC2_CCSP, AZURE, COMPTIA_SEC],
@@ -403,7 +493,9 @@ CLOUD_SEC = _guide(
 
 BUG_BOUNTY = _guide(
     "bug-bounty-hunter", "Bug Bounty Hunter", "Bug Bounty", "How to become a Bug Bounty Hunter",
-    "A bug bounty hunter finds security bugs in companies' websites and apps through official bug bounty programmes and gets paid (bounties) for valid, responsibly reported findings.",
+    "A bug bounty hunter finds security bugs in companies' websites and apps through official bug bounty programmes and gets paid (bounties) for valid, responsibly reported findings. "
+    "No degree is needed, but income is irregular because you are paid only for valid bugs. "
+    "Many hunters keep a full-time job, and the skills transfer well to application security and pentesting roles.",
     duties=["Read programme scope and rules carefully", "Map the target's web/mobile attack surface", "Find and verify vulnerabilities (e.g. access control, XSS, SQLi)",
             "Write clear proof-of-concept reports", "Follow responsible disclosure and programme policies"],
     postings=["Freelance on bug bounty platforms and company programmes", "Often alongside a full-time security job"],
@@ -413,11 +505,26 @@ BUG_BOUNTY = _guide(
            fact("Where", "Company programmes and bug bounty platforms"), fact("Portfolio", "Disclosed reports, hall-of-fame mentions")],
     levels=[["Beginner", "HTTP, cookies, sessions, HTML/JS and how web apps work"], ["Intermediate", "OWASP Top 10 in labs, Burp Suite, recon"],
             ["Bounty-ready", "Finding logic and access-control bugs, writing high-quality reports"]],
-    steps=[step("Learn how the web works", "Months 1–2", "HTTP, cookies, sessions, APIs, HTML and JavaScript."),
-           step("Learn web vulnerabilities in labs", "Months 2–6", "PortSwigger Web Security Academy and Hacker101 — free and legal."),
-           step("Learn Burp Suite and recon", "Months 3–6", "Intercepting traffic, mapping endpoints and subdomains."),
-           step("Start on beginner-friendly programmes", "Months 6+", "Read scope and rules, start small, expect duplicates at first."),
-           step("Write great reports", "Always", "Clear steps, impact and proof — good reports get paid faster."),
+    steps=[step("Learn how the web works", "Months 1–2",
+                "Learn HTTP, cookies, sessions, APIs, HTML and JavaScript. "
+                "Use your browser's developer tools to watch the requests a website sends when you log in or submit a form. "
+                "Most bugs come from misunderstanding these basics, so they are worth mastering first."),
+           step("Learn web vulnerabilities in labs", "Months 2–6",
+                "Practise on PortSwigger Web Security Academy and Hacker101, which are free and legal. "
+                "Work through the labs topic by topic and write down in your own words why each attack works. "
+                "Labs let you make mistakes safely before you test any real programme."),
+           step("Learn Burp Suite and recon", "Months 3–6",
+                "Learn to intercept traffic and map endpoints and subdomains with Burp Suite and recon methods. "
+                "Practise on lab targets until you can explain every request you change and why. "
+                "Good recon helps you find parts of an app that other hunters have missed."),
+           step("Start on beginner-friendly programmes", "Months 6+",
+                "Read each programme's scope and rules, start small and expect duplicate reports at first. "
+                "Testing anything outside the scope can be illegal, so check the rules before every session. "
+                "Duplicates are normal for beginners, so treat them as practice and keep learning from public disclosed reports."),
+           step("Write great reports", "Always",
+                "Write clear steps, explain the impact and include proof, because good reports get paid faster. "
+                "Make sure someone else can reproduce the bug just by following your report. "
+                "Low-quality reports without clear impact are often rejected even when the bug is real."),
            *JOB_STEPS[2:]],
     test_topics="(No formal test) — programmes judge your reports",
     interview_topics="For security jobs later: web vulnerabilities, methodology and walkthroughs of your disclosed findings",
@@ -436,7 +543,9 @@ BUG_BOUNTY = _guide(
     special=["Testing anything outside a programme's scope can be illegal — always read the rules.", "Income is unpredictable; many hunters keep a full-time job.",
              "Bug bounty skills transfer well to application security and pentesting jobs."],
     mistakes=["Running automated scanners on live sites (often banned).", "Ignoring scope and rules.", "Low-quality reports without clear impact.", "Expecting quick money."],
-    faqs=[{"q": "Can a beginner earn from bug bounty?", "a": "Yes eventually, but most beginners spend months practising before their first valid paid bug."},
+    faqs=[{"q": "Can a beginner earn from bug bounty?", "a": "Yes eventually, but most beginners spend months practising before their first valid paid bug. "
+                                                             "Income is unpredictable, so do not depend on bounties as your only earnings at the start. "
+                                                             "Treat early programmes as learning, and keep improving your skills and report writing."},
           {"q": "Is it legal?", "a": "Yes, when you follow an official programme's scope and rules. Testing without permission is not."}],
     related_items=[_r("ethical-hacker-penetration-tester", "Ethical Hacker", "Full-time offensive security"), _r("cloud-security-engineer", "Cloud Security Engineer", "Cloud-focused security"),
                    _r("soc-analyst-l1-l2", "SOC Analyst", "Stable entry job in security")],
@@ -447,7 +556,9 @@ BUG_BOUNTY = _guide(
 
 CLOUD_ENG = _guide(
     "cloud-engineer-aws-azure-gcp", "Cloud Engineer (AWS/Azure/GCP)", "Cloud Engineer", "How to become a Cloud Engineer (AWS / Azure / GCP)",
-    "A cloud engineer builds and runs applications and infrastructure on cloud platforms like AWS, Microsoft Azure or Google Cloud — servers, networks, storage, databases and automation.",
+    "A cloud engineer builds and runs applications and infrastructure on cloud platforms like AWS, Microsoft Azure or Google Cloud — servers, networks, storage, databases and automation. "
+    "Linux, networking and scripting are the foundations, and certifications help you get shortlisted. "
+    "Interviewers mainly check hands-on skills, so deployed projects matter more than certificates alone.",
     duties=["Create and manage cloud resources (compute, storage, networks, databases)", "Automate infrastructure with scripts and Terraform",
             "Set up monitoring, backups and scaling", "Manage access, security groups and costs", "Migrate apps from on-premise to cloud"],
     postings=["IT services, cloud consultancies, product companies and enterprises", "Hybrid and remote roles are common"],
@@ -457,11 +568,26 @@ CLOUD_ENG = _guide(
            fact("Also useful", "Terraform, Docker, CI/CD"), fact("Portfolio", "Deployed projects with architecture diagrams")],
     levels=[["Beginner", "Linux, networking basics, cloud concepts"], ["Intermediate", "Build VPC/VNet, VMs, storage, IAM and load balancers on one cloud"],
             ["Job-ready", "Infrastructure as code, monitoring, cost control and a deployed multi-tier project"]],
-    steps=[step("Learn Linux and networking", "Months 1–2", "Commands, permissions, processes, IP addressing, DNS, HTTP."),
-           step("Learn cloud fundamentals", "Months 2–3", "Pick AWS, Azure or Google Cloud; get the fundamentals certificate."),
-           step("Build hands-on projects", "Months 3–7", "Deploy a web app with a database, load balancer, monitoring and backups."),
-           step("Learn automation", "Months 5–8", "Scripting (Bash/Python) and Terraform."),
-           step("Associate certification", "Months 6–10", "AWS Solutions Architect Associate, AZ-104 or Google Associate Cloud Engineer."),
+    steps=[step("Learn Linux and networking", "Months 1–2",
+                "Learn Linux commands, permissions and processes, plus IP addressing, DNS and HTTP. "
+                "The free Linux Foundation LFS101 course is a good starting point for the Linux part. "
+                "Most cloud servers run Linux, so this base makes every later step easier."),
+           step("Learn cloud fundamentals", "Months 2–3",
+                "Pick AWS, Azure or Google Cloud and earn its fundamentals certificate. "
+                "Use the provider's free official training and try each core service in a practice account. "
+                "Set budget alerts and delete resources after practice so you are not billed by surprise."),
+           step("Build hands-on projects", "Months 3–7",
+                "Deploy a web app with a database, load balancer, monitoring and backups. "
+                "Draw an architecture diagram for each project and explain your choices in a README. "
+                "Projects like this are what interviewers ask you to walk through."),
+           step("Learn automation", "Months 5–8",
+                "Learn scripting (Bash or Python) and Terraform. "
+                "Rebuild one of your earlier projects using Terraform so you can create and delete it with a single command. "
+                "Infrastructure as code is expected in most cloud roles today."),
+           step("Associate certification", "Months 6–10",
+                "Earn AWS Solutions Architect Associate, AZ-104 or Google Associate Cloud Engineer. "
+                "Prepare with official exam guides and your own hands-on projects rather than memorising dumps. "
+                "An associate-level certificate plus deployed projects makes a strong profile for junior cloud roles."),
            GIT_STEP, *JOB_STEPS],
     test_topics="Linux, networking and cloud MCQs",
     interview_topics="Cloud services, VPC design, IAM, high availability, scaling, cost, Terraform and your projects",
@@ -480,7 +606,9 @@ CLOUD_ENG = _guide(
     special=["Focus on one cloud first; concepts transfer to others.", "Certifications help shortlisting, but interviewers check hands-on skills.", "Use free tiers carefully and set budget alerts to avoid bills."],
     mistakes=["Only certificates, no projects.", "Leaving cloud resources running and getting billed.", "Skipping Linux and networking."],
     faqs=[{"q": "AWS, Azure or GCP?", "a": "All have jobs. AWS is widely used; Azure is common in Microsoft-heavy companies; GCP in data/AI-heavy firms. Pick based on your target jobs."},
-          {"q": "Do I need coding?", "a": "Basic scripting (Bash/Python) and infrastructure as code are expected."}],
+          {"q": "Do I need coding?", "a": "Basic scripting (Bash or Python) and infrastructure as code are expected. "
+                                          "You do not need to be a software developer, but you should be able to automate routine tasks. "
+                                          "Terraform and simple scripts are usually enough to start."}],
     related_items=[_r("devops-engineer", "DevOps Engineer", "CI/CD and automation"), _r("linux-system-administrator", "Linux / System Administrator", "Strong base"),
                    _r("cloud-security-engineer", "Cloud Security Engineer", "Later specialisation")],
     institutes=[AWS_CCP, AWS_SAA, AZURE, GCP_ACE, CDAC_HPCSA],
@@ -491,7 +619,9 @@ CLOUD_ENG = _guide(
 
 DEVOPS = _guide(
     "devops-engineer", "DevOps Engineer", "DevOps", "How to become a DevOps Engineer",
-    "A DevOps engineer automates how software is built, tested, deployed and monitored — so teams can release changes quickly and reliably.",
+    "A DevOps engineer automates how software is built, tested, deployed and monitored — so teams can release changes quickly and reliably. "
+    "The role sits between development and operations, so it needs Linux, scripting, cloud and automation skills together. "
+    "Many DevOps engineers come from sysadmin or developer roles, and that experience helps a lot.",
     duties=["Build CI/CD pipelines (e.g. GitHub Actions, Jenkins, Azure DevOps)", "Containerise apps with Docker and run them on Kubernetes",
             "Automate infrastructure with Terraform", "Set up monitoring, logging and alerts", "Improve reliability, security and release speed"],
     postings=["Product companies, IT services, startups and cloud teams", "Usually after some experience in development or operations"],
@@ -501,11 +631,26 @@ DEVOPS = _guide(
            fact("Certifications", "CKA, Terraform Associate, AZ-400"), fact("Portfolio", "Pipeline + IaC + Kubernetes project on GitHub")],
     levels=[["Beginner", "Linux, Git, networking, Bash scripting"], ["Intermediate", "Docker, CI/CD pipelines, one cloud"],
             ["Job-ready", "Kubernetes, Terraform, monitoring and a full automated deployment project"]],
-    steps=[step("Linux, Git and scripting", "Months 1–3", "Linux admin basics, Git workflows, Bash/Python scripting."),
-           step("Networking and one cloud", "Months 2–5", "DNS, HTTP, load balancing; cloud fundamentals."),
-           step("Containers and CI/CD", "Months 4–7", "Docker, then pipelines that build, test and deploy automatically."),
-           step("Kubernetes and Terraform", "Months 6–10", "Deploy to Kubernetes; manage infrastructure as code."),
-           step("Monitoring and reliability", "Months 8–11", "Metrics, logs, alerts and incident basics."),
+    steps=[step("Linux, Git and scripting", "Months 1–3",
+                "Learn Linux admin basics, Git workflows and Bash or Python scripting. "
+                "Automate small daily tasks, such as backups or log clean-up, to practise all three together. "
+                "Everything in DevOps runs on these skills, so build them before any advanced tool."),
+           step("Networking and one cloud", "Months 2–5",
+                "Learn DNS, HTTP and load balancing, plus the fundamentals of one cloud. "
+                "Deploy a simple app on your chosen cloud and put it behind a load balancer. "
+                "Many deployment problems turn out to be networking problems, so this knowledge saves hours of debugging."),
+           step("Containers and CI/CD", "Months 4–7",
+                "Learn Docker, then build pipelines that build, test and deploy automatically. "
+                "Create a pipeline for one of your projects that runs tests on every change and deploys only when they pass. "
+                "Understand each pipeline step instead of copy-pasting examples you cannot explain."),
+           step("Kubernetes and Terraform", "Months 6–10",
+                "Deploy your apps to Kubernetes and manage infrastructure as code with Terraform. "
+                "Learn Kubernetes only after you are comfortable with Linux and Docker, because it builds on both. "
+                "Practise with official tutorials and a local or small cloud cluster."),
+           step("Monitoring and reliability", "Months 8–11",
+                "Learn metrics, logs, alerts and the basics of handling incidents. "
+                "Add monitoring and a rollback plan to your project so you can show how you would handle a failed release. "
+                "Interviewers often ask what you do when a deployment goes wrong."),
            GIT_STEP, *JOB_STEPS],
     test_topics="Linux, networking, scripting and DevOps MCQs",
     interview_topics="CI/CD design, Docker vs VMs, Kubernetes objects, Terraform state, monitoring, Linux troubleshooting and your project",
@@ -523,8 +668,12 @@ DEVOPS = _guide(
             ["Senior", "Senior DevOps / SRE", "5–8 years", "Reliability and platform"], ["Next", "Platform / DevOps Architect", "8+ years", "Platform strategy"]],
     special=["Many DevOps engineers come from sysadmin or developer roles — that experience helps a lot.", "Microsoft's DevOps Engineer Expert needs AZ-104 or the Azure Developer Associate first."],
     mistakes=["Jumping to Kubernetes before Linux and Docker.", "Copy-pasting pipelines without understanding them.", "No monitoring or rollback plan."],
-    faqs=[{"q": "Is DevOps a fresher role?", "a": "Some companies hire freshers as junior DevOps/build engineers, but many expect prior dev or ops experience."},
-          {"q": "Which certification helps most?", "a": "CKA for Kubernetes and Terraform Associate are popular; AZ-400 if your company uses Azure."}],
+    faqs=[{"q": "Is DevOps a fresher role?", "a": "Some companies hire freshers as junior DevOps or build engineers, but many expect prior development or operations experience. "
+                                                  "If you are a fresher, a Linux admin, cloud support or developer role is a practical way in. "
+                                                  "Keep building an end-to-end automated project on GitHub while you work."},
+          {"q": "Which certification helps most?", "a": "CKA for Kubernetes and Terraform Associate are popular; AZ-400 if your company uses Azure. "
+                                                        "AZ-400 leads to the DevOps Engineer Expert certification, which also needs AZ-104 or the Azure Developer Associate first. "
+                                                        "Whichever you choose, pair it with a hands-on project that interviewers can see."}],
     related_items=[_r("docker-kubernetes-engineer", "Docker / Kubernetes Engineer", "Container specialist"), _r("cloud-engineer-aws-azure-gcp", "Cloud Engineer", "Cloud infrastructure"),
                    _r("linux-system-administrator", "Linux / System Administrator", "Common starting point")],
     institutes=[CKA, TERRAFORM, AZ400, LFS101, CDAC_ITISS],
@@ -534,7 +683,9 @@ DEVOPS = _guide(
 
 LINUX_ADMIN = _guide(
     "linux-system-administrator", "Linux / System Administrator", "SysAdmin", "How to become a Linux / System Administrator",
-    "A system administrator keeps servers running — installing and updating systems, managing users, storage, backups and security, and fixing problems quickly.",
+    "A system administrator keeps servers running — installing and updating systems, managing users, storage, backups and security, and fixing problems quickly. "
+    "Linux skills are the base for cloud, DevOps and security careers, so this role is a strong starting point. "
+    "Entry-level roles are often shift-based support jobs where you learn by handling real issues.",
     duties=["Install, configure and patch Linux (and Windows) servers", "Manage users, permissions, services and storage", "Monitor systems and respond to issues",
             "Automate routine tasks with scripts", "Manage backups, security hardening and documentation"],
     postings=["IT services, data centres, hosting providers, banks and enterprises", "Shift-based support roles are common at entry level"],
@@ -544,11 +695,26 @@ LINUX_ADMIN = _guide(
            fact("Next steps", "Cloud, DevOps, SRE"), fact("Portfolio", "Home lab + scripts on GitHub")],
     levels=[["Beginner", "Navigate Linux, files, permissions, package installation"], ["Intermediate", "Services, users, storage/LVM, networking, cron and Bash scripts"],
             ["Job-ready", "SELinux/firewall, troubleshooting boot and services, backups and RHCSA-level skills"]],
-    steps=[step("Learn Linux basics", "Months 1–2", "Free LFS101: commands, files, processes, editors."),
-           step("Administration skills", "Months 2–4", "Users, permissions, services (systemd), storage and LVM, networking."),
-           step("Scripting and automation", "Months 3–5", "Bash scripts, cron jobs; basics of Ansible."),
-           step("Security and troubleshooting", "Months 4–6", "Firewalls, SELinux, logs, boot issues, performance."),
-           step("Get RHCSA", "Months 5–8", "Hands-on Red Hat exam valued by employers."),
+    steps=[step("Learn Linux basics", "Months 1–2",
+                "Take the free LFS101 course to learn commands, files, processes and editors. "
+                "Install Linux in a virtual machine and use the command line every day instead of the desktop. "
+                "Daily practice is the fastest way to become comfortable with Linux."),
+           step("Administration skills", "Months 2–4",
+                "Learn users, permissions, services (systemd), storage and LVM, and networking. "
+                "Set up a small home lab with a few virtual machines and practise adding users, sharing files and running services. "
+                "These are the everyday tasks of a junior admin."),
+           step("Scripting and automation", "Months 3–5",
+                "Learn Bash scripts and cron jobs, and the basics of Ansible. "
+                "Automate a routine task such as daily backups or disk-space checks and save the scripts on GitHub. "
+                "Admins who automate their work are trusted with bigger systems."),
+           step("Security and troubleshooting", "Months 4–6",
+                "Learn firewalls, SELinux, logs, boot issues and performance problems. "
+                "Break things on purpose in your lab, then fix them by reading the logs first instead of guessing. "
+                "Hiring tasks often ask you to fix a broken service, so step-by-step troubleshooting is worth practising."),
+           step("Get RHCSA", "Months 5–8",
+                "Take RHCSA, a hands-on Red Hat exam valued by employers. "
+                "It is a practical exam where you do real tasks on a live system, so practise in your lab rather than memorising answers. "
+                "Check Red Hat's official exam objectives and current details before you book."),
            *JOB_STEPS],
     test_topics="Linux commands, networking and OS MCQs",
     interview_topics="Boot process, permissions, systemd, LVM, networking commands, log troubleshooting and scripting",
@@ -565,7 +731,9 @@ LINUX_ADMIN = _guide(
             ["Senior", "Senior SysAdmin / Infrastructure Engineer", "5–8 years", "Design and automation"], ["Next", "DevOps / SRE / Cloud Engineer", "Any time", "Move into cloud and automation"]],
     special=["Linux skills are the base for cloud, DevOps and security careers.", "RHCSA is a practical exam — you must do real tasks, not answer MCQs."],
     mistakes=["Learning only theory without a home lab.", "Avoiding scripting.", "Not reading logs before guessing fixes."],
-    faqs=[{"q": "Is system administration still a good career?", "a": "Yes as a foundation — many cloud, DevOps and SRE engineers started as sysadmins."}],
+    faqs=[{"q": "Is system administration still a good career?", "a": "Yes as a foundation — many cloud, DevOps and SRE engineers started as sysadmins. "
+                                                                      "The Linux, networking and troubleshooting skills you build carry over directly to those roles. "
+                                                                      "Add scripting and cloud skills over time so you can move up as the work becomes more automated."}],
     related_items=[_r("devops-engineer", "DevOps Engineer", "Automation next step"), _r("cloud-engineer-aws-azure-gcp", "Cloud Engineer", "Move to cloud"),
                    _r("network-engineer-ccna", "Network Engineer (CCNA)", "Networking side")],
     institutes=[RHCSA, LFS101, CDAC_HPCSA, CDAC_ITISS],
@@ -576,7 +744,9 @@ LINUX_ADMIN = _guide(
 
 NETWORK_ENG = _guide(
     "network-engineer-ccna", "Network Engineer (CCNA)", "Network Engineer", "How to become a Network Engineer (CCNA)",
-    "A network engineer sets up and maintains the networks that connect computers, offices and data centres — routers, switches, Wi-Fi and internet links.",
+    "A network engineer sets up and maintains the networks that connect computers, offices and data centres — routers, switches, Wi-Fi and internet links. "
+    "Cisco's CCNA is a widely recognised starting certification, and subnetting speed is tested in almost every interview. "
+    "Entry roles are often in a NOC or on-site support, with shift work common at the start.",
     duties=["Configure routers, switches and wireless networks", "Troubleshoot connectivity and performance problems", "Monitor networks in a NOC",
             "Set up VLANs, routing and basic security", "Document network designs and changes"],
     postings=["ISPs, telecom, IT services, data centres, enterprises and system integrators", "On-site and shift work are common at entry level"],
@@ -586,10 +756,22 @@ NETWORK_ENG = _guide(
            fact("Next steps", "CCNP, network security, cloud networking"), fact("Portfolio", "Lab topologies and configs")],
     levels=[["Beginner", "OSI/TCP-IP, IP addressing and subnetting"], ["Intermediate", "Routing (OSPF), switching, VLANs, ACLs, NAT, DHCP"],
             ["Job-ready", "Troubleshooting, wireless basics, network security and automation basics (CCNA level)"]],
-    steps=[step("Learn networking basics", "Month 1", "Cisco Networking Basics (free) — how networks work."),
-           step("Study for CCNA", "Months 2–5", "CCNA: Introduction to Networks and the next courses; subnetting daily."),
-           step("Practise in labs", "Months 2–6", "Packet Tracer/virtual labs: routing, VLANs, ACLs, NAT."),
-           step("Pass CCNA (200-301)", "Months 5–7", "120-minute exam, valid 3 years."),
+    steps=[step("Learn networking basics", "Month 1",
+                "Take Cisco's free Networking Basics course to learn how networks work. "
+                "Focus on the OSI and TCP/IP models, IP addresses and how data travels from one device to another. "
+                "These ideas come up in every later course and interview."),
+           step("Study for CCNA", "Months 2–5",
+                "Study CCNA: Introduction to Networks and the courses that follow it, and practise subnetting daily. "
+                "Follow the official CCNA exam topics so you do not miss any area. "
+                "Short daily practice works better than long sessions once a week."),
+           step("Practise in labs", "Months 2–6",
+                "Use Packet Tracer or virtual labs to practise routing, VLANs, ACLs and NAT. "
+                "Build small networks from scratch and then break and fix them to learn troubleshooting. "
+                "Save your lab topologies, because they make a useful portfolio for interviews."),
+           step("Pass CCNA (200-301)", "Months 5–7",
+                "The CCNA 200-301 is a 120-minute exam, and the certification is valid for 3 years. "
+                "Book it only when you can solve practice questions and lab tasks confidently and on time. "
+                "Check Cisco's official page for the current exam version and fee before you register."),
            *JOB_STEPS],
     test_topics="Networking MCQs and subnetting",
     interview_topics="OSI model, subnetting, routing protocols, VLANs, STP, NAT, DHCP and troubleshooting scenarios",
@@ -606,7 +788,9 @@ NETWORK_ENG = _guide(
             ["Senior", "Senior Network Engineer (CCNP level)", "5–8 years", "Complex designs"], ["Next", "Network Architect / Network Security", "8+ years", "Enterprise design"]],
     special=["Subnetting speed is tested in almost every networking interview.", "CCNA is valid for 3 years and can be renewed."],
     mistakes=["Memorising theory without labs.", "Weak subnetting.", "Ignoring Linux and automation basics."],
-    faqs=[{"q": "Is CCNA enough to get a job?", "a": "CCNA plus lab practice can get you NOC and junior network roles; experience then opens senior roles."}],
+    faqs=[{"q": "Is CCNA enough to get a job?", "a": "CCNA plus lab practice can get you NOC and junior network roles; experience then opens senior roles. "
+                                                    "Interviewers check that you can subnet quickly and troubleshoot step by step, not just that you hold the certificate. "
+                                                    "Basic Linux and automation skills also help you stand out."}],
     related_items=[_r("network-security-engineer", "Network Security Engineer", "Next specialisation"), _r("linux-system-administrator", "Linux / System Administrator", "Server side"),
                    _r("cloud-engineer-aws-azure-gcp", "Cloud Engineer", "Cloud networking")],
     institutes=[CISCO_CCNA, NETACAD_NET, CDAC_ITISS, CDAC_HPCSA],
@@ -617,7 +801,9 @@ NETWORK_ENG = _guide(
 
 CONTAINERS = _guide(
     "docker-kubernetes-engineer", "Docker / Kubernetes Engineer", "Kubernetes", "How to become a Docker / Kubernetes Engineer",
-    "A Docker / Kubernetes engineer packages applications into containers and runs them reliably at scale on Kubernetes clusters.",
+    "A Docker / Kubernetes engineer packages applications into containers and runs them reliably at scale on Kubernetes clusters. "
+    "The role is usually part of DevOps, platform or SRE teams, and job titles often use those names. "
+    "Kubernetes builds on Linux, networking and Docker, so learn them in that order.",
     duties=["Write Dockerfiles and manage container images", "Deploy and manage apps on Kubernetes", "Configure networking, storage and secrets in clusters",
             "Troubleshoot pods, nodes and services", "Automate deployments with CI/CD and Helm"],
     postings=["Product companies, cloud teams, platform/SRE teams and consultancies", "Usually part of DevOps/platform teams"],
@@ -627,11 +813,26 @@ CONTAINERS = _guide(
            fact("Related", "Often titled DevOps / Platform / SRE"), fact("Portfolio", "App deployed on Kubernetes with manifests/Helm")],
     levels=[["Beginner", "Linux, networking and containers vs VMs"], ["Intermediate", "Dockerfiles, Compose, Kubernetes pods, deployments and services"],
             ["Job-ready", "Cluster operations, networking, storage, RBAC, troubleshooting (CKA level)"]],
-    steps=[step("Linux and networking", "Months 1–2", "Command line, processes, ports, DNS."),
-           step("Docker", "Months 2–4", "Images, Dockerfiles, volumes, networks and Compose."),
-           step("Kubernetes basics", "Months 4–6", "Pods, deployments, services, config maps, secrets — official tutorials."),
-           step("Cluster operations", "Months 6–9", "Install a cluster, networking, storage, RBAC, upgrades and troubleshooting."),
-           step("Get CKA", "Months 8–11", "Performance-based 2-hour exam."),
+    steps=[step("Linux and networking", "Months 1–2",
+                "Learn the Linux command line, processes, ports and DNS. "
+                "Containers are Linux processes with extra isolation, so these basics explain most container problems. "
+                "Practise daily in a Linux virtual machine until the commands feel natural."),
+           step("Docker", "Months 2–4",
+                "Learn images, Dockerfiles, volumes, networks and Compose. "
+                "Containerise a small app with a database using Compose and keep your images small and clean. "
+                "Kubernetes runs containers, so solid Docker skills come first."),
+           step("Kubernetes basics", "Months 4–6",
+                "Learn pods, deployments, services, config maps and secrets using the official tutorials. "
+                "Run a local cluster and deploy your containerised app, then expose it with a service. "
+                "Write your own manifests instead of only copying examples, so you understand each field."),
+           step("Cluster operations", "Months 6–9",
+                "Learn to install a cluster and manage its networking, storage, RBAC, upgrades and troubleshooting. "
+                "Break things in your practice cluster on purpose and fix them, because troubleshooting carries the biggest weight in the CKA. "
+                "Do not rely only on managed clusters, as you need to understand the components underneath."),
+           step("Get CKA", "Months 8–11",
+                "Take the CKA, a performance-based 2-hour exam done on the command line. "
+                "Practise tasks against the clock on a real cluster, since speed matters as much as knowledge. "
+                "Check the Linux Foundation's official page for the current exam details and price before you register."),
            GIT_STEP, *JOB_STEPS],
     test_topics="Linux, Docker and Kubernetes MCQs",
     interview_topics="Container vs VM, Dockerfile best practices, Kubernetes objects, networking, storage, troubleshooting scenarios",
@@ -648,7 +849,9 @@ CONTAINERS = _guide(
             ["Senior", "Senior Platform Engineer / SRE", "5–8 years", "Scale and reliability"], ["Next", "Platform Architect", "8+ years", "Platform strategy"]],
     special=["Kubernetes builds on Linux and networking — don't skip them.", "CKA is hands-on: practise on a real cluster."],
     mistakes=["Learning Kubernetes before Docker basics.", "Only using managed clusters without understanding components.", "Ignoring security (RBAC, secrets)."],
-    faqs=[{"q": "Docker or Kubernetes first?", "a": "Docker first — Kubernetes runs containers, so you need container basics."}],
+    faqs=[{"q": "Docker or Kubernetes first?", "a": "Docker first — Kubernetes runs containers, so you need container basics. "
+                                                    "Once you can build images and run multi-container apps with Compose, Kubernetes concepts make much more sense. "
+                                                    "Jumping straight to Kubernetes is a common mistake that slows learners down."}],
     related_items=[_r("devops-engineer", "DevOps Engineer", "CI/CD and automation"), _r("cloud-engineer-aws-azure-gcp", "Cloud Engineer", "Cloud platforms"),
                    _r("linux-system-administrator", "Linux / System Administrator", "Foundation")],
     institutes=[CKA, K8S_DOCS, DOCKER_DOCS, LFS101],

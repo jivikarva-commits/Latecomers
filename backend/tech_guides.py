@@ -219,18 +219,32 @@ def _guide(slug, title, short, headline, summary, *, duties, postings, facts, le
     }
 
 
-GIT_STEP = step("Learn Git and GitHub", "Alongside your first projects", "Commit daily, write README files and push every project to GitHub — recruiters look here.")
+GIT_STEP = step("Learn Git and GitHub", "Alongside your first projects",
+                "Commit your work daily, write a README file for each project and push every project to GitHub, because recruiters look here. "
+                "Learn everyday Git commands such as commit, branch and merge, and how pull requests work on GitHub, so you can work safely in a shared team project. "
+                "A tidy GitHub profile with regular activity shows employers that you build and finish things consistently.")
 JOB_STEPS = [
-    step("Build 3 portfolio projects", "After the core skills", "Each project should solve a real problem, be deployed (or have a demo video) and have a clear README."),
-    step("Get real experience", "In parallel", "Internships, open-source contributions, freelance work or building something for a local business all count."),
+    step("Build 3 portfolio projects", "After the core skills",
+         "Each project should solve a real problem, be deployed (or have a demo video) and have a clear README or write-up. "
+         "Choose problems you can explain well, because interviewers will ask why you made each choice. "
+         "Three finished, working projects impress recruiters more than many half-done tutorial copies."),
+    step("Get real experience", "In parallel",
+         "Internships, open-source contributions, freelance work or building something for a local business all count. "
+         "Real work teaches you deadlines, feedback and teamwork in a way that courses cannot. "
+         "Add each experience to your resume with what you did and what changed because of it."),
     step("Prepare your resume and LinkedIn", "Before applying", "One-page resume with skills, projects, links and measurable results. Keep LinkedIn and GitHub updated."),
     step("Apply and prepare for interviews", "Job search", "Apply on company career pages, job portals and referrals. Practise coding questions and explain your projects."),
-    step("Join, learn and grow", "First job", "Learn the team's codebase, ask for code reviews and keep building skills for the next level."),
+    step("Join, learn and grow", "First job",
+         "In your first job, learn the team's codebase or workflow and its tools, and ask seniors to review your work so you improve faster. "
+         "Ask questions early, take notes and finish small tasks well to build trust. "
+         "Keep building skills for the next level, because growth usually comes from owning bigger pieces of work."),
 ]
 
 FRONTEND = _guide(
     "frontend-developer", "Frontend Developer", "Frontend", "How to become a Frontend Developer",
-    "A frontend developer builds the part of a website or web app that people see and use — layouts, buttons, forms and interactions — with HTML, CSS and JavaScript.",
+    "A frontend developer builds the part of a website or web app that people see and use — layouts, buttons, forms and interactions — with HTML, CSS and JavaScript. "
+    "It is a friendly starting point for beginners because you can see your results in the browser straight away. "
+    "Your main job is to turn designs into pages that work well on every screen size and for every user.",
     duties=["Turn designs (Figma) into responsive web pages", "Add interactions and fetch data from APIs with JavaScript",
             "Make pages accessible for keyboard and screen-reader users", "Keep pages fast and fix layout bugs across browsers and phones",
             "Work with designers, backend developers and testers"],
@@ -241,12 +255,27 @@ FRONTEND = _guide(
            fact("Work mode", "Office, hybrid or remote"), fact("Portfolio", "3 deployed websites/apps")],
     levels=[["Beginner", "Build static pages with semantic HTML and CSS"], ["Intermediate", "Responsive layouts (flexbox/grid), JavaScript DOM and API calls"],
             ["Job-ready", "A framework like React, accessibility, performance, Git and deployed projects"]],
-    steps=[step("Learn HTML", "Weeks 1–3", "Semantic tags, forms, tables, links and images — the structure of every page."),
-           step("Learn CSS and responsive design", "Weeks 3–8", "Box model, flexbox, grid, media queries and mobile-first layouts."),
-           step("Learn JavaScript", "Months 2–4", "Variables, functions, arrays/objects, DOM events, fetch and async/await."),
+    steps=[step("Learn HTML", "Weeks 1–3",
+                "Learn semantic tags, forms, tables, links and images, because HTML is the structure of every page. "
+                "Practise by rebuilding simple pages such as a profile page, a blog post and a contact form. "
+                "Use proper headings and form labels from the start, as this also makes your pages accessible."),
+           step("Learn CSS and responsive design", "Weeks 3–8",
+                "Learn the box model, flexbox, grid, media queries and mobile-first layouts. "
+                "Practise by copying the layout of real websites and checking each one on a phone-sized screen. "
+                "Most layout bugs at work come from weak CSS basics, so give this step real time."),
+           step("Learn JavaScript", "Months 2–4",
+                "Learn variables, functions, arrays and objects, DOM events, fetch and async/await. "
+                "Build small interactive projects such as a quiz, a to-do list or a page that loads data from a public API. "
+                "Interviews test JavaScript fundamentals heavily, so make sure you understand them before moving on."),
            GIT_STEP,
-           step("Learn a framework", "Months 4–6", "React is widely asked for; learn components, state, hooks and routing."),
-           step("Accessibility and performance", "Months 5–7", "Keyboard navigation, alt text, colour contrast, image optimisation and Lighthouse checks."),
+           step("Learn a framework", "Months 4–6",
+                "React is widely asked for in job posts, so learn its components, state, hooks and routing. "
+                "Start with the official react.dev tutorials and then rebuild one of your earlier JavaScript projects in React. "
+                "This shows you why frameworks make bigger apps easier to manage."),
+           step("Accessibility and performance", "Months 5–7",
+                "Learn keyboard navigation, alt text, colour contrast, image optimisation and Lighthouse checks. "
+                "Test every project using only the keyboard and run Lighthouse to find slow or inaccessible parts. "
+                "Employers expect these skills, and they make your portfolio stand out from tutorial clones."),
            *JOB_STEPS],
     test_topics="HTML/CSS MCQs, JavaScript output questions, DSA basics",
     interview_topics="CSS layout, JavaScript (closures, events, promises), DOM, React basics, accessibility and your projects",
@@ -266,8 +295,12 @@ FRONTEND = _guide(
     special=["Learn HTML, CSS and JavaScript well before a framework — interviews test fundamentals.",
              "Accessibility and responsive design are expected, not extra.", "A good-looking, working portfolio site is itself a project."],
     mistakes=["Jumping to React before JavaScript basics.", "Pages that break on mobile.", "Only tutorial clones without your own features.", "No live links on the resume."],
-    faqs=[{"q": "Frontend or full stack first?", "a": "Frontend first is easier to start and shows results quickly; add backend later if you want full stack roles."},
-          {"q": "Do I need to be good at design?", "a": "No, but you should follow designs accurately and know basic spacing, typography and colour."}],
+    faqs=[{"q": "Frontend or full stack first?", "a": "Frontend first is easier to start and shows results quickly; add backend later if you want full stack roles. "
+                                                       "The JavaScript you learn for the frontend also carries over if you later pick Node.js for the backend. "
+                                                       "Become job-ready in one area before spreading out."},
+          {"q": "Do I need to be good at design?", "a": "No, but you should follow designs accurately and know basic spacing, typography and colour. "
+                                                         "Designers usually hand you a design in a tool like Figma, and your job is to build it faithfully. "
+                                                         "These basics also help your own portfolio projects look clean and professional."}],
     related_items=[related("react-developer", "React Developer", "Go deeper into React"), related("full-stack-developer", "Full Stack Developer", "Add backend skills"),
                    related("wordpress-developer", "WordPress Developer", "Client websites")],
     institutes=[META_FE, NIELIT_O, CDAC_AC, IITM, IGNOU],
@@ -277,7 +310,9 @@ FRONTEND = _guide(
 
 BACKEND = _guide(
     "backend-developer", "Backend Developer", "Backend", "How to become a Backend Developer",
-    "A backend developer builds the server side of apps — the APIs, business logic, databases and security that the website or mobile app talks to.",
+    "A backend developer builds the server side of apps — the APIs, business logic, databases and security that the website or mobile app talks to. "
+    "Users never see this part directly, but every login, payment and saved record depends on it working correctly. "
+    "It suits people who enjoy logic, data and problem-solving more than visual design.",
     duties=["Design and build REST/GraphQL APIs used by web and mobile apps", "Design database tables and write efficient queries",
             "Handle login, permissions and data security", "Integrate payments, email, SMS and third-party services",
             "Write tests, fix bugs and keep servers fast and reliable"],
@@ -290,11 +325,23 @@ BACKEND = _guide(
             ["Intermediate", "Build a REST API with a framework, connect a SQL database, add login and validation"],
             ["Job-ready", "Design database schemas, write tests, use Git, deploy an API to the cloud and explain your design"]],
     steps=[step("Pick ONE language and framework", "Week 1", "Java + Spring Boot, Python + Django/FastAPI, or JavaScript + Node.js/Express. Don't switch every month."),
-           step("Learn programming fundamentals", "Months 1–2", "Data types, control flow, functions, OOP, error handling and basic data structures."),
-           step("Learn SQL and databases", "Months 2–3", "Tables, joins, indexes, transactions; practise with MySQL or PostgreSQL."),
-           step("Build APIs with your framework", "Months 3–5", "CRUD APIs, authentication (JWT/sessions), validation, pagination and error handling."),
+           step("Learn programming fundamentals", "Months 1–2",
+                "Learn data types, control flow, functions, OOP, error handling and basic data structures in your chosen language. "
+                "Solve small problems every day so that writing code starts to feel natural. "
+                "Strong fundamentals make frameworks much easier to learn later and are tested in coding rounds."),
+           step("Learn SQL and databases", "Months 2–3",
+                "Learn tables, joins, indexes and transactions, and practise with MySQL or PostgreSQL. "
+                "Design the tables for a small app yourself, such as a library or a shop, and write queries against them. "
+                "Almost every backend job uses a database, so this skill is checked in most interviews."),
+           step("Build APIs with your framework", "Months 3–5",
+                "Build CRUD APIs with authentication (JWT or sessions), validation, pagination and error handling. "
+                "Test every endpoint with a tool like Postman and document how each one works. "
+                "This is the core daily work of a backend developer, so build at least one complete API on your own."),
            GIT_STEP,
-           step("Learn deployment basics", "Months 5–7", "Linux commands, environment variables, Docker basics and deploying to a cloud server."),
+           step("Learn deployment basics", "Months 5–7",
+                "Learn Linux commands, environment variables, Docker basics and how to deploy to a cloud server. "
+                "Put at least one of your APIs online so recruiters can try it with a live link. "
+                "Keep passwords and keys in environment variables and never push them to GitHub."),
            *JOB_STEPS],
     test_topics="Data structures & algorithms (arrays, strings, hashing), SQL queries, OOP and language MCQs",
     interview_topics="Your language internals, OOP, SQL joins and indexes, REST design, authentication, caching and your projects",
@@ -320,7 +367,9 @@ BACKEND = _guide(
     mistakes=["Jumping between languages and frameworks without finishing projects.", "Ignoring SQL and only using an ORM.",
               "No deployed project — recruiters can't see it working.", "Copying tutorial projects without adding your own features."],
     faqs=[{"q": "Which language is best for backend?", "a": "Any mainstream one works. Java (Spring Boot), Python (Django/FastAPI) and JavaScript (Node.js) are all widely used — pick one and go deep."},
-          {"q": "Do I need DSA?", "a": "Yes for most company tests and interviews — practise easy and medium problems regularly."},
+          {"q": "Do I need DSA?", "a": "Yes for most company tests and interviews — practise easy and medium problems regularly. "
+                                       "Focus first on arrays, strings and hashing, because these come up most often in online assessments. "
+                                       "Solving a few problems every week works better than cramming just before interviews."},
           {"q": "Can I learn backend without frontend?", "a": "Yes. Basic HTML/JS helps you test, but backend roles focus on APIs and databases."}],
     related_items=[related("full-stack-developer", "Full Stack Developer", "Frontend + backend together"), related("react-developer", "React Developer", "Frontend with React"),
                    related("android-developer", "Android Developer", "Mobile apps that use your APIs")],
@@ -331,7 +380,9 @@ BACKEND = _guide(
 
 FULLSTACK = _guide(
     "full-stack-developer", "Full Stack Developer", "Full Stack", "How to become a Full Stack Developer",
-    "A full stack developer builds both the part users see (frontend) and the server, database and APIs behind it (backend), and can ship a complete web app.",
+    "A full stack developer builds both the part users see (frontend) and the server, database and APIs behind it (backend), and can ship a complete web app. "
+    "Startups and small teams value this role because one person can take a feature from idea to launch. "
+    "It takes longer to learn than frontend or backend alone, so go step by step and stay with one stack.",
     duties=["Build responsive user interfaces with HTML, CSS, JavaScript and a framework like React", "Build APIs and business logic on the server",
             "Design databases and connect them to the app", "Deploy and monitor the app", "Work with designers, testers and product managers"],
     postings=["Startups and product companies value full stack skills most", "Agencies and freelancing for complete websites/apps"],
@@ -342,11 +393,23 @@ FULLSTACK = _guide(
     levels=[["Beginner", "Build static pages with HTML/CSS and add JavaScript interactions"],
             ["Intermediate", "Build a React app and a separate backend API with a database"],
             ["Job-ready", "Ship a full app with login, database, deployment, tests and a clear README"]],
-    steps=[step("Learn HTML, CSS and JavaScript", "Months 1–2", "Semantic HTML, responsive CSS (flexbox/grid), modern JavaScript and the DOM."),
-           step("Learn a frontend framework", "Months 3–4", "React is widely asked for in job posts; learn components, state, hooks and routing."),
-           step("Learn a backend + database", "Months 4–6", "Node.js/Express (or Java/Python), REST APIs, authentication, and SQL or MongoDB."),
+    steps=[step("Learn HTML, CSS and JavaScript", "Months 1–2",
+                "Learn semantic HTML, responsive CSS (flexbox and grid), modern JavaScript and the DOM. "
+                "Build a few small pages and interactive widgets until you can make a layout work on both mobile and desktop. "
+                "Everything else in the full stack builds on these three, so do not rush them."),
+           step("Learn a frontend framework", "Months 3–4",
+                "React is widely asked for in job posts, so learn its components, state, hooks and routing. "
+                "Use the official react.dev tutorials and build one small app that shows lists, forms and navigation. "
+                "This app can later become the frontend of your first full stack project."),
+           step("Learn a backend + database", "Months 4–6",
+                "Learn Node.js with Express (or Java or Python), REST APIs, authentication, and SQL or MongoDB. "
+                "Build an API that can create, read, update and delete data, with a proper login. "
+                "Choosing Node.js lets you use JavaScript on both sides, which keeps the learning load smaller."),
            GIT_STEP,
-           step("Connect and deploy", "Months 6–8", "Connect frontend to your API, handle errors and loading states, and deploy both parts."),
+           step("Connect and deploy", "Months 6–8",
+                "Connect your frontend to your API, handle errors and loading states, and deploy both parts. "
+                "Test the full flow as a real user would, from sign-up to saving data, on a live link. "
+                "A working, deployed app is the strongest proof that you are a full stack developer."),
            *JOB_STEPS],
     test_topics="DSA basics, JavaScript output questions, SQL, HTML/CSS MCQs",
     interview_topics="JavaScript (closures, async/await, promises), React (state, hooks), REST APIs, databases, authentication and your projects",
@@ -382,7 +445,9 @@ FULLSTACK = _guide(
 
 ANDROID = _guide(
     "android-developer", "Android Developer", "Android", "How to become an Android Developer",
-    "An Android developer builds apps for Android phones and tablets — the most used mobile platform in India — usually with Kotlin and Jetpack Compose.",
+    "An Android developer builds apps for Android phones and tablets — the most used mobile platform in India — usually with Kotlin and Jetpack Compose. "
+    "The work covers screens, data, notifications and making apps run smoothly on many different devices. "
+    "You can start with any laptop that runs Android Studio, and a published app is a strong way to show your skills.",
     duties=["Build app screens with Jetpack Compose (or XML layouts in older apps)", "Connect apps to APIs and local databases",
             "Handle permissions, notifications and offline use", "Test on different devices and fix crashes", "Publish and update apps on Google Play"],
     postings=["Product companies, startups, agencies and app studios", "Freelance and your own apps on Google Play"],
@@ -393,11 +458,23 @@ ANDROID = _guide(
     levels=[["Beginner", "Write Kotlin programs and build single-screen apps"],
             ["Intermediate", "Multi-screen apps with navigation, ViewModel, Room database and API calls"],
             ["Job-ready", "Clean architecture, testing, handling configuration changes and publishing to Play Store"]],
-    steps=[step("Learn Kotlin basics", "Months 1–2", "Variables, functions, classes, null safety, collections and coroutines basics."),
-           step("Build UIs with Jetpack Compose", "Months 2–4", "Layouts, state, lists, navigation and Material Design."),
-           step("Data and networking", "Months 4–6", "ViewModel, Room database, Retrofit/Ktor for APIs, and app architecture."),
+    steps=[step("Learn Kotlin basics", "Months 1–2",
+                "Learn variables, functions, classes, null safety, collections and the basics of coroutines. "
+                "Google's official Android Basics with Compose course teaches Kotlin from zero and needs no programming experience, so it is a good place to start. "
+                "Write small console programs first so the language feels familiar before you build screens."),
+           step("Build UIs with Jetpack Compose", "Months 2–4",
+                "Learn layouts, state, lists, navigation and Material Design in Jetpack Compose. "
+                "Build simple multi-screen apps such as a notes app or a recipe list and run them on an emulator or a real phone. "
+                "Understanding state well now will save you many bugs later."),
+           step("Data and networking", "Months 4–6",
+                "Learn ViewModel, the Room database, Retrofit or Ktor for APIs, and app architecture. "
+                "Build an app that loads data from an API, saves it locally and still works on a slow or missing connection. "
+                "This is the kind of app interviewers expect you to explain in detail."),
            GIT_STEP,
-           step("Publish an app", "Months 6–8", "Create a Google Play developer account (one-time fee) or share APKs, and collect feedback."),
+           step("Publish an app", "Months 6–8",
+                "Create a Google Play developer account (one-time fee) or share APKs, and collect feedback. "
+                "Check Google Play's current rules for new developer accounts, as newer personal accounts must meet testing requirements before an app can go live. "
+                "Real users and reviews show recruiters that you can finish and maintain an app."),
            *JOB_STEPS],
     test_topics="DSA basics, Kotlin/Java MCQs, OOP",
     interview_topics="Activity/Compose lifecycle, state management, coroutines, MVVM, Room, networking, memory leaks and your apps",
@@ -419,8 +496,12 @@ ANDROID = _guide(
     special=["New Android apps use Kotlin and Jetpack Compose; many older apps still use Java and XML — knowing both helps.",
              "A published app with real users is a strong signal to recruiters."],
     mistakes=["Learning only Java/XML for new projects.", "Apps that crash on rotation or slow networks.", "No published app or demo video."],
-    faqs=[{"q": "Kotlin or Java?", "a": "Start with Kotlin — Google's official courses and new apps use it."},
-          {"q": "Do I need a powerful laptop?", "a": "Android Studio needs a decent amount of RAM; a real Android phone for testing also helps."}],
+    faqs=[{"q": "Kotlin or Java?", "a": "Start with Kotlin — Google's official courses and new apps use it. "
+                                        "Many older apps are still written in Java, so learning to read basic Java later is useful. "
+                                        "Interviews for new projects mostly expect Kotlin and Jetpack Compose."},
+          {"q": "Do I need a powerful laptop?", "a": "Android Studio needs a decent amount of RAM; a real Android phone for testing also helps. "
+                                                     "Check the current system requirements on the Android Studio download page before you buy anything. "
+                                                     "If the emulator runs slowly, testing on your own phone over USB is a good workaround."}],
     related_items=[related("flutter-developer", "Flutter Developer", "One codebase for Android and iOS"), related("ios-developer", "iOS Developer", "Apple platform apps"),
                    related("backend-developer", "Backend Developer", "Build the APIs apps use")],
     institutes=[GOOGLE_ANDROID, CDAC_MC, META_ANDROID, IGNOU],
@@ -430,7 +511,9 @@ ANDROID = _guide(
 
 IOS = _guide(
     "ios-developer", "iOS Developer", "iOS", "How to become an iOS Developer",
-    "An iOS developer builds apps for iPhone and iPad using Swift and SwiftUI, and publishes them on Apple's App Store.",
+    "An iOS developer builds apps for iPhone and iPad using Swift and SwiftUI, and publishes them on Apple's App Store. "
+    "You need a Mac with Xcode to build these apps, so plan for that before you start. "
+    "There are fewer iOS jobs than Android jobs in India, but there is also less competition for them.",
     duties=["Build app screens with SwiftUI (UIKit in older apps)", "Connect to APIs and store data on the device",
             "Follow Apple's design and App Store guidelines", "Test on iPhones/iPads and fix crashes", "Publish and update apps on the App Store"],
     postings=["Product companies, startups and app studios with iPhone apps", "Fewer jobs than Android in India, but less competition"],
@@ -441,12 +524,27 @@ IOS = _guide(
     levels=[["Beginner", "Write Swift code and build simple SwiftUI screens"],
             ["Intermediate", "Navigation, lists, networking with async/await and local storage"],
             ["Job-ready", "App architecture, testing, performance and App Store submission"]],
-    steps=[step("Get a Mac and install Xcode", "Week 1", "iOS apps are built in Xcode, which runs on macOS."),
-           step("Learn Swift", "Months 1–2", "Types, optionals, structs/classes, protocols, closures and error handling."),
-           step("Build UIs with SwiftUI", "Months 2–4", "Views, state, navigation, lists and forms using Apple's Develop in Swift tutorials."),
-           step("Data and networking", "Months 4–6", "async/await, Codable JSON, local storage and app architecture (MVVM)."),
+    steps=[step("Get a Mac and install Xcode", "Week 1",
+                "iOS apps are built in Xcode, which runs on macOS. "
+                "Install Xcode from Apple, create a new app project from its starting template and run it on the built-in iPhone simulator to check that your setup works. "
+                "Sort this out first, because you cannot build or test native iOS apps without it."),
+           step("Learn Swift", "Months 1–2",
+                "Learn types, optionals, structs and classes, protocols, closures and error handling. "
+                "Practise in Xcode playgrounds, where you can run small pieces of Swift and see results instantly. "
+                "Optionals and value types are asked about in almost every iOS interview, so understand them well."),
+           step("Build UIs with SwiftUI", "Months 2–4",
+                "Learn views, state, navigation, lists and forms using Apple's Develop in Swift tutorials. "
+                "Build a few small apps, such as a habit tracker or a simple shopping list, and run them on the simulator. "
+                "Getting comfortable with how SwiftUI state updates the screen is the key skill here."),
+           step("Data and networking", "Months 4–6",
+                "Learn async/await, Codable for JSON, local storage and app architecture (MVVM). "
+                "Build an app that fetches data from an API, shows it in a list and saves favourites on the device. "
+                "This shows employers that you can build a real, data-driven app."),
            GIT_STEP,
-           step("Test and publish", "Months 6–8", "Use TestFlight and submit an app to the App Store (needs Apple Developer Program membership)."),
+           step("Test and publish", "Months 6–8",
+                "Use TestFlight and submit an app to the App Store (needs Apple Developer Program membership). "
+                "Read Apple's App Store guidelines before you submit, so your app is not rejected for avoidable reasons. "
+                "If you are not ready to pay for membership yet, a GitHub repository with a demo video still works for your portfolio."),
            *JOB_STEPS],
     test_topics="DSA basics, Swift MCQs, OOP",
     interview_topics="Swift (optionals, value vs reference types, ARC), SwiftUI state, concurrency, networking, app lifecycle and your apps",
@@ -464,8 +562,12 @@ IOS = _guide(
     special=["You cannot build and publish native iOS apps without macOS/Xcode.", "If you don't have a Mac, consider Flutter or Android first.",
              "Apple Developer Program membership is needed to publish on the App Store."],
     mistakes=["Starting without access to a Mac.", "Learning only UIKit for new projects.", "No TestFlight/App Store build or demo video."],
-    faqs=[{"q": "Can I learn iOS on Windows?", "a": "You can learn Swift basics online, but building iOS apps needs a Mac with Xcode."},
-          {"q": "SwiftUI or UIKit?", "a": "Start with SwiftUI (Apple's tutorials use it); learn UIKit basics later because many existing apps use it."}],
+    faqs=[{"q": "Can I learn iOS on Windows?", "a": "You can learn Swift basics online, but building iOS apps needs a Mac with Xcode. "
+                                                    "If you do not have a Mac yet, you can start with Flutter or Android and move to iOS later. "
+                                                    "Many concepts, such as state, APIs and app architecture, carry over between platforms."},
+          {"q": "SwiftUI or UIKit?", "a": "Start with SwiftUI (Apple's tutorials use it); learn UIKit basics later because many existing apps use it. "
+                                          "New projects increasingly use SwiftUI, while many company codebases still mix both. "
+                                          "Knowing a little UIKit helps you understand and fix older screens at work."}],
     related_items=[related("android-developer", "Android Developer", "The bigger mobile market in India"), related("flutter-developer", "Flutter Developer", "Cross-platform apps"),
                    related("backend-developer", "Backend Developer", "APIs for mobile apps")],
     institutes=[APPLE, META_IOS, CDAC_MC, IGNOU],
@@ -475,21 +577,35 @@ IOS = _guide(
 
 FLUTTER_DEV = _guide(
     "flutter-developer", "Flutter Developer", "Flutter", "How to become a Flutter Developer",
-    "A Flutter developer uses Google's Flutter framework and the Dart language to build Android and iOS apps (and web/desktop) from one codebase.",
+    "A Flutter developer uses Google's Flutter framework and the Dart language to build Android and iOS apps (and web/desktop) from one codebase. "
+    "Startups and agencies like Flutter because one team can ship the same app on both phones. "
+    "You can learn and build Android apps on any computer, but building the iOS version needs a Mac.",
     duties=["Build app screens with Flutter widgets", "Manage app state and navigation", "Connect to APIs and Firebase",
             "Use platform features (camera, maps, notifications) through plugins", "Release builds for Android and iOS"],
     postings=["Startups and agencies that want one team for Android and iOS", "Freelance app projects"],
     facts=[fact("Education", "Degree helps; app portfolio matters most"), fact("Time to job-ready", "About 7–9 months (typical)"),
            fact("Language", "Dart"), fact("Tools", "Flutter SDK, VS Code / Android Studio, Firebase"),
            fact("Job titles", "Flutter Developer / Mobile App Developer"), fact("Hiring rounds", "Test → technical → assignment → HR"),
-           fact("iOS builds", "Need a Mac for iOS release builds"), fact("Portfolio", "2–3 apps with GitHub + demo/APK")],
+           fact("iOS builds", "Need a Mac with Xcode to build, test and release iOS apps"), fact("Portfolio", "2–3 apps with GitHub + demo/APK")],
     levels=[["Beginner", "Write Dart and build simple widget screens"], ["Intermediate", "Navigation, forms, state management and API calls"],
             ["Job-ready", "Clean architecture (MVVM), Firebase/auth, testing and release builds"]],
-    steps=[step("Learn Dart", "Month 1", "Types, functions, classes, null safety, async/await and futures (try DartPad)."),
-           step("Learn Flutter widgets", "Months 2–3", "Layouts, stateless/stateful widgets, lists, forms and navigation."),
-           step("State management and data", "Months 3–5", "A state management approach, HTTP APIs, local storage and app architecture."),
+    steps=[step("Learn Dart", "Month 1",
+                "Learn types, functions, classes, null safety, async/await and futures (try DartPad in the browser). "
+                "DartPad needs no installation, so you can practise the language before setting up Flutter. "
+                "A good grip on Dart makes Flutter code much easier to read and debug."),
+           step("Learn Flutter widgets", "Months 2–3",
+                "Learn layouts, stateless and stateful widgets, lists, forms and navigation. "
+                "Recreate the screens of apps you use every day to practise turning a design into widgets. "
+                "In Flutter everything on screen is a widget, so this step is the base of all your work."),
+           step("State management and data", "Months 3–5",
+                "Learn one state management approach, HTTP APIs, local storage and app architecture. "
+                "Pick one approach and use it well instead of trying every package you read about. "
+                "Clean separation between screens and logic is what interviewers look for in your code."),
            GIT_STEP,
-           step("Add real features", "Months 5–7", "Firebase login, maps, notifications, then release an Android build (and iOS on a Mac)."),
+           step("Add real features", "Months 5–7",
+                "Add Firebase login, maps and notifications, then release an Android build (and iOS on a Mac). "
+                "The official Flutter codelabs walk you through features like Firebase login and Google Maps step by step. "
+                "An app with real features and a release build looks far stronger than a simple demo."),
            *JOB_STEPS],
     test_topics="DSA basics, Dart/OOP MCQs",
     interview_topics="Widget tree and rebuilds, state management, async/futures/streams, navigation, platform channels and your apps",
@@ -505,10 +621,12 @@ FLUTTER_DEV = _guide(
     ladder=[["Start", "Flutter Intern / Trainee", "0–1 year", "Screens and bug fixes"], ["Junior", "Flutter Developer", "1–3 years", "Own app features"],
             ["Mid", "Senior Mobile Engineer", "3–6 years", "Architecture and releases"], ["Senior", "Mobile Lead", "6+ years", "Lead cross-platform strategy"]],
     special=["Flutter is popular with startups because one team ships Android and iOS.", "Knowing some native Android/iOS helps when plugins are not enough.",
-             "iOS release builds still need macOS and Xcode."],
+             "Building, testing and releasing the iOS version still needs macOS and Xcode."],
     mistakes=["Putting all logic inside widgets without any architecture.", "Ignoring Dart fundamentals.", "Only Android demos when the job needs iOS too."],
     faqs=[{"q": "Flutter or native Android?", "a": "Flutter if you want cross-platform startup roles; native Android if you want deep Android roles at larger companies. Both have jobs."},
-          {"q": "Do I need a Mac?", "a": "Not to learn or build Android apps — only for iOS release builds."}],
+          {"q": "Do I need a Mac?", "a": "Not to learn Flutter or build Android apps. "
+                                         "You need a Mac with Xcode only when you want to run, test or release the iOS version of your app. "
+                                         "Many learners build and polish the Android version first and add iOS once they have access to a Mac."}],
     related_items=[related("android-developer", "Android Developer", "Native Android"), related("ios-developer", "iOS Developer", "Native iOS"),
                    related("backend-developer", "Backend Developer", "APIs for your apps")],
     institutes=[FLUTTER, CDAC_MC, GOOGLE_ANDROID, IGNOU],
@@ -518,7 +636,9 @@ FLUTTER_DEV = _guide(
 
 REACT = _guide(
     "react-developer", "React Developer", "React", "How to become a React Developer",
-    "A React developer builds fast, interactive web interfaces using the React library, one of the most widely used frontend tools in Indian job posts.",
+    "A React developer builds fast, interactive web interfaces using the React library, one of the most widely used frontend tools in Indian job posts. "
+    "React is JavaScript at its core, so strong JavaScript skills come first. "
+    "The work includes building reusable components, handling data from APIs and keeping pages quick and accessible.",
     duties=["Build reusable UI components and pages", "Manage state and data from APIs", "Make apps responsive and accessible",
             "Optimise performance and fix UI bugs", "Work with designers (Figma) and backend developers"],
     postings=["Product companies, startups, IT services and agencies", "Remote and freelance frontend work"],
@@ -528,11 +648,23 @@ REACT = _guide(
            fact("Work mode", "Office, hybrid or remote"), fact("Portfolio", "3 deployed React apps")],
     levels=[["Beginner", "Build responsive pages with HTML/CSS and JavaScript"], ["Intermediate", "React components, props, state, hooks, routing and API calls"],
             ["Job-ready", "Performance, testing, TypeScript basics, accessibility and deployment"]],
-    steps=[step("Master HTML, CSS and JavaScript", "Months 1–2", "React is JavaScript — learn ES6+, arrays, objects, async/await and the DOM first."),
-           step("Learn React fundamentals", "Months 3–4", "Components, JSX, props, state, effects and hooks from react.dev."),
-           step("Routing, data and forms", "Months 4–5", "Client-side routing, fetching API data, forms and validation."),
+    steps=[step("Master HTML, CSS and JavaScript", "Months 1–2",
+                "React is JavaScript, so learn ES6+, arrays, objects, async/await and the DOM first. "
+                "Build a few plain JavaScript projects before touching React, so you know what React is doing for you. "
+                "Most React interviews test JavaScript more than React itself."),
+           step("Learn React fundamentals", "Months 3–4",
+                "Learn components, JSX, props, state, effects and hooks from react.dev. "
+                "Work through the official tutorials and then build small apps, such as a search page or a shopping cart. "
+                "Pay attention to how state changes cause re-renders, because interviewers ask about this often."),
+           step("Routing, data and forms", "Months 4–5",
+                "Learn client-side routing, fetching API data, forms and validation. "
+                "Build an app with several pages that loads real data and handles loading and error states properly. "
+                "These are the features you will build most often in a real job."),
            GIT_STEP,
-           step("Production skills", "Months 5–7", "TypeScript basics, testing, performance, accessibility and a framework like Next.js."),
+           step("Production skills", "Months 5–7",
+                "Learn TypeScript basics, testing, performance, accessibility and a framework like Next.js. "
+                "TypeScript is increasingly expected in job posts, so convert one of your projects to it. "
+                "These skills show that you can work on real company codebases, not just tutorials."),
            *JOB_STEPS],
     test_topics="JavaScript output questions, DSA basics, HTML/CSS MCQs",
     interview_topics="JavaScript (closures, this, event loop, promises), React (hooks, re-renders, keys, state), CSS layout and your projects",
@@ -562,7 +694,9 @@ REACT = _guide(
 
 WORDPRESS = _guide(
     "wordpress-developer", "WordPress Developer", "WordPress", "How to become a WordPress Developer",
-    "A WordPress developer builds and customises websites on WordPress — themes, plugins and client sites for businesses, blogs and stores.",
+    "A WordPress developer builds and customises websites on WordPress — themes, plugins and client sites for businesses, blogs and stores. "
+    "It is one of the quickest ways to start earning from web skills, because many small businesses need WordPress sites. "
+    "Your live websites act as your resume, so building real sites matters more than certificates.",
     duties=["Set up and configure WordPress sites", "Build or customise block themes", "Write custom plugins and integrate forms, payments and SEO tools",
             "Speed up and secure websites", "Maintain, update and back up client sites"],
     postings=["Digital agencies, marketing firms and media companies", "Strong freelance demand from small businesses"],
@@ -572,10 +706,22 @@ WORDPRESS = _guide(
            fact("Work mode", "Agency, remote or freelance"), fact("Portfolio", "3–5 live websites")],
     levels=[["Beginner", "Install WordPress, use themes, pages and plugins"], ["Intermediate", "Customise themes with HTML, CSS, PHP and build a block theme"],
             ["Job-ready", "Write a simple plugin, optimise speed and security, and deliver client sites"]],
-    steps=[step("Learn HTML and CSS", "Month 1", "WordPress themes are built on these."),
-           step("Use WordPress like a pro", "Month 2", "Install locally, build pages with blocks, manage plugins and settings."),
-           step("Learn PHP and theme development", "Months 2–4", "PHP basics, the template hierarchy and building a block theme."),
-           step("Plugins, WooCommerce and performance", "Months 4–5", "A basic plugin, WooCommerce stores, caching, image optimisation and security."),
+    steps=[step("Learn HTML and CSS", "Month 1",
+                "Learn HTML and CSS first, because WordPress themes are built on these. "
+                "Practise by building a few simple static pages, such as a business home page and a contact page. "
+                "Without these basics you will struggle to customise any theme properly."),
+           step("Use WordPress like a pro", "Month 2",
+                "Install WordPress locally, build pages with blocks, and manage plugins and settings. "
+                "Build a complete sample site for an imaginary business so you learn every part of the admin area. "
+                "Knowing WordPress from a site owner's view helps you build sites that clients can manage easily."),
+           step("Learn PHP and theme development", "Months 2–4",
+                "Learn PHP basics, the template hierarchy and how to build a block theme. "
+                "The official Learn WordPress developer courses walk you through building a custom block theme step by step. "
+                "Theme development is what separates a developer from someone who only uses page builders."),
+           step("Plugins, WooCommerce and performance", "Months 4–5",
+                "Learn to write a basic plugin, set up WooCommerce stores, and handle caching, image optimisation and security. "
+                "Build one small plugin and one demo store so you have proof of these skills. "
+                "Speed and security skills help you charge clients more and keep their sites safe."),
            GIT_STEP,
            *JOB_STEPS],
     test_topics="HTML/CSS/PHP MCQs and a small WordPress task",
@@ -595,7 +741,9 @@ WORDPRESS = _guide(
              "Speed and security skills help you charge more."],
     mistakes=["Relying only on page builders without learning code.", "Installing too many plugins on client sites.", "No backups or updates for client sites."],
     faqs=[{"q": "Do I need PHP?", "a": "For developer roles, yes — themes and plugins use PHP. Site builders can start without it."},
-          {"q": "Can I earn as a freelancer?", "a": "Yes, many small businesses need WordPress sites; start with 2–3 sample sites and local clients."}],
+          {"q": "Can I earn as a freelancer?", "a": "Yes, many small businesses need WordPress sites; start with 2–3 sample sites and local clients. "
+                                                    "Your first clients often come from people you know, so tell local shops, clinics and tutors what you can build. "
+                                                    "Offer maintenance, updates and backups too, because these bring repeat work."}],
     related_items=[related("shopify-developer", "Shopify Developer", "E-commerce sites"), related("full-stack-developer", "Full Stack Developer", "Custom web apps"),
                    related("react-developer", "React Developer", "Modern frontend")],
     institutes=[WP_LEARN, NIELIT_O, MDN, IGNOU],
@@ -605,7 +753,9 @@ WORDPRESS = _guide(
 
 SHOPIFY_DEV = _guide(
     "shopify-developer", "Shopify Developer", "Shopify", "How to become a Shopify Developer",
-    "A Shopify developer builds and customises online stores on Shopify — themes with the Liquid language, store setups and Shopify apps.",
+    "A Shopify developer builds and customises online stores on Shopify — themes with the Liquid language, store setups and Shopify apps. "
+    "E-commerce agencies, D2C brands and overseas clients hire for these skills, often remotely. "
+    "You start with web basics and Liquid themes, and app development can come later for higher-level work.",
     duties=["Set up and configure Shopify stores", "Customise themes with Liquid, HTML, CSS and JavaScript", "Build theme sections and blocks merchants can edit",
             "Integrate apps, payments and shipping", "Improve store speed and conversions"],
     postings=["E-commerce agencies and D2C brands", "Strong freelance and remote demand, including overseas clients"],
@@ -615,10 +765,22 @@ SHOPIFY_DEV = _guide(
            fact("Work mode", "Agency, remote or freelance"), fact("Portfolio", "3–5 store builds or theme customisations")],
     levels=[["Beginner", "Set up a store, use themes and the theme editor"], ["Intermediate", "Edit themes with Liquid, build custom sections and blocks"],
             ["Job-ready", "Build a full custom theme section set, optimise speed and integrate apps/APIs"]],
-    steps=[step("Learn HTML, CSS and JavaScript", "Months 1–2", "Themes are web code at their core."),
-           step("Learn Shopify as a merchant", "Month 2", "Products, collections, payments, shipping and the theme editor."),
-           step("Learn Liquid theme development", "Months 2–4", "Liquid objects/filters, sections and blocks, local workflow with Shopify CLI (Shopify Academy paths)."),
-           step("Apps and APIs (optional)", "Months 4–6", "Shopify app development basics with the official 'Developing Apps for Shopify' path."),
+    steps=[step("Learn HTML, CSS and JavaScript", "Months 1–2",
+                "Learn HTML, CSS and JavaScript first, because Shopify themes are web code at their core. "
+                "Build a few responsive pages, such as a product page and a home page, from scratch. "
+                "These skills let you understand and change any theme instead of only using its settings."),
+           step("Learn Shopify as a merchant", "Month 2",
+                "Learn products, collections, payments, shipping and the theme editor the way a store owner uses them. "
+                "Set up a practice store and run through the whole journey from adding a product to placing a test order. "
+                "Clients will expect you to understand their store, not just its code."),
+           step("Learn Liquid theme development", "Months 2–4",
+                "Learn Liquid objects and filters, sections and blocks, and the local workflow with Shopify CLI (Shopify Academy paths). "
+                "Build custom sections that a merchant can edit from the theme editor without touching code. "
+                "Editable sections are among the most common tasks in Shopify jobs and hiring tests."),
+           step("Apps and APIs (optional)", "Months 4–6",
+                "Learn the basics of Shopify app development with the official 'Developing Apps for Shopify' path. "
+                "This step needs extra skills such as Node.js or React and Shopify's APIs, so do it after you are comfortable with themes. "
+                "App skills open up higher-paid work but are not needed for your first theme jobs."),
            GIT_STEP,
            *JOB_STEPS],
     test_topics="HTML/CSS/JavaScript and a Liquid customisation task",
@@ -636,8 +798,12 @@ SHOPIFY_DEV = _guide(
             ["Mid", "Senior Shopify Developer", "3–5 years", "Custom themes, apps, performance"], ["Senior", "E-commerce Lead / Agency owner", "5+ years", "Run projects or an agency"]],
     special=["Joining the Shopify Partner Program lets you build development stores for practice and clients.", "Theme skills get you started; app skills (Node/React + APIs) open higher-paid work."],
     mistakes=["Editing live store themes without a backup/duplicate.", "Hard-coding content instead of building editable sections.", "Ignoring store speed."],
-    faqs=[{"q": "Is Shopify development only for freelancers?", "a": "No — e-commerce agencies and D2C brands hire Shopify developers full time too."},
-          {"q": "Do I need to pay to practise?", "a": "Shopify Partners can create development stores for building and testing; many Shopify Academy courses are free."}],
+    faqs=[{"q": "Is Shopify development only for freelancers?", "a": "No — e-commerce agencies and D2C brands hire Shopify developers full time too. "
+                                                                     "Freelancing and remote work for overseas clients are also common. "
+                                                                     "Many developers start at an agency to gain experience and then take freelance projects later."},
+          {"q": "Do I need to pay to practise?", "a": "Shopify Partners can create development stores for building and testing; many Shopify Academy courses are free. "
+                                                     "Joining the Shopify Partner Program lets you build practice and client stores. "
+                                                     "Check the current terms on Shopify's official pages before you start, as programme rules can change."}],
     related_items=[related("wordpress-developer", "WordPress Developer", "Websites and WooCommerce"), related("react-developer", "React Developer", "Frontend and Shopify apps"),
                    related("full-stack-developer", "Full Stack Developer", "Custom e-commerce apps")],
     institutes=[SHOPIFY, NIELIT_O, META_FE, MDN],

@@ -244,7 +244,7 @@ EDUCATION.update({
                              "after 12th, take CLAT for a 5-year BA/BBA LL.B. at an NLU; internships at law firms every year"),
     "judge-judiciary": _edu("an LL.B. and enrolment as an advocate; for Civil Judge (Junior Division) the Supreme Court (20 May 2025) directed a minimum of "
                             "3 years' practice counted from provisional enrolment, applied through each High Court's recruitment rules; District Judge "
-                            "direct recruitment needs at least 7 years as an advocate (Article 233)",
+                            "direct recruitment needs at least 7 years as an advocate (Article 233), or 7 years combined as advocate and judicial officer, with a minimum age of 35 (Supreme Court Constitution Bench, October 2025)",
                             "strong LL.B. marks and courtroom practice; age limits and language requirements differ by state",
                             "after 12th, LL.B. (5-year) or graduation + LL.B. (3-year) → enrol with the State Bar Council → practise → state judicial service exam"),
     "mba-marketing-manager": _edu(_MBA, "an MBA/PGDM with Marketing specialisation from a reputed B-school; a BBA/BCom/BMS degree helps", _MBA_ROUTE),
@@ -256,7 +256,7 @@ EDUCATION.update({
 EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in {
     "lawyer-advocate": "BCI-recognised LL.B. + Bar enrolment + AIBE",
     "corporate-lawyer": "BCI-recognised LL.B. (NLU preferred)",
-    "judge-judiciary": "LL.B. + 3 years' practice (Civil Judge); 7 years (District Judge)",
+    "judge-judiciary": "LL.B. + 3 years' practice (Civil Judge); 7 years Bar or Bar + service (District Judge)",
     "mba-marketing-manager": "Graduation + MBA/PGDM (Marketing)",
     "mba-finance-manager": "Graduation + MBA/PGDM (Finance)",
     "mba-hr-manager": "Graduation + MBA/PGDM (HR) or MA HRM&LR",
@@ -393,7 +393,7 @@ EDUCATION.update({
                                  "ITI + CNC programming training and apprenticeship", "after 10th (Science + Maths), ITI Machinist/Turner; then CNC training and apprenticeship"),
     "army-soldier-gd-technical-clerk": _edu("Agniveer (Indian Army) — General Duty: Class 10 with 45% aggregate and 33% in each subject; Technical: 10+2 Science (PCM + English) with 50% aggregate and 40% in each; "
                                             "Clerk/Store Keeper Technical: 10+2 any stream with 60% aggregate, 50% in each subject and 50% in English and Maths/Accounts — as per recent notifications",
-                                            "physical fitness and meeting the age limit in the current notification (17.5–21 in most recent notifications)",
+                                            "physical fitness and meeting the age limit in the current notification (17.5–22 in the Agniveer 2027 notification — check the current one)",
                                             "after 10th/12th, register on joinindianarmy.nic.in when the Agniveer notification opens; train for the written exam and physical test"),
 })
 EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in {
