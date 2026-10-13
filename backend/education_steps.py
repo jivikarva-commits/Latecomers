@@ -262,3 +262,42 @@ EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in {
     "mba-hr-manager": "Graduation + MBA/PGDM (HR) or MA HRM&LR",
     "mba-operations-manager": "Graduation + MBA/PGDM (Operations)",
 }.items()})
+
+_PCB = "after 12th with Physics, Chemistry and Biology"
+EDUCATION.update({
+    "nursing-officer-staff-nurse": _edu("B.Sc. Nursing (4 years) from an INC/State Nursing Council-recognised institute — INC eligibility: 10+2 with PCB and English, "
+                                        "45% aggregate, minimum age 17 by 31 December — or a GNM diploma; then registration as Nurse & Midwife with the State Nursing Council",
+                                        "B.Sc. Nursing; government Nursing Officer posts (e.g. AIIMS NORCET) accept GNM only with 2 years' experience in a 50+ bed hospital",
+                                        f"{_PCB} and English, take B.Sc. Nursing through the state/institute entrance (some central institutes use NEET); register with the State Nursing Council"),
+    "physiotherapist": _edu("Bachelor of Physiotherapy (BPT) — NCAHP's curriculum: 10+2 with at least 50% in PCB, NEET appearance, age 17+, and 4 years plus a 1-year internship",
+                            "BPT from a government or NCAHP-compliant college; MPT for specialisation",
+                            f"{_PCB} (50%), take NEET and the state/university counselling for BPT; check your state's notice for the current year"),
+    "medical-coder": _edu("graduation in life sciences or health (BSc Life Sciences/Nursing/Pharmacy, BPT, BSc HIM) is what most coding companies ask for; "
+                          "the AAPC CPC certification is widely requested",
+                          "a BSc in Health Information Management (NCAHP curriculum: 4 years incl. 1-year internship) or a life-science degree plus CPC",
+                          f"{_PCB} (PCB/PCMB for HIM), take a BSc in a health/life-science field, then train for the CPC exam"),
+    "medical-biller": _edu("graduation (BCom, BBA, BSc or any health-related degree) for most billing/RCM jobs; AAPC's CPB certification helps",
+                           "a commerce or life-science degree plus CPB and RCM experience", "after 12th, take BCom/BBA/BSc; learn medical billing and RCM alongside"),
+    "lab-technician-dmlt": _edu("DMLT (2 years incl. 6 months clinical lab posting) or Bachelor of Medical Laboratory Science (4 years incl. 1-year internship), after 10+2 with PCB",
+                                "a degree (BMLS) for hospital and senior lab roles", f"{_PCB}, take DMLT or BMLS (BMLS: NEET-appeared candidates with 50% in 10+2 science, or a university/state entrance)"),
+    "radiology-technician": _edu("Diploma in Medical Radiology and Imaging Technology (2.5 years incl. 6 months internship) or BSc MRIT (4 years incl. 1-year internship), after 10+2 with PCB",
+                                 "BSc MRIT for CT/MRI and senior roles", f"{_PCB}, take DMRIT (10+2 merit) or BSc MRIT (NEET-based selection under the NCAHP curriculum)"),
+    "nutritionist-dietitian": _edu("Bachelor of Nutrition and Dietetics (Hons) — NCAHP: 4 years incl. 6 months clinical training, after 10+2 science with 50% — or a BSc Home Science (Food & Nutrition); "
+                                   "hospital dietitian roles usually ask for an MSc/PG diploma in nutrition/dietetics",
+                                   "MSc in Nutrition and Dietetics plus the Indian Dietetic Association's Registered Dietitian (RD) credential",
+                                   "after 12th science (Chemistry and Biology), take BND/BSc Food & Nutrition, then MSc and a hospital internship"),
+    "pharmacist": _edu("D.Pharm (2 years) or B.Pharm (4 years) from a PCI-approved institution after 10+2 with Physics, Chemistry and Biology or Mathematics; "
+                       "then registration with the State Pharmacy Council under the Pharmacy Act, 1948 (needed to work as a pharmacist)",
+                       "B.Pharm; M.Pharm (e.g. NIPER via its entrance) or Pharm.D for clinical and industry roles",
+                       "after 12th (PCB or PCM), take D.Pharm or B.Pharm through the state/university admission; register with your State Pharmacy Council"),
+})
+EDUCATION.update({k: (v, EDUCATION[k][1]) for k, v in {
+    "nursing-officer-staff-nurse": "B.Sc. Nursing (or GNM) + State Nursing Council registration",
+    "physiotherapist": "BPT (10+2 PCB 50%, NEET)",
+    "medical-coder": "Life-science/health graduation + CPC",
+    "medical-biller": "Graduation + CPB (helpful)",
+    "lab-technician-dmlt": "DMLT (2 yrs) or BMLS (4 yrs) after 10+2 PCB",
+    "radiology-technician": "DMRIT (2.5 yrs) or BSc MRIT (4 yrs) after 10+2 PCB",
+    "nutritionist-dietitian": "BND/BSc Nutrition; MSc for dietitian roles",
+    "pharmacist": "D.Pharm/B.Pharm + State Pharmacy Council registration",
+}.items()})
